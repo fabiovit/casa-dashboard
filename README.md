@@ -1,4 +1,10 @@
-# Casa Dashboard Community
+# 🏠 Casa Dashboard Community
+
+[![Release](https://img.shields.io/badge/release-v1.0.0-blue)](https://github.com/fabiovit/casa-dashboard/releases)
+[![HACS](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz/)
+[![Validate](https://img.shields.io/github/actions/workflow/status/fabiovit/casa-dashboard/hacs.yml?branch=main&label=Validate)](https://github.com/fabiovit/casa-dashboard/actions/workflows/hacs.yml)
+[![Hassfest](https://img.shields.io/github/actions/workflow/status/fabiovit/casa-dashboard/hassfest.yml?branch=main&label=Hassfest)](https://github.com/fabiovit/casa-dashboard/actions/workflows/hassfest.yml)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 Una dashboard app-like per **Home Assistant**, pensata per offrire una vista unica di casa senza dipendere dalle classiche card Lovelace.
 
