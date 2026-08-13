@@ -1,9 +1,6 @@
 {
   "domain": "casa_dashboard",
   "name": "Casa Dashboard Community",
-  "version": "1.0.0",
-  "documentation": "https://github.com/fabiovit/casa-dashboard",
-  "issue_tracker": "https://github.com/fabiovit/casa-dashboard/issues",
   "codeowners": [
     "@fabiovit"
   ],
@@ -13,5 +10,8 @@
     "http",
     "panel_custom"
   ],
-  "iot_class": "local_push"
+  "documentation": "https://github.com/fabiovit/casa-dashboard",
+  "iot_class": "local_push",
+  "issue_tracker": "https://github.com/fabiovit/casa-dashboard/issues",
+  "version": "1.0.0"
 }
