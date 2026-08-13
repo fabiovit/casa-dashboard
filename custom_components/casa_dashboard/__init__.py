@@ -8,11 +8,14 @@ from homeassistant.components import frontend, panel_custom
 from homeassistant.components.http import StaticPathConfig
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers import config_validation as cv
 
 from .const import DOMAIN, PANEL_ICON, PANEL_PATH, PANEL_TITLE, STATIC_URL
 
 VERSION = "1.0.0"
 ENTITY_CONFIG_FILENAME = "casa-dashboard-entities.json"
+
+CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
 
 
 def _ensure_entity_config(hass: HomeAssistant) -> None:
@@ -22,7 +25,6 @@ def _ensure_entity_config(hass: HomeAssistant) -> None:
     target.parent.mkdir(parents=True, exist_ok=True)
     source = Path(__file__).parent / "casa-dashboard-entities.example.json"
     shutil.copyfile(source, target)
-
 
 
 async def async_setup(hass: HomeAssistant, config: dict) -> bool:
