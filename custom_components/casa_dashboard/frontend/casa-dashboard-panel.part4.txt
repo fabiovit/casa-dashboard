@@ -1,0 +1,90 @@
+his._on("binary_sensor.ev_charging_at_home")) return {level:"blue",text:"EV in carica"};
+        if(this._on("binary_sensor.garage_dehumidifier_tank_full")) return {level:"bad",text:"Serbatoio pieno"};
+        return {level:"good",text:"Tutto ok"}; }
+    }
+    return {level:"good",text:"Tutto ok"};
+  }
+
+  _renderNav(force=false) {
+    const nav=this.shadowRoot.querySelector("#nav"); if(!nav) return;
+    if(force || !nav.children.length){
+      nav.innerHTML=NAV.map(([id,icon,label])=>`<button class="nav-btn ${id===this._active?"active":""}" data-nav="${id}" type="button"><ha-icon icon="${icon}"></ha-icon>${label}</button>`).join("");
+    } else {
+      nav.querySelectorAll(".nav-btn").forEach(btn=>btn.classList.toggle("active",btn.dataset.nav===this._active));
+    }
+  }
+
+  _renderHeader() {
+    const host=this.shadowRoot.querySelector("#headerStatus"); if(!host||!this._hass) return;
+    const all=this._overall(); const temp=this._fmt("sensor.weather_outdoor_temperature",1,"°C");
+    host.innerHTML=`<div class="header-pill"><ha-icon icon="${all.icon}"></ha-icon>${this._esc(all.title)}</div><div class="header-pill"><ha-icon icon="mdi:thermometer"></ha-icon>${temp}</div>`;
+  }
+
+  _renderPage(forceNav=false) {
+    if(!this._hass || !this.shadowRoot) return;
+    this._renderNav(forceNav); this._renderHeader();
+    const host=this.shadowRoot.querySelector("#content"); if(!host) return;
+    const renderer={panoramica:()=>this._overview(),esterno:()=>this._esterno(),scale:()=>this._scale(),ingresso:()=>this._ingresso(),cucina:()=>this._cucina(),disimpegno:()=>this._disimpegno(),bagno:()=>this._bagno(),camera:()=>this._camera(),balcone:()=>this._balcone(),garage:()=>this._garage()}[this._active];
+    host.innerHTML=renderer ? renderer() : `<div class="empty">Pagina non disponibile</div>`;
+  }
+
+  _hero(title, subtitle, status, metrics=[]) {
+    return `<section class="hero"><div class="hero-grid"><div><div class="hero-overline">HOME ASSISTANT · CASA DASHBOARD</div><h1>${title}</h1><div class="hero-sub">${subtitle}</div><div class="status-line"><span class="status-dot" style="background:${status.level==='bad'?'var(--error-color,#f44336)':status.level==='warn'?'var(--warning-color,#ff9800)':status.level==='blue'?'#2196f3':'var(--success-color,#4caf50)'}"></span>${this._esc(status.title || status.text)}</div>${status.title&&status.text?`<div class="muted" style="margin-top:5px">${this._esc(status.text)}</div>`:""}</div><div class="hero-metrics">${metrics.map(m=>`<div class="hero-metric"><div class="label">${m.label}</div><div class="value">${m.value}</div>${m.small?`<div class="small">${m.small}</div>`:""}</div>`).join("")}</div></div></section>`;
+  }
+
+  _section(title, sub="") { return `<div class="section-head"><div><div class="section-title">${title}</div>${sub?`<div class="section-sub">${sub}</div>`:""}</div></div>`; }
+  _metric(icon,label,value,foot="",span=3,entity="",tone="") {
+    const configured=!entity || this._configured(entity);
+    const cls=tone || (entity?this._metricTone(entity,value):"");
+    const shown=entity&&!configured?"Non configurato":value;
+    return `<div class="metric span-${span} ${entity&&configured?'clickable':''} ${cls} ${entity&&!configured?'state-off':''}" ${entity&&configured?`data-more="${entity}"`:""}><div class="metric-icon"><div class="label">${label}</div><ha-icon icon="${icon}"></ha-icon></div><div><div class="value">${shown}</div>${foot?`<div class="foot">${foot}</div>`:""}</div></div>`;
+  }
+  _control(entity,title,icon,sub="",mode="toggle",span=4) {
+    const configured=this._configured(entity); const st=this._state(entity,"off"); const on=configured && (this._on(entity) || ["open","cool","heat","heating","cooling"].includes(st));
+    const cls=configured?this._controlTone(entity,on):"state-off";
+    return `<div class="control span-${span} ${cls}">${this._icon(icon,on?(entity.startsWith("light.")?"warn":entity.startsWith("climate.")?"blue":"good"):"")}<div class="control-main ${configured?'clickable':''}" ${configured?`data-more="${entity}"`:""}><div class="control-title">${title}</div><div class="control-sub">${configured?(sub || this._esc(st)):"Non configurato"}</div></div>${mode==='toggle'?`<button class="switch-btn ${on?'on':''}" ${configured?`data-toggle="${entity}"`:"disabled"} type="button">${configured?(on?'ON':'OFF'):'—'}</button>`:""}</div>`;
+  }
+  _coverControl(entity,title,inverted=false,span=6,subPrefix="Posizione"){
+    const configured=this._configured(entity); const open=configured&&this._coverOpen(entity,inverted); const pos=this._attr(entity,"current_position",null); const stateText=inverted?(open?"Aperta":"Chiusa"):(open?"Giù / aperta":"Su / chiusa");
+    return `<div class="control span-${span} ${open?'state-warn':'state-off'}">${this._icon("mdi:blinds-horizontal",open?"warn":"")}<div class="control-main ${configured?'clickable':''}" ${configured?`data-more="${entity}"`:""}><div class="control-title">${title}</div><div class="control-sub">${configured?(pos!==null?`${subPrefix} ${pos}% · `:"")+stateText:"Non configurato"}</div></div><button class="switch-btn ${open?'warn':''}" ${configured?`data-cover-toggle="${entity}" data-inverted="${inverted?1:0}"`:"disabled"} type="button">${configured?(open?'CHIUDI':'APRI'):'—'}</button></div>`;
+  }
+  _alert(level,icon,title,text) { return `<div class="alert ${level}"><ha-icon icon="${icon}"></ha-icon><div><strong>${title}</strong><span>${text}</span></div></div>`; }
+  _logic(title,text,level=""){ return `<div class="logic-card ${level}"><strong>${title}</strong><p>${text}</p></div>`; }
+
+  _overview() {
+    const all=this._overall(); const lights=this._countOn(LIGHTS); const open=this._openCount();
+    const clima=(this._climateActive("climate.kitchen")?1:0)+(this._climateActive("climate.bedroom")?1:0);
+    const ev=this._on("binary_sensor.ev_charging_at_home");
+    const hero=this._hero("Casa", "Una vista unica su sicurezza, comfort, accessi, meteo e dispositivi. Le cose importanti emergono da sole; il resto resta pulito.", all, [
+      {label:"Luci",value:`${lights} accese`,small:lights?"Illuminazione attiva":"Tutte spente"},
+      {label:"Aperture",value:open?`${open} aperte`:"Tutto chiuso",small:"Porte, finestre e garage"},
+      {label:"Clima",value:clima?`${clima} attivi`:"Spento",small:"Cucina + camera"},
+      {label:"EV",value:ev?`${this._fmt("sensor.wallbox_charging_power",2,"kW")}`:"Non in carica",small:this._state("sensor.wallbox_evse_status","Wallbox")}
+    ]);
+    const roomCards=NAV.filter(([id])=>id!=="panoramica").map(([room])=>this._roomCard(room)).join("");
+    const alarm=this._state("alarm_control_panel.home_alarm","Non disponibile");
+    const rain=this._on("binary_sensor.weather_rain");
+    const garage=this._on("binary_sensor.garage_door_contact");
+    const highlights=`<div class="grid"><div class="span-4">${this._alert(alarm==='triggered'?'bad':alarm==='disarmed'?'warn':'good',alarm==='triggered'?'mdi:alarm-light':'mdi:shield-home',"Allarme",alarm==='triggered'?'ALLARME IN CORSO':alarm==='disarmed'?'Disinserito':'Inserito / sicuro')}</div><div class="span-4">${this._alert(rain?'warn':'good',rain?'mdi:weather-pouring':'mdi:weather-partly-cloudy',"Meteo balcone",rain?'Pioggia rilevata':`${this._fmt("sensor.weather_outdoor_temperature",1,"°C")} · raffica ${this._fmt("sensor.weather_wind_gust",1,"km/h")}`)}</div><div class="span-4">${this._alert(garage?'warn':'good',garage?'mdi:garage-open':'mdi:garage',"Garage",garage?'Basculante aperto':ev?'Basculante chiuso · EV in carica':'Basculante chiuso')}</div></div>`;
+    return `<div class="page">${this._configNotice()}${hero}${this._section("Zone","Apri una zona per controlli e dettagli")}<div class="grid">${roomCards}</div>${this._section("In evidenza","Solo ciò che merita davvero attenzione")}${highlights}</div>`;
+  }
+
+  _roomCard(room) {
+    const m=ROOM_META[room], s=this._roomStatus(room); let tags=[];
+    if(room==="bagno") tags=[`🌡️ ${this._fmt("sensor.bathroom_temperature",1,"°C")}`,`💧 ${this._fmt("sensor.bathroom_humidity",0,"%")}`];
+    if(room==="cucina") tags=[`🌡️ ${this._fmt("sensor.kitchen_temperature",1,"°C")}`,`💧 ${this._fmt("sensor.kitchen_humidity",0,"%")}`];
+    if(room==="camera") tags=[`🌡️ ${this._fmt("sensor.bedroom_temperature",1,"°C")}`,`💧 ${this._fmt("sensor.bedroom_humidity",0,"%")}`];
+    if(room==="balcone") tags=[`🌡️ ${this._fmt("sensor.weather_outdoor_temperature",1,"°C")}`,`💨 ${this._fmt("sensor.weather_wind_gust",0,"km/h")}`];
+    if(room==="garage") tags=[`🌡️ ${this._fmt("sensor.garage_temperature",1,"°C")}`,this._on("binary_sensor.ev_charging_at_home")?"🔌 In carica":"🚗 Wallbox pronta"];
+    if(room==="ingresso") tags=[this._state("alarm_control_panel.home_alarm") === "disarmed"?"🔓 Allarme OFF":"🛡️ Allarme ON",this._on("light.entry_main")?"💡 Luce ON":"💡 Luce OFF"];
+    return `<div class="card room-card clickable span-4" data-nav="${room}"><div class="card-top">${this._icon(m.icon,s.level)}<ha-icon icon="mdi:chevron-right" style="color:var(--secondary-text-color)"></ha-icon></div><h3>${m.title}</h3><div class="desc">${m.subtitle}</div><div class="room-footer"><span class="tag ${s.level}">${s.text}</span>${tags.map(t=>`<span class="tag">${t}</span>`).join("")}</div></div>`;
+  }
+
+  _zoneHero(room, metrics) { const m=ROOM_META[room], s=this._roomStatus(room); return this._hero(m.title,m.subtitle,{...s,title:s.text,text:""},metrics); }
+
+  _esterno(){
+    const open=this._on("input_boolean.pedestrian_gate");
+    return `<div class="page">${this._zoneHero("esterno",[
+      {label:"Cancellino",value:open?"Aperto / apertura…":"Chiuso",small:"Accesso esterno"},
+      {label:"Stato",value:open?"Attivo":"Pronto",small:"Comando pedonale"}
+    ])}${this._section("Accesso esterno")}<div class="grid">${this
