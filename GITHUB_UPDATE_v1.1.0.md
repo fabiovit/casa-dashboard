@@ -8,7 +8,7 @@ Estrai lo ZIP e carica su GitHub **il contenuto della cartella**, non il file ZI
 
 Sostituisci/aggiorna i file esistenti mantenendo la stessa struttura, in particolare:
 
-- `custom_components/casa_dashboard/`
+- `custom_components/casa_dashboard_community/`
 - `.github/workflows/`
 - `examples/`
 - `README.md`
@@ -20,7 +20,7 @@ Sono stati aggiunti anche:
 
 - `RELEASE_NOTES_v1.1.0.md`
 - questo file `GITHUB_UPDATE_v1.1.0.md`
-- nuovi frammenti frontend fino a `casa-dashboard-panel.part14.txt`
+- nuovi frammenti frontend fino a `casa-dashboard-community-panel.part14.txt`
 
 Commit suggerito:
 
@@ -65,7 +65,7 @@ Per un'installazione già su v1.0.0:
 
 1. aggiorna la custom integration;
 2. riavvia Home Assistant;
-3. controlla `/config/www/casa-dashboard-entities.json`;
+3. controlla `/config/www/casa-dashboard-community-entities.json`;
 4. le vecchie associazioni devono essere ancora presenti;
 5. in fondo alla mappa devono comparire anche le nuove chiavi `sensor.solar_*` non configurate.
 
@@ -78,3 +78,8 @@ Se non si usa il fotovoltaico, le nuove chiavi possono restare vuote: la sezione
 ## Testo breve per la descrizione release
 
 Usa integralmente `RELEASE_NOTES_v1.1.0.md`.
+
+
+## HACS one-click
+
+Il README include il pulsante **Add to HACS** che punta al repository `fabiovit/casa-dashboard` come custom integration.

@@ -6,9 +6,15 @@
 [![Hassfest](https://img.shields.io/github/actions/workflow/status/fabiovit/casa-dashboard/hassfest.yml?branch=main&label=Hassfest)](https://github.com/fabiovit/casa-dashboard/actions/workflows/hassfest.yml)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
+[![Add to HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=fabiovit&repository=casa-dashboard&category=integration)
+
+**Installazione rapida:** clicca **Add to HACS** qui sopra per aprire direttamente Home Assistant e aggiungere questo repository a HACS come integrazione personalizzata.
+
 Una dashboard app-like per **Home Assistant**, pensata per offrire una vista unica della casa senza dipendere dalle classiche card Lovelace.
 
 La Community Edition nasce dalla dashboard personale di Fabio Vittori, ma mantiene **versioning, configurazione ed entity_id completamente separati** per poter essere adattata ad altre installazioni Home Assistant.
+
+Inoltre usa il domain tecnico `casa_dashboard_community`, il pannello `casa-dashboard-community` e risorse frontend dedicate: può quindi convivere nella stessa installazione con una dashboard personale che usa `casa_dashboard`, senza sovrascriverla.
 
 **Realizzato da Fabio Vittori** · [☕ Offrimi un caffè](https://ko-fi.com/fabvittori)
 
@@ -36,11 +42,11 @@ La **v1.1.0** porta nella versione pubblica il grande aggiornamento grafico e fu
 
 ## Installazione manuale
 
-1. Copia `custom_components/casa_dashboard` in `/config/custom_components/`.
+1. Copia `custom_components/casa_dashboard_community` in `/config/custom_components/`.
 2. Riavvia Home Assistant.
 3. Vai in **Impostazioni → Dispositivi e servizi → Aggiungi integrazione**.
 4. Cerca **Casa Dashboard Community** e aggiungila.
-5. Al primo avvio viene creato automaticamente `/config/www/casa-dashboard-entities.json`.
+5. Al primo avvio viene creato automaticamente `/config/www/casa-dashboard-community-entities.json`.
 6. Associa le chiavi logiche alle tue `entity_id` reali.
 7. Ricarica la pagina del browser/app.
 
@@ -48,15 +54,32 @@ La **v1.1.0** porta nella versione pubblica il grande aggiornamento grafico e fu
 
 Consulta `examples/ENTITY_MAP.md` per la mappa completa delle **173 associazioni**.
 
-## Aggiornamento dalla v1.0.0
+## Aggiornamento da una build Community precedente
 
-Installa la v1.1.0 e riavvia Home Assistant. L'integrazione controlla `/config/www/casa-dashboard-entities.json` e aggiunge soltanto le nuove chiavi mancanti, lasciando intatti i valori già associati.
+Questa build separa definitivamente la Community Edition dal domain `casa_dashboard` usato dalla dashboard personale. Dopo l'aggiornamento, rimuovi l'eventuale vecchia voce **Casa Dashboard Community** basata sul domain precedente e aggiungi nuovamente **Casa Dashboard Community** da **Impostazioni → Dispositivi e servizi**.
 
-Le 16 nuove chiavi `sensor.solar_*` sono opzionali: se non hai un impianto fotovoltaico puoi lasciarle vuote. L'intera sezione Energia solare resterà nascosta.
+Il nuovo file dedicato è `/config/www/casa-dashboard-community-entities.json`. Se avevi già configurato una vecchia Community Edition, puoi riportare manualmente le tue associazioni nel nuovo file. Non viene effettuata una copia automatica dal vecchio `casa-dashboard-entities.json`, proprio per evitare di importare per errore la configurazione della dashboard personale.
+
+Le 16 chiavi `sensor.solar_*` sono opzionali: se non hai un impianto fotovoltaico puoi lasciarle vuote. L'intera sezione Energia solare resterà nascosta.
 
 ## HACS
 
-Il repository è predisposto come custom integration e può essere aggiunto a HACS come **Custom repository → Integration**.
+### Installazione con un click
+
+[![Add to HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=fabiovit&repository=casa-dashboard&category=integration)
+
+Clicca il pulsante **Add to HACS** per aprire Home Assistant e aggiungere automaticamente `fabiovit/casa-dashboard` come repository HACS personalizzato di tipo **Integrazione**.
+
+### Installazione HACS manuale
+
+1. Apri **HACS**.
+2. Premi **⋮ → Repository personalizzati**.
+3. Inserisci `https://github.com/fabiovit/casa-dashboard`.
+4. Seleziona **Integrazione**.
+5. Premi **Aggiungi**, quindi installa **Casa Dashboard Community**.
+6. Riavvia Home Assistant e aggiungi l'integrazione da **Impostazioni → Dispositivi e servizi**.
+
+Download e release sono disponibili anche dalla pagina **Releases** del repository GitHub.
 
 ## Configurazione entità
 
@@ -97,6 +120,6 @@ Se il progetto ti piace e vuoi sostenerne lo sviluppo: **[☕ Offrimi un caffè 
 
 Version **1.1.0** brings the new premium visual design, improved weather/room layouts, optional photovoltaic and battery visualization, and updated EV/wallbox metrics. The external mapping now exposes **173 logical entity keys** while keeping private Home Assistant entity IDs outside the integration.
 
-When upgrading from v1.0.0, missing mapping keys are added automatically without overwriting existing user assignments.
+The Community Edition now uses the dedicated `casa_dashboard_community` domain and `/config/www/casa-dashboard-community-entities.json`, allowing it to coexist with a personal `casa_dashboard` installation without overwriting it.
 
 **Created by Fabio Vittori** · [☕ Buy me a coffee](https://ko-fi.com/fabvittori)

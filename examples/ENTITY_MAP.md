@@ -1,6 +1,6 @@
 # Mappa entità – Casa Dashboard Community
 
-Compila `entities` nel file `/config/www/casa-dashboard-entities.json`. Le chiavi a sinistra **non vanno cambiate**: a destra inserisci la tua `entity_id` reale. Le voci lasciate vuote vengono mostrate come **Non configurato** e i relativi comandi sono disabilitati.
+Compila `entities` nel file `/config/www/casa-dashboard-community-entities.json`. Le chiavi a sinistra **non vanno cambiate**: a destra inserisci la tua `entity_id` reale. Le voci lasciate vuote vengono mostrate come **Non configurato** e i relativi comandi sono disabilitati.
 
 Dalla **v1.1.0** la mappa contiene **173 chiavi logiche**. Se aggiorni dalla v1.0.0, al riavvio Home Assistant aggiunge automaticamente le nuove chiavi mancanti senza modificare le associazioni già configurate.
 

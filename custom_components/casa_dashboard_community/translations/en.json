@@ -1,0 +1,14 @@
+{
+  "title": "Casa Dashboard Community",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Casa Dashboard Community",
+        "description": "Adds Casa Dashboard Community to the Home Assistant sidebar."
+      }
+    },
+    "abort": {
+      "already_configured": "Casa Dashboard Community is already configured."
+    }
+  }
+}

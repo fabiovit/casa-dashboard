@@ -1,0 +1,280 @@
+const NAV = [
+  ["panoramica", "mdi:home-analytics", "Panoramica"],
+  ["esterno", "mdi:tree-outline", "Esterno"],
+  ["scale", "mdi:stairs", "Scale"],
+  ["ingresso", "mdi:door", "Ingresso"],
+  ["cucina", "mdi:chef-hat", "Cucina"],
+  ["disimpegno", "mdi:walk", "Disimpegno"],
+  ["bagno", "mdi:shower", "Bagno"],
+  ["camera", "mdi:bed-king-outline", "Camera"],
+  ["balcone", "mdi:balcony", "Balcone"],
+  ["garage", "mdi:garage-variant", "Garage"],
+];
+
+const LIGHTS = [
+  "light.entry_main", "light.kitchen_main", "light.kitchen_led", "light.living_tv_led",
+  "light.hallway_main", "light.bathroom_main", "light.bathroom_cabinet", "light.bedroom_main",
+  "light.bedroom_lamp_1", "light.bedroom_lamp_2", "light.bedroom_led", "light.balcony_bedroom",
+  "light.balcony_kitchen", "light.garage_1", "light.garage_2", "light.stairs"
+];
+
+const OPENINGS = [
+  "binary_sensor.kitchen_door_window",
+  "binary_sensor.kitchen_cabinet_door",
+  "binary_sensor.entry_door",
+  "binary_sensor.bathroom_window",
+  "binary_sensor.bathroom_cabinet_door",
+  "binary_sensor.bedroom_door_window",
+  "binary_sensor.bedroom_window",
+  "binary_sensor.garage_door_contact"
+];
+
+const ROOM_META = {
+  esterno: { icon: "mdi:tree-outline", title: "Esterno", subtitle: "Accesso pedonale" },
+  scale: { icon: "mdi:stairs", title: "Scale", subtitle: "Portoncino e illuminazione" },
+  ingresso: { icon: "mdi:door", title: "Ingresso", subtitle: "Sicurezza e accesso" },
+  disimpegno: { icon: "mdi:walk", title: "Disimpegno", subtitle: "Movimento e luce" },
+  bagno: { icon: "mdi:shower", title: "Bagno", subtitle: "Comfort, acqua e ventilazione" },
+  cucina: { icon: "mdi:chef-hat", title: "Cucina", subtitle: "Comfort, luci ed elettrodomestici" },
+  camera: { icon: "mdi:bed-king-outline", title: "Camera da letto", subtitle: "Comfort, luci e robot aspirapolvere" },
+  balcone: { icon: "mdi:balcony", title: "Balcone", subtitle: "Meteo reale, tende e sicurezza" },
+  garage: { icon: "mdi:garage-variant", title: "Garage", subtitle: "Accessi, EV, wallbox e qualità aria" },
+};
+
+
+const ENTITY_CONFIG_URL = "/local/casa-dashboard-community-entities.json";
+const ENTITY_KEYS = new Set([
+  "alarm_control_panel.home_alarm",
+  "binary_sensor.balcony_motion",
+  "binary_sensor.balcony_occupancy",
+  "binary_sensor.balcony_water",
+  "binary_sensor.bathroom_cabinet_door",
+  "binary_sensor.bathroom_motion",
+  "binary_sensor.bathroom_occupancy",
+  "binary_sensor.bathroom_water_leak",
+  "binary_sensor.bathroom_window",
+  "binary_sensor.bathroom_window_vibration",
+  "binary_sensor.bedroom_door_window",
+  "binary_sensor.bedroom_window",
+  "binary_sensor.bedroom_window_vibration",
+  "binary_sensor.entry_door",
+  "binary_sensor.entry_motion",
+  "binary_sensor.entry_occupancy",
+  "binary_sensor.ev_charging_at_home",
+  "binary_sensor.garage_dehumidifier_tank_full",
+  "binary_sensor.garage_door_contact",
+  "binary_sensor.hallway_motion",
+  "binary_sensor.hallway_occupancy",
+  "binary_sensor.kitchen_cabinet_door",
+  "binary_sensor.kitchen_door_window",
+  "binary_sensor.kitchen_motion",
+  "binary_sensor.kitchen_occupancy",
+  "binary_sensor.kitchen_window_vibration",
+  "binary_sensor.weather_rain",
+  "binary_sensor.weather_storm_alert",
+  "calendar.heating_program",
+  "climate.bedroom",
+  "climate.home_heating",
+  "climate.kitchen",
+  "cover.balcony_bedroom_blind",
+  "cover.balcony_kitchen_blind",
+  "cover.bathroom_blind",
+  "cover.bedroom_blind",
+  "cover.kitchen_blind",
+  "fan.bathroom_extractor",
+  "fan.garage_air_purifier",
+  "humidifier.garage_dehumidifier",
+  "image.robot_vacuum_map",
+  "input_boolean.bathroom_custom_mode",
+  "input_boolean.bedroom_climate_manual",
+  "input_boolean.blinds_manual_mode",
+  "input_boolean.entry_door_unlock",
+  "input_boolean.kitchen_climate_manual",
+  "input_boolean.main_gate",
+  "input_boolean.pedestrian_gate",
+  "input_boolean.shower_mode",
+  "input_datetime.blinds_last_wind_raise",
+  "light.balcony_bedroom",
+  "light.balcony_kitchen",
+  "light.bathroom_cabinet",
+  "light.bathroom_main",
+  "light.bedroom_lamp_1",
+  "light.bedroom_lamp_2",
+  "light.bedroom_led",
+  "light.bedroom_main",
+  "light.entry_main",
+  "light.garage_1",
+  "light.garage_2",
+  "light.garage_air_purifier_backlight",
+  "light.hallway_main",
+  "light.kitchen_led",
+  "light.kitchen_main",
+  "light.living_tv_led",
+  "light.stairs",
+  "lock.garage_dehumidifier_child_lock",
+  "number.robot_vacuum_water_flow",
+  "script.bathroom_custom_action",
+  "select.robot_vacuum_auto_empty_frequency",
+  "sensor.bathroom_humidity",
+  "sensor.bathroom_illuminance",
+  "sensor.bathroom_temperature",
+  "sensor.bedroom_climate_temperature",
+  "sensor.bedroom_humidity",
+  "sensor.bedroom_temperature",
+  "sensor.entry_illuminance",
+  "sensor.garage_air_quality",
+  "sensor.garage_dehumidifier_humidity",
+  "sensor.garage_dehumidifier_tank_status",
+  "sensor.garage_dehumidifier_water_full_time",
+  "sensor.garage_dehumidifier_water_level",
+  "sensor.garage_humidity",
+  "sensor.garage_pm2_5",
+  "sensor.garage_temperature",
+  "sensor.grid_current_l1",
+  "sensor.hallway_illuminance",
+  "sensor.heating_current_temperature",
+  "sensor.heating_humidity",
+  "sensor.heating_state",
+  "sensor.heating_target_temperature",
+  "sensor.kitchen_climate_temperature",
+  "sensor.kitchen_humidity",
+  "sensor.kitchen_illuminance",
+  "sensor.kitchen_temperature",
+  "sensor.robot_vacuum_battery",
+  "sensor.robot_vacuum_cleaned_area",
+  "sensor.robot_vacuum_cleaning_duration",
+  "sensor.solar_battery_charged_today",
+  "sensor.solar_battery_discharged_today",
+  "sensor.solar_battery_losses_today",
+  "sensor.solar_battery_mode",
+  "sensor.solar_battery_power",
+  "sensor.solar_battery_soc",
+  "sensor.solar_energy_today",
+  "sensor.solar_grid_power",
+  "sensor.solar_load_power",
+  "sensor.solar_pv1_current",
+  "sensor.solar_pv1_power",
+  "sensor.solar_pv1_voltage",
+  "sensor.solar_pv2_current",
+  "sensor.solar_pv2_power",
+  "sensor.solar_pv2_voltage",
+  "sensor.solar_pv_power",
+  "sensor.utility_room_humidity",
+  "sensor.utility_room_temperature",
+  "sensor.wallbox_board_temperature",
+  "sensor.wallbox_case_temperature",
+  "sensor.wallbox_charging_current_l1",
+  "sensor.wallbox_charging_power",
+  "sensor.wallbox_evse_status",
+  "sensor.wallbox_fan_status",
+  "sensor.wallbox_max_charging_current",
+  "sensor.wallbox_session_energy",
+  "sensor.wallbox_status",
+  "sensor.wallbox_voltage_l1",
+  "sensor.weather_absolute_pressure",
+  "sensor.weather_dewpoint",
+  "sensor.weather_feels_like_temperature",
+  "sensor.weather_indoor_dewpoint",
+  "sensor.weather_indoor_humidity",
+  "sensor.weather_indoor_temperature",
+  "sensor.weather_lightning_azimuth",
+  "sensor.weather_lightning_count",
+  "sensor.weather_lightning_distance",
+  "sensor.weather_max_daily_gust",
+  "sensor.weather_outdoor_humidity",
+  "sensor.weather_outdoor_temperature",
+  "sensor.weather_rain_24h",
+  "sensor.weather_rain_daily",
+  "sensor.weather_rain_event",
+  "sensor.weather_rain_hourly",
+  "sensor.weather_rain_monthly",
+  "sensor.weather_rain_rate",
+  "sensor.weather_rain_weekly",
+  "sensor.weather_rain_yearly",
+  "sensor.weather_relative_pressure",
+  "sensor.weather_solar_lux",
+  "sensor.weather_solar_radiation",
+  "sensor.weather_uv_index",
+  "sensor.weather_vpd",
+  "sensor.weather_wind_chill",
+  "sensor.weather_wind_direction",
+  "sensor.weather_wind_direction_10m",
+  "sensor.weather_wind_gust",
+  "sensor.weather_wind_speed",
+  "switch.balcony_barbecue",
+  "switch.bedroom_tv",
+  "switch.garage_air_purifier_power",
+  "switch.garage_dehumidifier_buzzer",
+  "switch.garage_dehumidifier_display",
+  "switch.garage_dehumidifier_power",
+  "switch.garage_door_command",
+  "switch.garage_treadmill",
+  "switch.garage_tv",
+  "switch.gate_command",
+  "switch.kitchen_appliance_1",
+  "switch.kitchen_appliance_2",
+  "switch.kitchen_hood",
+  "switch.kitchen_tv",
+  "vacuum.robot_vacuum",
+  "water_heater.domestic_hot_water"
+]);
+
+class CasaDashboardPanel extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+    this._hass = null;
+    this._panel = null;
+    this._active = "panoramica";
+    this._rendered = false;
+    this._optimistic = new Map();
+    this._renderTimer = null;
+    this._pointerBusy = false;
+    this._renderPending = false;
+    this._entityMap = {};
+    this._entityConfigLoaded = false;
+    this._entityConfigLoading = false;
+  }
+
+  set panel(value) { this._panel = value; }
+  set hass(value) {
+    this._hass = value;
+    this._syncOptimistic();
+    if (!this._rendered) this._renderShell();
+    this._loadEntityConfig();
+    this._scheduleRender();
+  }
+
+  connectedCallback() {
+    if (!this._rendered) this._renderShell();
+    this._loadEntityConfig();
+    this._renderPage();
+  }
+
+  _renderShell() {
+    this._rendered = true;
+    this.shadowRoot.innerHTML = `
+      <style>${this._styles()}</style>
+      <div class="app-shell">
+        <header class="topbar">
+          <div class="topbar-main">
+            <button class="menu-btn" data-action="ha-menu" aria-label="Apri menu Home Assistant"><ha-icon icon="mdi:menu"></ha-icon></button>
+            <div class="app-identity">
+              <div class="app-icon"><ha-icon icon="mdi:home-assistant"></ha-icon></div>
+              <div class="brand">
+                <div class="brand-line"><div class="brand-title">Casa</div><span class="version-badge">1.1.0 Community</span></div>
+                <div class="brand-subtitle">Home Assistant · Community Dashboard</div>
+              </div>
+            </div>
+          </div>
+          <div class="nav-scroller"><nav class="nav" id="nav"></nav></div>
+        </header>
+        <main id="content"><div class="loading">Caricamento Casa Dashboard…</div></main>
+        <footer><span>Casa Dashboard Community · v1.1.0 · Realizzato da Fabio Vittori</span><a class="coffee-link" href="https://ko-fi.com/fabvittori" target="_blank" rel="noopener noreferrer">☕ Offrimi un caffè</a></footer>
+      </div>
+    `;
+    this.shadowRoot.addEventListener("click", (ev) => this._handleClick(ev));
+  }
+
+  _styles() {
+   

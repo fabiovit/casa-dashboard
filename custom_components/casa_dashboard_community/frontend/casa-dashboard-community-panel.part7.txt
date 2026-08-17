@@ -1,0 +1,132 @@
+")) return "state-on light-tone";
+    if(entity.startsWith("climate.")) return "state-on blue-tone";
+    return "state-on";
+  }
+
+  _overall() {
+    const alarm=this._state("alarm_control_panel.home_alarm","unknown");
+    const leak=this._on("binary_sensor.bathroom_water_leak");
+    const tank=this._on("binary_sensor.garage_dehumidifier_tank_full") || ["full","pieno","water full","tank full"].includes(this._state("sensor.garage_dehumidifier_tank_status","").toLowerCase());
+    const open=this._openCount();
+    if(alarm==="triggered" || leak || tank) return {level:"bad", icon:"mdi:alert-octagon", title:"Attenzione richiesta", text: alarm==="triggered"?"Allarme in corso":leak?"Perdita acqua rilevata":"Serbatoio deumidificatore pieno"};
+    if(open>0) return {level:"warn", icon:"mdi:shield-alert-outline", title:"Casa da controllare", text:`${open} aperture aperte`};
+    if(alarm==="disarmed") return {level:"warn", icon:"mdi:shield-off-outline", title:"Casa tranquilla", text:"Allarme disinserito"};
+    return {level:"good", icon:"mdi:shield-check-outline", title:"Tutto sotto controllo", text:"Nessuna criticità rilevata"};
+  }
+
+  _roomStatus(room) {
+    const light=(ids)=>ids.some(id=>this._on(id));
+    const active=(ids)=>ids.some(id=>this._on(id));
+    switch(room){
+      case "esterno": return this._on("input_boolean.pedestrian_gate") ? {level:"warn",text:"Cancellino aperto"}:{level:"good",text:"Accesso chiuso"};
+      case "scale": return light(["light.stairs"]) ? {level:"blue",text:"Luce accesa"}:{level:"good",text:"Tutto ok"};
+      case "ingresso": {
+        if(this._state("alarm_control_panel.home_alarm")==="triggered") return {level:"bad",text:"Allarme in corso"};
+        if(this._on("binary_sensor.entry_door")) return {level:"warn",text:"Porta aperta"};
+        if(this._on("input_boolean.entry_door_unlock")) return {level:"warn",text:"Porta sbloccata"};
+        return {level:"good",text:"Ingresso sicuro"}; }
+      case "disimpegno": return active(["binary_sensor.hallway_motion","binary_sensor.hallway_occupancy"]) ? {level:"blue",text:"Presenza rilevata"}:{level:"good",text:"Libero"};
+      case "bagno": {
+        if(this._on("binary_sensor.bathroom_water_leak")) return {level:"bad",text:"Perdita acqua"};
+        if(this._on("binary_sensor.bathroom_window")) return {level:"warn",text:"Finestra aperta"};
+        return this._climateActive("fan.bathroom_extractor") ? {level:"blue",text:"Aspiratore attivo"}:{level:"good",text:"Tutto ok"}; }
+      case "cucina": {
+        if(this._on("binary_sensor.kitchen_door_window")) return {level:"warn",text:"Porta finestra aperta"};
+        if(this._climateActive("climate.kitchen")) return {level:"blue",text:"Clima attivo"};
+        return light(["light.kitchen_main","light.kitchen_led"]) ? {level:"blue",text:"Luci accese"}:{level:"good",text:"Tutto ok"}; }
+      case "camera": {
+        if(this._on("binary_sensor.bedroom_door_window")) return {level:"warn",text:"Porta finestra aperta"};
+        if(this._climateActive("climate.bedroom")) return {level:"blue",text:"Clima attivo"};
+        const v=this._state("vacuum.robot_vacuum",""); if(["cleaning","returning","paused"].includes(v)) return {level:"blue",text:"Robot aspirapolvere attivo"};
+        return {level:"good",text:"Tutto ok"}; }
+      case "balcone": {
+        if(this._on("binary_sensor.weather_rain") || (this._num("sensor.weather_rain_rate",0)>=0.1)) return {level:"warn",text:"Pioggia rilevata"};
+        if(this._num("sensor.weather_wind_gust",0)>=24) return {level:"warn",text:"Raffiche forti"};
+        if(this._on("switch.balcony_barbecue")) return {level:"blue",text:"Barbecue acceso"};
+        return {level:"good",text:"Meteo regolare"}; }
+      case "garage": {
+        if(this._on("binary_sensor.garage_door_contact")) return {level:"warn",text:"Basculante aperto"};
+        if(this._on("binary_sensor.ev_charging_at_home")) return {level:"blue",text:"EV in carica"};
+        if(this._on("binary_sensor.garage_dehumidifier_tank_full")) return {level:"bad",text:"Serbatoio pieno"};
+        return {level:"good",text:"Tutto ok"}; }
+    }
+    return {level:"good",text:"Tutto ok"};
+  }
+
+  _renderNav(force=false) {
+    const nav=this.shadowRoot.querySelector("#nav"); if(!nav) return;
+    if(force || !nav.children.length){
+      nav.innerHTML=NAV.map(([id,icon,label])=>`<button class="nav-btn ${id===this._active?"active":""}" data-nav="${id}" type="button"><ha-icon icon="${icon}"></ha-icon>${label}</button>`).join("");
+    } else {
+      nav.querySelectorAll(".nav-btn").forEach(btn=>btn.classList.toggle("active",btn.dataset.nav===this._active));
+    }
+  }
+
+  _renderHeader() {
+    const host=this.shadowRoot.querySelector("#headerStatus"); if(!host||!this._hass) return;
+    const all=this._overall(); const temp=this._fmt("sensor.weather_outdoor_temperature",1,"°C");
+    host.innerHTML=`<div class="header-pill"><ha-icon icon="${all.icon}"></ha-icon>${this._esc(all.title)}</div><div class="header-pill"><ha-icon icon="mdi:thermometer"></ha-icon>${temp}</div>`;
+  }
+
+  _renderPage(forceNav=false) {
+    if(!this._hass || !this.shadowRoot) return;
+    this._renderNav(forceNav); this._renderHeader(); this._applyThemeMode();
+    const host=this.shadowRoot.querySelector("#content"); if(!host) return;
+    const renderer={panoramica:()=>this._overview(),esterno:()=>this._esterno(),scale:()=>this._scale(),ingresso:()=>this._ingresso(),cucina:()=>this._cucina(),disimpegno:()=>this._disimpegno(),bagno:()=>this._bagno(),camera:()=>this._camera(),balcone:()=>this._balcone(),garage:()=>this._garage()}[this._active];
+    host.innerHTML=renderer ? renderer() : `<div class="empty">Pagina non disponibile</div>`;
+  }
+
+  _hero(title, subtitle, status, metrics=[]) {
+    const level=status.level||"good";
+    const heroIcon=level==='bad'?'mdi:alert-decagram':level==='warn'?'mdi:shield-alert-outline':level==='blue'?'mdi:home-lightning-bolt-outline':'mdi:home-heart';
+    return `<section class="scene-hero scene-${level}">
+      <div class="scene-copy">
+        <div class="scene-kicker">CASA · LIVE</div>
+        <div class="scene-title-row"><h1>${title}</h1><div class="scene-mark ${level}"><ha-icon icon="${heroIcon}"></ha-icon></div></div>
+        <div class="scene-sub">${subtitle}</div>
+        <div class="scene-status ${level}"><span class="pulse"></span><strong>${this._esc(status.title || status.text)}</strong>${status.title&&status.text?`<span>${this._esc(status.text)}</span>`:""}</div>
+      </div>
+      <div class="scene-dashboard">
+        ${metrics.map((m,i)=>`<div class="scene-stat s${i}"><span>${m.label}</span><strong>${m.value}</strong>${m.small?`<small>${m.small}</small>`:""}</div>`).join("")}
+      </div>
+    </section>`;
+  }
+
+  _section(title, sub="") { return `<div class="chapter"><div class="chapter-line"></div><div class="chapter-copy"><div class="chapter-title">${title}</div>${sub?`<div class="chapter-sub">${sub}</div>`:""}</div></div>`; }
+  _metric(icon,label,value,foot="",span=3,entity="",tone="") {
+    const configured=!entity || this._configured(entity);
+    const cls=tone || (entity?this._metricTone(entity,value):"");
+    const shown=entity&&!configured?"Non configurato":value;
+    const plain = String(shown).replace(/<[^>]+>/g,'').trim();
+    const longClass = plain.length > 26 ? 'value-long' : '';
+    return `<div class="data-node span-${span} ${entity&&configured?'clickable':''} ${cls} ${longClass} ${entity&&!configured?'state-off':''}" ${entity&&configured?`data-more="${entity}"`:""}>
+      <div class="data-node-top"><span class="data-label">${label}</span><ha-icon icon="${icon}"></ha-icon></div>
+      <div class="data-value">${shown}</div>
+      ${foot?`<div class="data-foot">${foot}</div>`:""}
+      <div class="data-glow"></div>
+    </div>`;
+  }
+  _control(entity,title,icon,sub="",mode="toggle",span=4) {
+    const configured=this._configured(entity);
+    const st=this._state(entity,"off");
+    const on=configured && (this._on(entity) || ["open","cool","heat","heating","cooling"].includes(st));
+    const cls=configured?this._controlTone(entity,on):"state-off";
+    return `<div class="command-strip span-${span} ${cls}">
+      <div class="command-symbol ${on?'active':''}"><ha-icon icon="${icon}"></ha-icon></div>
+      <div class="command-copy ${configured?'clickable':''}" ${configured?`data-more="${entity}"`:""}><div class="command-title">${title}</div><div class="command-sub">${configured?(sub || this._esc(st)):"Non configurato"}</div></div>
+      ${mode==='toggle'?`<button class="command-action ${on?'active':''}" ${configured?`data-toggle="${entity}"`:"disabled"} type="button"><span>${configured?(on?'ON':'OFF'):'—'}</span><i></i></button>`:""}
+    </div>`;
+  }
+  _coverControl(entity,title,inverted=false,span=6,subPrefix="Posizione"){
+    const configured=this._configured(entity);
+    const open=configured&&this._coverOpen(entity,inverted);
+    const pos=this._attr(entity,"current_position",null);
+    const stateText=inverted?(open?"Aperta":"Chiusa"):(open?"Giù / aperta":"Su / chiusa");
+    return `<div class="command-strip span-${span} ${configured?(open?'state-warn':'state-off'):'state-off'}">
+      <div class="command-symbol ${open?'warn':''}"><ha-icon icon="mdi:blinds-horizontal"></ha-icon></div>
+      <div class="command-copy ${configured?'clickable':''}" ${configured?`data-more="${entity}"`:""}><div class="command-title">${title}</div><div class="command-sub">${configured?`${pos!==null?`${subPrefix} ${pos}% · `:""}${stateText}`:"Non configurato"}</div></div>
+      <button class="command-action ${open?'warn':''}" ${configured?`data-cover-toggle="${entity}" data-inverted="${inverted?1:0}"`:"disabled"} type="button"><span>${configured?(open?'CHIUDI':'APRI'):'—'}</span><i></i></button>
+    </div>`;
+  }
+  _alert(level,icon,title,text) { return `<div class="signal ${level}"><div class="signal-icon"><ha-icon icon="${icon}"></ha-icon></div><div><strong>${title}</strong><span>${text}</span></div></div>`; }
+  _logic(title,text,lev

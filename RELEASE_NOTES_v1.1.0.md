@@ -34,7 +34,7 @@ La sezione Energia solare è opzionale: se `sensor.solar_pv_power` non viene con
 
 Dopo l'installazione della v1.1.0 e il riavvio di Home Assistant, l'integrazione aggiunge automaticamente al file:
 
-`/config/www/casa-dashboard-entities.json`
+`/config/www/casa-dashboard-community-entities.json`
 
 le nuove chiavi mancanti, **senza modificare o sovrascrivere le associazioni già presenti**.
 

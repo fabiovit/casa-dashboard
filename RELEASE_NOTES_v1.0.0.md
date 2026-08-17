@@ -6,7 +6,7 @@ Prima release pubblica di Casa Dashboard Community.
 
 - Dashboard Home Assistant app-like, responsive e compatibile con temi chiaro/scuro.
 - 157 associazioni logiche configurabili senza modificare il frontend.
-- Creazione automatica del file `/config/www/casa-dashboard-entities.json` al primo setup.
+- Creazione automatica del file `/config/www/casa-dashboard-community-entities.json` al primo setup.
 - Entità non configurate mostrate come `Non configurato`, con comandi disabilitati.
 - Rimossi entity_id e nomi personali dell’impianto originale.
 - Versioning Community indipendente dalla dashboard personale.

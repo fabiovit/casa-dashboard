@@ -1,0 +1,5 @@
+DOMAIN = "casa_dashboard_community"
+PANEL_PATH = "casa-dashboard-community"
+PANEL_TITLE = "Casa Community"
+PANEL_ICON = "mdi:home-assistant"
+STATIC_URL = "/casa-dashboard-community-static"

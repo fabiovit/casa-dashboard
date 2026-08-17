@@ -9,7 +9,7 @@
 - Riorganizzata completamente la sezione meteo del Balcone.
 - Aggiunta sezione opzionale Energia solare con FV, due canali/falde, casa, rete e batteria.
 - Aggiunte 16 chiavi logiche `sensor.solar_*`; totale mappa entità: 173.
-- Aggiunta migrazione non distruttiva del file `/config/www/casa-dashboard-entities.json`: le nuove chiavi vengono aggiunte senza sovrascrivere le associazioni esistenti.
+- Aggiunta migrazione non distruttiva del file `/config/www/casa-dashboard-community-entities.json`: le nuove chiavi vengono aggiunte senza sovrascrivere le associazioni esistenti.
 - Migliorata la sezione Garage/Wallbox con potenza, carico contatore, energia sessione e limite ricarica in kW con A/V di dettaglio.
 - Potenze FV/Wallbox normalizzate automaticamente da W o kW.
 - Mantenuta la gestione sicura delle entità non configurate e il supporto tema chiaro/scuro.
@@ -19,7 +19,7 @@
 - Prima release pubblica di Casa Dashboard Community.
 - Separata dal versioning della dashboard personale.
 - Rimossi nomi personali e riferimenti specifici all'impianto originale.
-- Introdotta la configurazione esterna delle entità tramite `/config/www/casa-dashboard-entities.json`.
+- Introdotta la configurazione esterna delle entità tramite `/config/www/casa-dashboard-community-entities.json`.
 - Aggiunta gestione sicura delle entità non configurate: stato `Non configurato` e comandi disabilitati.
 - Mantenuti layout app-like, responsive desktop/mobile e supporto tema chiaro/scuro.
 - Aggiunti `Realizzato da Fabio Vittori` e collegamento `☕ Offrimi un caffè` a Ko-fi.
