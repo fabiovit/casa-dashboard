@@ -1,0 +1,86 @@
+ensori cucina")}<div class="grid">
+      ${this._metric("mdi:motion-sensor","Movimento",motion?"Rilevato":"Assente","Cucina",3,"binary_sensor.kitchen_motion")}
+      ${this._metric("mdi:account-group","Occupazione",occupied?"Occupato":"Libero","Cucina",3,"binary_sensor.kitchen_occupancy")}
+      ${this._metric("mdi:window-open","Porta finestra",windowOpen?"Aperta":"Chiusa","Cucina",2,"binary_sensor.kitchen_door_window")}
+      ${this._metric("mdi:vibrate","Vibrazione",vibration?"Rilevata":"Assente","Finestra",2,"binary_sensor.kitchen_window_vibration")}
+      ${this._metric("mdi:door","Anta",anta?"Aperta":"Chiusa","Cucina",2,"binary_sensor.kitchen_cabinet_door")}
+    </div></div>`;
+  }
+
+  _disimpegno(){
+    const motion=this._on("binary_sensor.hallway_motion"), occupied=this._on("binary_sensor.hallway_occupancy");
+    return `<div class="page">${this._zoneHero("disimpegno",[
+      {label:"Movimento",value:motion?"Rilevato":"Assente",small:"Sensore"},
+      {label:"Occupazione",value:occupied?"Occupato":"Libero",small:"Presenza"},
+      {label:"Luminosità",value:this._luxLabel("sensor.hallway_illuminance"),small:this._fmtLuxExact("sensor.hallway_illuminance")},
+      {label:"Luce",value:this._on("light.hallway_main")?"Accesa":"Spenta",small:"Plafoniera"}
+    ])}${this._section("Controllo e sensori")}<div class="grid">
+      ${this._control("light.hallway_main","Luce disimpegno","mdi:ceiling-light",this._on("light.hallway_main")?"Accesa":"Spenta","toggle",3)}
+      ${this._metric("mdi:weather-sunny","Luminosità",this._luxLabel("sensor.hallway_illuminance"),`${this._fmtLuxExact("sensor.hallway_illuminance")} · Sensore luce`,3,"sensor.hallway_illuminance",this._luxTone("sensor.hallway_illuminance"))}
+      ${this._metric("mdi:motion-sensor","Movimento",motion?"Rilevato":"Assente","Disimpegno",3,"binary_sensor.hallway_motion")}
+      ${this._metric("mdi:account-group","Occupazione",occupied?"Occupato":"Libero","Disimpegno",3,"binary_sensor.hallway_occupancy")}
+    </div></div>`;
+  }
+
+  _bagno(){
+    const windowOpen=this._on("binary_sensor.bathroom_window"), vibration=this._on("binary_sensor.bathroom_window_vibration"), anta=this._on("binary_sensor.bathroom_cabinet_door"), leak=this._on("binary_sensor.bathroom_water_leak"), motion=this._on("binary_sensor.bathroom_motion"), occupied=this._on("binary_sensor.bathroom_occupancy");
+    return `<div class="page">${this._zoneHero("bagno",[
+      {label:"Temperatura",value:this._fmt("sensor.bathroom_temperature",1,"°C"),small:"Sensore"},
+      {label:"Umidità",value:this._fmt("sensor.bathroom_humidity",0,"%"),small:"Sensore"},
+      {label:"Finestra",value:windowOpen?"Aperta":"Chiusa",small:"Sicurezza"},
+      {label:"Acqua",value:leak?"PERDITA":"OK",small:"Sensore perdita"}
+    ])}${this._section("Luci, ventilazione e tenda")}<div class="grid">
+      ${this._control("light.bathroom_main","Luce bagno","mdi:ceiling-light",this._on("light.bathroom_main")?"Accesa":"Spenta","toggle",4)}
+      ${this._control("light.bathroom_cabinet","Luce mobile","mdi:led-strip-variant",this._on("light.bathroom_cabinet")?"Accesa":"Spenta","toggle",4)}
+      ${this._control("fan.bathroom_extractor","Aspiratore","mdi:fan",this._on("fan.bathroom_extractor")?"Attivo":"Spento","toggle",4)}
+      ${this._control("input_boolean.shower_mode","Modalità doccia","mdi:shower-head",this._on("input_boolean.shower_mode")?"Attiva":"Disattivata","toggle",3)}
+      ${this._control("input_boolean.bathroom_custom_mode","Modalità personalizzata","mdi:emoticon-poop",this._on("input_boolean.bathroom_custom_mode")?"Attiva":"Disattivata","toggle",3)}
+      ${this._coverControl("cover.bathroom_blind","Tenda bagno",true,3)}
+      <div class="control span-3 state-on good-tone">${this._icon("mdi:cat","good")}<div class="control-main ${this._configured("script.bathroom_custom_action")?'clickable':''}" ${this._configured("script.bathroom_custom_action")?'data-more="script.bathroom_custom_action"':''}><div class="control-title">Azione personalizzata</div><div class="control-sub">${this._configured("script.bathroom_custom_action")?"Esegue lo script configurato":"Non configurato"}</div></div><button class="switch-btn on" ${this._configured("script.bathroom_custom_action")?'data-script="script.bathroom_custom_action"':'disabled'} type="button">ESEGUI</button></div>
+    </div>${this._section("Ambiente e presenza")}<div class="grid">
+      ${this._metric("mdi:thermometer","Temperatura",this._fmt("sensor.bathroom_temperature",1,"°C"),"Bagno",3,"sensor.bathroom_temperature")}
+      ${this._metric("mdi:water-percent","Umidità",this._fmt("sensor.bathroom_humidity",0,"%"),"Bagno",3,"sensor.bathroom_humidity")}
+      ${this._metric("mdi:weather-sunny","Luminosità",this._luxLabel("sensor.bathroom_illuminance"),`${this._fmtLuxExact("sensor.bathroom_illuminance")} · Sensore`,3,"sensor.bathroom_illuminance",this._luxTone("sensor.bathroom_illuminance"))}
+      ${this._metric("mdi:motion-sensor","Movimento",motion?"Rilevato":"Assente","Bagno",3,"binary_sensor.bathroom_motion")}
+      ${this._metric("mdi:account-group","Occupazione",occupied?"Occupato":"Libero","Bagno",3,"binary_sensor.bathroom_occupancy")}
+      ${this._metric("mdi:window-open","Finestra",windowOpen?"Aperta":"Chiusa","Bagno",3,"binary_sensor.bathroom_window")}
+      ${this._metric("mdi:vibrate","Vibrazione",vibration?"Rilevata":"Assente","Finestra",3,"binary_sensor.bathroom_window_vibration")}
+      ${this._metric("mdi:door","Anta",anta?"Aperta":"Chiusa","Bagno",3,"binary_sensor.bathroom_cabinet_door")}
+      ${this._metric("mdi:water-alert","Perdita acqua",leak?"RILEVATA":"Nessuna","Sensore acqua",6,"binary_sensor.bathroom_water_leak",leak?"state-bad":"state-good")}
+    </div></div>`;
+  }
+
+  _camera(){
+    const windowOpen=this._on("binary_sensor.bedroom_door_window"), anta=this._on("binary_sensor.bedroom_window"), vibration=this._on("binary_sensor.bedroom_window_vibration"), v=this._state("vacuum.robot_vacuum","—"), map=this._imageUrl("image.robot_vacuum_map");
+    const t=this._num("sensor.bedroom_temperature",null), h=this._num("sensor.bedroom_humidity",null), manual=this._on("input_boolean.bedroom_climate_manual");
+    const now=new Date(), mins=now.getHours()*60+now.getMinutes();
+    const night=mins>=180&&mins<240, early=mins>=420&&mins<540, normal=mins>=540&&mins<1320;
+    let auto="Fuori fascia automatica";
+    if(manual) auto="Modalità manuale attiva";
+    else if(windowOpen) auto="Bloccata · porta finestra aperta";
+    else if(t!==null&&h!==null){
+      if(t<=24) auto="OFF · temperatura ≤24°C";
+      else if(night||normal){ if(t>=26) auto=`ON consentito · ≥26°C${night?' · ventola quiet':''}`; else if(t>=24.5&&h>=65) auto=`ON consentito · ≥24,5°C + UR ≥65%${night?' · ventola quiet':''}`; else auto=night?"Fascia notturna · soglia non raggiunta":"Fascia normale · soglia non raggiunta"; }
+      else if(early){ if(t>=27) auto="ON consentito · ≥27°C"; else if(t>=26&&h>=65) auto="ON consentito · ≥26°C + UR ≥65%"; else auto="Fascia anticipata · soglia non raggiunta"; }
+    }
+    return `<div class="page">${this._zoneHero("camera",[
+      {label:"Temperatura",value:this._fmt("sensor.bedroom_temperature",1,"°C"),small:"Sensore"},
+      {label:"Umidità",value:this._fmt("sensor.bedroom_humidity",0,"%"),small:"Sensore"},
+      {label:"Clima",value:this._climateActive("climate.bedroom")?"Attivo":"Spento",small:this._attr("climate.bedroom","hvac_action","idle")},
+      {label:"Robot",value:v,small:`Batteria ${this._fmt("sensor.robot_vacuum_battery",0,"%")}`}
+    ])}${this._section("Comfort e clima")}<div class="grid">${this._climateBlock("climate.bedroom","sensor.bedroom_temperature","sensor.bedroom_humidity","CLIMATIZZATORE CAMERA","03:00–04:00 · 07:00–09:00 anticipata · 09:00–22:00")}
+      ${this._control("input_boolean.bedroom_climate_manual","Modalità manuale clima","mdi:hand-back-right-outline",manual?"Automazioni clima sospese":"Gestione automatica attiva","toggle",12)}
+      <div class="metric span-12 ${manual?'state-warn':windowOpen?'state-warn':this._climateActive("climate.bedroom")?'state-active':'state-good'}"><div class="metric-icon"><div class="label">AUTO CLIMA CAMERA</div><ha-icon icon="mdi:thermostat-auto"></ha-icon></div><div><div class="value" style="font-size:19px">${auto}</div><div class="foot">03:00–04:00: ON ≥26°C oppure ≥24,5°C con UR ≥65%, ventola quiet · 07:00–09:00: ON ≥27°C oppure ≥26°C con UR ≥65% · 09:00–22:00: ON ≥26°C oppure ≥24,5°C con UR ≥65% · OFF ≤24°C · finestra aperta 2 min → OFF</div></div></div>
+    </div>${this._section("Luci e dispositivi")}<div class="grid">
+      ${this._control("light.bedroom_main","Luce camera","mdi:ceiling-light",this._on("light.bedroom_main")?"Accesa":"Spenta","toggle",3)}
+      ${this._control("light.bedroom_lamp_1","Lampada 1","mdi:lamp",this._on("light.bedroom_lamp_1")?"Accesa":"Spenta","toggle",3)}
+      ${this._control("light.bedroom_lamp_2","Lampada 2","mdi:lamp",this._on("light.bedroom_lamp_2")?"Accesa":"Spenta","toggle",3)}
+      ${this._control("light.bedroom_led","LED camera","mdi:led-strip-variant",this._on("light.bedroom_led")?"Accesi":"Spenti","toggle",3)}
+      ${this._control("switch.bedroom_tv","Presa TV camera","mdi:television",this._on("switch.bedroom_tv")?"Accesa":"Spenta","toggle",6)}
+      ${this._coverControl("cover.bedroom_blind","Tenda camera",true,6)}
+    </div>${this._section("Ambiente camera")}<div class="grid">
+      ${this._metric("mdi:thermometer","Temperatura Sensore",this._fmt("sensor.bedroom_temperature",1,"°C"),"Camera",4,"sensor.bedroom_temperature")}
+      ${this._metric("mdi:water-percent","Umidità Sensore",this._fmt("sensor.bedroom_humidity",0,"%"),"Camera",4,"sensor.bedroom_humidity")}
+      ${this._metric("mdi:air-conditioner","Temp clima",this._fmt("sensor.bedroom_climate_temperature",1,"°C"),"Climatizzatore",4,"sensor.bedroom_climate_temperature")}
+    </div>${this._section("Sicurezza finestra")}<div class="grid">
+      ${this._metric("mdi:door-open","Porta finestra",windo

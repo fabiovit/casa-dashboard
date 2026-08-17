@@ -1,90 +1,13 @@
-his._on("binary_sensor.ev_charging_at_home")) return {level:"blue",text:"EV in carica"};
-        if(this._on("binary_sensor.garage_dehumidifier_tank_full")) return {level:"bad",text:"Serbatoio pieno"};
-        return {level:"good",text:"Tutto ok"}; }
-    }
-    return {level:"good",text:"Tutto ok"};
-  }
-
-  _renderNav(force=false) {
-    const nav=this.shadowRoot.querySelector("#nav"); if(!nav) return;
-    if(force || !nav.children.length){
-      nav.innerHTML=NAV.map(([id,icon,label])=>`<button class="nav-btn ${id===this._active?"active":""}" data-nav="${id}" type="button"><ha-icon icon="${icon}"></ha-icon>${label}</button>`).join("");
-    } else {
-      nav.querySelectorAll(".nav-btn").forEach(btn=>btn.classList.toggle("active",btn.dataset.nav===this._active));
-    }
-  }
-
-  _renderHeader() {
-    const host=this.shadowRoot.querySelector("#headerStatus"); if(!host||!this._hass) return;
-    const all=this._overall(); const temp=this._fmt("sensor.weather_outdoor_temperature",1,"°C");
-    host.innerHTML=`<div class="header-pill"><ha-icon icon="${all.icon}"></ha-icon>${this._esc(all.title)}</div><div class="header-pill"><ha-icon icon="mdi:thermometer"></ha-icon>${temp}</div>`;
-  }
-
-  _renderPage(forceNav=false) {
-    if(!this._hass || !this.shadowRoot) return;
-    this._renderNav(forceNav); this._renderHeader();
-    const host=this.shadowRoot.querySelector("#content"); if(!host) return;
-    const renderer={panoramica:()=>this._overview(),esterno:()=>this._esterno(),scale:()=>this._scale(),ingresso:()=>this._ingresso(),cucina:()=>this._cucina(),disimpegno:()=>this._disimpegno(),bagno:()=>this._bagno(),camera:()=>this._camera(),balcone:()=>this._balcone(),garage:()=>this._garage()}[this._active];
-    host.innerHTML=renderer ? renderer() : `<div class="empty">Pagina non disponibile</div>`;
-  }
-
-  _hero(title, subtitle, status, metrics=[]) {
-    return `<section class="hero"><div class="hero-grid"><div><div class="hero-overline">HOME ASSISTANT · CASA DASHBOARD</div><h1>${title}</h1><div class="hero-sub">${subtitle}</div><div class="status-line"><span class="status-dot" style="background:${status.level==='bad'?'var(--error-color,#f44336)':status.level==='warn'?'var(--warning-color,#ff9800)':status.level==='blue'?'#2196f3':'var(--success-color,#4caf50)'}"></span>${this._esc(status.title || status.text)}</div>${status.title&&status.text?`<div class="muted" style="margin-top:5px">${this._esc(status.text)}</div>`:""}</div><div class="hero-metrics">${metrics.map(m=>`<div class="hero-metric"><div class="label">${m.label}</div><div class="value">${m.value}</div>${m.small?`<div class="small">${m.small}</div>`:""}</div>`).join("")}</div></div></section>`;
-  }
-
-  _section(title, sub="") { return `<div class="section-head"><div><div class="section-title">${title}</div>${sub?`<div class="section-sub">${sub}</div>`:""}</div></div>`; }
-  _metric(icon,label,value,foot="",span=3,entity="",tone="") {
-    const configured=!entity || this._configured(entity);
-    const cls=tone || (entity?this._metricTone(entity,value):"");
-    const shown=entity&&!configured?"Non configurato":value;
-    return `<div class="metric span-${span} ${entity&&configured?'clickable':''} ${cls} ${entity&&!configured?'state-off':''}" ${entity&&configured?`data-more="${entity}"`:""}><div class="metric-icon"><div class="label">${label}</div><ha-icon icon="${icon}"></ha-icon></div><div><div class="value">${shown}</div>${foot?`<div class="foot">${foot}</div>`:""}</div></div>`;
-  }
-  _control(entity,title,icon,sub="",mode="toggle",span=4) {
-    const configured=this._configured(entity); const st=this._state(entity,"off"); const on=configured && (this._on(entity) || ["open","cool","heat","heating","cooling"].includes(st));
-    const cls=configured?this._controlTone(entity,on):"state-off";
-    return `<div class="control span-${span} ${cls}">${this._icon(icon,on?(entity.startsWith("light.")?"warn":entity.startsWith("climate.")?"blue":"good"):"")}<div class="control-main ${configured?'clickable':''}" ${configured?`data-more="${entity}"`:""}><div class="control-title">${title}</div><div class="control-sub">${configured?(sub || this._esc(st)):"Non configurato"}</div></div>${mode==='toggle'?`<button class="switch-btn ${on?'on':''}" ${configured?`data-toggle="${entity}"`:"disabled"} type="button">${configured?(on?'ON':'OFF'):'—'}</button>`:""}</div>`;
-  }
-  _coverControl(entity,title,inverted=false,span=6,subPrefix="Posizione"){
-    const configured=this._configured(entity); const open=configured&&this._coverOpen(entity,inverted); const pos=this._attr(entity,"current_position",null); const stateText=inverted?(open?"Aperta":"Chiusa"):(open?"Giù / aperta":"Su / chiusa");
-    return `<div class="control span-${span} ${open?'state-warn':'state-off'}">${this._icon("mdi:blinds-horizontal",open?"warn":"")}<div class="control-main ${configured?'clickable':''}" ${configured?`data-more="${entity}"`:""}><div class="control-title">${title}</div><div class="control-sub">${configured?(pos!==null?`${subPrefix} ${pos}% · `:"")+stateText:"Non configurato"}</div></div><button class="switch-btn ${open?'warn':''}" ${configured?`data-cover-toggle="${entity}" data-inverted="${inverted?1:0}"`:"disabled"} type="button">${configured?(open?'CHIUDI':'APRI'):'—'}</button></div>`;
-  }
-  _alert(level,icon,title,text) { return `<div class="alert ${level}"><ha-icon icon="${icon}"></ha-icon><div><strong>${title}</strong><span>${text}</span></div></div>`; }
-  _logic(title,text,level=""){ return `<div class="logic-card ${level}"><strong>${title}</strong><p>${text}</p></div>`; }
-
-  _overview() {
-    const all=this._overall(); const lights=this._countOn(LIGHTS); const open=this._openCount();
-    const clima=(this._climateActive("climate.kitchen")?1:0)+(this._climateActive("climate.bedroom")?1:0);
-    const ev=this._on("binary_sensor.ev_charging_at_home");
-    const hero=this._hero("Casa", "Una vista unica su sicurezza, comfort, accessi, meteo e dispositivi. Le cose importanti emergono da sole; il resto resta pulito.", all, [
-      {label:"Luci",value:`${lights} accese`,small:lights?"Illuminazione attiva":"Tutte spente"},
-      {label:"Aperture",value:open?`${open} aperte`:"Tutto chiuso",small:"Porte, finestre e garage"},
-      {label:"Clima",value:clima?`${clima} attivi`:"Spento",small:"Cucina + camera"},
-      {label:"EV",value:ev?`${this._fmt("sensor.wallbox_charging_power",2,"kW")}`:"Non in carica",small:this._state("sensor.wallbox_evse_status","Wallbox")}
-    ]);
-    const roomCards=NAV.filter(([id])=>id!=="panoramica").map(([room])=>this._roomCard(room)).join("");
-    const alarm=this._state("alarm_control_panel.home_alarm","Non disponibile");
-    const rain=this._on("binary_sensor.weather_rain");
-    const garage=this._on("binary_sensor.garage_door_contact");
-    const highlights=`<div class="grid"><div class="span-4">${this._alert(alarm==='triggered'?'bad':alarm==='disarmed'?'warn':'good',alarm==='triggered'?'mdi:alarm-light':'mdi:shield-home',"Allarme",alarm==='triggered'?'ALLARME IN CORSO':alarm==='disarmed'?'Disinserito':'Inserito / sicuro')}</div><div class="span-4">${this._alert(rain?'warn':'good',rain?'mdi:weather-pouring':'mdi:weather-partly-cloudy',"Meteo balcone",rain?'Pioggia rilevata':`${this._fmt("sensor.weather_outdoor_temperature",1,"°C")} · raffica ${this._fmt("sensor.weather_wind_gust",1,"km/h")}`)}</div><div class="span-4">${this._alert(garage?'warn':'good',garage?'mdi:garage-open':'mdi:garage',"Garage",garage?'Basculante aperto':ev?'Basculante chiuso · EV in carica':'Basculante chiuso')}</div></div>`;
-    return `<div class="page">${this._configNotice()}${hero}${this._section("Zone","Apri una zona per controlli e dettagli")}<div class="grid">${roomCards}</div>${this._section("In evidenza","Solo ciò che merita davvero attenzione")}${highlights}</div>`;
-  }
-
-  _roomCard(room) {
-    const m=ROOM_META[room], s=this._roomStatus(room); let tags=[];
-    if(room==="bagno") tags=[`🌡️ ${this._fmt("sensor.bathroom_temperature",1,"°C")}`,`💧 ${this._fmt("sensor.bathroom_humidity",0,"%")}`];
-    if(room==="cucina") tags=[`🌡️ ${this._fmt("sensor.kitchen_temperature",1,"°C")}`,`💧 ${this._fmt("sensor.kitchen_humidity",0,"%")}`];
-    if(room==="camera") tags=[`🌡️ ${this._fmt("sensor.bedroom_temperature",1,"°C")}`,`💧 ${this._fmt("sensor.bedroom_humidity",0,"%")}`];
-    if(room==="balcone") tags=[`🌡️ ${this._fmt("sensor.weather_outdoor_temperature",1,"°C")}`,`💨 ${this._fmt("sensor.weather_wind_gust",0,"km/h")}`];
-    if(room==="garage") tags=[`🌡️ ${this._fmt("sensor.garage_temperature",1,"°C")}`,this._on("binary_sensor.ev_charging_at_home")?"🔌 In carica":"🚗 Wallbox pronta"];
-    if(room==="ingresso") tags=[this._state("alarm_control_panel.home_alarm") === "disarmed"?"🔓 Allarme OFF":"🛡️ Allarme ON",this._on("light.entry_main")?"💡 Luce ON":"💡 Luce OFF"];
-    return `<div class="card room-card clickable span-4" data-nav="${room}"><div class="card-top">${this._icon(m.icon,s.level)}<ha-icon icon="mdi:chevron-right" style="color:var(--secondary-text-color)"></ha-icon></div><h3>${m.title}</h3><div class="desc">${m.subtitle}</div><div class="room-footer"><span class="tag ${s.level}">${s.text}</span>${tags.map(t=>`<span class="tag">${t}</span>`).join("")}</div></div>`;
-  }
-
-  _zoneHero(room, metrics) { const m=ROOM_META[room], s=this._roomStatus(room); return this._hero(m.title,m.subtitle,{...s,title:s.text,text:""},metrics); }
-
-  _esterno(){
-    const open=this._on("input_boolean.pedestrian_gate");
-    return `<div class="page">${this._zoneHero("esterno",[
-      {label:"Cancellino",value:open?"Aperto / apertura…":"Chiuso",small:"Accesso esterno"},
-      {label:"Stato",value:open?"Attivo":"Pronto",small:"Comando pedonale"}
-    ])}${this._section("Accesso esterno")}<div class="grid">${this
+ 0 47%,rgba(255,255,255,.025) 47.2% 47.6%,transparent 47.8%);pointer-events:none}
+      .scene-hero:after{content:"";position:absolute;width:520px;height:520px;border:1px solid rgba(255,255,255,.045);border-radius:50%;right:-220px;top:-260px;box-shadow:0 0 0 70px rgba(255,255,255,.012),0 0 0 140px rgba(255,255,255,.008);z-index:-1}
+      .scene-copy{display:flex;flex-direction:column;justify-content:center}.scene-kicker{font-size:10px;letter-spacing:.28em;font-weight:900;color:#8da3be}.scene-title-row{display:flex;align-items:center;gap:18px}.scene-title-row h1{font-size:clamp(56px,7vw,92px);line-height:.88;letter-spacing:-.075em;margin:14px 0 18px;font-weight:900}.scene-mark{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.035)}.scene-mark ha-icon{--mdc-icon-size:30px}.scene-mark.good{color:#55e6ad}.scene-mark.warn{color:#ffbc61}.scene-mark.bad{color:#ff7070}.scene-mark.blue{color:#67b8ff}.scene-sub{font-size:16px;line-height:1.6;max-width:720px;color:var(--secondary-text-color)}
+      .scene-status{display:flex;align-items:center;gap:10px;margin-top:28px;font-size:13px}.scene-status .pulse{width:9px;height:9px;border-radius:50%;background:#55e6ad;box-shadow:0 0 0 7px rgba(85,230,173,.09)}.scene-status.warn .pulse{background:#ffb45c;box-shadow:0 0 0 7px rgba(255,180,92,.09)}.scene-status.bad .pulse{background:#ff6f6f;box-shadow:0 0 0 7px rgba(255,111,111,.09)}.scene-status.blue .pulse{background:#68b9ff;box-shadow:0 0 0 7px rgba(104,185,255,.09)}.scene-status strong{font-size:14px}.scene-status>span:last-child{color:var(--secondary-text-color)}
+      .scene-dashboard{align-self:stretch;display:grid;grid-template-columns:1fr 1fr;gap:1px;border-radius:28px;overflow:hidden;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.06);backdrop-filter:blur(8px)}.scene-stat{position:relative;padding:24px 22px;background:linear-gradient(145deg,rgba(255,255,255,.04),rgba(255,255,255,.014));display:flex;flex-direction:column;justify-content:flex-end;min-height:140px}.scene-stat span{font-size:9px;letter-spacing:.18em;text-transform:uppercase;font-weight:850;color:#8da3be}.scene-stat strong{font-size:27px;line-height:1;letter-spacing:-.045em;margin-top:10px}.scene-stat small{color:var(--secondary-text-color);margin-top:7px;font-size:11px;line-height:1.3}.scene-stat:after{content:"";position:absolute;right:16px;top:16px;width:6px;height:6px;border-radius:50%;background:rgba(85,230,173,.75)}
+      .chapter{display:grid;grid-template-columns:52px 1fr;align-items:center;gap:14px;margin:8px 0 -4px}.chapter-line{height:1px;background:linear-gradient(90deg,#40c9ff,transparent)}.chapter-title{font-size:12px;letter-spacing:.20em;text-transform:uppercase;font-weight:900;color:#a2b6cf}.chapter-sub{font-size:12px;color:var(--secondary-text-color);margin-top:4px}
+      .data-node{position:relative;overflow:hidden;min-height:150px;padding:19px 19px 17px;border-radius:8px;background:transparent;border-top:1px solid color-mix(in srgb,var(--divider-color) 50%,rgba(255,255,255,.15));border-bottom:1px solid color-mix(in srgb,var(--divider-color) 25%,transparent);transition:background .16s ease,transform .16s ease}.data-node:hover{background:rgba(255,255,255,.025);transform:translateY(-1px)}.data-node-top{display:flex;justify-content:space-between;align-items:center}.data-node-top ha-icon{--mdc-icon-size:21px;color:#7f98b7}.data-label{font-size:9px;letter-spacing:.17em;text-transform:uppercase;font-weight:850;color:#8096b1}.data-value{font-size:30px;line-height:1;letter-spacing:-.05em;font-weight:880;margin-top:30px;overflow-wrap:anywhere}.data-foot{font-size:11px;color:var(--secondary-text-color);margin-top:8px}.data-glow{position:absolute;left:0;bottom:0;width:55%;height:2px;background:linear-gradient(90deg,transparent,#40c9ff,transparent);opacity:.18}.data-node.state-active .data-glow,.data-node.state-good .data-glow{opacity:.75}.data-node.state-warn .data-glow{background:linear-gradient(90deg,transparent,#ffb75f,transparent);opacity:.85}.data-node.state-bad .data-glow{background:linear-gradient(90deg,transparent,#ff6868,transparent);opacity:.95}
+      .command-strip{display:grid;grid-template-columns:52px minmax(0,1fr) auto;align-items:center;gap:15px;min-height:82px;padding:13px 14px 13px 12px;border-radius:18px;background:linear-gradient(90deg,rgba(255,255,255,.035),rgba(255,255,255,.012));border:1px solid rgba(255,255,255,.055);box-shadow:none;transition:background .16s ease,border-color .16s ease}.command-strip:hover{background:rgba(255,255,255,.045);border-color:rgba(255,255,255,.09)}.command-symbol{width:50px;height:50px;border-radius:16px;display:grid;place-items:center;background:rgba(255,255,255,.035);color:#7890ad}.command-symbol ha-icon{--mdc-icon-size:25px}.command-symbol.active{color:#5de7b1;background:rgba(85,230,173,.08)}.command-symbol.warn{color:#ffbb62;background:rgba(255,187,98,.08)}.command-copy{min-width:0}.command-title{font-size:14px;font-weight:830;letter-spacing:-.015em}.command-sub{font-size:11px;color:var(--secondary-text-color);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.command-action{position:relative;display:flex;align-items:center;gap:9px;min-width:86px;justify-content:space-between;border:0;background:transparent;color:#8397b0;font-size:10px;font-weight:900;letter-spacing:.08em;cursor:pointer}.command-action i{display:block;width:28px;height:28px;border-radius:50%;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.025);position:relative}.command-action i:after{content:"";position:absolute;inset:8px;border-radius:50%;background:#607087}.command-action.active{color:#6ce7b7}.command-action.active i{border-color:rgba(85,230,173,.30);background:rgba(85,230,173,.08)}.command-action.active i:after{background:#55e6ad;box-shadow:0 0 14px rgba(85,230,173,.35)}.command-action.warn{color:#ffc16a}.command-action.warn i:after{background:#ffb45c}
+      .signal{display:grid;grid-template-columns:42px 1fr;gap:12px;align-items:center;padding:16px 0;border-bottom:1px solid rgba(255,255,255,.055);background:transparent;border-radius:0;box-shadow:none}.signal-icon{width:38px;height:38px;border-radius:13px;background:rgba(255,255,255,.035);display:grid;place-items:center}.signal strong{display:block;font-size:13px}.signal span{display:block;color:var(--secondary-text-color);font-size:11px;margin-top:4px}.signal.good .signal-icon{color:#56dea8}.signal.warn .signal-icon{color:#ffb45c}.signal.bad .signal-icon{color:#ff6e6e}
+      .compare-card{padding:18px 18px 16px}.compare-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:18px}.compare-cell{border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:12px 12px 11px;background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.015))}.compare-label{font-size:10px;letter-spacing:.16em;text-transform:uppercase;font-weight:800;color:#86a0bb}.compare-value{display:block;font-size:30px;line-height:1.04;letter-spacing:-.05em;font-weight:860;margin-top:8px}.compare-foot{margin-top:14px}
+      .logic-ribbon{display:flex;flex-direction:column;gap:7px;padding:16px 0;border-top:1px solid rgba(255,255,255,.055);background:transparent}.logic-ribbon span{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#7e94ae;font-weight:850}.logic-ribbon strong{font-size:15px;line-height:1.4}
+      .card,.metric,.control,.alert,.logic-card{box-shadow:none}
+      .solar-showcase{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px;margin-top:10px}.solar-panel{position:relative;overflow:hidden;border-radius:28px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(255,255,255,.028),rgba(255,255,255,.012));box-shadow:0 18px 40px rgba(0,0,0,.12)}.solar-panel:before{content:"";position:absolute;inset:auto auto -40px -20px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(64,201,255,.18),transparent 65%);pointer-events:none}.solar-battery-hero{grid-column:span 7;display:grid;grid-template-columns:240px 1fr;gap:24px;padding:28px 30px;align-items:center;min-height:340px}.solar-battery-shell{position:relative;width:150px;height:250px;border-radius:30px;border:6px solid rgba(255,255,255,.76);margin:0 auto;background:linear-gradient(180deg,rgba(255,255,255,.025),rgba(255,255,255,.01));box-shadow:inset 0 0 0 1px rgba(255,255,255,.05)}.solar-battery-shell:before{content:"";position:absolute;top:-20px;left:50%;transform:translateX(-50%);width:62px;height:18px;border-radius:8px 8px 2px 2px;background:rgba(255,255,255,.78)}.solar-battery-fill{position:absolute;left:14px;right:14px;bottom:14px;border-radius:18px;background:linear-gradient(180deg,rgba(103,255,182,.92),rgba(69,212,140,.92));box-shadow:0 0 34px rgba(103,255,182,.26)}.solar-battery-soc{position:absolute;inset:0;z-index:3;display:grid;place-items:center;text-align:center;pointer-events:none}.solar-battery-soc>div{padding:10px 14px 9px;border-radius:16px;background:rgba(7,14,25,.68);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 8px 24px rgba(0,0,0,.20)}.solar-battery-soc span,.solar-prod-copy span,.solar-pv-bars span,.solar-node-label,.solar-energy-pill span{font-size:10px;letter-spacing:.18em;font-weight:850;color:#87a0bb;text-transform:uppercase}.solar-battery-soc strong{display:block;font-size:52px;letter-spacing:-.06em;color:#ffffff;margin-top:6px;text-shadow:0 2px 10px rgba(0,0,0,.28)}.solar-battery-copy .eyebrow{font-size:11px;letter-spacing:.24em;font-weight:900;color:#59e39d;text-transform:uppercase}.solar-battery-copy .power{font-size:72px;line-height:.95;font-weight:880;letter-spacing:-.07em;margin-top:10px}.solar-battery-copy .power.good{color:#59e39d}.solar-battery-copy .power.bad{color:#ff8d87}.solar-battery-copy .power small{font-size:.46em}.solar-battery-copy .desc{margin-top:10px;font-size:15p

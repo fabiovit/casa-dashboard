@@ -2,6 +2,8 @@
 
 Compila `entities` nel file `/config/www/casa-dashboard-entities.json`. Le chiavi a sinistra **non vanno cambiate**: a destra inserisci la tua `entity_id` reale. Le voci lasciate vuote vengono mostrate come **Non configurato** e i relativi comandi sono disabilitati.
 
+Dalla **v1.1.0** la mappa contiene **173 chiavi logiche**. Se aggiorni dalla v1.0.0, al riavvio Home Assistant aggiunge automaticamente le nuove chiavi mancanti senza modificare le associazioni già configurate.
+
 ## Sicurezza e accessi
 
 - `alarm_control_panel.home_alarm`
@@ -132,6 +134,34 @@ Compila `entities` nel file `/config/www/casa-dashboard-entities.json`. Le chiav
 - `sensor.weather_wind_speed`
 - `switch.balcony_barbecue`
 
+## Fotovoltaico e batteria – nuovo in v1.1.0
+
+Questa sezione è **opzionale**. Se `sensor.solar_pv_power` resta vuoto, il blocco Energia solare non viene mostrato.
+
+- `sensor.solar_pv_power` — produzione FV totale istantanea
+- `sensor.solar_pv1_power` — potenza falda/canale FV 1
+- `sensor.solar_pv1_voltage` — tensione FV 1
+- `sensor.solar_pv1_current` — corrente FV 1
+- `sensor.solar_pv2_power` — potenza falda/canale FV 2
+- `sensor.solar_pv2_voltage` — tensione FV 2
+- `sensor.solar_pv2_current` — corrente FV 2
+- `sensor.solar_energy_today` — energia prodotta oggi
+- `sensor.solar_load_power` — consumo istantaneo casa
+- `sensor.solar_grid_power` — scambio rete
+- `sensor.solar_battery_soc` — stato di carica batteria
+- `sensor.solar_battery_power` — potenza batteria
+- `sensor.solar_battery_mode` — stato/modalità batteria
+- `sensor.solar_battery_charged_today` — energia caricata oggi
+- `sensor.solar_battery_discharged_today` — energia scaricata oggi
+- `sensor.solar_battery_losses_today` — perdite batteria oggi
+
+### Convenzioni energia
+
+- Le potenze possono essere esposte in **W o kW**: la dashboard le normalizza automaticamente in kW.
+- `sensor.solar_grid_power`: **positivo = prelievo/import**, **negativo = immissione/export**.
+- `sensor.solar_battery_power`: **positivo = carica**, **negativo = scarica**.
+- SOC in percentuale; energie giornaliere preferibilmente in kWh.
+
 ## Garage, EV e wallbox
 
 - `binary_sensor.ev_charging_at_home`
@@ -164,6 +194,10 @@ Compila `entities` nel file `/config/www/casa-dashboard-entities.json`. Le chiav
 - `switch.garage_dehumidifier_power`
 - `switch.garage_treadmill`
 - `switch.garage_tv`
+
+### Wallbox v1.1.0
+
+La dashboard mostra la potenza di ricarica in kW e mantiene A/V come dettaglio. Per `sensor.wallbox_charging_power` sono supportati sia sensori in W sia in kW. `sensor.grid_current_l1` viene combinato con `sensor.wallbox_voltage_l1` per stimare il carico istantaneo del contatore.
 
 ## Robot aspirapolvere
 

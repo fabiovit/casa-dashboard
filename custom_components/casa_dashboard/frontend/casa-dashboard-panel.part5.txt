@@ -1,82 +1,36 @@
-._control("input_boolean.pedestrian_gate","Cancellino","mdi:gate",open?"Apertura in corso / aperto":"Premi per aprire","toggle",12)}</div></div>`;
-  }
+x;color:var(--secondary-text-color)}.solar-energy-pills{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}.solar-energy-pill{padding:10px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.04)}.solar-energy-pill strong{font-size:14px;margin-left:8px}.solar-prod-card{grid-column:span 5;padding:24px 28px;min-height:340px;display:flex;flex-direction:column;justify-content:space-between}.solar-prod-top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}.solar-sun{width:74px;height:74px;border-radius:22px;display:grid;place-items:center;background:radial-gradient(circle,rgba(255,204,72,.22),rgba(255,204,72,.05) 60%,transparent 62%);color:#ffd05c}.solar-sun ha-icon{--mdc-icon-size:42px}.solar-prod-copy strong{display:block;font-size:58px;letter-spacing:-.06em;line-height:.95;margin-top:12px}.solar-prod-copy small{display:block;color:var(--secondary-text-color);margin-top:10px}.solar-pv-bars{margin-top:18px;display:grid;gap:18px}.solar-pv-line{display:grid;grid-template-columns:176px minmax(0,1fr);gap:18px;align-items:center}.solar-pv-meta strong{display:block;font-size:22px;letter-spacing:-.04em;margin-top:8px}.solar-pv-meta small{display:block;color:var(--secondary-text-color);margin-top:4px}.solar-pv-track{position:relative;height:12px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}.solar-pv-fill{position:absolute;left:0;top:0;bottom:0;border-radius:999px;background:linear-gradient(90deg,#f4e88b,#f0c447)}.solar-pv-fill.west{background:linear-gradient(90deg,#f8d56b,#ff9a5a)}.solar-flow-card{grid-column:span 12;padding:24px 28px 26px}.solar-flow-grid{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;align-items:flex-start}.solar-flow-grid:before{display:none}.solar-node{position:relative;padding-top:4px;text-align:center}.solar-node-orb{width:84px;height:84px;margin:0 auto;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 50% 50%,rgba(64,201,255,.20),rgba(64,201,255,.03) 62%,transparent 64%);border:1px solid rgba(64,201,255,.20);box-shadow:0 0 30px rgba(64,201,255,.10)}.solar-node-orb ha-icon{--mdc-icon-size:34px;color:#7fd9ff}.solar-node.house .solar-node-orb ha-icon{color:#69f0a8}.solar-node.grid .solar-node-orb ha-icon{color:#ffcf72}.solar-node.battery .solar-node-orb ha-icon{color:#59e39d}.solar-node strong{display:block;font-size:34px;line-height:1;letter-spacing:-.05em;margin-top:16px}.solar-node strong.good{color:#59e39d}.solar-node strong.bad{color:#ff8d87}.solar-node small{display:block;color:var(--secondary-text-color);margin-top:6px;line-height:1.4}.solar-node-chip{display:inline-flex;align-items:center;gap:8px;margin-top:12px;padding:7px 11px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);font-size:11px;font-weight:800}.solar-node-chip.good{background:rgba(76,175,80,.12);border-color:rgba(76,175,80,.20);color:#8aeab4}.solar-node-chip.warn{background:rgba(255,152,0,.12);border-color:rgba(255,152,0,.20);color:#ffcc80}.solar-node-chip.bad{background:rgba(244,67,54,.12);border-color:rgba(244,67,54,.20);color:#ff8d87}.solar-node-chip.active{background:rgba(64,201,255,.12);border-color:rgba(64,201,255,.20);color:#98e6ff}
 
-  _scale(){
-    return `<div class="page">${this._zoneHero("scale",[
-      {label:"Luce",value:this._on("light.stairs")?"Accesa":"Spenta",small:"Illuminazione scale"},
-      {label:"Portoncino",value:this._on("input_boolean.main_gate")?"Apertura…":"Pronto",small:"Comando accesso"}
-    ])}${this._section("Controlli rapidi")}<div class="grid">${this._control("input_boolean.main_gate","Portoncino","mdi:gate",this._on("input_boolean.main_gate")?"Apertura in corso":"Premi per aprire","toggle",6)}${this._control("light.stairs","Luce scale","mdi:ceiling-light",this._on("light.stairs")?"Accesa":"Spenta","toggle",6)}</div></div>`;
-  }
+      .data-node.value-long .data-value{font-size:22px;line-height:1.12;margin-top:20px}
+      .data-node.value-long .data-foot{margin-top:10px}
+      .app-shell.theme-light{background:radial-gradient(circle at 10% -10%, rgba(68,144,255,.10), transparent 38%),radial-gradient(circle at 100% 0%, rgba(0,180,160,.10), transparent 26%),linear-gradient(180deg,#f4f7fb,#edf2f8 58%,#eef4fb)}
+      .app-shell.theme-light .topbar{background:rgba(248,250,253,.92);border-bottom:1px solid rgba(15,23,42,.10);box-shadow:0 10px 30px rgba(15,23,42,.06)}
+      .app-shell.theme-light .nav-btn{color:#5b6f88}.app-shell.theme-light .nav-btn.active,.app-shell.theme-light .nav-btn.active ha-icon{color:#1666d9}
+      .app-shell.theme-light .scene-hero{background:linear-gradient(140deg,rgba(255,255,255,.96),rgba(247,250,255,.98));border-color:rgba(26,81,160,.16);box-shadow:0 24px 50px rgba(28,46,84,.08)}
+      .app-shell.theme-light .scene-hero:before{background:linear-gradient(115deg,transparent 0 47%,rgba(15,23,42,.03) 47.2% 47.6%,transparent 47.8%)}
+      .app-shell.theme-light .scene-hero:after{border-color:rgba(30,64,175,.07);box-shadow:0 0 0 70px rgba(30,64,175,.03),0 0 0 140px rgba(30,64,175,.02)}
+      .app-shell.theme-light .scene-kicker,.app-shell.theme-light .data-label,.app-shell.theme-light .chapter-title,.app-shell.theme-light .panel-eyebrow,.app-shell.theme-light .spotlight-kicker,.app-shell.theme-light .room-eyebrow,.app-shell.theme-light .hero-overline{color:#537096}
+      .app-shell.theme-light .scene-sub,.app-shell.theme-light .chapter-sub,.app-shell.theme-light .data-foot,.app-shell.theme-light .command-sub,.app-shell.theme-light .brand-subtitle,.app-shell.theme-light .weather-sub,.app-shell.theme-light .muted{color:#5f6f83}
+      .app-shell.theme-light .scene-dashboard,.app-shell.theme-light .hero-metric,.app-shell.theme-light .spot-stat,.app-shell.theme-light .weather-chip,.app-shell.theme-light .tag{background:rgba(246,249,253,.9);border-color:rgba(15,23,42,.08)}
+      .app-shell.theme-light .spotlight,.app-shell.theme-light .mini-panel,.app-shell.theme-light .premium-room,.app-shell.theme-light .data-node,.app-shell.theme-light .command-strip,.app-shell.theme-light .climate-panel,.app-shell.theme-light .weather-hero,.app-shell.theme-light .decision-card,.app-shell.theme-light .logic-card,.app-shell.theme-light .solar-stage,.app-shell.theme-light .alert{background:linear-gradient(180deg,rgba(255,255,255,.95),rgba(246,249,253,.96));border-color:rgba(15,23,42,.10);box-shadow:0 16px 34px rgba(15,23,42,.05)}
+      .app-shell.theme-light .data-node:hover,.app-shell.theme-light .command-strip:hover{background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(243,247,252,.98))}
+      .app-shell.theme-light .command-symbol,.app-shell.theme-light .iconbox,.app-shell.theme-light .weather-icon,.app-shell.theme-light .room-arrow{background:rgba(21,40,72,.05);color:#4b6384}
+      .app-shell.theme-light .data-node-top ha-icon,.app-shell.theme-light .metric-icon ha-icon,.app-shell.theme-light .command-action,.app-shell.theme-light .room-arrow,.app-shell.theme-light .spot-stat .k{color:#567190}
+      .app-shell.theme-light .command-action i{border-color:rgba(15,23,42,.14);background:rgba(15,23,42,.03)}
+      .app-shell.theme-light .command-action i:after{background:#6b7f99}
+      .app-shell.theme-light .status-dot{box-shadow:0 0 0 6px rgba(34,197,94,.12)}
+      .app-shell.theme-light .data-node{border-top:1px solid rgba(15,23,42,.12);border-bottom:1px solid rgba(15,23,42,.08)}
+      .app-shell.theme-light .data-glow{opacity:.28}
+      .app-shell.theme-light .solar-panel{background:linear-gradient(180deg,rgba(255,255,255,.95),rgba(245,249,253,.98));border-color:rgba(15,23,42,.10);box-shadow:0 16px 34px rgba(15,23,42,.05)}
+      .app-shell.theme-light .solar-battery-shell{border-color:rgba(113,124,141,.70)}
+      .app-shell.theme-light .solar-battery-shell:before{background:rgba(113,124,141,.65)}
+      .app-shell.theme-light .solar-battery-soc>div{background:rgba(255,255,255,.90);border-color:rgba(15,23,42,.12);box-shadow:0 8px 22px rgba(15,23,42,.10)}.app-shell.theme-light .solar-battery-soc strong{color:#16304f;text-shadow:none}.app-shell.theme-light .solar-battery-soc span{color:#587292}.app-shell.theme-light .solar-battery-copy .eyebrow{color:#2dcf7c}.app-shell.theme-light .solar-battery-copy .power.good,.app-shell.theme-light .solar-node strong.good{color:#1fa95f}.app-shell.theme-light .solar-battery-copy .power.bad,.app-shell.theme-light .solar-node strong.bad{color:#d64545}
+      .app-shell.theme-light .solar-sun{background:radial-gradient(circle,rgba(255,204,72,.18),rgba(255,204,72,.06) 60%,transparent 62%);color:#d19700}
+      .app-shell.theme-light .solar-node-orb{background:radial-gradient(circle at 50% 50%,rgba(22,102,217,.12),rgba(22,102,217,.02) 62%,transparent 64%);border-color:rgba(22,102,217,.16);box-shadow:none}
+      .app-shell.theme-light .solar-pv-track{background:rgba(15,23,42,.08)}
+      .app-shell.theme-light .solar-energy-pill,.app-shell.theme-light .solar-node-chip{background:rgba(15,23,42,.03);border-color:rgba(15,23,42,.08)}
+      .app-shell.theme-light .compare-cell{background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(244,248,253,.98));border-color:rgba(15,23,42,.08)}
+      .app-shell.theme-light .compare-label{color:#587292}
+      .app-shell.theme-light footer{color:#5f738e}
 
-  _ingresso(){
-    const door=this._on("binary_sensor.entry_door");
-    const unlocked=this._on("input_boolean.entry_door_unlock");
-    const alarm=this._state("alarm_control_panel.home_alarm","—");
-    const motion=this._on("binary_sensor.entry_motion");
-    const occupied=this._on("binary_sensor.entry_occupancy");
-    return `<div class="page">${this._zoneHero("ingresso",[
-      {label:"Porta",value:door?"Aperta":unlocked?"Sbloccata":"Bloccata",small:"Contatto + serratura"},
-      {label:"Allarme",value:alarm,small:"Alarmo"},
-      {label:"Luminosità",value:this._fmt("sensor.entry_illuminance",0),small:"Sensore Sensore"},
-      {label:"Presenza",value:occupied?"Occupato":"Libero",small:motion?"Movimento rilevato":"Nessun movimento"}
-    ])}${this._section("Sicurezza e accesso")}<div class="grid">
-      ${this._control("input_boolean.entry_door_unlock","Porta di casa",door?"mdi:door-open":unlocked?"mdi:lock-open-variant":"mdi:lock",door?"Aperta fisicamente":unlocked?"Chiusa · sbloccata":"Chiusa · bloccata","toggle",4)}
-      ${this._control("light.entry_main","Luce ingresso","mdi:ceiling-light",this._on("light.entry_main")?"Accesa":"Spenta","toggle",4)}
-      <div class="control span-4 ${alarm==='triggered'?'state-bad':alarm==='disarmed'?'state-warn':'state-on'}">${this._icon(alarm==='triggered'?"mdi:alarm-light":"mdi:shield-home",alarm==='triggered'?"bad":alarm==='disarmed'?"warn":"good")}<div class="control-main clickable" data-more="alarm_control_panel.home_alarm"><div class="control-title">Allarme</div><div class="control-sub">${this._esc(alarm)}</div></div><button class="switch-btn" data-more="alarm_control_panel.home_alarm" type="button">GESTISCI</button></div>
-      <div class="control span-12 ${alarm==='triggered'?'state-bad':alarm==='disarmed'?'state-warn':'state-on'}"><div class="control-main"><div class="control-title">Comandi Alarmo</div><div class="control-sub">Inserimento rapido</div></div><button class="mini-btn ${alarm==='armed_home'?'active':''}" data-alarm="alarm_arm_home" type="button">CASA</button><button class="mini-btn ${alarm==='armed_away'?'active':''}" data-alarm="alarm_arm_away" type="button">FUORI</button><button class="mini-btn ${alarm==='disarmed'?'active':''}" data-alarm="alarm_disarm" type="button">OFF</button></div>
-    </div>${this._section("Sensori ingresso")}<div class="grid">
-      ${this._metric("mdi:door", "Stato porta",door?"Aperta":"Chiusa","Sensore magnetico",3,"binary_sensor.entry_door")}
-      ${this._metric("mdi:weather-sunny","Luminosità",this._fmt("sensor.entry_illuminance",0),"Sensore",3,"sensor.entry_illuminance")}
-      ${this._metric("mdi:motion-sensor","Movimento",motion?"Rilevato":"Assente","Sensore ingresso",3,"binary_sensor.entry_motion")}
-      ${this._metric("mdi:account-group","Occupazione",occupied?"Occupato":"Libero","Presenza",3,"binary_sensor.entry_occupancy")}
-    </div></div>`;
-  }
-
-  _climateBlock(entity,tempEntity,humEntity,title,schedule="09:00–22:00"){
-    const t=this._num(tempEntity,null), h=this._num(humEntity,null), state=this._state(entity,"off"), action=this._attr(entity,"hvac_action",state), set=this._attr(entity,"temperature",null), fan=this._attr(entity,"fan_mode","—");
-    const active=this._climateActive(entity);
-    return `<div class="climate-panel span-12 ${active?'state-on':''}"><div><div class="hero-overline">${title}</div><div class="climate-temp">${t===null?"—":t.toFixed(1)+"°"}</div><div class="climate-meta"><span class="tag ${active?'blue':''}">${this._esc(action||state)}</span><span class="tag">💧 ${h===null?"—":h.toFixed(0)+"%"}</span><span class="tag">Set ${set ?? "—"}°C</span><span class="tag">Ventola ${this._esc(fan)}</span><span class="tag">Auto ${schedule}</span></div><div class="action-row"><button class="mini-btn" data-climate-temp="${entity}" data-delta="-1" type="button">− 1°C</button><button class="mini-btn" data-climate-temp="${entity}" data-delta="1" type="button">+ 1°C</button></div></div><div class="climate-actions"><button class="round-action" data-climate="${entity}" data-mode="cool" title="Raffrescamento"><ha-icon icon="mdi:snowflake"></ha-icon></button><button class="round-action" data-climate="${entity}" data-mode="off" title="Spegni"><ha-icon icon="mdi:power"></ha-icon></button><button class="round-action" data-more="${entity}" title="Dettagli"><ha-icon icon="mdi:tune-variant"></ha-icon></button></div></div>`;
-  }
-
-  _cucina(){
-    const windowOpen=this._on("binary_sensor.kitchen_door_window");
-    const vibration=this._on("binary_sensor.kitchen_window_vibration");
-    const anta=this._on("binary_sensor.kitchen_cabinet_door");
-    const motion=this._on("binary_sensor.kitchen_motion");
-    const occupied=this._on("binary_sensor.kitchen_occupancy");
-    const heat="climate.home_heating";
-    const heatAction=this._attr(heat,"hvac_action",this._state(heat,"off"));
-    const tendaOpen=this._coverOpen("cover.kitchen_blind",true);
-    const t=this._num("sensor.kitchen_temperature",null), h=this._num("sensor.kitchen_humidity",null), manual=this._on("input_boolean.kitchen_climate_manual");
-    const now=new Date(), mins=now.getHours()*60+now.getMinutes();
-    const early=mins>=420&&mins<540, normal=mins>=540&&mins<1320;
-    let auto="Fuori fascia automatica";
-    if(manual) auto="Modalità manuale attiva";
-    else if(windowOpen) auto="Bloccata · finestra aperta";
-    else if(t!==null&&h!==null){
-      if(t<=24) auto="OFF · temperatura ≤24°C";
-      else if(early){ if(t>=27) auto="ON consentito · ≥27°C"; else if(t>=26&&h>=65) auto="ON consentito · ≥26°C + UR ≥65%"; else auto="Fascia anticipata · soglia non raggiunta"; }
-      else if(normal){ if(t>=26) auto="ON consentito · ≥26°C"; else if(t>=24.5&&h>=65) auto="ON consentito · ≥24,5°C + UR ≥65%"; else auto="Fascia normale · soglia non raggiunta"; }
-    }
-    return `<div class="page">${this._zoneHero("cucina",[
-      {label:"Temperatura",value:this._fmt("sensor.kitchen_temperature",1,"°C"),small:"Sensore"},
-      {label:"Umidità",value:this._fmt("sensor.kitchen_humidity",0,"%"),small:"Sensore"},
-      {label:"Clima",value:this._climateActive("climate.kitchen")?"Attivo":"Spento",small:this._attr("climate.kitchen","hvac_action","idle")},
-      {label:"Finestra",value:windowOpen?"Aperta":"Chiusa",small:"Porta finestra"}
-    ])}${this._section("Comfort e clima")}<div class="grid">${this._climateBlock("climate.kitchen","sensor.kitchen_temperature","sensor.kitchen_humidity","CLIMATIZZATORE CUCINA","07:00–09:00 anticipata · 09:00–22:00 normale")}
-      ${this._control("input_boolean.kitchen_climate_manual","Modalità manuale clima","mdi:hand-back-right-outline",manual?"Automazioni clima sospese":"Gestione automatica attiva","toggle",12)}
-      <div class="metric span-12 ${manual?'state-warn':windowOpen?'state-warn':this._climateActive("climate.kitchen")?'state-active':'state-good'}"><div class="metric-icon"><div class="label">AUTO CLIMA CUCINA</div><ha-icon icon="mdi:thermostat-auto"></ha-icon></div><div><div class="value" style="font-size:19px">${auto}</div><div class="foot">07:00–09:00: ON ≥27°C oppure ≥26°C con UR ≥65% · 09:00–22:00: ON ≥26°C oppure ≥24,5°C con UR ≥65% · OFF ≤24°C · finestra aperta 2 min → OFF · BOOST cucina invariato</div></div></div>
-    </div>${this._section("Luci, tenda ed elettrodomestici")}<div class="grid">
-      ${this._control("light.kitchen_main","Luce cucina","mdi:ceiling-light",this._on("light.kitchen_main")?"Accesa":"Spenta","toggle",4)}
-      ${this._control("light.kitchen_led","LED cucina","mdi:led-strip-variant",this._on("light.kitchen_led")?"Accesi":"Spenti","toggle",4)}
-      ${this._coverControl("cover.kitchen_blind","Tenda cucina",true,4)}
-      ${this._control("switch.kitchen_hood","Cappa","mdi:stove-hood",this._on("switch.kitchen_hood")?"Accesa":"Spenta","toggle",3)}
-      ${this._control("switch.kitchen_appliance_1","Elettrodomestico 1","mdi:blender",this._on("switch.kitchen_appliance_1")?"Acceso":"Spento","toggle",3)}
-      ${this._control("switch.kitchen_appliance_2","Elettrodomestico 2","mdi:air-fryer",this._on("switch.kitchen_appliance_2")?"Accesa":"Spenta","toggle",3)}
-      ${this._control("switch.kitchen_tv","TV cucina","mdi:television",this._on("switch.kitchen_tv")?"Accesa":"Spenta","toggle",3)}
-    </div>${this._section("Riscaldamento e ACS")}<div class="grid">
-      ${this._metric("mdi:radiator","Termostato casa",this._state(heat,"—"),`Azione ${heatAction}`,3,heat)}
-      ${this._metric("mdi:home-thermometer","Temp zona",this._fmt("sensor.heating_current_temperature",1,"°C"),"Circuito 0",3,"sensor.heating_current_temperature")}
-      ${this._metric("mdi:target-variant","Target zona",this._fmt("sensor.heating_target_temperature",1,"°C"),"Circuito 0",3,"sensor.heating_target_temperature")}
-      ${this._metric("mdi:water-percent","Umidità zona",this._fmt("sensor.heating_humidity",0,"%"),"Circuito 0",3,"sensor.heating_humidity")}
-      ${this._metric("mdi:fire","Stato circuito",this._state("sensor.heating_state","—"),"R
+      @media(max-width:1000px){.scene-hero{grid-template-columns:1fr}.scene-dashboard{grid-template-columns:repeat(4,1fr)}.scene-stat{min-height:110px}.scene-title-row h1{font-size:64px}.solar-battery-hero{grid-template-columns:200px 1fr}.solar-prod-copy strong{font-size:48px}.solar-flow-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.compare-value{font-size:26px}}
+      @media(max-width:760px){.scene-hero{padding:24px 18px;border-radius:26px;min-height:auto}.scene-title-row h1{font-size:50px}.scene-mark{width:48px;height:48px}.scene-dashboard{grid-template-columns:1fr 1fr}.scene-stat{min-height:112px;padding:18px 15px}.scene-stat strong{font-size:22px}.chapter{grid-template-columns:36px 1fr}.data-node{min-height:125px;padding:15px 12px}.data-value{font-size:25px;margin-top:22px}.command-strip{grid-template-columns:44px 1fr auto;gap:10px}.command-symbol{width:42px;height:42px}.command-action{min-width:72px}.solar-showcase{grid-template-columns:1fr}.solar-battery-hero,.solar-prod-card,.solar-flow-card{grid-column:span 12}.solar-battery-hero{grid-template-columns:1fr;justify-items:center;text-align:center;min-height:auto;padding:24px 20px}.solar-battery-copy .power{font-size:56px}.solar-prod-card{min-height:auto}.solar-pv-line{grid-template-columns:1fr;gap:10px}.solar-flow-grid{grid-template-colum

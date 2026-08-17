@@ -1,87 +1,185 @@
-iscaldamento",4,"sensor.heating_state")}
-      ${this._metric("mdi:water-boiler","Acqua calda ACS",this._state("water_heater.domestic_hot_water","—"),"Impianto",4,"water_heater.domestic_hot_water")}
-      ${this._metric("mdi:calendar-clock","Programma",this._state("calendar.heating_program","—"),"Riscaldamento",4,"calendar.heating_program")}
-    </div>${this._section("Ambiente cucina")}<div class="grid">
-      ${this._metric("mdi:thermometer","Temperatura Sensore",this._fmt("sensor.kitchen_temperature",1,"°C"),"Cucina",3,"sensor.kitchen_temperature")}
-      ${this._metric("mdi:water-percent","Umidità Sensore",this._fmt("sensor.kitchen_humidity",0,"%"),"Cucina",3,"sensor.kitchen_humidity")}
-      ${this._metric("mdi:air-conditioner","Temp clima",this._fmt("sensor.kitchen_climate_temperature",1,"°C"),"Climatizzatore",3,"sensor.kitchen_climate_temperature")}
-      ${this._metric("mdi:weather-sunny","Luminosità",this._fmt("sensor.kitchen_illuminance",0),"Sensore",3,"sensor.kitchen_illuminance")}
-      ${this._metric("mdi:thermometer","Temp Stazione meteo",this._fmt("sensor.weather_indoor_temperature",1,"°C"),"Centralina interna",4,"sensor.weather_indoor_temperature")}
-      ${this._metric("mdi:water-percent","Umidità Stazione meteo",this._fmt("sensor.weather_indoor_humidity",0,"%"),"Centralina interna",4,"sensor.weather_indoor_humidity")}
-      ${this._metric("mdi:chart-line","Confronto temperature",`Sensore ${this._fmt("sensor.kitchen_temperature",1,"°C")} · GW ${this._fmt("sensor.weather_indoor_temperature",1,"°C")} · Clima ${this._fmt("sensor.kitchen_climate_temperature",1,"°C")}`,`Termostato ${this._fmt("sensor.heating_current_temperature",1,"°C")}`,4,"sensor.kitchen_temperature")}
-    </div>${this._section("Sensori cucina")}<div class="grid">
-      ${this._metric("mdi:motion-sensor","Movimento",motion?"Rilevato":"Assente","Cucina",3,"binary_sensor.kitchen_motion")}
-      ${this._metric("mdi:account-group","Occupazione",occupied?"Occupato":"Libero","Cucina",3,"binary_sensor.kitchen_occupancy")}
-      ${this._metric("mdi:window-open","Porta finestra",windowOpen?"Aperta":"Chiusa","Cucina",2,"binary_sensor.kitchen_door_window")}
-      ${this._metric("mdi:vibrate","Vibrazione",vibration?"Rilevata":"Assente","Finestra",2,"binary_sensor.kitchen_window_vibration")}
-      ${this._metric("mdi:door","Anta",anta?"Aperta":"Chiusa","Cucina",2,"binary_sensor.kitchen_cabinet_door")}
-    </div></div>`;
+ns:1fr 1fr}.solar-flow-grid:before{display:none}.solar-node strong{font-size:28px}.solar-prod-copy strong{font-size:42px}.compare-grid{grid-template-columns:1fr}.compare-value{font-size:28px}}
+      @media(max-width:480px){.scene-title-row{align-items:flex-end}.scene-title-row h1{font-size:44px}.scene-title-row .scene-mark{width:42px;height:42px}.scene-sub{font-size:14px}.scene-dashboard{border-radius:20px}.scene-stat{min-height:105px}.command-strip{grid-template-columns:42px 1fr;}.command-action{grid-column:2;justify-self:start;margin-top:3px}.data-node{grid-column:span 12!important}}
+    `;
   }
 
-  _disimpegno(){
-    const motion=this._on("binary_sensor.hallway_motion"), occupied=this._on("binary_sensor.hallway_occupancy");
-    return `<div class="page">${this._zoneHero("disimpegno",[
-      {label:"Movimento",value:motion?"Rilevato":"Assente",small:"Sensore"},
-      {label:"Occupazione",value:occupied?"Occupato":"Libero",small:"Presenza"},
-      {label:"Luminosità",value:this._fmt("sensor.hallway_illuminance",0),small:"Illuminamento"},
-      {label:"Luce",value:this._on("light.hallway_main")?"Accesa":"Spenta",small:"Plafoniera"}
-    ])}${this._section("Controllo e sensori")}<div class="grid">
-      ${this._control("light.hallway_main","Luce disimpegno","mdi:ceiling-light",this._on("light.hallway_main")?"Accesa":"Spenta","toggle",3)}
-      ${this._metric("mdi:weather-sunny","Luminosità",this._fmt("sensor.hallway_illuminance",0),"Sensore luce",3,"sensor.hallway_illuminance")}
-      ${this._metric("mdi:motion-sensor","Movimento",motion?"Rilevato":"Assente","Disimpegno",3,"binary_sensor.hallway_motion")}
-      ${this._metric("mdi:account-group","Occupazione",occupied?"Occupato":"Libero","Disimpegno",3,"binary_sensor.hallway_occupancy")}
-    </div></div>`;
-  }
-
-  _bagno(){
-    const windowOpen=this._on("binary_sensor.bathroom_window"), vibration=this._on("binary_sensor.bathroom_window_vibration"), anta=this._on("binary_sensor.bathroom_cabinet_door"), leak=this._on("binary_sensor.bathroom_water_leak"), motion=this._on("binary_sensor.bathroom_motion"), occupied=this._on("binary_sensor.bathroom_occupancy");
-    return `<div class="page">${this._zoneHero("bagno",[
-      {label:"Temperatura",value:this._fmt("sensor.bathroom_temperature",1,"°C"),small:"Sensore"},
-      {label:"Umidità",value:this._fmt("sensor.bathroom_humidity",0,"%"),small:"Sensore"},
-      {label:"Finestra",value:windowOpen?"Aperta":"Chiusa",small:"Sicurezza"},
-      {label:"Acqua",value:leak?"PERDITA":"OK",small:"Sensore perdita"}
-    ])}${this._section("Luci, ventilazione e tenda")}<div class="grid">
-      ${this._control("light.bathroom_main","Luce bagno","mdi:ceiling-light",this._on("light.bathroom_main")?"Accesa":"Spenta","toggle",4)}
-      ${this._control("light.bathroom_cabinet","Luce mobile","mdi:led-strip-variant",this._on("light.bathroom_cabinet")?"Accesa":"Spenta","toggle",4)}
-      ${this._control("fan.bathroom_extractor","Aspiratore","mdi:fan",this._on("fan.bathroom_extractor")?"Attivo":"Spento","toggle",4)}
-      ${this._control("input_boolean.shower_mode","Modalità doccia","mdi:shower-head",this._on("input_boolean.shower_mode")?"Attiva":"Disattivata","toggle",3)}
-      ${this._control("input_boolean.bathroom_custom_mode","Modalità personalizzata","mdi:emoticon-poop",this._on("input_boolean.bathroom_custom_mode")?"Attiva":"Disattivata","toggle",3)}
-      ${this._coverControl("cover.bathroom_blind","Tenda bagno",true,3)}
-      <div class="control span-3 state-on good-tone">${this._icon("mdi:cat","good")}<div class="control-main ${this._configured("script.bathroom_custom_action")?'clickable':''}" ${this._configured("script.bathroom_custom_action")?'data-more="script.bathroom_custom_action"':''}><div class="control-title">Azione personalizzata</div><div class="control-sub">${this._configured("script.bathroom_custom_action")?"Esegue lo script configurato":"Non configurato"}</div></div><button class="switch-btn on" ${this._configured("script.bathroom_custom_action")?'data-script="script.bathroom_custom_action"':'disabled'} type="button">ESEGUI</button></div>
-    </div>${this._section("Ambiente e presenza")}<div class="grid">
-      ${this._metric("mdi:thermometer","Temperatura",this._fmt("sensor.bathroom_temperature",1,"°C"),"Bagno",3,"sensor.bathroom_temperature")}
-      ${this._metric("mdi:water-percent","Umidità",this._fmt("sensor.bathroom_humidity",0,"%"),"Bagno",3,"sensor.bathroom_humidity")}
-      ${this._metric("mdi:weather-sunny","Luminosità",this._fmt("sensor.bathroom_illuminance",0),"Sensore",3,"sensor.bathroom_illuminance")}
-      ${this._metric("mdi:motion-sensor","Movimento",motion?"Rilevato":"Assente","Bagno",3,"binary_sensor.bathroom_motion")}
-      ${this._metric("mdi:account-group","Occupazione",occupied?"Occupato":"Libero","Bagno",3,"binary_sensor.bathroom_occupancy")}
-      ${this._metric("mdi:window-open","Finestra",windowOpen?"Aperta":"Chiusa","Bagno",3,"binary_sensor.bathroom_window")}
-      ${this._metric("mdi:vibrate","Vibrazione",vibration?"Rilevata":"Assente","Finestra",3,"binary_sensor.bathroom_window_vibration")}
-      ${this._metric("mdi:door","Anta",anta?"Aperta":"Chiusa","Bagno",3,"binary_sensor.bathroom_cabinet_door")}
-      ${this._metric("mdi:water-alert","Perdita acqua",leak?"RILEVATA":"Nessuna","Sensore acqua",6,"binary_sensor.bathroom_water_leak",leak?"state-bad":"state-good")}
-    </div></div>`;
-  }
-
-  _camera(){
-    const windowOpen=this._on("binary_sensor.bedroom_door_window"), anta=this._on("binary_sensor.bedroom_window"), vibration=this._on("binary_sensor.bedroom_window_vibration"), v=this._state("vacuum.robot_vacuum","—"), map=this._imageUrl("image.robot_vacuum_map");
-    const t=this._num("sensor.bedroom_temperature",null), h=this._num("sensor.bedroom_humidity",null), manual=this._on("input_boolean.bedroom_climate_manual");
-    const now=new Date(), mins=now.getHours()*60+now.getMinutes();
-    const night=mins>=180&&mins<240, early=mins>=420&&mins<540, normal=mins>=540&&mins<1320;
-    let auto="Fuori fascia automatica";
-    if(manual) auto="Modalità manuale attiva";
-    else if(windowOpen) auto="Bloccata · porta finestra aperta";
-    else if(t!==null&&h!==null){
-      if(t<=24) auto="OFF · temperatura ≤24°C";
-      else if(night||normal){ if(t>=26) auto=`ON consentito · ≥26°C${night?' · ventola quiet':''}`; else if(t>=24.5&&h>=65) auto=`ON consentito · ≥24,5°C + UR ≥65%${night?' · ventola quiet':''}`; else auto=night?"Fascia notturna · soglia non raggiunta":"Fascia normale · soglia non raggiunta"; }
-      else if(early){ if(t>=27) auto="ON consentito · ≥27°C"; else if(t>=26&&h>=65) auto="ON consentito · ≥26°C + UR ≥65%"; else auto="Fascia anticipata · soglia non raggiunta"; }
+  _s(id) { const eid=this._eid(id); return eid ? this._hass?.states?.[eid] : null; }
+  async _loadEntityConfig() {
+    if(this._entityConfigLoaded || this._entityConfigLoading) return;
+    this._entityConfigLoading=true;
+    try {
+      const res=await fetch(`${ENTITY_CONFIG_URL}?v=${Date.now()}`, {cache:"no-store"});
+      if(res.ok){
+        const json=await res.json();
+        const entities=json?.entities && typeof json.entities==="object" ? json.entities : {};
+        this._entityMap=entities;
+      }
+    } catch(_err) {
+      this._entityMap={};
+    } finally {
+      this._entityConfigLoaded=true;
+      this._entityConfigLoading=false;
+      this._renderPage(false);
     }
-    return `<div class="page">${this._zoneHero("camera",[
-      {label:"Temperatura",value:this._fmt("sensor.bedroom_temperature",1,"°C"),small:"Sensore"},
-      {label:"Umidità",value:this._fmt("sensor.bedroom_humidity",0,"%"),small:"Sensore"},
-      {label:"Clima",value:this._climateActive("climate.bedroom")?"Attivo":"Spento",small:this._attr("climate.bedroom","hvac_action","idle")},
-      {label:"Robot",value:v,small:`Batteria ${this._fmt("sensor.robot_vacuum_battery",0,"%")}`}
-    ])}${this._section("Luci e dispositivi")}<div class="grid">
-      ${this._control("light.bedroom_main","Luce camera","mdi:ceiling-light",this._on("light.bedroom_main")?"Accesa":"Spenta","toggle",3)}
-      ${this._control("light.bedroom_lamp_1","Lampada 1","mdi:lamp",this._on("light.bedroom_lamp_1")?"Accesa":"Spenta","toggle",3)}
-      ${this._control("light.bedroom_lamp_2","Lampada 2","mdi:lamp",this._on("light.bedroom_lamp_2")?"Accesa":"Spenta","toggle",3)}
-      ${this._control("light.bedroom_led","LED camera","mdi:led-strip-variant",this._on("light.bedroom_led")?"Accesi":"Spenti","toggle",3)}
-      ${this._control("switch.bedroom_tv","Presa TV camera","mdi:television",this._on("switch.bedroom_tv")?"Accesa":"Spenta",
+  }
+  _eid(id) {
+    if(!ENTITY_KEYS.has(id)) return id;
+    const mapped=this._entityMap?.[id];
+    return typeof mapped==="string" && mapped.trim() ? mapped.trim() : null;
+  }
+  _configured(id) { const eid=this._eid(id); return !!eid && !!this._hass?.states?.[eid]; }
+  _configuredCount() { return [...ENTITY_KEYS].filter(id=>this._eid(id)).length; }
+  _configNotice() {
+    const configured=this._configuredCount();
+    if(configured>0) return "";
+    return `<div class="alert warn"><ha-icon icon="mdi:cog-alert-outline"></ha-icon><div><strong>Configurazione entità richiesta</strong><span>Apri /config/www/casa-dashboard-entities.json, creato automaticamente dall’integrazione, e associa le entità del tuo Home Assistant. La dashboard resta sicura e non invia comandi alle entità non configurate.</span></div></div>`;
+  }
+
+  _state(id, fallback="—") {
+    const pending=this._optimistic.get(id);
+    if(pending && Date.now()-pending.at < 3500) return pending.state;
+    const s=this._s(id)?.state;
+    return (!s || ["unknown","unavailable","none",""].includes(s)) ? fallback : s;
+  }
+  _on(id) { return this._state(id,"off") === "on"; }
+  _num(id, fallback=null) { const v=parseFloat(this._state(id,"")); return Number.isFinite(v)?v:fallback; }
+  _attr(id, key, fallback=null) { const v=this._s(id)?.attributes?.[key]; return v ?? fallback; }
+  _fmt(id, digits=1, unit=null) {
+    const n=this._num(id,null); if(n===null) return "—";
+    const u=unit ?? this._attr(id,"unit_of_measurement","");
+    return `${n.toFixed(digits)}${u ? ` ${u}` : ""}`;
+  }
+  _fmtLuxCompact(id, digits=1){
+    const n=this._num(id,null); if(n===null) return "—";
+    if(Math.abs(n) >= 1000) return `${(n/1000).toFixed(digits)} klx`;
+    return `${n.toFixed(0)} lx`;
+  }
+  _fmtLuxExact(id){
+    const n=this._num(id,null); if(n===null) return "—";
+    return `${new Intl.NumberFormat('it-IT',{maximumFractionDigits:0}).format(n)} lx`;
+  }
+  _luxLabel(id){
+    const n=this._num(id,null); if(n===null) return "—";
+    const outdoor=id==="sensor.weather_solar_lux";
+    if(outdoor) return n>=40000?"Luce forte":n>=20000?"Luce buona":"Luce bassa";
+    return n>=500?"Luce forte":n>=100?"Luce buona":"Luce bassa";
+  }
+  _luxTone(id){
+    const n=this._num(id,null); if(n===null) return "state-off";
+    const outdoor=id==="sensor.weather_solar_lux";
+    if(outdoor) return n>=40000?"state-good":n>=20000?"state-active":"state-off";
+    return n>=500?"state-good":n>=100?"state-active":"state-off";
+  }
+  _radLabel(id){
+    const n=this._num(id,null); if(n===null) return "—";
+    return n>=350?"Radiazione forte":n>=150?"Radiazione moderata":n>=30?"Radiazione bassa":"Radiazione minima";
+  }
+  _radTone(id){
+    const n=this._num(id,null); if(n===null) return "state-off";
+    return n>=350?"state-good":n>=150?"state-active":n>=30?"state-warn":"state-off";
+  }
+  _fmtAcPowerFromCurrent(currentId, voltageId, digits=2){
+    const a=this._num(currentId,null), v=this._num(voltageId,null);
+    if(a===null || v===null) return "—";
+    return `${((a*v)/1000).toFixed(digits)} kW`;
+  }
+  _esc(v) { return String(v ?? "").replace(/[&<>'"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c])); }
+  _icon(icon, cls="") { return `<div class="iconbox ${cls}"><ha-icon icon="${icon}"></ha-icon></div>`; }
+  _setOptimistic(id,state){ this._optimistic.set(id,{state,at:Date.now()}); this._renderPage(false); }
+  _syncOptimistic(){
+    const now=Date.now();
+    for(const [id,p] of this._optimistic){
+      const eid=this._eid(id); const actual=eid?this._hass?.states?.[eid]?.state:null;
+      if(actual===p.state || now-p.at>3500) this._optimistic.delete(id);
+    }
+  }
+  _scheduleRender(){
+    if(this._pointerBusy){ this._renderPending=true; return; }
+    if(this._renderTimer) return;
+    this._renderTimer=setTimeout(()=>{
+      this._renderTimer=null;
+      if(this._pointerBusy){ this._renderPending=true; return; }
+      this._renderPage(false);
+    },70);
+  }
+  _countOn(list) { return list.filter(id=>this._on(id)).length; }
+  _openCount() { return OPENINGS.filter(id=>this._on(id)).length; }
+  _climateActive(id) { const st=this._state(id,"off"); const act=this._attr(id,"hvac_action",""); return st!=="off" || ["heating","cooling","drying","fan"].includes(act); }
+  _coverOpen(id, invertedPosition=false) {
+    const p=this._optimistic.get(id); if(p && ["open","closed"].includes(p.state)) return p.state==="open";
+    return invertedPosition ? Number(this._attr(id,"current_position",0))>5 : this._state(id)==="open";
+  }
+  _imageUrl(id){ const p=this._attr(id,"entity_picture",""); return p ? this._esc(p) : ""; }
+  _firstId(ids=[]){ return ids.find(id=>this._s(id)) || ids[0] || ""; }
+  _firstState(ids=[], fallback="—"){ const id=this._firstId(ids); return id ? this._state(id,fallback) : fallback; }
+  _firstNum(ids=[], fallback=null){ const id=this._firstId(ids); return id ? this._num(id,fallback) : fallback; }
+  _firstFmt(ids=[], digits=1, unit=null){ const id=this._firstId(ids); return id ? this._fmt(id,digits,unit) : "—"; }
+  _fmtPowerAuto(idOrIds, digits=2){
+    const ids = Array.isArray(idOrIds) ? idOrIds : [idOrIds];
+    const id = this._firstId(ids);
+    if(!id) return "—";
+    const n = this._num(id, null);
+    if(n===null) return "—";
+    const rawUnit = String(this._attr(id, "unit_of_measurement", "") || "").toLowerCase();
+    if(rawUnit === 'w' || (!rawUnit && Math.abs(n) >= 100)) return `${(n/1000).toFixed(digits)} kW`;
+    if(rawUnit === 'kw') return `${n.toFixed(digits)} kW`;
+    return `${n.toFixed(digits)} ${rawUnit || 'kW'}`;
+  }
+  _powerValueAuto(idOrIds){
+    const ids = Array.isArray(idOrIds) ? idOrIds : [idOrIds];
+    const id = this._firstId(ids);
+    if(!id) return null;
+    let n = this._num(id, null);
+    if(n===null) return null;
+    const rawUnit = String(this._attr(id, "unit_of_measurement", "") || "").toLowerCase();
+    if(rawUnit === 'w' || (!rawUnit && Math.abs(n) >= 100)) n = n / 1000;
+    return n;
+  }
+  _fmtSignedPowerAuto(idOrIds, digits=2){
+    const n = this._powerValueAuto(idOrIds);
+    if(n===null) return "—";
+    const sign = n > 0 ? '+' : n < 0 ? '−' : '±';
+    return `${sign}${Math.abs(n).toFixed(digits)} kW`;
+  }
+  _fmtAbsPowerAuto(idOrIds, digits=2){
+    const n = this._powerValueAuto(idOrIds);
+    if(n===null) return "—";
+    return `${Math.abs(n).toFixed(digits)} kW`;
+  }
+  _themeIsLight(){
+    const v = getComputedStyle(this).getPropertyValue('--primary-background-color').trim();
+    if(!v) return false;
+    let r=255,g=255,b=255;
+    if(v.startsWith('#')){
+      const h=v.slice(1);
+      if(h.length===3){ r=parseInt(h[0]+h[0],16); g=parseInt(h[1]+h[1],16); b=parseInt(h[2]+h[2],16); }
+      else if(h.length>=6){ r=parseInt(h.slice(0,2),16); g=parseInt(h.slice(2,4),16); b=parseInt(h.slice(4,6),16); }
+    } else {
+      const m=v.match(/rgba?\(([^)]+)\)/i);
+      if(m){ const p=m[1].split(',').map(s=>parseFloat(s.trim())); [r,g,b]=p; }
+    }
+    const luminance = (0.2126*r + 0.7152*g + 0.0722*b) / 255;
+    return luminance > 0.62;
+  }
+  _applyThemeMode(){
+    const shell = this.shadowRoot?.querySelector('.app-shell');
+    if(!shell) return;
+    const light = this._themeIsLight();
+    shell.classList.toggle('theme-light', light);
+    shell.classList.toggle('theme-dark', !light);
+  }
+  _windDir(id){ const deg=this._num(id,null); if(deg===null) return "—"; const dirs=['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSO','SO','OSO','O','ONO','NO','NNO']; return `${Math.round(deg)}° · ${dirs[Math.floor((deg+11.25)/22.5)%16]}`; }
+  _metricTone(entity,value=""){
+    const st=this._state(entity,""); const val=String(value).toLowerCase();
+    if((entity.includes("wleak")||entity.includes("water_leak")) && this._on(entity)) return "state-bad";
+    if(entity.includes("tank_status") && this._on(entity)) return "state-bad";
+    if(entity==="alarm_control_panel.home_alarm") return st==="triggered"?"state-bad":st==="disarmed"?"state-warn":"state-good";
+    if(entity.startsWith("binary_sensor.") && this._on(entity)) return entity.includes("motion")||entity.includes("occupancy")||entity.includes("occupazione")?"state-active":"state-warn";
+    if(["aperta","aperto","sbloccata","rilevata","rilevato","pieno","allarme"].some(x=>val.includes(x))) return val.includes("perdita")||val.includes("pieno")||val.includes("allarme")?"state-bad":"state-warn";
+    if(["accesa","acceso","attivo","attiva","occupato","in carica","cleaning"].some(x=>val.includes(x))) return "state-active";
+    if(["chiusa","chiuso","spenta","spento","libero","assente","ok","nessuna"].some(x=>val.includes(x))) return "state-good";
+    return "";
+  }
+  _controlTone(entity,on){
+    if(!on) return "state-off";
+    if(entity.startsWith("light.

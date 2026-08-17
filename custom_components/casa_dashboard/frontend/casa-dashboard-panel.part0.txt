@@ -143,6 +143,22 @@ const ENTITY_KEYS = new Set([
   "sensor.robot_vacuum_battery",
   "sensor.robot_vacuum_cleaned_area",
   "sensor.robot_vacuum_cleaning_duration",
+  "sensor.solar_battery_charged_today",
+  "sensor.solar_battery_discharged_today",
+  "sensor.solar_battery_losses_today",
+  "sensor.solar_battery_mode",
+  "sensor.solar_battery_power",
+  "sensor.solar_battery_soc",
+  "sensor.solar_energy_today",
+  "sensor.solar_grid_power",
+  "sensor.solar_load_power",
+  "sensor.solar_pv1_current",
+  "sensor.solar_pv1_power",
+  "sensor.solar_pv1_voltage",
+  "sensor.solar_pv2_current",
+  "sensor.solar_pv2_power",
+  "sensor.solar_pv2_voltage",
+  "sensor.solar_pv_power",
   "sensor.utility_room_humidity",
   "sensor.utility_room_temperature",
   "sensor.wallbox_board_temperature",
@@ -246,7 +262,7 @@ class CasaDashboardPanel extends HTMLElement {
             <div class="app-identity">
               <div class="app-icon"><ha-icon icon="mdi:home-assistant"></ha-icon></div>
               <div class="brand">
-                <div class="brand-line"><div class="brand-title">Casa</div><span class="version-badge">1.0.0 Community</span></div>
+                <div class="brand-line"><div class="brand-title">Casa</div><span class="version-badge">1.1.0 Community</span></div>
                 <div class="brand-subtitle">Home Assistant · Community Dashboard</div>
               </div>
             </div>
@@ -254,13 +270,11 @@ class CasaDashboardPanel extends HTMLElement {
           <div class="nav-scroller"><nav class="nav" id="nav"></nav></div>
         </header>
         <main id="content"><div class="loading">Caricamento Casa Dashboard…</div></main>
-        <footer><span>Casa Dashboard Community · v1.0.0 · Realizzato da Fabio Vittori</span><a class="coffee-link" href="https://ko-fi.com/fabvittori" target="_blank" rel="noopener noreferrer">☕ Offrimi un caffè</a></footer>
+        <footer><span>Casa Dashboard Community · v1.1.0 · Realizzato da Fabio Vittori</span><a class="coffee-link" href="https://ko-fi.com/fabvittori" target="_blank" rel="noopener noreferrer">☕ Offrimi un caffè</a></footer>
       </div>
     `;
     this.shadowRoot.addEventListener("click", (ev) => this._handleClick(ev));
   }
 
   _styles() {
-    return `
-      :host{display:block;min-height:100vh;background:var(--primary-background-color);color:var(--primary-text-color);font-family:var(--paper-font-body1_-_font-family,Roboto,Arial,sans-serif)}
-      *{box-sizing:border-box} button{font:inherit} .app-shell{min-heig
+   

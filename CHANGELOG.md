@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.1.0 - 2026-08-17
+
+- Portato nella Community il redesign premium/app-like della dashboard personale v4.2.9, mantenendo entità e versioning separati.
+- Nuova Panoramica con hero/scena di casa e gerarchia visiva aggiornata.
+- Migliorati avvisi porta d'ingresso, confronto comfort Cucina e composizione Camera.
+- Aggiunte etichette umane per lux e radiazione solare, con formato compatto `klx`.
+- Riorganizzata completamente la sezione meteo del Balcone.
+- Aggiunta sezione opzionale Energia solare con FV, due canali/falde, casa, rete e batteria.
+- Aggiunte 16 chiavi logiche `sensor.solar_*`; totale mappa entità: 173.
+- Aggiunta migrazione non distruttiva del file `/config/www/casa-dashboard-entities.json`: le nuove chiavi vengono aggiunte senza sovrascrivere le associazioni esistenti.
+- Migliorata la sezione Garage/Wallbox con potenza, carico contatore, energia sessione e limite ricarica in kW con A/V di dettaglio.
+- Potenze FV/Wallbox normalizzate automaticamente da W o kW.
+- Mantenuta la gestione sicura delle entità non configurate e il supporto tema chiaro/scuro.
+
 ## 1.0.0 - 2026-08-13
 
 - Prima release pubblica di Casa Dashboard Community.
