@@ -12,7 +12,7 @@ from homeassistant.helpers import config_validation as cv
 
 from .const import DOMAIN, PANEL_ICON, PANEL_PATH, PANEL_TITLE, STATIC_URL
 
-VERSION = "1.1.0"
+VERSION = "1.1.1"
 ENTITY_CONFIG_FILENAME = "casa-dashboard-community-entities.json"
 
 CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)

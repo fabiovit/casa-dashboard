@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.1.1 - 2026-08-17
+
+- Correzione strutturale dell’installazione HACS: integrazione spostata definitivamente in `custom_components/casa_dashboard_community`.
+- Domain dedicato `casa_dashboard_community`, separato dalla dashboard personale `casa_dashboard`.
+- Pannello, static path, web component e file entità dedicati alla Community.
+- La Community può ora convivere nella stessa istanza Home Assistant con la Casa Dashboard personale senza sovrascriverla.
+- Confermate le 173 chiavi logiche configurabili e tutte le funzionalità introdotte nella v1.1.0.
+- README aggiornato con pulsante **Add to HACS** e istruzioni di installazione corrette.
+
 ## 1.1.0 - 2026-08-17
 
 - Portato nella Community il redesign premium/app-like della dashboard personale v4.2.9, mantenendo entità e versioning separati.
