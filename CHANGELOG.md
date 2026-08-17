@@ -1,5 +1,16 @@
 # Changelog
 
+
+## 1.1.4 - 2026-08-17
+
+- Stabilizzato il rendering delle card: niente più sfarfallii durante gli aggiornamenti di Home Assistant.
+- Aggiunta ricerca delle entità anche per nome assegnato (`friendly_name`), oltre a entity_id e chiavi Community.
+- I suggerimenti mostrano nome leggibile ed entity_id, salvando sempre l'entity_id reale.
+- Applicata visibilità adattiva rigorosa a tutte le pagine: funzioni non configurate non generano più stati o fallback grafici.
+- Nascosti automaticamente meteo, clima, finestre, tende, automazioni, sicurezza, energia e altri blocchi quando mancano le relative entità.
+- Mantenute le 173 associazioni configurabili e la configurazione guidata in-dashboard.
+- Rimossi artefatti `__pycache__` dal pacchetto di distribuzione.
+
 ## 1.1.3 - 2026-08-17
 
 - aggiunta configurazione guidata delle 173 entità direttamente dalla dashboard;

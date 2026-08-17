@@ -1,7 +1,25 @@
-lcony_bedroom")?"Accesa":"Spenta","toggle",4)}
+ing=hasLightning&&lightningCount>0&&lightningDistance<=5, water=this._on("binary_sensor.balcony_water"), motion=this._on("binary_sensor.balcony_motion"), occupied=this._on("binary_sensor.balcony_occupancy"), uv=this._num("sensor.weather_uv_index",0), manual=this._on("input_boolean.blinds_manual_mode");
+    const windLevel=(gust>=24||wind>=18)?"bad":(gust>=15||wind>=10)?"warn":"good";
+    const rainLevel=rain?"bad":rainRate>0?"warn":"good";
+    const dpc=this._state("binary_sensor.weather_storm_alert","—"), dpcLevel=Number(this._attr("binary_sensor.weather_storm_alert","level",1));
+    const ultima=this._state("input_datetime.blinds_last_wind_raise","—");
+    const nowTs=Date.now()/1000; const lastTs=Date.parse(ultima.replace(' ','T'))/1000; const block=Number.isFinite(lastTs)&&(nowTs-lastTs)<3600;
+    let discesa="Fuori fascia o sole insufficiente"; const nextSet=Date.parse(this._attr("sun.sun","next_setting","")||"")/1000; const secSun=nextSet-nowTs; const tempoOk=new Date().getHours()>=14&&this._state("sun.sun")==="above_horizon"&&secSun>3600; if(rain) discesa="Bloccata · pioggia"; else if(lightning) discesa="Bloccata · fulmini ≤5 km"; else if(gust>=15||wind>=10) discesa="Bloccata · vento"; else if(block) discesa="Bloccata · attesa 60 min dopo vento"; else if(tempoOk&&lux>=40000&&rad>=350) discesa="Condizioni OK per abbassare"; else if(tempoOk&&(lux>=20000||rad>=180)) discesa="Luminoso, ma non abbastanza";
+    let risalita="Nessuna condizione attiva"; const fasciaSerale=this._state("sun.sun")==="above_horizon"&&secSun>600&&secSun<=5400, preTramonto=this._state("sun.sun")==="above_horizon"&&secSun>=0&&secSun<=600, luceBassa=(fasciaSerale&&lux<1500&&rad<13)||(!fasciaSerale&&!preTramonto&&lux<3500&&rad<30), prevenzioneTemporale=lux<15000&&rad<150&&(gust>=18||wind>=12||rainRate>0||rain); if(preTramonto) risalita="10 minuti prima del tramonto"; else if(rain) risalita="Pioggia"; else if(gust>=24) risalita="Raffica ≥24 km/h"; else if(wind>=18) risalita="Vento medio ≥18 km/h"; else if(lightning) risalita="Fulmini entro 5 km"; else if(prevenzioneTemporale) risalita="Possibile temporale"; else if(luceBassa) risalita=fasciaSerale?"Luce bassa serale":"Luce bassa diurna";
+    const weatherStatus=rain?"Pioggia rilevata":lightning?"Fulmini vicini":(gust>=24||wind>=18)?"Vento forte":(gust>=15||wind>=10)?"Vento moderato":preTramonto?"Tramonto vicino":luceBassa?"Luce bassa":(lux>=40000&&rad>=350)?"Sole forte":(lux>=20000&&rad>=180)?"Luminoso":"Meteo tranquillo";
+    const weatherIcon=rain?"mdi:weather-pouring":lightning?"mdi:lightning-bolt":(gust>=15||wind>=10)?"mdi:weather-windy":preTramonto?"mdi:weather-sunset-down":(lux>=40000&&rad>=350)?"mdi:white-balance-sunny":"mdi:weather-partly-cloudy";
+    const discesaLevel=manual?"warn":(rain||lightning||gust>=24||wind>=18)?"bad":(gust>=15||wind>=10||block)?"warn":(tempoOk&&lux>=40000&&rad>=350)?"good":"warn";
+    const risalitaLevel=manual?"warn":(rain||lightning||gust>=24||wind>=18)?"bad":(preTramonto||luceBassa||prevenzioneTemporale)?"warn":"good";
+    return `<div class="page">${hasWeather?`<div class="weather-hero"><div class="weather-head"><div class="weather-now"><div class="weather-icon"><ha-icon icon="${weatherIcon}"></ha-icon></div><div><div class="hero-overline">METEO CASA</div><div class="weather-temp">${this._configured("sensor.weather_outdoor_temperature")?this._fmt("sensor.weather_outdoor_temperature",1,"°C"):"—"}</div><div class="weather-status">${weatherStatus}</div><div class="weather-sub">${this._configured("sensor.weather_feels_like_temperature")?`Percepita ${this._fmt("sensor.weather_feels_like_temperature",1,"°C")}`:""}${this._configured("sensor.weather_outdoor_humidity")?` · Umidità ${this._fmt("sensor.weather_outdoor_humidity",0,"%")}`:""}</div></div></div><div class="weather-station">Stazione meteo</div></div><div class="weather-strip">${hasRain?`<div class="weather-chip"><div class="k">Pioggia</div><div class="v">${rain?"🌧️ Rilevata":"✅ Asciutto"}</div></div>`:""}${hasWind?`<div class="weather-chip"><div class="k">Vento</div><div class="v">${this._fmt("sensor.weather_wind_speed",1,"km/h")}</div></div>`:""}${hasSun?`<div class="weather-chip"><div class="k">Sole</div><div class="v">${this._luxLabel("sensor.weather_solar_lux")} · ${this._fmtLuxCompact("sensor.weather_solar_lux")}</div></div>`:""}${hasLightning?`<div class="weather-chip"><div class="k">Fulmini</div><div class="v">${lightning?"⚡ ≤5 km":lightningCount>0?"⚡ Lontani":"✅ Nessuno"}</div></div>`:""}</div></div>`:""}
+    ${hasBalconyControls?this._section(hasBlinds?"Tende, luci e dispositivi":"Luci e dispositivi",hasBlinds?"Controlli configurati":"Dispositivi configurati"):""}<div class="grid">
+      ${this._control("input_boolean.blinds_manual_mode","Modalità manuale tende","mdi:hand-back-right-outline",manual?"Automazioni tende sospese":"Gestione automatica attiva","toggle",12)}
+      ${hasBlinds&&hasWeather?`<div class="decision-card ${discesaLevel} span-6"><div class="eyebrow">↓ DISCESA TENDE</div><strong>${manual?"Modalità manuale attiva":discesa}</strong><p>Dopo le 14:00 · almeno 1h dal tramonto · ≥40.000 lx · ≥350 W/m² · raffica &lt;15 · vento &lt;10 · nessuna pioggia/fulmini · blocco vento scaduto.</p></div><div class="decision-card ${risalitaLevel} span-6"><div class="eyebrow">↑ RISALITA TENDE</div><strong>${manual?"Modalità manuale attiva":risalita}</strong><p>Pioggia · raffica ≥24 · vento ≥18 · fulmini ≤5 km · luce bassa · prevenzione temporale · risalita garantita 10 min prima del tramonto.</p></div>`:""}
+      ${this._coverControl("cover.balcony_bedroom_blind","Tenda balcone camera",false,6,"Posizione")}
+      ${this._coverControl("cover.balcony_kitchen_blind","Tenda balcone cucina",false,6,"Posizione")}
+      ${this._control("light.balcony_bedroom","Luce balcone camera","mdi:wall-sconce",this._on("light.balcony_bedroom")?"Accesa":"Spenta","toggle",4)}
       ${this._control("light.balcony_kitchen","Luce balcone cucina","mdi:wall-sconce",this._on("light.balcony_kitchen")?"Accesa":"Spenta","toggle",4)}
       ${this._control("switch.balcony_barbecue","Barbecue","mdi:grill",this._on("switch.balcony_barbecue")?"Acceso":"Spento","toggle",4)}
-    </div>${this._section("Locale tecnico")}<div class="grid">
+    </div>${hasUtility?this._section("Locale tecnico"):""}<div class="grid">
       ${this._metric("mdi:thermometer","Temperatura locale tecnico",this._fmt("sensor.utility_room_temperature",1,"°C"),"Locale tecnico",6,"sensor.utility_room_temperature")}
       ${this._metric("mdi:water-percent","Umidità locale tecnico",this._fmt("sensor.utility_room_humidity",0,"%"),"Locale tecnico",6,"sensor.utility_room_humidity")}
     </div>${(()=>{
@@ -53,75 +71,4 @@ lcony_bedroom")?"Accesa":"Spenta","toggle",4)}
               <div class="solar-sun"><ha-icon icon="mdi:white-balance-sunny"></ha-icon></div>
             </div>
             <div class="solar-prod-copy">
-              <span>Produzione live</span>
-              <strong>${this._fmtPowerAuto(found)}</strong>
-              <small>${this._firstFmt(todayIds,2,'kWh')} generati oggi · ${this._radLabel("sensor.weather_solar_radiation")} · ${this._fmt("sensor.weather_solar_radiation",0,"W/m²")}</small>
-            </div>
-            <div class="solar-pv-bars">
-              <div class="solar-pv-line">
-                <div class="solar-pv-meta"><span>Falda Est</span><strong>${pv1!==null?`${pv1.toFixed(2)} kW`:'—'}</strong><small>${this._firstFmt(pv1VoltIds,0,'V')} · ${this._firstFmt(pv1CurrIds,2,'A')}</small></div>
-                <div class="solar-pv-track"><div class="solar-pv-fill" style="width:${pv1!==null?Math.min(100,(pv1/pvMax)*100):0}%"></div></div>
-              </div>
-              <div class="solar-pv-line">
-                <div class="solar-pv-meta"><span>Falda Ovest</span><strong>${pv2!==null?`${pv2.toFixed(2)} kW`:'—'}</strong><small>${this._firstFmt(pv2VoltIds,0,'V')} · ${this._firstFmt(pv2CurrIds,2,'A')}</small></div>
-                <div class="solar-pv-track"><div class="solar-pv-fill west" style="width:${pv2!==null?Math.min(100,(pv2/pvMax)*100):0}%"></div></div>
-              </div>
-            </div>
-          </div>
-          <div class="solar-panel solar-battery-hero">
-            <div class="solar-battery-visual">
-              <div class="solar-battery-shell">
-                <div class="solar-battery-fill" style="height:${Math.max(12,battPct)}%"></div>
-                <div class="solar-battery-soc"><div><span>SOC</span><strong>${battStatus}</strong></div></div>
-              </div>
-            </div>
-            <div class="solar-battery-copy">
-              <div class="eyebrow">${battFlowLabel}</div>
-              <div class="power ${battTone}">${battFlow}<small></small></div>
-              <div class="desc">${battDesc}</div>
-              <div class="solar-energy-pills">
-                ${flowChips.map(c=>`<div class="solar-energy-pill"><span>${c.label}</span><strong>${c.value}</strong></div>`).join('')}
-              </div>
-            </div>
-          </div>
-          <div class="solar-panel solar-flow-card">
-            <div class="solar-flow-grid">
-              <div class="solar-node house">
-                <div class="solar-node-orb"><ha-icon icon="mdi:home-import-outline"></ha-icon></div>
-                <div class="solar-node-label">Casa</div>
-                <strong>${loadPower!==null?`${loadPower.toFixed(2)} kW`:'—'}</strong>
-                <small>Consumo istantaneo della casa</small>
-                <div class="solar-node-chip active">Consumo casa</div>
-              </div>
-              <div class="solar-node inverter">
-                <div class="solar-node-orb"><ha-icon icon="mdi:solar-power-variant"></ha-icon></div>
-                <div class="solar-node-label">Inverter</div>
-                <strong>${pvTotal!==null?`${pvTotal.toFixed(2)} kW`:'—'}</strong>
-                <small>Produzione fotovoltaica disponibile</small>
-                <div class="solar-node-chip active">Energia FV</div>
-              </div>
-              <div class="solar-node battery">
-                <div class="solar-node-orb"><ha-icon icon="mdi:battery-high"></ha-icon></div>
-                <div class="solar-node-label">Batteria</div>
-                <strong class="${battTone}">${battFlow}</strong>
-                <small>${battStatus} · ${battFlowLabel}</small>
-                <div class="solar-node-chip ${battTone}">${battTone==='good'?'Carica':battTone==='bad'?'Scarica':'Batteria'}</div>
-              </div>
-              <div class="solar-node grid">
-                <div class="solar-node-orb"><ha-icon icon="mdi:transmission-tower-export"></ha-icon></div>
-                <div class="solar-node-label">Rete</div>
-                <strong>${gridPower!==null?`${Math.abs(gridPower).toFixed(2)} kW`:'—'}</strong>
-                <small>${gridLabel}</small>
-                <div class="solar-node-chip ${gridTone}">${gridPower!==null?(gridPower>0?'Prelievo':gridPower<0?'Export':'Stabile'):'Rete'}</div>
-              </div>
-            </div>
-          </div>
-        </div>`;
-    })()}${this._section("Quadro meteo","Le 4 informazioni che servono davvero a colpo d’occhio")}<div class="grid">
-      ${this._metric("mdi:thermometer","Temperatura esterna",this._fmt("sensor.weather_outdoor_temperature",1,"°C"),`Percepita ${this._fmt("sensor.weather_feels_like_temperature",1,"°C")} · Umidità ${this._fmt("sensor.weather_outdoor_humidity",0,"%")}`,3,"sensor.weather_outdoor_temperature")}
-      ${this._metric("mdi:weather-windy","Vento attuale",this._fmt("sensor.weather_wind_speed",1,"km/h"),`Raffica ${this._fmt("sensor.weather_wind_gust",1,"km/h")} · ${wind>=18?"Forte":wind>=10?"Da monitorare":"Tranquillo"}`,3,"sensor.weather_wind_speed",windLevel==="bad"?"state-bad":windLevel==="warn"?"state-warn":"state-good")}
-      ${this._metric("mdi:weather-rainy","Pioggia",rain?"Rilevata":"Assente",`Rate ${this._fmt("sensor.weather_rain_rate",1,"mm/h")} · Oggi ${this._fmt("sensor.weather_rain_daily",1,"mm")}`,3,"sensor.weather_rain_rate",rain?"state-bad":rainRate>0?"state-warn":"state-good")}
-      ${this._metric("mdi:white-balance-sunny","Sole e UV",this._luxLabel("sensor.weather_solar_lux"),`${this._fmtLuxCompact("sensor.weather_solar_lux")} · ${this._fmtLuxExact("sensor.weather_solar_lux")} · ${this._radLabel("sensor.weather_solar_radiation")} ${this._fmt("sensor.weather_solar_radiation",0,"W/m²")} · UV ${this._fmt("sensor.weather_uv_index",1)}`,3,"sensor.weather_solar_lux",this._luxTone("sensor.weather_solar_lux"))}
-    </div>${this._section("Atmosfera esterna","Temperatura, umidità e comfort percepito")}<div class="grid">
-      ${this._metric("mdi:thermometer","Temperatura",this._fmt("sensor.weather_outdoor_temperature",1,"°C"),"Esterno",3,"sensor.weather_outdoor_temperature")}
-      ${this.
+              <span>Produzione l

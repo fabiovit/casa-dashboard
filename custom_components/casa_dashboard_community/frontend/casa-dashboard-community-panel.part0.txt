@@ -237,6 +237,7 @@ class CasaDashboardPanel extends HTMLElement {
     this._configDialogOpen = false;
     this._configFilter = "";
     this._configDraft = {};
+    this._lastStateFingerprint = "";
   }
 
   set panel(value) { this._panel = value; }
@@ -245,7 +246,13 @@ class CasaDashboardPanel extends HTMLElement {
     this._syncOptimistic();
     if (!this._rendered) this._renderShell();
     this._loadEntityConfig();
-    this._scheduleRender();
+    // Home Assistant publishes many hass updates that are unrelated to this dashboard.
+    // Rebuilding the whole page on every update replaces hovered cards in the DOM and
+    // causes visible flicker. Once the entity map is loaded, render only when one of
+    // the configured entities has actually changed.
+    if (!this._entityConfigLoaded || this._stateFingerprint() !== this._lastStateFingerprint) {
+      this._scheduleRender();
+    }
   }
 
   _upgradeProperty(prop) {
@@ -274,9 +281,4 @@ class CasaDashboardPanel extends HTMLElement {
       <div class="app-shell">
         <header class="topbar">
           <div class="topbar-main">
-            <button class="menu-btn" data-action="ha-menu" aria-label="Apri menu Home Assistant"><ha-icon icon="mdi:menu"></ha-icon></button>
-            <div class="app-identity">
-              <div class="app-icon"><ha-icon icon="mdi:home-assistant"></ha-icon></div>
-              <div class="brand">
-                <div class="brand-line"><div class="brand-title">Casa</div><span class="version-badge">1.1.3 Community</span></div>
-                <div class="brand-subtitle">Hom
+            <button class="

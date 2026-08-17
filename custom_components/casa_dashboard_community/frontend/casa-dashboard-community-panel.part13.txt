@@ -1,4 +1,32 @@
-tà zona",this._fmt("sensor.heating_humidity",0,"%"),"Circuito 0",3,"sensor.heating_humidity")}
+
+    if(manual) auto="Modalità manuale attiva";
+    else if(windowOpen) auto="Bloccata · finestra aperta";
+    else if(t!==null&&h!==null){
+      if(t<=24) auto="OFF · temperatura ≤24°C";
+      else if(early){ if(t>=27) auto="ON consentito · ≥27°C"; else if(t>=26&&h>=65) auto="ON consentito · ≥26°C + UR ≥65%"; else auto="Fascia anticipata · soglia non raggiunta"; }
+      else if(normal){ if(t>=26) auto="ON consentito · ≥26°C"; else if(t>=24.5&&h>=65) auto="ON consentito · ≥24,5°C + UR ≥65%"; else auto="Fascia normale · soglia non raggiunta"; }
+    }
+    return `<div class="page">${this._zoneHero("cucina",[
+      {label:"Temperatura",value:this._fmt("sensor.kitchen_temperature",1,"°C"),small:"Sensore"},
+      {label:"Umidità",value:this._fmt("sensor.kitchen_humidity",0,"%"),small:"Sensore"},
+      {label:"Clima",value:this._climateActive("climate.kitchen")?"Attivo":"Spento",small:this._attr("climate.kitchen","hvac_action","idle")},
+      {label:"Finestra",value:windowOpen?"Aperta":"Chiusa",small:"Porta finestra"}
+    ])}${this._section("Comfort e clima")}<div class="grid">${this._climateBlock("climate.kitchen","sensor.kitchen_temperature","sensor.kitchen_humidity","CLIMATIZZATORE CUCINA","07:00–09:00 anticipata · 09:00–22:00 normale")}
+      ${this._control("input_boolean.kitchen_climate_manual","Modalità manuale clima","mdi:hand-back-right-outline",manual?"Automazioni clima sospese":"Gestione automatica attiva","toggle",12)}
+      ${this._anyConfigured(["climate.kitchen","input_boolean.kitchen_climate_manual","sensor.kitchen_temperature","sensor.kitchen_humidity","binary_sensor.kitchen_door_window"])?`<div class="metric span-12 ${manual?'state-warn':windowOpen?'state-warn':this._climateActive("climate.kitchen")?'state-active':'state-good'}"><div class="metric-icon"><div class="label">AUTO CLIMA CUCINA</div><ha-icon icon="mdi:thermostat-auto"></ha-icon></div><div><div class="value" style="font-size:19px">${auto}</div><div class="foot">07:00–09:00: ON ≥27°C oppure ≥26°C con UR ≥65% · 09:00–22:00: ON ≥26°C oppure ≥24,5°C con UR ≥65% · OFF ≤24°C · finestra aperta 2 min → OFF · BOOST cucina invariato</div></div></div>`:""}
+    </div>${this._section("Luci, tenda ed elettrodomestici")}<div class="grid">
+      ${this._control("light.kitchen_main","Luce cucina","mdi:ceiling-light",this._on("light.kitchen_main")?"Accesa":"Spenta","toggle",4)}
+      ${this._control("light.kitchen_led","LED cucina","mdi:led-strip-variant",this._on("light.kitchen_led")?"Accesi":"Spenti","toggle",4)}
+      ${this._coverControl("cover.kitchen_blind","Tenda cucina",true,4)}
+      ${this._control("switch.kitchen_hood","Cappa","mdi:stove-hood",this._on("switch.kitchen_hood")?"Accesa":"Spenta","toggle",3)}
+      ${this._control("switch.kitchen_appliance_1","Elettrodomestico 1","mdi:blender",this._on("switch.kitchen_appliance_1")?"Acceso":"Spento","toggle",3)}
+      ${this._control("switch.kitchen_appliance_2","Elettrodomestico 2","mdi:air-fryer",this._on("switch.kitchen_appliance_2")?"Accesa":"Spenta","toggle",3)}
+      ${this._control("switch.kitchen_tv","TV cucina","mdi:television",this._on("switch.kitchen_tv")?"Accesa":"Spenta","toggle",3)}
+    </div>${this._section("Riscaldamento e ACS")}<div class="grid">
+      ${this._metric("mdi:radiator","Termostato casa",this._state(heat,"—"),`Azione ${heatAction}`,3,heat)}
+      ${this._metric("mdi:home-thermometer","Temp zona",this._fmt("sensor.heating_current_temperature",1,"°C"),"Circuito 0",3,"sensor.heating_current_temperature")}
+      ${this._metric("mdi:target-variant","Target zona",this._fmt("sensor.heating_target_temperature",1,"°C"),"Circuito 0",3,"sensor.heating_target_temperature")}
+      ${this._metric("mdi:water-percent","Umidità zona",this._fmt("sensor.heating_humidity",0,"%"),"Circuito 0",3,"sensor.heating_humidity")}
       ${this._metric("mdi:fire","Stato circuito",this._state("sensor.heating_state","—"),"Riscaldamento",4,"sensor.heating_state")}
       ${this._metric("mdi:water-boiler","Acqua calda ACS",this._state("water_heater.domestic_hot_water","—"),"Impianto",4,"water_heater.domestic_hot_water")}
       ${this._metric("mdi:calendar-clock","Programma",this._state("calendar.heating_program","—"),"Riscaldamento",4,"calendar.heating_program")}
@@ -54,36 +82,4 @@ tà zona",this._fmt("sensor.heating_humidity",0,"%"),"Circuito 0",3,"sensor.heat
       ${this._coverControl("cover.bathroom_blind","Tenda bagno",true,3)}
       ${this._configured("script.bathroom_custom_action")?`<div class="control span-3 state-on good-tone">${this._icon("mdi:cat","good")}<div class="control-main clickable" data-more="script.bathroom_custom_action"><div class="control-title">Azione personalizzata</div><div class="control-sub">Esegue lo script configurato</div></div><button class="switch-btn on" data-script="script.bathroom_custom_action" type="button">ESEGUI</button></div>`:""}
     </div>${this._section("Ambiente e presenza")}<div class="grid">
-      ${this._metric("mdi:thermometer","Temperatura",this._fmt("sensor.bathroom_temperature",1,"°C"),"Bagno",3,"sensor.bathroom_temperature")}
-      ${this._metric("mdi:water-percent","Umidità",this._fmt("sensor.bathroom_humidity",0,"%"),"Bagno",3,"sensor.bathroom_humidity")}
-      ${this._metric("mdi:weather-sunny","Luminosità",this._luxLabel("sensor.bathroom_illuminance"),`${this._fmtLuxExact("sensor.bathroom_illuminance")} · Sensore`,3,"sensor.bathroom_illuminance",this._luxTone("sensor.bathroom_illuminance"))}
-      ${this._metric("mdi:motion-sensor","Movimento",motion?"Rilevato":"Assente","Bagno",3,"binary_sensor.bathroom_motion")}
-      ${this._metric("mdi:account-group","Occupazione",occupied?"Occupato":"Libero","Bagno",3,"binary_sensor.bathroom_occupancy")}
-      ${this._metric("mdi:window-open","Finestra",windowOpen?"Aperta":"Chiusa","Bagno",3,"binary_sensor.bathroom_window")}
-      ${this._metric("mdi:vibrate","Vibrazione",vibration?"Rilevata":"Assente","Finestra",3,"binary_sensor.bathroom_window_vibration")}
-      ${this._metric("mdi:door","Anta",anta?"Aperta":"Chiusa","Bagno",3,"binary_sensor.bathroom_cabinet_door")}
-      ${this._metric("mdi:water-alert","Perdita acqua",leak?"RILEVATA":"Nessuna","Sensore acqua",6,"binary_sensor.bathroom_water_leak",leak?"state-bad":"state-good")}
-    </div></div>`;
-  }
-
-  _camera(){
-    const windowOpen=this._on("binary_sensor.bedroom_door_window"), anta=this._on("binary_sensor.bedroom_window"), vibration=this._on("binary_sensor.bedroom_window_vibration"), v=this._state("vacuum.robot_vacuum","—"), map=this._imageUrl("image.robot_vacuum_map");
-    const t=this._num("sensor.bedroom_temperature",null), h=this._num("sensor.bedroom_humidity",null), manual=this._on("input_boolean.bedroom_climate_manual");
-    const now=new Date(), mins=now.getHours()*60+now.getMinutes();
-    const night=mins>=180&&mins<240, early=mins>=420&&mins<540, normal=mins>=540&&mins<1320;
-    let auto="Fuori fascia automatica";
-    if(manual) auto="Modalità manuale attiva";
-    else if(windowOpen) auto="Bloccata · porta finestra aperta";
-    else if(t!==null&&h!==null){
-      if(t<=24) auto="OFF · temperatura ≤24°C";
-      else if(night||normal){ if(t>=26) auto=`ON consentito · ≥26°C${night?' · ventola quiet':''}`; else if(t>=24.5&&h>=65) auto=`ON consentito · ≥24,5°C + UR ≥65%${night?' · ventola quiet':''}`; else auto=night?"Fascia notturna · soglia non raggiunta":"Fascia normale · soglia non raggiunta"; }
-      else if(early){ if(t>=27) auto="ON consentito · ≥27°C"; else if(t>=26&&h>=65) auto="ON consentito · ≥26°C + UR ≥65%"; else auto="Fascia anticipata · soglia non raggiunta"; }
-    }
-    return `<div class="page">${this._zoneHero("camera",[
-      {label:"Temperatura",value:this._fmt("sensor.bedroom_temperature",1,"°C"),small:"Sensore"},
-      {label:"Umidità",value:this._fmt("sensor.bedroom_humidity",0,"%"),small:"Sensore"},
-      {label:"Clima",value:this._climateActive("climate.bedroom")?"Attivo":"Spento",small:this._attr("climate.bedroom","hvac_action","idle")},
-      {label:"Robot",value:v,small:`Batteria ${this._fmt("sensor.robot_vacuum_battery",0,"%")}`}
-    ])}${this._section("Comfort e clima")}<div class="grid">${this._climateBlock("climate.bedroom","sensor.bedroom_temperature","sensor.bedroom_humidity","CLIMATIZZATORE CAMERA","03:00–04:00 · 07:00–09:00 anticipata · 09:00–22:00")}
-      ${this._control("input_boolean.bedroom_climate_manual","Modalità manuale clima","mdi:hand-back-right-outline",manual?"Automazioni clima sospese":"Gestione automatica attiva","toggle",12)}
-      <div class="metric span-12 ${manual?'state-warn':windowOpen?'state-warn':this._climateActive("climate.bedroom")?'state-active':'state-good'}"><div class
+     

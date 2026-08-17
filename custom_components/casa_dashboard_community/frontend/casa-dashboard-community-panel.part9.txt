@@ -1,4 +1,49 @@
-enderPage(false);
+this._num(id,null); if(n===null) return "—";
+    return n>=350?"Radiazione forte":n>=150?"Radiazione moderata":n>=30?"Radiazione bassa":"Radiazione minima";
+  }
+  _radTone(id){
+    const n=this._num(id,null); if(n===null) return "state-off";
+    return n>=350?"state-good":n>=150?"state-active":n>=30?"state-warn":"state-off";
+  }
+  _fmtAcPowerFromCurrent(currentId, voltageId, digits=2){
+    const a=this._num(currentId,null), v=this._num(voltageId,null);
+    if(a===null || v===null) return "—";
+    return `${((a*v)/1000).toFixed(digits)} kW`;
+  }
+  _esc(v) { return String(v ?? "").replace(/[&<>'"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c])); }
+  _icon(icon, cls="") { return `<div class="iconbox ${cls}"><ha-icon icon="${icon}"></ha-icon></div>`; }
+  _setOptimistic(id,state){ this._optimistic.set(id,{state,at:Date.now()}); this._renderPage(false); }
+  _syncOptimistic(){
+    const now=Date.now();
+    for(const [id,p] of this._optimistic){
+      const eid=this._eid(id); const actual=eid?this._hass?.states?.[eid]?.state:null;
+      if(actual===p.state || now-p.at>3500) this._optimistic.delete(id);
+    }
+  }
+  _stateFingerprint(){
+    if(!this._hass?.states || !this._entityConfigLoaded) return "";
+    const rows=[];
+    const seen=new Set();
+    for(const logical of ENTITY_KEYS){
+      const eid=this._eid(logical);
+      if(!eid || seen.has(eid)) continue;
+      seen.add(eid);
+      const st=this._hass.states[eid];
+      if(!st){ rows.push(`${eid}|missing`); continue; }
+      let attrs="";
+      try { attrs=JSON.stringify(st.attributes || {}); } catch(_err) {}
+      rows.push(`${eid}|${st.state}|${attrs}`);
+    }
+    return rows.join("\n");
+  }
+
+  _scheduleRender(){
+    if(this._pointerBusy){ this._renderPending=true; return; }
+    if(this._renderTimer) return;
+    this._renderTimer=setTimeout(()=>{
+      this._renderTimer=null;
+      if(this._pointerBusy){ this._renderPending=true; return; }
+      this._renderPage(false);
     },70);
   }
   _countOn(list) { return list.filter(id=>this._on(id)).length; }
@@ -123,24 +168,3 @@ enderPage(false);
       case "esterno": return this._on("input_boolean.pedestrian_gate") ? {level:"warn",text:"Cancellino aperto"}:{level:"good",text:"Accesso chiuso"};
       case "scale": return light(["light.stairs"]) ? {level:"blue",text:"Luce accesa"}:{level:"good",text:"Tutto ok"};
       case "ingresso": {
-        if(this._state("alarm_control_panel.home_alarm")==="triggered") return {level:"bad",text:"Allarme in corso"};
-        if(this._on("binary_sensor.entry_door")) return {level:"warn",text:"Porta aperta"};
-        if(this._on("input_boolean.entry_door_unlock")) return {level:"warn",text:"Porta sbloccata"};
-        return {level:"good",text:"Ingresso sicuro"}; }
-      case "disimpegno": return active(["binary_sensor.hallway_motion","binary_sensor.hallway_occupancy"]) ? {level:"blue",text:"Presenza rilevata"}:{level:"good",text:"Libero"};
-      case "bagno": {
-        if(this._on("binary_sensor.bathroom_water_leak")) return {level:"bad",text:"Perdita acqua"};
-        if(this._on("binary_sensor.bathroom_window")) return {level:"warn",text:"Finestra aperta"};
-        return this._climateActive("fan.bathroom_extractor") ? {level:"blue",text:"Aspiratore attivo"}:{level:"good",text:"Tutto ok"}; }
-      case "cucina": {
-        if(this._on("binary_sensor.kitchen_door_window")) return {level:"warn",text:"Porta finestra aperta"};
-        if(this._climateActive("climate.kitchen")) return {level:"blue",text:"Clima attivo"};
-        return light(["light.kitchen_main","light.kitchen_led"]) ? {level:"blue",text:"Luci accese"}:{level:"good",text:"Tutto ok"}; }
-      case "camera": {
-        if(this._on("binary_sensor.bedroom_door_window")) return {level:"warn",text:"Porta finestra aperta"};
-        if(this._climateActive("climate.bedroom")) return {level:"blue",text:"Clima attivo"};
-        const v=this._state("vacuum.robot_vacuum",""); if(["cleaning","returning","paused"].includes(v)) return {level:"blue",text:"Robot aspirapolvere attivo"};
-        return {level:"good",text:"Tutto ok"}; }
-      case "balcone": {
-        if(this._on("binary_sensor.weather_rain") || (this._num("sensor.weather_rain_rate",0)>=0.1)) return {level:"warn",text:"Pioggia rilevata"};
-        if(this._num("sensor.weather_wind_gust",0)>=24) return {level:"warn",tex

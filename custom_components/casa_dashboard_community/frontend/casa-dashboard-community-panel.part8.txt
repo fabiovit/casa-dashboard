@@ -1,4 +1,16 @@
-S.size;
+derPage(false);
+    }
+  }
+  _eid(id) {
+    if(!ENTITY_KEYS.has(id)) return id;
+    const mapped=this._entityMap?.[id];
+    return typeof mapped==="string" && mapped.trim() ? mapped.trim() : null;
+  }
+  _configured(id) { const eid=this._eid(id); return !!eid && !!this._hass?.states?.[eid]; }
+  _configuredCount() { return [...ENTITY_KEYS].filter(id=>this._eid(id)).length; }
+  _configNotice() {
+    const configured=this._configuredCount();
+    const total=ENTITY_KEYS.size;
     if(configured>=total) return "";
     const title=configured===0?"Configurazione entità richiesta":"Configurazione entità incompleta";
     const text=configured===0
@@ -28,7 +40,17 @@ S.size;
   }
   _entityOptions() {
     if(!this._hass?.states) return [];
-    return Object.keys(this._hass.states).sort((a,b)=>a.localeCompare(b));
+    return Object.entries(this._hass.states).map(([id,state])=>{
+      const name=String(state?.attributes?.friendly_name || "").trim();
+      return {id,name,label:name ? `${name} — ${id}` : id};
+    }).sort((a,b)=>(a.name || a.id).localeCompare(b.name || b.id, "it", {sensitivity:"base"}));
+  }
+  _entityIdFromFriendlyName(value) {
+    const raw=String(value || "").trim();
+    if(!raw || raw.includes(".")) return raw;
+    const normalized=raw.toLocaleLowerCase("it");
+    const matches=this._entityOptions().filter(item=>item.name && item.name.toLocaleLowerCase("it")===normalized);
+    return matches.length===1 ? matches[0].id : raw;
   }
   _renderConfigDialog() {
     if(!this._configDialogOpen) return "";
@@ -39,12 +61,12 @@ S.size;
     });
     const groups=new Map();
     for(const key of entries){ const g=this._configGroup(key); if(!groups.has(g)) groups.set(g,[]); groups.get(g).push(key); }
-    const datalist=this._entityOptions().map(e=>`<option value="${this._esc(e)}"></option>`).join("");
+    const datalist=this._entityOptions().map(e=>`<option value="${this._esc(e.id)}" label="${this._esc(e.label)}">${this._esc(e.label)}</option>`).join("");
     const configured=[...ENTITY_KEYS].filter(k=>(this._configDraft[k]||"").trim()).length;
     return `<div class="config-overlay" data-action="config-overlay-close">
       <section class="config-dialog" role="dialog" aria-modal="true" aria-label="Configura Casa Dashboard Community">
-        <div class="config-dialog-head"><div><div class="config-kicker">CASA DASHBOARD COMMUNITY</div><h2>Configura le entità</h2><p>Seleziona o digita le entity_id della tua installazione. Puoi lasciare vuote le funzioni che non utilizzi.</p></div><button class="config-close" data-action="config-close" type="button" aria-label="Chiudi"><ha-icon icon="mdi:close"></ha-icon></button></div>
-        <div class="config-toolbar"><label class="config-search"><ha-icon icon="mdi:magnify"></ha-icon><input id="configSearch" type="search" placeholder="Cerca stanza, funzione o chiave…" value="${this._esc(this._configFilter||"")}"></label><div class="config-progress"><strong>${configured}</strong><span>/ ${ENTITY_KEYS.size}</span></div></div>
+        <div class="config-dialog-head"><div><div class="config-kicker">CASA DASHBOARD COMMUNITY</div><h2>Configura le entità</h2><p>Cerca le entità anche con il nome assegnato in Home Assistant oppure digita direttamente la entity_id. Puoi lasciare vuote le funzioni che non utilizzi.</p></div><button class="config-close" data-action="config-close" type="button" aria-label="Chiudi"><ha-icon icon="mdi:close"></ha-icon></button></div>
+        <div class="config-toolbar"><label class="config-search"><ha-icon icon="mdi:magnify"></ha-icon><input id="configSearch" type="search" placeholder="Cerca stanza, funzione, chiave o nome entità…" value="${this._esc(this._configFilter||"")}"></label><div class="config-progress"><strong>${configured}</strong><span>/ ${ENTITY_KEYS.size}</span></div></div>
         <div class="config-scroll">${[...groups.entries()].map(([group,keys])=>`<div class="config-group"><div class="config-group-title">${group}<span>${keys.length}</span></div>${keys.map(key=>{ const value=this._configDraft[key] ?? this._entityMap[key] ?? ""; const domain=key.split(".")[0]; return `<label class="config-row"><div class="config-row-copy"><strong>${this._configLabel(key)}</strong><code>${key}</code></div><div class="config-field"><input data-config-key="${key}" list="haEntityList" placeholder="${domain}.…" value="${this._esc(value)}"><button type="button" data-action="config-clear" data-config-clear="${key}" aria-label="Svuota"><ha-icon icon="mdi:close-circle-outline"></ha-icon></button></div></label>`;}).join("")}</div>`).join("") || `<div class="config-empty">Nessuna associazione corrisponde alla ricerca.</div>`}</div>
         <datalist id="haEntityList">${datalist}</datalist>
         <div class="config-dialog-foot"><div class="config-hint"><ha-icon icon="mdi:shield-check-outline"></ha-icon> Le modifiche vengono salvate nel file Community separato.</div><div class="config-actions"><button class="secondary" data-action="config-close" type="button">Annulla</button><button class="primary" data-action="config-save" type="button"><ha-icon icon="mdi:content-save-outline"></ha-icon> Salva configurazione</button></div></div>
@@ -68,7 +90,13 @@ S.size;
       this._renderConfigLayer();
       requestAnimationFrame(()=>{ const next=this.shadowRoot.querySelector("#configSearch"); next?.focus(); next?.setSelectionRange(next.value.length,next.value.length); });
     });
-    layer.querySelectorAll("[data-config-key]").forEach(input=>input.addEventListener("input",ev=>{ this._configDraft[ev.target.dataset.configKey]=ev.target.value; }));
+    layer.querySelectorAll("[data-config-key]").forEach(input=>{
+      input.addEventListener("input",ev=>{ this._configDraft[ev.target.dataset.configKey]=ev.target.value; });
+      input.addEventListener("change",ev=>{
+        const resolved=this._entityIdFromFriendlyName(ev.target.value);
+        if(resolved!==ev.target.value){ ev.target.value=resolved; this._configDraft[ev.target.dataset.configKey]=resolved; }
+      });
+    });
   }
   async _saveConfigDialog() {
     const layer=this.shadowRoot.querySelector("#configLayer");
@@ -124,32 +152,4 @@ S.size;
     return n>=500?"state-good":n>=100?"state-active":"state-off";
   }
   _radLabel(id){
-    const n=this._num(id,null); if(n===null) return "—";
-    return n>=350?"Radiazione forte":n>=150?"Radiazione moderata":n>=30?"Radiazione bassa":"Radiazione minima";
-  }
-  _radTone(id){
-    const n=this._num(id,null); if(n===null) return "state-off";
-    return n>=350?"state-good":n>=150?"state-active":n>=30?"state-warn":"state-off";
-  }
-  _fmtAcPowerFromCurrent(currentId, voltageId, digits=2){
-    const a=this._num(currentId,null), v=this._num(voltageId,null);
-    if(a===null || v===null) return "—";
-    return `${((a*v)/1000).toFixed(digits)} kW`;
-  }
-  _esc(v) { return String(v ?? "").replace(/[&<>'"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c])); }
-  _icon(icon, cls="") { return `<div class="iconbox ${cls}"><ha-icon icon="${icon}"></ha-icon></div>`; }
-  _setOptimistic(id,state){ this._optimistic.set(id,{state,at:Date.now()}); this._renderPage(false); }
-  _syncOptimistic(){
-    const now=Date.now();
-    for(const [id,p] of this._optimistic){
-      const eid=this._eid(id); const actual=eid?this._hass?.states?.[eid]?.state:null;
-      if(actual===p.state || now-p.at>3500) this._optimistic.delete(id);
-    }
-  }
-  _scheduleRender(){
-    if(this._pointerBusy){ this._renderPending=true; return; }
-    if(this._renderTimer) return;
-    this._renderTimer=setTimeout(()=>{
-      this._renderTimer=null;
-      if(this._pointerBusy){ this._renderPending=true; return; }
-      this._r
+    const n=

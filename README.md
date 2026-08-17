@@ -1,6 +1,6 @@
 # 🏠 Casa Dashboard Community
 
-[![Release](https://img.shields.io/badge/release-v1.1.3-blue)](https://github.com/fabiovit/casa-dashboard/releases)
+[![Release](https://img.shields.io/badge/release-v1.1.4-blue)](https://github.com/fabiovit/casa-dashboard/releases)
 [![HACS](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz/)
 [![Validate](https://img.shields.io/github/actions/workflow/status/fabiovit/casa-dashboard/hacs.yml?branch=main&label=Validate)](https://github.com/fabiovit/casa-dashboard/actions/workflows/hacs.yml)
 [![Hassfest](https://img.shields.io/github/actions/workflow/status/fabiovit/casa-dashboard/hassfest.yml?branch=main&label=Hassfest)](https://github.com/fabiovit/casa-dashboard/actions/workflows/hassfest.yml)
@@ -18,9 +18,9 @@ Inoltre usa il domain tecnico `casa_dashboard_community`, il pannello `casa-dash
 
 **Realizzato da Fabio Vittori** · [☕ Offrimi un caffè](https://ko-fi.com/fabvittori)
 
-## Versione 1.1.3 Community
+## Versione 1.1.4 Community
 
-La **v1.1.3** è la prima build stabile con configurazione guidata direttamente dalla dashboard. Le associazioni delle entità possono essere gestite tramite popup, con ricerca e suggerimenti delle entità presenti in Home Assistant, senza dover modificare manualmente il file JSON.
+La **v1.1.4** consolida la configurazione guidata direttamente dalla dashboard e introduce gli ultimi affinamenti verificati in Home Assistant: ricerca delle entità anche per nome assegnato (`friendly_name`), rendering più stabile senza sfarfallii e visibilità realmente adattiva. Le funzioni non configurate non generano più stati di fallback: card, metriche, automazioni e sezioni vuote restano nascoste.
 
 Le entità non configurate vengono inoltre **nascoste automaticamente** dall'interfaccia: controlli, metriche, ambienti e voci di navigazione compaiono solo quando hanno almeno una configurazione utile. La dashboard resta quindi pulita e si adatta all'impianto reale dell'utente.
 
@@ -138,7 +138,7 @@ Se il progetto ti piace e vuoi sostenerne lo sviluppo: **[☕ Offrimi un caffè 
 
 **Casa Dashboard Community** is an app-like Home Assistant dashboard built as a complete custom panel rather than a collection of standard Lovelace cards.
 
-Version **1.1.3** adds the stable in-dashboard entity configuration UI. Users can map the **173 logical entity keys** from a searchable popup, while unconfigured entities, controls and empty room sections are automatically hidden. The dedicated `casa_dashboard_community` domain remains fully separated from personal Casa Dashboard installations.
+Version **1.1.4** consolidates the in-dashboard configuration UI with friendly-name entity search, stable rendering without card flicker, and stricter adaptive visibility. Unconfigured functions no longer create fallback states: empty metrics, automation blocks, cards and room sections stay hidden. The dedicated `casa_dashboard_community` domain remains fully separated from personal Casa Dashboard installations.
 
 The Community Edition now uses the dedicated `casa_dashboard_community` domain and `/config/www/casa-dashboard-community-entities.json`, allowing it to coexist with a personal `casa_dashboard` installation without overwriting it.
 

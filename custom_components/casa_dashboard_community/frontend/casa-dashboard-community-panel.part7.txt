@@ -1,4 +1,5 @@
-ar-sun{background:radial-gradient(circle,rgba(255,204,72,.18),rgba(255,204,72,.06) 60%,transparent 62%);color:#d19700}
+-shell.theme-light .solar-battery-soc strong{color:#16304f;text-shadow:none}.app-shell.theme-light .solar-battery-soc span{color:#587292}.app-shell.theme-light .solar-battery-copy .eyebrow{color:#2dcf7c}.app-shell.theme-light .solar-battery-copy .power.good,.app-shell.theme-light .solar-node strong.good{color:#1fa95f}.app-shell.theme-light .solar-battery-copy .power.bad,.app-shell.theme-light .solar-node strong.bad{color:#d64545}
+      .app-shell.theme-light .solar-sun{background:radial-gradient(circle,rgba(255,204,72,.18),rgba(255,204,72,.06) 60%,transparent 62%);color:#d19700}
       .app-shell.theme-light .solar-node-orb{background:radial-gradient(circle at 50% 50%,rgba(22,102,217,.12),rgba(22,102,217,.02) 62%,transparent 64%);border-color:rgba(22,102,217,.16);box-shadow:none}
       .app-shell.theme-light .solar-pv-track{background:rgba(15,23,42,.08)}
       .app-shell.theme-light .solar-energy-pill,.app-shell.theme-light .solar-node-chip{background:rgba(15,23,42,.03);border-color:rgba(15,23,42,.08)}
@@ -40,16 +41,4 @@ ar-sun{background:radial-gradient(circle,rgba(255,204,72,.18),rgba(255,204,72,.0
     } finally {
       this._entityConfigLoaded=true;
       this._entityConfigLoading=false;
-      this._renderPage(false);
-    }
-  }
-  _eid(id) {
-    if(!ENTITY_KEYS.has(id)) return id;
-    const mapped=this._entityMap?.[id];
-    return typeof mapped==="string" && mapped.trim() ? mapped.trim() : null;
-  }
-  _configured(id) { const eid=this._eid(id); return !!eid && !!this._hass?.states?.[eid]; }
-  _configuredCount() { return [...ENTITY_KEYS].filter(id=>this._eid(id)).length; }
-  _configNotice() {
-    const configured=this._configuredCount();
-    const total=ENTITY_KEY
+      this._ren

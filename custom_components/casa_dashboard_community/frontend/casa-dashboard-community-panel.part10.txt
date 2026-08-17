@@ -1,4 +1,24 @@
-t:"Raffiche forti"};
+        if(this._state("alarm_control_panel.home_alarm")==="triggered") return {level:"bad",text:"Allarme in corso"};
+        if(this._on("binary_sensor.entry_door")) return {level:"warn",text:"Porta aperta"};
+        if(this._on("input_boolean.entry_door_unlock")) return {level:"warn",text:"Porta sbloccata"};
+        return {level:"good",text:"Ingresso sicuro"}; }
+      case "disimpegno": return active(["binary_sensor.hallway_motion","binary_sensor.hallway_occupancy"]) ? {level:"blue",text:"Presenza rilevata"}:{level:"good",text:"Libero"};
+      case "bagno": {
+        if(this._on("binary_sensor.bathroom_water_leak")) return {level:"bad",text:"Perdita acqua"};
+        if(this._on("binary_sensor.bathroom_window")) return {level:"warn",text:"Finestra aperta"};
+        return this._climateActive("fan.bathroom_extractor") ? {level:"blue",text:"Aspiratore attivo"}:{level:"good",text:"Tutto ok"}; }
+      case "cucina": {
+        if(this._on("binary_sensor.kitchen_door_window")) return {level:"warn",text:"Porta finestra aperta"};
+        if(this._climateActive("climate.kitchen")) return {level:"blue",text:"Clima attivo"};
+        return light(["light.kitchen_main","light.kitchen_led"]) ? {level:"blue",text:"Luci accese"}:{level:"good",text:"Tutto ok"}; }
+      case "camera": {
+        if(this._on("binary_sensor.bedroom_door_window")) return {level:"warn",text:"Porta finestra aperta"};
+        if(this._climateActive("climate.bedroom")) return {level:"blue",text:"Clima attivo"};
+        const v=this._state("vacuum.robot_vacuum",""); if(["cleaning","returning","paused"].includes(v)) return {level:"blue",text:"Robot aspirapolvere attivo"};
+        return {level:"good",text:"Tutto ok"}; }
+      case "balcone": {
+        if(this._on("binary_sensor.weather_rain") || (this._num("sensor.weather_rain_rate",0)>=0.1)) return {level:"warn",text:"Pioggia rilevata"};
+        if(this._num("sensor.weather_wind_gust",0)>=24) return {level:"warn",text:"Raffiche forti"};
         if(this._on("switch.balcony_barbecue")) return {level:"blue",text:"Barbecue acceso"};
         return {level:"good",text:"Meteo regolare"}; }
       case "garage": {
@@ -35,6 +55,7 @@ t:"Raffiche forti"};
     const renderer={panoramica:()=>this._overview(),esterno:()=>this._esterno(),scale:()=>this._scale(),ingresso:()=>this._ingresso(),cucina:()=>this._cucina(),disimpegno:()=>this._disimpegno(),bagno:()=>this._bagno(),camera:()=>this._camera(),balcone:()=>this._balcone(),garage:()=>this._garage()}[this._active];
     host.innerHTML=renderer ? renderer() : `<div class="empty">Pagina non disponibile</div>`;
     this._cleanEmptySections(host);
+    this._lastStateFingerprint=this._stateFingerprint();
   }
 
   _cleanEmptySections(host){
@@ -114,22 +135,4 @@ t:"Raffiche forti"};
   _compareCard(title, items, foot="", span=6, icon="mdi:chart-line") {
     const visible=items.filter(it=>String(it.value??"").trim() && String(it.value).trim()!=="—");
     if(!visible.length) return "";
-    return `<div class="data-node compare-card span-${span}"><div class="data-node-top"><div class="data-label">${title}</div><ha-icon icon="${icon}"></ha-icon></div><div class="compare-grid">${visible.map(it=>`<div class="compare-cell"><div class="compare-label">${it.label}</div><div class="compare-value">${it.value}</div></div>`).join("")}</div>${foot&&foot.trim()!=="—"?`<div class="data-foot compare-foot">${foot}</div>`:""}</div>`;
-  }
-
-  _overview() {
-    const all=this._overall(); const lights=this._countOn(LIGHTS); const open=this._openCount();
-    const lightsConfigured=LIGHTS.some(id=>this._configured(id));
-    const openingsConfigured=OPENINGS.some(id=>this._configured(id));
-    const climateConfigured=this._configured("climate.kitchen") || this._configured("climate.bedroom");
-    const mobilityConfigured=this._configured("binary_sensor.ev_charging_at_home") || this._configured("sensor.wallbox_charging_power") || this._configured("sensor.wallbox_evse_status");
-    const clima=(this._configured("climate.kitchen")&&this._climateActive("climate.kitchen")?1:0)+(this._configured("climate.bedroom")&&this._climateActive("climate.bedroom")?1:0);
-    const ev=this._configured("binary_sensor.ev_charging_at_home")&&this._on("binary_sensor.ev_charging_at_home");
-    const hero=this._hero("Casa", "Una regia elegante della casa: sicurezza, comfort, energia e ambienti leggibili in un colpo d'occhio.", all, [
-      {label:"Luci",value:`${lights} accese`,small:lights?"Scene e illuminazione attive":"Atmosfera riposata",show:lightsConfigured},
-      {label:"Aperture",value:open?`${open} aperte`:"Tutto chiuso",small:"Porte, finestre e garage",show:openingsConfigured},
-      {label:"Clima",value:clima?`${clima} attivi`:"Spento",small:"Cucina + camera",show:climateConfigured},
-      {label:"Mobilità",value:ev?`${this._fmtPowerAuto("sensor.wallbox_charging_power",2)}`:"EV a riposo",small:this._state("sensor.wallbox_evse_status","Wallbox"),show:mobilityConfigured}
-    ]);
-    const roomCards=NAV.filter(([id])=>id!=="panoramica").map(([room])=>this._roomCard(room)).join("");
-    const alarmConfigured=this._configured("alarm_control_panel.home_al
+    return `<div class="data-node compare-card span-${span}"><div class="data-node-top"><div class="data-label">${title}</div><ha-icon icon="${icon}"><
