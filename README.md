@@ -1,6 +1,6 @@
 # 🏠 Casa Dashboard Community
 
-[![Release](https://img.shields.io/badge/release-v1.1.1-blue)](https://github.com/fabiovit/casa-dashboard/releases)
+[![Release](https://img.shields.io/badge/release-v1.1.2-blue)](https://github.com/fabiovit/casa-dashboard/releases)
 [![HACS](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz/)
 [![Validate](https://img.shields.io/github/actions/workflow/status/fabiovit/casa-dashboard/hacs.yml?branch=main&label=Validate)](https://github.com/fabiovit/casa-dashboard/actions/workflows/hacs.yml)
 [![Hassfest](https://img.shields.io/github/actions/workflow/status/fabiovit/casa-dashboard/hassfest.yml?branch=main&label=Hassfest)](https://github.com/fabiovit/casa-dashboard/actions/workflows/hassfest.yml)
@@ -18,11 +18,11 @@ Inoltre usa il domain tecnico `casa_dashboard_community`, il pannello `casa-dash
 
 **Realizzato da Fabio Vittori** · [☕ Offrimi un caffè](https://ko-fi.com/fabvittori)
 
-## Versione 1.1.1 Community
+## Versione 1.1.2 Community
 
-La **v1.1.1** è una release correttiva importante per l’installazione HACS: la Community Edition utilizza ora definitivamente il domain e la cartella dedicati `casa_dashboard_community`, così può convivere con una Casa Dashboard personale basata su `casa_dashboard` senza sovrascriverla.
+La **v1.1.2** completa la correzione dell’installazione HACS rimuovendo dal repository la vecchia directory `custom_components/casa_dashboard`. Nel repository resta ora una sola integrazione, `custom_components/casa_dashboard_community`, così HACS rileva e installa il percorso corretto.
 
-Mantiene tutte le novità grafiche e funzionali introdotte con la v1.1.0 e le **173 chiavi logiche configurabili**.
+Mantiene tutte le novità grafiche e funzionali introdotte con la v1.1.0, la separazione tecnica introdotta con la v1.1.1 e le **173 chiavi logiche configurabili**.
 
 ### Novità principali
 
@@ -120,7 +120,7 @@ Se il progetto ti piace e vuoi sostenerne lo sviluppo: **[☕ Offrimi un caffè 
 
 **Casa Dashboard Community** is an app-like Home Assistant dashboard built as a complete custom panel rather than a collection of standard Lovelace cards.
 
-Version **1.1.1** is an installation compatibility fix for HACS. Casa Dashboard Community now definitively uses the dedicated `casa_dashboard_community` domain and integration folder, allowing it to coexist with a personal `casa_dashboard` installation. It retains the premium visual design and all **173 logical entity keys** introduced in v1.1.0.
+Version **1.1.2** completes the HACS installation fix by removing the legacy `custom_components/casa_dashboard` directory from the repository. The repository now exposes only `custom_components/casa_dashboard_community`, so HACS detects and installs the correct integration path. It retains the dedicated Community domain and all **173 logical entity keys**.
 
 The Community Edition now uses the dedicated `casa_dashboard_community` domain and `/config/www/casa-dashboard-community-entities.json`, allowing it to coexist with a personal `casa_dashboard` installation without overwriting it.
 

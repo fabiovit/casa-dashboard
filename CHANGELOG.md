@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1.2 - 2026-08-17
+
+- Rimossa dal repository la directory legacy `custom_components/casa_dashboard`.
+- Il repository contiene ora una sola integrazione HACS: `custom_components/casa_dashboard_community`.
+- Corretto definitivamente il percorso di installazione mostrato da HACS.
+- Mantenuti domain, pannello, frontend e file entità dedicati alla Community.
+- Confermate le 173 chiavi logiche configurabili e tutte le funzionalità della v1.1.1.
+
 ## 1.1.1 - 2026-08-17
 
 - Correzione strutturale dell’installazione HACS: integrazione spostata definitivamente in `custom_components/casa_dashboard_community`.
