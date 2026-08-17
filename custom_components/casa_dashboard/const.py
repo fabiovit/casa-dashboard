@@ -1,5 +1,0 @@
-DOMAIN = "casa_dashboard"
-PANEL_PATH = "casa-dashboard"
-PANEL_TITLE = "Casa"
-PANEL_ICON = "mdi:home-assistant"
-STATIC_URL = "/casa-dashboard-static"
