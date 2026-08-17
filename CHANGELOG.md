@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.1.3 - 2026-08-17
+
+- aggiunta configurazione guidata delle 173 entità direttamente dalla dashboard;
+- aggiunta ricerca delle funzioni e suggerimenti delle entity_id Home Assistant;
+- salvataggio della configurazione tramite backend Community dedicato;
+- entità, controlli e metriche non configurati vengono nascosti automaticamente;
+- ambienti e voci di navigazione senza funzioni configurate vengono nascosti;
+- aggiunte preview reali della Panoramica e del popup di configurazione nel README;
+- mantenuto il file JSON separato come fallback/import-export;
+- mantenuta la completa separazione dal domain personale `casa_dashboard`.
+
+
 ## 1.1.2 - 2026-08-17
 
 - Rimossa dal repository la directory legacy `custom_components/casa_dashboard`.

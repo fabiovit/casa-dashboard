@@ -1,6 +1,6 @@
 # 🏠 Casa Dashboard Community
 
-[![Release](https://img.shields.io/badge/release-v1.1.2-blue)](https://github.com/fabiovit/casa-dashboard/releases)
+[![Release](https://img.shields.io/badge/release-v1.1.3-blue)](https://github.com/fabiovit/casa-dashboard/releases)
 [![HACS](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz/)
 [![Validate](https://img.shields.io/github/actions/workflow/status/fabiovit/casa-dashboard/hacs.yml?branch=main&label=Validate)](https://github.com/fabiovit/casa-dashboard/actions/workflows/hacs.yml)
 [![Hassfest](https://img.shields.io/github/actions/workflow/status/fabiovit/casa-dashboard/hassfest.yml?branch=main&label=Hassfest)](https://github.com/fabiovit/casa-dashboard/actions/workflows/hassfest.yml)
@@ -18,14 +18,20 @@ Inoltre usa il domain tecnico `casa_dashboard_community`, il pannello `casa-dash
 
 **Realizzato da Fabio Vittori** · [☕ Offrimi un caffè](https://ko-fi.com/fabvittori)
 
-## Versione 1.1.2 Community
+## Versione 1.1.3 Community
 
-La **v1.1.2** completa la correzione dell’installazione HACS rimuovendo dal repository la vecchia directory `custom_components/casa_dashboard`. Nel repository resta ora una sola integrazione, `custom_components/casa_dashboard_community`, così HACS rileva e installa il percorso corretto.
+La **v1.1.3** è la prima build stabile con configurazione guidata direttamente dalla dashboard. Le associazioni delle entità possono essere gestite tramite popup, con ricerca e suggerimenti delle entità presenti in Home Assistant, senza dover modificare manualmente il file JSON.
 
-Mantiene tutte le novità grafiche e funzionali introdotte con la v1.1.0, la separazione tecnica introdotta con la v1.1.1 e le **173 chiavi logiche configurabili**.
+Le entità non configurate vengono inoltre **nascoste automaticamente** dall'interfaccia: controlli, metriche, ambienti e voci di navigazione compaiono solo quando hanno almeno una configurazione utile. La dashboard resta quindi pulita e si adatta all'impianto reale dell'utente.
+
+Mantiene la separazione tecnica `casa_dashboard_community`, l'installazione HACS corretta e tutte le **173 chiavi logiche configurabili**.
 
 ### Novità principali
 
+- configurazione guidata delle **173 entità** direttamente da popup nella dashboard;
+- ricerca e suggerimenti delle entity_id disponibili in Home Assistant;
+- entità e funzioni non configurate nascoste automaticamente;
+- menu e ambienti mostrati solo quando contengono almeno una funzione configurata;
 - redesign più profondo, premium e app-like;
 - nuova Panoramica con hero/scena di casa e informazioni prioritarie;
 - card e controlli ridisegnati con migliore gerarchia visiva;
@@ -42,17 +48,29 @@ Mantiene tutte le novità grafiche e funzionali introdotte con la v1.1.0, la sep
 - mappa esterna passata da **157 a 173 chiavi logiche**;
 - aggiornamento non distruttivo del file entità: le nuove chiavi vengono aggiunte senza sovrascrivere quelle già configurate.
 
+## Preview
+
+### Panoramica
+
+![Casa Dashboard Community - Panoramica](images/preview-overview.png)
+
+### Configurazione guidata delle entità
+
+![Casa Dashboard Community - Configurazione entità](images/preview-entity-config.png)
+
+La configurazione può essere aperta direttamente dalla dashboard tramite **Configura**. Le funzioni lasciate vuote non vengono mostrate nell'interfaccia.
+
 ## Installazione manuale
 
 1. Copia `custom_components/casa_dashboard_community` in `/config/custom_components/`.
 2. Riavvia Home Assistant.
 3. Vai in **Impostazioni → Dispositivi e servizi → Aggiungi integrazione**.
 4. Cerca **Casa Dashboard Community** e aggiungila.
-5. Al primo avvio viene creato automaticamente `/config/www/casa-dashboard-community-entities.json`.
-6. Associa le chiavi logiche alle tue `entity_id` reali.
-7. Ricarica la pagina del browser/app.
+5. Apri **Casa Dashboard Community** e premi **Configura**.
+6. Associa le funzioni che vuoi utilizzare alle tue entity_id reali.
+7. Premi **Salva configurazione**.
 
-> Le chiavi logiche a sinistra non devono essere rinominate. Inserisci soltanto la tua entity_id a destra. Puoi lasciare vuote le funzioni che non usi.
+Il file `/config/www/casa-dashboard-community-entities.json` viene gestito automaticamente dall'integrazione e resta disponibile come fallback/import-export. Le funzioni lasciate vuote non vengono mostrate nella dashboard.
 
 Consulta `examples/ENTITY_MAP.md` per la mappa completa delle **173 associazioni**.
 
@@ -120,7 +138,7 @@ Se il progetto ti piace e vuoi sostenerne lo sviluppo: **[☕ Offrimi un caffè 
 
 **Casa Dashboard Community** is an app-like Home Assistant dashboard built as a complete custom panel rather than a collection of standard Lovelace cards.
 
-Version **1.1.2** completes the HACS installation fix by removing the legacy `custom_components/casa_dashboard` directory from the repository. The repository now exposes only `custom_components/casa_dashboard_community`, so HACS detects and installs the correct integration path. It retains the dedicated Community domain and all **173 logical entity keys**.
+Version **1.1.3** adds the stable in-dashboard entity configuration UI. Users can map the **173 logical entity keys** from a searchable popup, while unconfigured entities, controls and empty room sections are automatically hidden. The dedicated `casa_dashboard_community` domain remains fully separated from personal Casa Dashboard installations.
 
 The Community Edition now uses the dedicated `casa_dashboard_community` domain and `/config/www/casa-dashboard-community-entities.json`, allowing it to coexist with a personal `casa_dashboard` installation without overwriting it.
 

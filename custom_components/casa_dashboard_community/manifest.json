@@ -8,10 +8,11 @@
   "dependencies": [
     "frontend",
     "http",
-    "panel_custom"
+    "panel_custom",
+    "websocket_api"
   ],
   "documentation": "https://github.com/fabiovit/casa-dashboard",
   "iot_class": "local_push",
   "issue_tracker": "https://github.com/fabiovit/casa-dashboard/issues",
-  "version": "1.1.2"
+  "version": "1.1.3"
 }

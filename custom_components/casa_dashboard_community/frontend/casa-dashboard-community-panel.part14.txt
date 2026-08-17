@@ -1,64 +1,49 @@
-sensor.garage_temperature",1,"°C"),"Ambiente",6,"sensor.garage_temperature")}
-      ${this._metric("mdi:water-percent","Umidità garage",this._fmt("sensor.garage_humidity",0,"%"),"Ambiente",6,"sensor.garage_humidity")}
-    </div>${this._section("Purificatore d'aria")}<div class="grid">
-      ${this._control("switch.garage_air_purifier_power","Alimentazione","mdi:power",this._on("switch.garage_air_purifier_power")?"Accesa":"Spenta","toggle",4)}
-      ${this._control("fan.garage_air_purifier","Purificatore","mdi:air-purifier",this._on("fan.garage_air_purifier")?"Attivo":"Spento","toggle",4)}
-      ${this._control("light.garage_air_purifier_backlight","Retroilluminazione","mdi:led-strip-variant",this._on("light.garage_air_purifier_backlight")?"Accesa":"Spenta","toggle",4)}
-      ${this._metric("mdi:chemical-weapon","PM 2.5",this._fmt("sensor.garage_pm2_5",0),"Particolato",6,"sensor.garage_pm2_5")}
-      ${this._metric("mdi:air-filter","Qualità aria",this._state("sensor.garage_air_quality","—"),pur?"Purificatore attivo":"Purificatore spento",6,"sensor.garage_air_quality")}
-    </div>${this._section("Deumidificatore")}<div class="grid">
-      ${this._control("switch.garage_dehumidifier_power","Deumidificatore","mdi:air-humidifier",(dehum?"Acceso":"Spento")+" · "+this._fmt("sensor.garage_dehumidifier_humidity",0,"%"),"toggle",4)}
-      ${this._metric("mdi:water-percent","Umidità rilevata",this._fmt("sensor.garage_dehumidifier_humidity",0,"%"),"Garage",4,"sensor.garage_dehumidifier_humidity")}
-      ${this._metric("mdi:cup-water","Serbatoio",tank?"PIENO":"OK",tank?"Svuotare serbatoio":"Regolare",4,"binary_sensor.garage_dehumidifier_tank_full",tank?"state-bad":"state-good")}
-      <div class="control span-12 ${dehum?'state-on blue-tone':'state-off'}">${this._icon("mdi:air-humidifier",dehum?"blue":"")}<div class="control-main clickable" data-more="humidifier.garage_dehumidifier"><div class="control-title">Target deumidificazione</div><div class="control-sub">Obiettivo ${target}%</div></div><button class="mini-btn" data-humidity-delta="-5" type="button">−5%</button><button class="mini-btn" data-humidity-delta="5" type="button">+5%</button></div>
-      ${this._control("switch.garage_dehumidifier_display","Display","mdi:monitor",this._on("switch.garage_dehumidifier_display")?"Acceso":"Spento","toggle",4)}
-      ${this._control("switch.garage_dehumidifier_buzzer","Buzzer","mdi:volume-high",this._on("switch.garage_dehumidifier_buzzer")?"Attivo":"Disattivato","toggle",4)}
-      ${this._metric("mdi:lock","Blocco tasti",this._state("lock.garage_dehumidifier_child_lock","—"),"Child lock",4,"lock.garage_dehumidifier_child_lock")}
-      ${this._metric("mdi:water","Livello acqua",this._state("sensor.garage_dehumidifier_water_level","—"),"Serbatoio",6,"sensor.garage_dehumidifier_water_level")}
-      ${this._metric("mdi:timer-outline","Tempo acqua",this._state("sensor.garage_dehumidifier_water_full_time","—"),"Serbatoio",6,"sensor.garage_dehumidifier_water_full_time")}
+="metric-icon"><div class="label">AUTO CLIMA CAMERA</div><ha-icon icon="mdi:thermostat-auto"></ha-icon></div><div><div class="value" style="font-size:19px">${auto}</div><div class="foot">03:00–04:00: ON ≥26°C oppure ≥24,5°C con UR ≥65%, ventola quiet · 07:00–09:00: ON ≥27°C oppure ≥26°C con UR ≥65% · 09:00–22:00: ON ≥26°C oppure ≥24,5°C con UR ≥65% · OFF ≤24°C · finestra aperta 2 min → OFF</div></div></div>
+    </div>${this._section("Luci e dispositivi")}<div class="grid">
+      ${this._control("light.bedroom_main","Luce camera","mdi:ceiling-light",this._on("light.bedroom_main")?"Accesa":"Spenta","toggle",3)}
+      ${this._control("light.bedroom_lamp_1","Lampada 1","mdi:lamp",this._on("light.bedroom_lamp_1")?"Accesa":"Spenta","toggle",3)}
+      ${this._control("light.bedroom_lamp_2","Lampada 2","mdi:lamp",this._on("light.bedroom_lamp_2")?"Accesa":"Spenta","toggle",3)}
+      ${this._control("light.bedroom_led","LED camera","mdi:led-strip-variant",this._on("light.bedroom_led")?"Accesi":"Spenti","toggle",3)}
+      ${this._control("switch.bedroom_tv","Presa TV camera","mdi:television",this._on("switch.bedroom_tv")?"Accesa":"Spenta","toggle",6)}
+      ${this._coverControl("cover.bedroom_blind","Tenda camera",true,6)}
+    </div>${this._section("Ambiente camera")}<div class="grid">
+      ${this._metric("mdi:thermometer","Temperatura Sensore",this._fmt("sensor.bedroom_temperature",1,"°C"),"Camera",4,"sensor.bedroom_temperature")}
+      ${this._metric("mdi:water-percent","Umidità Sensore",this._fmt("sensor.bedroom_humidity",0,"%"),"Camera",4,"sensor.bedroom_humidity")}
+      ${this._metric("mdi:air-conditioner","Temp clima",this._fmt("sensor.bedroom_climate_temperature",1,"°C"),"Climatizzatore",4,"sensor.bedroom_climate_temperature")}
+    </div>${this._section("Sicurezza finestra")}<div class="grid">
+      ${this._metric("mdi:door-open","Porta finestra",windowOpen?"Aperta":"Chiusa","Camera",4,"binary_sensor.bedroom_door_window")}
+      ${this._metric("mdi:window-open-variant","Anta",anta?"Aperta":"Chiusa","Camera",4,"binary_sensor.bedroom_window")}
+      ${this._metric("mdi:vibrate","Vibrazione",vibration?"Rilevata":"Assente","Finestra",4,"binary_sensor.bedroom_window_vibration")}
+    </div>${this._section("Robot aspirapolvere","Robot aspirapolvere")}<div class="grid">
+      ${this._metric("mdi:robot-vacuum","Stato",v,"Robot aspirapolvere",3,"vacuum.robot_vacuum")}
+      ${this._metric("mdi:battery","Batteria",this._fmt("sensor.robot_vacuum_battery",0,"%"),"Robot",3,"sensor.robot_vacuum_battery")}
+      ${this._metric("mdi:map-marker-distance","Area pulita",this._fmt("sensor.robot_vacuum_cleaned_area",1),"Ultima pulizia",3,"sensor.robot_vacuum_cleaned_area")}
+      ${this._metric("mdi:timer-outline","Durata",this._fmt("sensor.robot_vacuum_cleaning_duration",0),"Ultima pulizia",3,"sensor.robot_vacuum_cleaning_duration")}
+      ${this._configured("vacuum.robot_vacuum")?`<div class="control span-12 state-${['cleaning','returning'].includes(v)?'on':'off'}"><div class="control-main"><div class="control-title">Comandi robot</div><div class="control-sub">Avvia, pausa o torna alla base</div></div><button class="mini-btn" data-vacuum="start" type="button">AVVIA</button><button class="mini-btn" data-vacuum="pause" type="button">PAUSA</button><button class="mini-btn" data-vacuum="return_to_base" type="button">BASE</button></div>`:""}
+      ${this._metric("mdi:delete-clock","Svuotamento automatico",this._state("select.robot_vacuum_auto_empty_frequency","—"),"Apri per modificare",6,"select.robot_vacuum_auto_empty_frequency")}
+      ${this._metric("mdi:water","Flusso acqua",this._state("number.robot_vacuum_water_flow","—"),"Apri per modificare",6,"number.robot_vacuum_water_flow")}
+      ${map?`<div class="card span-12 clickable" data-more="vacuum.robot_vacuum"><img class="entity-image" src="${map}" alt="Mappa Robot aspirapolvere"></div>`:`<div class="metric span-12"><div class="metric-icon"><div class="label">MAPPA ROBOT</div><ha-icon icon="mdi:map"></ha-icon></div><div><div class="value">Non disponibile</div></div></div>`}
     </div></div>`;
   }
 
-  _handleClick(ev) {
-    const target=ev.target.closest?.("[data-action],[data-nav],[data-toggle],[data-more],[data-cover-toggle],[data-climate],[data-climate-temp],[data-vacuum],[data-alarm],[data-humidity-delta],[data-script]"); if(!target) return;
-    if(target.dataset.action==="ha-menu") { this.dispatchEvent(new CustomEvent("hass-toggle-menu",{bubbles:true,composed:true})); return; }
-    if(target.dataset.nav){
-      this._active=target.dataset.nav; this._renderNav(false); this._renderPage(false);
-      requestAnimationFrame(()=>this.shadowRoot.querySelector(`.nav-btn[data-nav="${this._active}"]`)?.scrollIntoView({behavior:"smooth",inline:"center",block:"nearest"}));
-      window.scrollTo({top:0,behavior:"smooth"}); return;
-    }
-    if(target.dataset.more){ const eid=this._eid(target.dataset.more); if(!eid) return; this.dispatchEvent(new CustomEvent("hass-more-info",{detail:{entityId:eid},bubbles:true,composed:true})); return; }
-    if(target.dataset.toggle){
-      const id=target.dataset.toggle, eid=this._eid(id); if(!eid) return; const domain=eid.split(".")[0], next=this._on(id)?"off":"on";
-      this._setOptimistic(id,next); this._hass.callService(domain,"toggle",{entity_id:eid}); return;
-    }
-    if(target.dataset.coverToggle){
-      const id=target.dataset.coverToggle, inverted=target.dataset.inverted==="1", open=this._coverOpen(id,inverted), next=open?"closed":"open";
-      this._optimistic.set(id,{state:next,at:Date.now()}); this._renderPage(false);
-      const eid=this._eid(id); if(!eid) return; this._hass.callService("cover",open?"close_cover":"open_cover",{entity_id:eid}); return;
-    }
-    if(target.dataset.climate){
-      const id=target.dataset.climate, mode=target.dataset.mode; this._setOptimistic(id,mode);
-      const eid=this._eid(id); if(!eid) return; this._hass.callService("climate","set_hvac_mode",{entity_id:eid,hvac_mode:mode}); return;
-    }
-    if(target.dataset.climateTemp){
-      const id=target.dataset.climateTemp, current=Number(this._attr(id,"temperature",24)), delta=Number(target.dataset.delta||0);
-      const eid=this._eid(id); if(!eid) return; this._hass.callService("climate","set_temperature",{entity_id:eid,temperature:current+delta}); return;
-    }
-    if(target.dataset.script){
-      const id=target.dataset.script, btn=target.closest?.("button") || target;
-      btn.classList.add("pressed");
-      const oldText=btn.textContent; btn.textContent="FATTO";
-      setTimeout(()=>{ btn.classList.remove("pressed"); btn.textContent=oldText; },1200);
-      const eid=this._eid(id); if(!eid) return; this._hass.callService("script","turn_on",{entity_id:eid}); return;
-    }
-    if(target.dataset.vacuum){ const eid=this._eid("vacuum.robot_vacuum"); if(!eid) return; this._hass.callService("vacuum",target.dataset.vacuum,{entity_id:eid}); return; }
-    if(target.dataset.alarm){ const eid=this._eid("alarm_control_panel.home_alarm"); if(!eid) return; this._hass.callService("alarm_control_panel",target.dataset.alarm,{entity_id:eid}); return; }
-    if(target.dataset.humidityDelta){
-      const id="humidifier.garage_dehumidifier", current=Number(this._attr(id,"humidity",this._attr(id,"target_humidity",55))), delta=Number(target.dataset.humidityDelta||0);
-      const eid=this._eid(id); if(!eid) return; this._hass.callService("humidifier","set_humidity",{entity_id:eid,humidity:Math.max(30,Math.min(80,current+delta))}); return;
-    }
-  }
-}
-
-if(!customElements.get("casa-dashboard-community-panel")) customElements.define("casa-dashboard-community-panel",CasaDashboardPanel);
+  _balcone(){
+    const lux=this._num("sensor.weather_solar_lux",0), rad=this._num("sensor.weather_solar_radiation",0), gust=this._num("sensor.weather_wind_gust",0), wind=this._num("sensor.weather_wind_speed",0), rainRate=this._num("sensor.weather_rain_rate",0), rain=this._on("binary_sensor.weather_rain")||rainRate>=0.1, lightningCount=this._num("sensor.weather_lightning_count",0), lightningDistance=this._num("sensor.weather_lightning_distance",999), lightning=lightningCount>0&&lightningDistance<=5, water=this._on("binary_sensor.balcony_water"), motion=this._on("binary_sensor.balcony_motion"), occupied=this._on("binary_sensor.balcony_occupancy"), uv=this._num("sensor.weather_uv_index",0), manual=this._on("input_boolean.blinds_manual_mode");
+    const windLevel=(gust>=24||wind>=18)?"bad":(gust>=15||wind>=10)?"warn":"good";
+    const rainLevel=rain?"bad":rainRate>0?"warn":"good";
+    const dpc=this._state("binary_sensor.weather_storm_alert","—"), dpcLevel=Number(this._attr("binary_sensor.weather_storm_alert","level",1));
+    const ultima=this._state("input_datetime.blinds_last_wind_raise","—");
+    const nowTs=Date.now()/1000; const lastTs=Date.parse(ultima.replace(' ','T'))/1000; const block=Number.isFinite(lastTs)&&(nowTs-lastTs)<3600;
+    let discesa="Fuori fascia o sole insufficiente"; const nextSet=Date.parse(this._attr("sun.sun","next_setting","")||"")/1000; const secSun=nextSet-nowTs; const tempoOk=new Date().getHours()>=14&&this._state("sun.sun")==="above_horizon"&&secSun>3600; if(rain) discesa="Bloccata · pioggia"; else if(lightning) discesa="Bloccata · fulmini ≤5 km"; else if(gust>=15||wind>=10) discesa="Bloccata · vento"; else if(block) discesa="Bloccata · attesa 60 min dopo vento"; else if(tempoOk&&lux>=40000&&rad>=350) discesa="Condizioni OK per abbassare"; else if(tempoOk&&(lux>=20000||rad>=180)) discesa="Luminoso, ma non abbastanza";
+    let risalita="Nessuna condizione attiva"; const fasciaSerale=this._state("sun.sun")==="above_horizon"&&secSun>600&&secSun<=5400, preTramonto=this._state("sun.sun")==="above_horizon"&&secSun>=0&&secSun<=600, luceBassa=(fasciaSerale&&lux<1500&&rad<13)||(!fasciaSerale&&!preTramonto&&lux<3500&&rad<30), prevenzioneTemporale=lux<15000&&rad<150&&(gust>=18||wind>=12||rainRate>0||rain); if(preTramonto) risalita="10 minuti prima del tramonto"; else if(rain) risalita="Pioggia"; else if(gust>=24) risalita="Raffica ≥24 km/h"; else if(wind>=18) risalita="Vento medio ≥18 km/h"; else if(lightning) risalita="Fulmini entro 5 km"; else if(prevenzioneTemporale) risalita="Possibile temporale"; else if(luceBassa) risalita=fasciaSerale?"Luce bassa serale":"Luce bassa diurna";
+    const weatherStatus=rain?"Pioggia rilevata":lightning?"Fulmini vicini":(gust>=24||wind>=18)?"Vento forte":(gust>=15||wind>=10)?"Vento moderato":preTramonto?"Tramonto vicino":luceBassa?"Luce bassa":(lux>=40000&&rad>=350)?"Sole forte":(lux>=20000&&rad>=180)?"Luminoso":"Meteo tranquillo";
+    const weatherIcon=rain?"mdi:weather-pouring":lightning?"mdi:lightning-bolt":(gust>=15||wind>=10)?"mdi:weather-windy":preTramonto?"mdi:weather-sunset-down":(lux>=40000&&rad>=350)?"mdi:white-balance-sunny":"mdi:weather-partly-cloudy";
+    const discesaLevel=manual?"warn":(rain||lightning||gust>=24||wind>=18)?"bad":(gust>=15||wind>=10||block)?"warn":(tempoOk&&lux>=40000&&rad>=350)?"good":"warn";
+    const risalitaLevel=manual?"warn":(rain||lightning||gust>=24||wind>=18)?"bad":(preTramonto||luceBassa||prevenzioneTemporale)?"warn":"good";
+    return `<div class="page"><div class="weather-hero"><div class="weather-head"><div class="weather-now"><div class="weather-icon"><ha-icon icon="${weatherIcon}"></ha-icon></div><div><div class="hero-overline">METEO CASA</div><div class="weather-temp">${this._fmt("sensor.weather_outdoor_temperature",1,"°C")}</div><div class="weather-status">${weatherStatus}</div><div class="weather-sub">Percepita ${this._fmt("sensor.weather_feels_like_temperature",1,"°C")} · Umidità ${this._fmt("sensor.weather_outdoor_humidity",0,"%")}</div></div></div><div class="weather-station">Stazione meteo</div></div><div class="weather-strip"><div class="weather-chip"><div class="k">Pioggia</div><div class="v">${rain?"🌧️ Rilevata":"✅ Asciutto"}</div></div><div class="weather-chip"><div class="k">Vento</div><div class="v">${this._fmt("sensor.weather_wind_speed",1,"km/h")}</div></div><div class="weather-chip"><div class="k">Sole</div><div class="v">${this._luxLabel("sensor.weather_solar_lux")} · ${this._fmtLuxCompact("sensor.weather_solar_lux")}</div></div><div class="weather-chip"><div class="k">Fulmini</div><div class="v">${lightning?"⚡ ≤5 km":lightningCount>0?"⚡ Lontani":"✅ Nessuno"}</div></div></div></div>
+    ${this._section("Tende","Decisione immediata e controllo manuale")}<div class="grid">
+      ${this._control("input_boolean.blinds_manual_mode","Modalità manuale tende","mdi:hand-back-right-outline",manual?"Automazioni tende sospese":"Gestione automatica attiva","toggle",12)}
+      <div class="decision-card ${discesaLevel} span-6"><div class="eyebrow">↓ DISCESA TENDE</div><strong>${manual?"Modalità manuale attiva":discesa}</strong><p>Dopo le 14:00 · almeno 1h dal tramonto · ≥40.000 lx · ≥350 W/m² · raffica &lt;15 · vento &lt;10 · nessuna pioggia/fulmini · blocco vento scaduto.</p></div>
+      <div class="decision-card ${risalitaLevel} span-6"><div class="eyebrow">↑ RISALITA TENDE</div><strong>${manual?"Modalità manuale attiva":risalita}</strong><p>Pioggia · raffica ≥24 · vento ≥18 · fulmini ≤5 km · luce bassa · prevenzione temporale · risalita garantita 10 min prima del tramonto.</p></div>
+      ${this._coverControl("cover.balcony_bedroom_blind","Tenda balcone camera",false,6,"Posizione")}
+      ${this._coverControl("cover.balcony_kitchen_blind","Tenda balcone cucina",false,6,"Posizione")}
+      ${this._control("light.balcony_bedroom","Luce balcone camera","mdi:wall-sconce",this._on("light.ba

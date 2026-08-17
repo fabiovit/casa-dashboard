@@ -1,185 +1,27 @@
-ns:1fr 1fr}.solar-flow-grid:before{display:none}.solar-node strong{font-size:28px}.solar-prod-copy strong{font-size:42px}.compare-grid{grid-template-columns:1fr}.compare-value{font-size:28px}}
-      @media(max-width:480px){.scene-title-row{align-items:flex-end}.scene-title-row h1{font-size:44px}.scene-title-row .scene-mark{width:42px;height:42px}.scene-sub{font-size:14px}.scene-dashboard{border-radius:20px}.scene-stat{min-height:105px}.command-strip{grid-template-columns:42px 1fr;}.command-action{grid-column:2;justify-self:start;margin-top:3px}.data-node{grid-column:span 12!important}}
-    `;
-  }
+before{content:"";position:absolute;inset:auto auto -40px -20px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(64,201,255,.18),transparent 65%);pointer-events:none}.solar-battery-hero{grid-column:span 7;display:grid;grid-template-columns:240px 1fr;gap:24px;padding:28px 30px;align-items:center;min-height:340px}.solar-battery-shell{position:relative;width:150px;height:250px;border-radius:30px;border:6px solid rgba(255,255,255,.76);margin:0 auto;background:linear-gradient(180deg,rgba(255,255,255,.025),rgba(255,255,255,.01));box-shadow:inset 0 0 0 1px rgba(255,255,255,.05)}.solar-battery-shell:before{content:"";position:absolute;top:-20px;left:50%;transform:translateX(-50%);width:62px;height:18px;border-radius:8px 8px 2px 2px;background:rgba(255,255,255,.78)}.solar-battery-fill{position:absolute;left:14px;right:14px;bottom:14px;border-radius:18px;background:linear-gradient(180deg,rgba(103,255,182,.92),rgba(69,212,140,.92));box-shadow:0 0 34px rgba(103,255,182,.26)}.solar-battery-soc{position:absolute;inset:0;z-index:3;display:grid;place-items:center;text-align:center;pointer-events:none}.solar-battery-soc>div{padding:10px 14px 9px;border-radius:16px;background:rgba(7,14,25,.68);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 8px 24px rgba(0,0,0,.20)}.solar-battery-soc span,.solar-prod-copy span,.solar-pv-bars span,.solar-node-label,.solar-energy-pill span{font-size:10px;letter-spacing:.18em;font-weight:850;color:#87a0bb;text-transform:uppercase}.solar-battery-soc strong{display:block;font-size:52px;letter-spacing:-.06em;color:#ffffff;margin-top:6px;text-shadow:0 2px 10px rgba(0,0,0,.28)}.solar-battery-copy .eyebrow{font-size:11px;letter-spacing:.24em;font-weight:900;color:#59e39d;text-transform:uppercase}.solar-battery-copy .power{font-size:72px;line-height:.95;font-weight:880;letter-spacing:-.07em;margin-top:10px}.solar-battery-copy .power.good{color:#59e39d}.solar-battery-copy .power.bad{color:#ff8d87}.solar-battery-copy .power small{font-size:.46em}.solar-battery-copy .desc{margin-top:10px;font-size:15px;color:var(--secondary-text-color)}.solar-energy-pills{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}.solar-energy-pill{padding:10px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.04)}.solar-energy-pill strong{font-size:14px;margin-left:8px}.solar-prod-card{grid-column:span 5;padding:24px 28px;min-height:340px;display:flex;flex-direction:column;justify-content:space-between}.solar-prod-top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}.solar-sun{width:74px;height:74px;border-radius:22px;display:grid;place-items:center;background:radial-gradient(circle,rgba(255,204,72,.22),rgba(255,204,72,.05) 60%,transparent 62%);color:#ffd05c}.solar-sun ha-icon{--mdc-icon-size:42px}.solar-prod-copy strong{display:block;font-size:58px;letter-spacing:-.06em;line-height:.95;margin-top:12px}.solar-prod-copy small{display:block;color:var(--secondary-text-color);margin-top:10px}.solar-pv-bars{margin-top:18px;display:grid;gap:18px}.solar-pv-line{display:grid;grid-template-columns:176px minmax(0,1fr);gap:18px;align-items:center}.solar-pv-meta strong{display:block;font-size:22px;letter-spacing:-.04em;margin-top:8px}.solar-pv-meta small{display:block;color:var(--secondary-text-color);margin-top:4px}.solar-pv-track{position:relative;height:12px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}.solar-pv-fill{position:absolute;left:0;top:0;bottom:0;border-radius:999px;background:linear-gradient(90deg,#f4e88b,#f0c447)}.solar-pv-fill.west{background:linear-gradient(90deg,#f8d56b,#ff9a5a)}.solar-flow-card{grid-column:span 12;padding:24px 28px 26px}.solar-flow-grid{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;align-items:flex-start}.solar-flow-grid:before{display:none}.solar-node{position:relative;padding-top:4px;text-align:center}.solar-node-orb{width:84px;height:84px;margin:0 auto;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 50% 50%,rgba(64,201,255,.20),rgba(64,201,255,.03) 62%,transparent 64%);border:1px solid rgba(64,201,255,.20);box-shadow:0 0 30px rgba(64,201,255,.10)}.solar-node-orb ha-icon{--mdc-icon-size:34px;color:#7fd9ff}.solar-node.house .solar-node-orb ha-icon{color:#69f0a8}.solar-node.grid .solar-node-orb ha-icon{color:#ffcf72}.solar-node.battery .solar-node-orb ha-icon{color:#59e39d}.solar-node strong{display:block;font-size:34px;line-height:1;letter-spacing:-.05em;margin-top:16px}.solar-node strong.good{color:#59e39d}.solar-node strong.bad{color:#ff8d87}.solar-node small{display:block;color:var(--secondary-text-color);margin-top:6px;line-height:1.4}.solar-node-chip{display:inline-flex;align-items:center;gap:8px;margin-top:12px;padding:7px 11px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);font-size:11px;font-weight:800}.solar-node-chip.good{background:rgba(76,175,80,.12);border-color:rgba(76,175,80,.20);color:#8aeab4}.solar-node-chip.warn{background:rgba(255,152,0,.12);border-color:rgba(255,152,0,.20);color:#ffcc80}.solar-node-chip.bad{background:rgba(244,67,54,.12);border-color:rgba(244,67,54,.20);color:#ff8d87}.solar-node-chip.active{background:rgba(64,201,255,.12);border-color:rgba(64,201,255,.20);color:#98e6ff}
 
-  _s(id) { const eid=this._eid(id); return eid ? this._hass?.states?.[eid] : null; }
-  async _loadEntityConfig() {
-    if(this._entityConfigLoaded || this._entityConfigLoading) return;
-    this._entityConfigLoading=true;
-    try {
-      const res=await fetch(`${ENTITY_CONFIG_URL}?v=${Date.now()}`, {cache:"no-store"});
-      if(res.ok){
-        const json=await res.json();
-        const entities=json?.entities && typeof json.entities==="object" ? json.entities : {};
-        this._entityMap=entities;
-      }
-    } catch(_err) {
-      this._entityMap={};
-    } finally {
-      this._entityConfigLoaded=true;
-      this._entityConfigLoading=false;
-      this._renderPage(false);
-    }
-  }
-  _eid(id) {
-    if(!ENTITY_KEYS.has(id)) return id;
-    const mapped=this._entityMap?.[id];
-    return typeof mapped==="string" && mapped.trim() ? mapped.trim() : null;
-  }
-  _configured(id) { const eid=this._eid(id); return !!eid && !!this._hass?.states?.[eid]; }
-  _configuredCount() { return [...ENTITY_KEYS].filter(id=>this._eid(id)).length; }
-  _configNotice() {
-    const configured=this._configuredCount();
-    if(configured>0) return "";
-    return `<div class="alert warn"><ha-icon icon="mdi:cog-alert-outline"></ha-icon><div><strong>Configurazione entità richiesta</strong><span>Apri /config/www/casa-dashboard-community-entities.json, creato automaticamente dall’integrazione, e associa le entità del tuo Home Assistant. La dashboard resta sicura e non invia comandi alle entità non configurate.</span></div></div>`;
-  }
-
-  _state(id, fallback="—") {
-    const pending=this._optimistic.get(id);
-    if(pending && Date.now()-pending.at < 3500) return pending.state;
-    const s=this._s(id)?.state;
-    return (!s || ["unknown","unavailable","none",""].includes(s)) ? fallback : s;
-  }
-  _on(id) { return this._state(id,"off") === "on"; }
-  _num(id, fallback=null) { const v=parseFloat(this._state(id,"")); return Number.isFinite(v)?v:fallback; }
-  _attr(id, key, fallback=null) { const v=this._s(id)?.attributes?.[key]; return v ?? fallback; }
-  _fmt(id, digits=1, unit=null) {
-    const n=this._num(id,null); if(n===null) return "—";
-    const u=unit ?? this._attr(id,"unit_of_measurement","");
-    return `${n.toFixed(digits)}${u ? ` ${u}` : ""}`;
-  }
-  _fmtLuxCompact(id, digits=1){
-    const n=this._num(id,null); if(n===null) return "—";
-    if(Math.abs(n) >= 1000) return `${(n/1000).toFixed(digits)} klx`;
-    return `${n.toFixed(0)} lx`;
-  }
-  _fmtLuxExact(id){
-    const n=this._num(id,null); if(n===null) return "—";
-    return `${new Intl.NumberFormat('it-IT',{maximumFractionDigits:0}).format(n)} lx`;
-  }
-  _luxLabel(id){
-    const n=this._num(id,null); if(n===null) return "—";
-    const outdoor=id==="sensor.weather_solar_lux";
-    if(outdoor) return n>=40000?"Luce forte":n>=20000?"Luce buona":"Luce bassa";
-    return n>=500?"Luce forte":n>=100?"Luce buona":"Luce bassa";
-  }
-  _luxTone(id){
-    const n=this._num(id,null); if(n===null) return "state-off";
-    const outdoor=id==="sensor.weather_solar_lux";
-    if(outdoor) return n>=40000?"state-good":n>=20000?"state-active":"state-off";
-    return n>=500?"state-good":n>=100?"state-active":"state-off";
-  }
-  _radLabel(id){
-    const n=this._num(id,null); if(n===null) return "—";
-    return n>=350?"Radiazione forte":n>=150?"Radiazione moderata":n>=30?"Radiazione bassa":"Radiazione minima";
-  }
-  _radTone(id){
-    const n=this._num(id,null); if(n===null) return "state-off";
-    return n>=350?"state-good":n>=150?"state-active":n>=30?"state-warn":"state-off";
-  }
-  _fmtAcPowerFromCurrent(currentId, voltageId, digits=2){
-    const a=this._num(currentId,null), v=this._num(voltageId,null);
-    if(a===null || v===null) return "—";
-    return `${((a*v)/1000).toFixed(digits)} kW`;
-  }
-  _esc(v) { return String(v ?? "").replace(/[&<>'"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c])); }
-  _icon(icon, cls="") { return `<div class="iconbox ${cls}"><ha-icon icon="${icon}"></ha-icon></div>`; }
-  _setOptimistic(id,state){ this._optimistic.set(id,{state,at:Date.now()}); this._renderPage(false); }
-  _syncOptimistic(){
-    const now=Date.now();
-    for(const [id,p] of this._optimistic){
-      const eid=this._eid(id); const actual=eid?this._hass?.states?.[eid]?.state:null;
-      if(actual===p.state || now-p.at>3500) this._optimistic.delete(id);
-    }
-  }
-  _scheduleRender(){
-    if(this._pointerBusy){ this._renderPending=true; return; }
-    if(this._renderTimer) return;
-    this._renderTimer=setTimeout(()=>{
-      this._renderTimer=null;
-      if(this._pointerBusy){ this._renderPending=true; return; }
-      this._renderPage(false);
-    },70);
-  }
-  _countOn(list) { return list.filter(id=>this._on(id)).length; }
-  _openCount() { return OPENINGS.filter(id=>this._on(id)).length; }
-  _climateActive(id) { const st=this._state(id,"off"); const act=this._attr(id,"hvac_action",""); return st!=="off" || ["heating","cooling","drying","fan"].includes(act); }
-  _coverOpen(id, invertedPosition=false) {
-    const p=this._optimistic.get(id); if(p && ["open","closed"].includes(p.state)) return p.state==="open";
-    return invertedPosition ? Number(this._attr(id,"current_position",0))>5 : this._state(id)==="open";
-  }
-  _imageUrl(id){ const p=this._attr(id,"entity_picture",""); return p ? this._esc(p) : ""; }
-  _firstId(ids=[]){ return ids.find(id=>this._s(id)) || ids[0] || ""; }
-  _firstState(ids=[], fallback="—"){ const id=this._firstId(ids); return id ? this._state(id,fallback) : fallback; }
-  _firstNum(ids=[], fallback=null){ const id=this._firstId(ids); return id ? this._num(id,fallback) : fallback; }
-  _firstFmt(ids=[], digits=1, unit=null){ const id=this._firstId(ids); return id ? this._fmt(id,digits,unit) : "—"; }
-  _fmtPowerAuto(idOrIds, digits=2){
-    const ids = Array.isArray(idOrIds) ? idOrIds : [idOrIds];
-    const id = this._firstId(ids);
-    if(!id) return "—";
-    const n = this._num(id, null);
-    if(n===null) return "—";
-    const rawUnit = String(this._attr(id, "unit_of_measurement", "") || "").toLowerCase();
-    if(rawUnit === 'w' || (!rawUnit && Math.abs(n) >= 100)) return `${(n/1000).toFixed(digits)} kW`;
-    if(rawUnit === 'kw') return `${n.toFixed(digits)} kW`;
-    return `${n.toFixed(digits)} ${rawUnit || 'kW'}`;
-  }
-  _powerValueAuto(idOrIds){
-    const ids = Array.isArray(idOrIds) ? idOrIds : [idOrIds];
-    const id = this._firstId(ids);
-    if(!id) return null;
-    let n = this._num(id, null);
-    if(n===null) return null;
-    const rawUnit = String(this._attr(id, "unit_of_measurement", "") || "").toLowerCase();
-    if(rawUnit === 'w' || (!rawUnit && Math.abs(n) >= 100)) n = n / 1000;
-    return n;
-  }
-  _fmtSignedPowerAuto(idOrIds, digits=2){
-    const n = this._powerValueAuto(idOrIds);
-    if(n===null) return "—";
-    const sign = n > 0 ? '+' : n < 0 ? '−' : '±';
-    return `${sign}${Math.abs(n).toFixed(digits)} kW`;
-  }
-  _fmtAbsPowerAuto(idOrIds, digits=2){
-    const n = this._powerValueAuto(idOrIds);
-    if(n===null) return "—";
-    return `${Math.abs(n).toFixed(digits)} kW`;
-  }
-  _themeIsLight(){
-    const v = getComputedStyle(this).getPropertyValue('--primary-background-color').trim();
-    if(!v) return false;
-    let r=255,g=255,b=255;
-    if(v.startsWith('#')){
-      const h=v.slice(1);
-      if(h.length===3){ r=parseInt(h[0]+h[0],16); g=parseInt(h[1]+h[1],16); b=parseInt(h[2]+h[2],16); }
-      else if(h.length>=6){ r=parseInt(h.slice(0,2),16); g=parseInt(h.slice(2,4),16); b=parseInt(h.slice(4,6),16); }
-    } else {
-      const m=v.match(/rgba?\(([^)]+)\)/i);
-      if(m){ const p=m[1].split(',').map(s=>parseFloat(s.trim())); [r,g,b]=p; }
-    }
-    const luminance = (0.2126*r + 0.7152*g + 0.0722*b) / 255;
-    return luminance > 0.62;
-  }
-  _applyThemeMode(){
-    const shell = this.shadowRoot?.querySelector('.app-shell');
-    if(!shell) return;
-    const light = this._themeIsLight();
-    shell.classList.toggle('theme-light', light);
-    shell.classList.toggle('theme-dark', !light);
-  }
-  _windDir(id){ const deg=this._num(id,null); if(deg===null) return "—"; const dirs=['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSO','SO','OSO','O','ONO','NO','NNO']; return `${Math.round(deg)}° · ${dirs[Math.floor((deg+11.25)/22.5)%16]}`; }
-  _metricTone(entity,value=""){
-    const st=this._state(entity,""); const val=String(value).toLowerCase();
-    if((entity.includes("wleak")||entity.includes("water_leak")) && this._on(entity)) return "state-bad";
-    if(entity.includes("tank_status") && this._on(entity)) return "state-bad";
-    if(entity==="alarm_control_panel.home_alarm") return st==="triggered"?"state-bad":st==="disarmed"?"state-warn":"state-good";
-    if(entity.startsWith("binary_sensor.") && this._on(entity)) return entity.includes("motion")||entity.includes("occupancy")||entity.includes("occupazione")?"state-active":"state-warn";
-    if(["aperta","aperto","sbloccata","rilevata","rilevato","pieno","allarme"].some(x=>val.includes(x))) return val.includes("perdita")||val.includes("pieno")||val.includes("allarme")?"state-bad":"state-warn";
-    if(["accesa","acceso","attivo","attiva","occupato","in carica","cleaning"].some(x=>val.includes(x))) return "state-active";
-    if(["chiusa","chiuso","spenta","spento","libero","assente","ok","nessuna"].some(x=>val.includes(x))) return "state-good";
-    return "";
-  }
-  _controlTone(entity,on){
-    if(!on) return "state-off";
-    if(entity.startsWith("light.
+      .data-node.value-long .data-value{font-size:22px;line-height:1.12;margin-top:20px}
+      .data-node.value-long .data-foot{margin-top:10px}
+      .app-shell.theme-light{background:radial-gradient(circle at 10% -10%, rgba(68,144,255,.10), transparent 38%),radial-gradient(circle at 100% 0%, rgba(0,180,160,.10), transparent 26%),linear-gradient(180deg,#f4f7fb,#edf2f8 58%,#eef4fb)}
+      .app-shell.theme-light .topbar{background:rgba(248,250,253,.92);border-bottom:1px solid rgba(15,23,42,.10);box-shadow:0 10px 30px rgba(15,23,42,.06)}
+      .app-shell.theme-light .nav-btn{color:#5b6f88}.app-shell.theme-light .nav-btn.active,.app-shell.theme-light .nav-btn.active ha-icon{color:#1666d9}
+      .app-shell.theme-light .scene-hero{background:linear-gradient(140deg,rgba(255,255,255,.96),rgba(247,250,255,.98));border-color:rgba(26,81,160,.16);box-shadow:0 24px 50px rgba(28,46,84,.08)}
+      .app-shell.theme-light .scene-hero:before{background:linear-gradient(115deg,transparent 0 47%,rgba(15,23,42,.03) 47.2% 47.6%,transparent 47.8%)}
+      .app-shell.theme-light .scene-hero:after{border-color:rgba(30,64,175,.07);box-shadow:0 0 0 70px rgba(30,64,175,.03),0 0 0 140px rgba(30,64,175,.02)}
+      .app-shell.theme-light .scene-kicker,.app-shell.theme-light .data-label,.app-shell.theme-light .chapter-title,.app-shell.theme-light .panel-eyebrow,.app-shell.theme-light .spotlight-kicker,.app-shell.theme-light .room-eyebrow,.app-shell.theme-light .hero-overline{color:#537096}
+      .app-shell.theme-light .scene-sub,.app-shell.theme-light .chapter-sub,.app-shell.theme-light .data-foot,.app-shell.theme-light .command-sub,.app-shell.theme-light .brand-subtitle,.app-shell.theme-light .weather-sub,.app-shell.theme-light .muted{color:#5f6f83}
+      .app-shell.theme-light .scene-dashboard,.app-shell.theme-light .hero-metric,.app-shell.theme-light .spot-stat,.app-shell.theme-light .weather-chip,.app-shell.theme-light .tag{background:rgba(246,249,253,.9);border-color:rgba(15,23,42,.08)}
+      .app-shell.theme-light .spotlight,.app-shell.theme-light .mini-panel,.app-shell.theme-light .premium-room,.app-shell.theme-light .data-node,.app-shell.theme-light .command-strip,.app-shell.theme-light .climate-panel,.app-shell.theme-light .weather-hero,.app-shell.theme-light .decision-card,.app-shell.theme-light .logic-card,.app-shell.theme-light .solar-stage,.app-shell.theme-light .alert{background:linear-gradient(180deg,rgba(255,255,255,.95),rgba(246,249,253,.96));border-color:rgba(15,23,42,.10);box-shadow:0 16px 34px rgba(15,23,42,.05)}
+      .app-shell.theme-light .data-node:hover,.app-shell.theme-light .command-strip:hover{background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(243,247,252,.98))}
+      .app-shell.theme-light .command-symbol,.app-shell.theme-light .iconbox,.app-shell.theme-light .weather-icon,.app-shell.theme-light .room-arrow{background:rgba(21,40,72,.05);color:#4b6384}
+      .app-shell.theme-light .data-node-top ha-icon,.app-shell.theme-light .metric-icon ha-icon,.app-shell.theme-light .command-action,.app-shell.theme-light .room-arrow,.app-shell.theme-light .spot-stat .k{color:#567190}
+      .app-shell.theme-light .command-action i{border-color:rgba(15,23,42,.14);background:rgba(15,23,42,.03)}
+      .app-shell.theme-light .command-action i:after{background:#6b7f99}
+      .app-shell.theme-light .status-dot{box-shadow:0 0 0 6px rgba(34,197,94,.12)}
+      .app-shell.theme-light .data-node{border-top:1px solid rgba(15,23,42,.12);border-bottom:1px solid rgba(15,23,42,.08)}
+      .app-shell.theme-light .data-glow{opacity:.28}
+      .app-shell.theme-light .solar-panel{background:linear-gradient(180deg,rgba(255,255,255,.95),rgba(245,249,253,.98));border-color:rgba(15,23,42,.10);box-shadow:0 16px 34px rgba(15,23,42,.05)}
+      .app-shell.theme-light .solar-battery-shell{border-color:rgba(113,124,141,.70)}
+      .app-shell.theme-light .solar-battery-shell:before{background:rgba(113,124,141,.65)}
+      .app-shell.theme-light .solar-battery-soc>div{background:rgba(255,255,255,.90);border-color:rgba(15,23,42,.12);box-shadow:0 8px 22px rgba(15,23,42,.10)}.app-shell.theme-light .solar-battery-soc strong{color:#16304f;text-shadow:none}.app-shell.theme-light .solar-battery-soc span{color:#587292}.app-shell.theme-light .solar-battery-copy .eyebrow{color:#2dcf7c}.app-shell.theme-light .solar-battery-copy .power.good,.app-shell.theme-light .solar-node strong.good{color:#1fa95f}.app-shell.theme-light .solar-battery-copy .power.bad,.app-shell.theme-light .solar-node strong.bad{color:#d64545}
+      .app-shell.theme-light .sol

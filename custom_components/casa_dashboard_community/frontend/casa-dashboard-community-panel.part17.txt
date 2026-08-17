@@ -1,0 +1,81 @@
+rAuto("sensor.wallbox_charging_power",2),`${this._fmt("sensor.wallbox_charging_current_l1",1,"A")} · ${this._fmt("sensor.wallbox_voltage_l1",0,"V")} · ${charging?"Ricarica attiva":"Wallbox"}`,3,"sensor.wallbox_charging_power",charging?"state-active":"state-off")}
+      ${this._metric("mdi:meter-electric","Carico contatore",this._fmtAcPowerFromCurrent("sensor.grid_current_l1","sensor.wallbox_voltage_l1",2),`Pinza rete · ${this._fmt("sensor.grid_current_l1",1,"A")} · ${this._fmt("sensor.wallbox_voltage_l1",0,"V")} · Load balancing`,3,"sensor.grid_current_l1")}
+      ${this._metric("mdi:lightning-bolt-circle","Energia sessione",this._fmt("sensor.wallbox_session_energy",2,"kWh"),charging?"Sessione in corso":"Ultima sessione",3,"sensor.wallbox_session_energy")}
+      ${this._metric("mdi:speedometer","Limite ricarica",this._fmtAcPowerFromCurrent("sensor.wallbox_max_charging_current","sensor.wallbox_voltage_l1",2),`${this._fmt("sensor.wallbox_max_charging_current",1,"A")} · Limite Wallbox`,3,"sensor.wallbox_max_charging_current")}
+      ${this._metric("mdi:thermometer","Case Wallbox",this._fmt("sensor.wallbox_case_temperature",1,"°C"),"Diagnostica",4,"sensor.wallbox_case_temperature")}
+      ${this._metric("mdi:thermometer-lines","Scheda Wallbox",this._fmt("sensor.wallbox_board_temperature",1,"°C"),"Diagnostica",4,"sensor.wallbox_board_temperature")}
+      ${this._metric("mdi:fan","Ventola Wallbox",this._state("sensor.wallbox_fan_status","—"),"Raffreddamento",4,"sensor.wallbox_fan_status")}
+    </div>${this._section("Garage e intrattenimento")}<div class="grid">
+      ${this._control("switch.garage_treadmill","Tapis roulant","mdi:treadmill",this._on("switch.garage_treadmill")?"Acceso":"Spento","toggle",6)}
+      ${this._control("switch.garage_tv","TV garage","mdi:television",this._on("switch.garage_tv")?"Accesa":"Spenta","toggle",6)}
+      ${this._metric("mdi:thermometer","Temperatura garage",this._fmt("sensor.garage_temperature",1,"°C"),"Ambiente",6,"sensor.garage_temperature")}
+      ${this._metric("mdi:water-percent","Umidità garage",this._fmt("sensor.garage_humidity",0,"%"),"Ambiente",6,"sensor.garage_humidity")}
+    </div>${this._section("Purificatore d'aria")}<div class="grid">
+      ${this._control("switch.garage_air_purifier_power","Alimentazione","mdi:power",this._on("switch.garage_air_purifier_power")?"Accesa":"Spenta","toggle",4)}
+      ${this._control("fan.garage_air_purifier","Purificatore","mdi:air-purifier",this._on("fan.garage_air_purifier")?"Attivo":"Spento","toggle",4)}
+      ${this._control("light.garage_air_purifier_backlight","Retroilluminazione","mdi:led-strip-variant",this._on("light.garage_air_purifier_backlight")?"Accesa":"Spenta","toggle",4)}
+      ${this._metric("mdi:chemical-weapon","PM 2.5",this._fmt("sensor.garage_pm2_5",0),"Particolato",6,"sensor.garage_pm2_5")}
+      ${this._metric("mdi:air-filter","Qualità aria",this._state("sensor.garage_air_quality","—"),pur?"Purificatore attivo":"Purificatore spento",6,"sensor.garage_air_quality")}
+    </div>${this._section("Deumidificatore")}<div class="grid">
+      ${this._control("switch.garage_dehumidifier_power","Deumidificatore","mdi:air-humidifier",(dehum?"Acceso":"Spento")+" · "+this._fmt("sensor.garage_dehumidifier_humidity",0,"%"),"toggle",4)}
+      ${this._metric("mdi:water-percent","Umidità rilevata",this._fmt("sensor.garage_dehumidifier_humidity",0,"%"),"Garage",4,"sensor.garage_dehumidifier_humidity")}
+      ${this._metric("mdi:cup-water","Serbatoio",tank?"PIENO":"OK",tank?"Svuotare serbatoio":"Regolare",4,"binary_sensor.garage_dehumidifier_tank_full",tank?"state-bad":"state-good")}
+      ${this._configured("humidifier.garage_dehumidifier")?`<div class="control span-12 ${dehum?'state-on blue-tone':'state-off'}">${this._icon("mdi:air-humidifier",dehum?"blue":"")}<div class="control-main clickable" data-more="humidifier.garage_dehumidifier"><div class="control-title">Target deumidificazione</div><div class="control-sub">Obiettivo ${target}%</div></div><button class="mini-btn" data-humidity-delta="-5" type="button">−5%</button><button class="mini-btn" data-humidity-delta="5" type="button">+5%</button></div>`:""}
+      ${this._control("switch.garage_dehumidifier_display","Display","mdi:monitor",this._on("switch.garage_dehumidifier_display")?"Acceso":"Spento","toggle",4)}
+      ${this._control("switch.garage_dehumidifier_buzzer","Buzzer","mdi:volume-high",this._on("switch.garage_dehumidifier_buzzer")?"Attivo":"Disattivato","toggle",4)}
+      ${this._metric("mdi:lock","Blocco tasti",this._state("lock.garage_dehumidifier_child_lock","—"),"Child lock",4,"lock.garage_dehumidifier_child_lock")}
+      ${this._metric("mdi:water","Livello acqua",this._state("sensor.garage_dehumidifier_water_level","—"),"Serbatoio",6,"sensor.garage_dehumidifier_water_level")}
+      ${this._metric("mdi:timer-outline","Tempo acqua",this._state("sensor.garage_dehumidifier_water_full_time","—"),"Serbatoio",6,"sensor.garage_dehumidifier_water_full_time")}
+    </div></div>`;
+  }
+
+  _handleClick(ev) {
+    const target=ev.target.closest?.("[data-action],[data-nav],[data-toggle],[data-more],[data-cover-toggle],[data-climate],[data-climate-temp],[data-vacuum],[data-alarm],[data-humidity-delta],[data-script]"); if(!target) return;
+    if(target.dataset.action==="ha-menu") { this.dispatchEvent(new CustomEvent("hass-toggle-menu",{bubbles:true,composed:true})); return; }
+    if(target.dataset.action==="entity-config") { this._openConfigDialog(); return; }
+    if(target.dataset.action==="config-close") { this._closeConfigDialog(); return; }
+    if(target.dataset.action==="config-overlay-close") { if(ev.target===target) this._closeConfigDialog(); return; }
+    if(target.dataset.action==="config-save") { this._saveConfigDialog(); return; }
+    if(target.dataset.action==="config-clear") {
+      const key=target.dataset.configClear; if(key){ this._configDraft[key]=""; const input=this.shadowRoot.querySelector(`[data-config-key="${key}"]`); if(input) input.value=""; } return;
+    }
+    if(target.dataset.nav){
+      this._active=target.dataset.nav; this._renderNav(false); this._renderPage(false);
+      requestAnimationFrame(()=>this.shadowRoot.querySelector(`.nav-btn[data-nav="${this._active}"]`)?.scrollIntoView({behavior:"smooth",inline:"center",block:"nearest"}));
+      window.scrollTo({top:0,behavior:"smooth"}); return;
+    }
+    if(target.dataset.more){ const eid=this._eid(target.dataset.more); if(!eid) return; this.dispatchEvent(new CustomEvent("hass-more-info",{detail:{entityId:eid},bubbles:true,composed:true})); return; }
+    if(target.dataset.toggle){
+      const id=target.dataset.toggle, eid=this._eid(id); if(!eid) return; const domain=eid.split(".")[0], next=this._on(id)?"off":"on";
+      this._setOptimistic(id,next); this._hass.callService(domain,"toggle",{entity_id:eid}); return;
+    }
+    if(target.dataset.coverToggle){
+      const id=target.dataset.coverToggle, inverted=target.dataset.inverted==="1", open=this._coverOpen(id,inverted), next=open?"closed":"open";
+      this._optimistic.set(id,{state:next,at:Date.now()}); this._renderPage(false);
+      const eid=this._eid(id); if(!eid) return; this._hass.callService("cover",open?"close_cover":"open_cover",{entity_id:eid}); return;
+    }
+    if(target.dataset.climate){
+      const id=target.dataset.climate, mode=target.dataset.mode; this._setOptimistic(id,mode);
+      const eid=this._eid(id); if(!eid) return; this._hass.callService("climate","set_hvac_mode",{entity_id:eid,hvac_mode:mode}); return;
+    }
+    if(target.dataset.climateTemp){
+      const id=target.dataset.climateTemp, current=Number(this._attr(id,"temperature",24)), delta=Number(target.dataset.delta||0);
+      const eid=this._eid(id); if(!eid) return; this._hass.callService("climate","set_temperature",{entity_id:eid,temperature:current+delta}); return;
+    }
+    if(target.dataset.script){
+      const id=target.dataset.script, btn=target.closest?.("button") || target;
+      btn.classList.add("pressed");
+      const oldText=btn.textContent; btn.textContent="FATTO";
+      setTimeout(()=>{ btn.classList.remove("pressed"); btn.textContent=oldText; },1200);
+      const eid=this._eid(id); if(!eid) return; this._hass.callService("script","turn_on",{entity_id:eid}); return;
+    }
+    if(target.dataset.vacuum){ const eid=this._eid("vacuum.robot_vacuum"); if(!eid) return; this._hass.callService("vacuum",target.dataset.vacuum,{entity_id:eid}); return; }
+    if(target.dataset.alarm){ const eid=this._eid("alarm_control_panel.home_alarm"); if(!eid) return; this._hass.callService("alarm_control_panel",target.dataset.alarm,{entity_id:eid}); return; }
+    if(target.dataset.humidityDelta){
+      const id="humidifier.garage_dehumidifier", current=Number(this._attr(id,"humidity",this._attr(id,"target_humidity",55))), delta=Number(target.dataset.humidityDelta||0);
+      const eid=this._eid(id); if(!eid) return; this._hass.callService("humidifier","set_humidity",{entity_id:eid,humidity:Math.max(30,Math.min(80,current+delta))}); return;
+    }
+  }
+}
+
+if(!customElements.get("casa-dashboard-community-panel")) customElements.define("casa-dashboard-community-panel",CasaDashboardPanel);

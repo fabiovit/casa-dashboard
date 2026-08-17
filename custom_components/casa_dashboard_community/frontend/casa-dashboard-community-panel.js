@@ -1,6 +1,6 @@
 const base = "/casa-dashboard-community-static/";
-const version = "1.1.2";
-const parts = 15;
+const version = "1.1.3";
+const parts = 18;
 const sources = await Promise.all(Array.from({length: parts}, (_, i) =>
   fetch(`${base}casa-dashboard-community-panel.part${i}.txt?v=${version}`, {cache: "no-store"}).then(r => {
     if (!r.ok) throw new Error(`Casa Dashboard: impossibile caricare parte ${i}`);

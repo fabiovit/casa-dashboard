@@ -1,132 +1,55 @@
-")) return "state-on light-tone";
-    if(entity.startsWith("climate.")) return "state-on blue-tone";
-    return "state-on";
+ar-sun{background:radial-gradient(circle,rgba(255,204,72,.18),rgba(255,204,72,.06) 60%,transparent 62%);color:#d19700}
+      .app-shell.theme-light .solar-node-orb{background:radial-gradient(circle at 50% 50%,rgba(22,102,217,.12),rgba(22,102,217,.02) 62%,transparent 64%);border-color:rgba(22,102,217,.16);box-shadow:none}
+      .app-shell.theme-light .solar-pv-track{background:rgba(15,23,42,.08)}
+      .app-shell.theme-light .solar-energy-pill,.app-shell.theme-light .solar-node-chip{background:rgba(15,23,42,.03);border-color:rgba(15,23,42,.08)}
+      .app-shell.theme-light .compare-cell{background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(244,248,253,.98));border-color:rgba(15,23,42,.08)}
+      .app-shell.theme-light .compare-label{color:#587292}
+      .app-shell.theme-light footer{color:#5f738e}
+
+      .config-alert{align-items:center}.config-alert>div{flex:1}.config-open-btn{margin-left:auto;display:inline-flex;align-items:center;gap:7px;border:1px solid color-mix(in srgb,var(--warning-color,#ff9800) 35%,var(--divider-color));background:color-mix(in srgb,var(--warning-color,#ff9800) 10%,var(--card-background-color));color:var(--primary-text-color);border-radius:12px;padding:9px 13px;font-weight:800;cursor:pointer;white-space:nowrap}.config-open-btn ha-icon{--mdc-icon-size:18px;color:var(--warning-color,#ff9800)}
+      #configLayer{position:relative;z-index:200}.config-overlay{position:fixed;inset:0;z-index:9999;background:rgba(3,8,14,.72);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:grid;place-items:center;padding:18px}.config-dialog{width:min(1080px,100%);max-height:min(88vh,900px);display:flex;flex-direction:column;border-radius:24px;overflow:hidden;background:color-mix(in srgb,var(--card-background-color) 97%,#061523 3%);border:1px solid color-mix(in srgb,var(--primary-color) 25%,var(--divider-color));box-shadow:0 30px 100px rgba(0,0,0,.45);color:var(--primary-text-color)}.config-dialog-head{padding:22px 24px 16px;display:flex;gap:20px;align-items:flex-start;border-bottom:1px solid var(--divider-color)}.config-dialog-head>div{flex:1}.config-kicker{font-size:10px;letter-spacing:.16em;font-weight:900;color:var(--primary-color)}.config-dialog h2{font-size:28px;letter-spacing:-.03em;margin:5px 0 6px}.config-dialog p{margin:0;color:var(--secondary-text-color);font-size:13px;line-height:1.5}.config-close{width:40px;height:40px;display:grid;place-items:center;border:0;border-radius:12px;background:var(--secondary-background-color);color:var(--primary-text-color);cursor:pointer}.config-toolbar{display:flex;align-items:center;gap:12px;padding:14px 24px;border-bottom:1px solid var(--divider-color)}.config-search{height:42px;flex:1;display:flex;align-items:center;gap:9px;border:1px solid var(--divider-color);background:var(--secondary-background-color);border-radius:13px;padding:0 12px}.config-search ha-icon{--mdc-icon-size:20px;color:var(--secondary-text-color)}.config-search input{flex:1;min-width:0;border:0;outline:0;background:transparent;color:var(--primary-text-color);font:inherit}.config-progress{display:flex;align-items:baseline;gap:3px;min-width:75px;justify-content:flex-end}.config-progress strong{font-size:20px;color:var(--primary-color)}.config-progress span{font-size:12px;color:var(--secondary-text-color)}.config-scroll{overflow:auto;padding:10px 24px 22px}.config-group{margin-top:16px}.config-group-title{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:var(--secondary-text-color);padding:0 2px 8px}.config-group-title span{font-size:10px;border-radius:99px;background:var(--secondary-background-color);padding:3px 7px}.config-row{display:grid;grid-template-columns:minmax(220px,.9fr) minmax(280px,1.3fr);gap:18px;align-items:center;padding:11px 12px;border-top:1px solid color-mix(in srgb,var(--divider-color) 65%,transparent)}.config-row:first-of-type{border-top:0}.config-row-copy{min-width:0}.config-row-copy strong{display:block;font-size:13px}.config-row-copy code{display:block;margin-top:3px;font-size:10px;color:var(--secondary-text-color);overflow:hidden;text-overflow:ellipsis}.config-field{display:flex;gap:6px;align-items:center}.config-field input{width:100%;height:38px;border:1px solid var(--divider-color);border-radius:10px;background:var(--secondary-background-color);color:var(--primary-text-color);padding:0 10px;outline:0;font:inherit;font-size:12px}.config-field input:focus{border-color:var(--primary-color);box-shadow:0 0 0 2px color-mix(in srgb,var(--primary-color) 15%,transparent)}.config-field button{width:36px;height:36px;display:grid;place-items:center;flex:none;border:0;border-radius:10px;background:transparent;color:var(--secondary-text-color);cursor:pointer}.config-field button:hover{background:var(--secondary-background-color);color:var(--primary-text-color)}.config-dialog-foot{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 24px;border-top:1px solid var(--divider-color);background:color-mix(in srgb,var(--card-background-color) 96%,transparent)}.config-hint{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--secondary-text-color)}.config-hint ha-icon{--mdc-icon-size:18px;color:var(--success-color,#4caf50)}.config-actions{display:flex;gap:8px}.config-actions button{height:40px;border-radius:11px;padding:0 15px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:7px}.config-actions .secondary{border:1px solid var(--divider-color);background:var(--secondary-background-color);color:var(--primary-text-color)}.config-actions .primary{border:1px solid color-mix(in srgb,var(--primary-color) 55%,var(--divider-color));background:var(--primary-color);color:var(--text-primary-color,#fff)}.config-actions .primary ha-icon{--mdc-icon-size:18px}.config-empty{text-align:center;padding:40px;color:var(--secondary-text-color)}.spin{animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+      @media(max-width:700px){.config-overlay{padding:0}.config-dialog{height:100vh;max-height:none;border-radius:0}.config-dialog-head,.config-toolbar,.config-scroll,.config-dialog-foot{padding-left:16px;padding-right:16px}.config-row{grid-template-columns:1fr;gap:7px}.config-dialog-foot{align-items:stretch;flex-direction:column}.config-actions{display:grid;grid-template-columns:1fr 1fr}.config-actions button{justify-content:center}.config-hint{display:none}.config-alert{align-items:flex-start;flex-wrap:wrap}.config-open-btn{margin-left:34px}}
+      @media(max-width:1000px){.scene-hero{grid-template-columns:1fr}.scene-dashboard{grid-template-columns:repeat(4,1fr)}.scene-stat{min-height:110px}.scene-title-row h1{font-size:64px}.solar-battery-hero{grid-template-columns:200px 1fr}.solar-prod-copy strong{font-size:48px}.solar-flow-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.compare-value{font-size:26px}}
+      @media(max-width:760px){.scene-hero{padding:24px 18px;border-radius:26px;min-height:auto}.scene-title-row h1{font-size:50px}.scene-mark{width:48px;height:48px}.scene-dashboard{grid-template-columns:1fr 1fr}.scene-stat{min-height:112px;padding:18px 15px}.scene-stat strong{font-size:22px}.chapter{grid-template-columns:36px 1fr}.data-node{min-height:125px;padding:15px 12px}.data-value{font-size:25px;margin-top:22px}.command-strip{grid-template-columns:44px 1fr auto;gap:10px}.command-symbol{width:42px;height:42px}.command-action{min-width:72px}.solar-showcase{grid-template-columns:1fr}.solar-battery-hero,.solar-prod-card,.solar-flow-card{grid-column:span 12}.solar-battery-hero{grid-template-columns:1fr;justify-items:center;text-align:center;min-height:auto;padding:24px 20px}.solar-battery-copy .power{font-size:56px}.solar-prod-card{min-height:auto}.solar-pv-line{grid-template-columns:1fr;gap:10px}.solar-flow-grid{grid-template-columns:1fr 1fr}.solar-flow-grid:before{display:none}.solar-node strong{font-size:28px}.solar-prod-copy strong{font-size:42px}.compare-grid{grid-template-columns:1fr}.compare-value{font-size:28px}}
+      @media(max-width:480px){.scene-title-row{align-items:flex-end}.scene-title-row h1{font-size:44px}.scene-title-row .scene-mark{width:42px;height:42px}.scene-sub{font-size:14px}.scene-dashboard{border-radius:20px}.scene-stat{min-height:105px}.command-strip{grid-template-columns:42px 1fr;}.command-action{grid-column:2;justify-self:start;margin-top:3px}.data-node{grid-column:span 12!important}}
+    `;
   }
 
-  _overall() {
-    const alarm=this._state("alarm_control_panel.home_alarm","unknown");
-    const leak=this._on("binary_sensor.bathroom_water_leak");
-    const tank=this._on("binary_sensor.garage_dehumidifier_tank_full") || ["full","pieno","water full","tank full"].includes(this._state("sensor.garage_dehumidifier_tank_status","").toLowerCase());
-    const open=this._openCount();
-    if(alarm==="triggered" || leak || tank) return {level:"bad", icon:"mdi:alert-octagon", title:"Attenzione richiesta", text: alarm==="triggered"?"Allarme in corso":leak?"Perdita acqua rilevata":"Serbatoio deumidificatore pieno"};
-    if(open>0) return {level:"warn", icon:"mdi:shield-alert-outline", title:"Casa da controllare", text:`${open} aperture aperte`};
-    if(alarm==="disarmed") return {level:"warn", icon:"mdi:shield-off-outline", title:"Casa tranquilla", text:"Allarme disinserito"};
-    return {level:"good", icon:"mdi:shield-check-outline", title:"Tutto sotto controllo", text:"Nessuna criticità rilevata"};
-  }
-
-  _roomStatus(room) {
-    const light=(ids)=>ids.some(id=>this._on(id));
-    const active=(ids)=>ids.some(id=>this._on(id));
-    switch(room){
-      case "esterno": return this._on("input_boolean.pedestrian_gate") ? {level:"warn",text:"Cancellino aperto"}:{level:"good",text:"Accesso chiuso"};
-      case "scale": return light(["light.stairs"]) ? {level:"blue",text:"Luce accesa"}:{level:"good",text:"Tutto ok"};
-      case "ingresso": {
-        if(this._state("alarm_control_panel.home_alarm")==="triggered") return {level:"bad",text:"Allarme in corso"};
-        if(this._on("binary_sensor.entry_door")) return {level:"warn",text:"Porta aperta"};
-        if(this._on("input_boolean.entry_door_unlock")) return {level:"warn",text:"Porta sbloccata"};
-        return {level:"good",text:"Ingresso sicuro"}; }
-      case "disimpegno": return active(["binary_sensor.hallway_motion","binary_sensor.hallway_occupancy"]) ? {level:"blue",text:"Presenza rilevata"}:{level:"good",text:"Libero"};
-      case "bagno": {
-        if(this._on("binary_sensor.bathroom_water_leak")) return {level:"bad",text:"Perdita acqua"};
-        if(this._on("binary_sensor.bathroom_window")) return {level:"warn",text:"Finestra aperta"};
-        return this._climateActive("fan.bathroom_extractor") ? {level:"blue",text:"Aspiratore attivo"}:{level:"good",text:"Tutto ok"}; }
-      case "cucina": {
-        if(this._on("binary_sensor.kitchen_door_window")) return {level:"warn",text:"Porta finestra aperta"};
-        if(this._climateActive("climate.kitchen")) return {level:"blue",text:"Clima attivo"};
-        return light(["light.kitchen_main","light.kitchen_led"]) ? {level:"blue",text:"Luci accese"}:{level:"good",text:"Tutto ok"}; }
-      case "camera": {
-        if(this._on("binary_sensor.bedroom_door_window")) return {level:"warn",text:"Porta finestra aperta"};
-        if(this._climateActive("climate.bedroom")) return {level:"blue",text:"Clima attivo"};
-        const v=this._state("vacuum.robot_vacuum",""); if(["cleaning","returning","paused"].includes(v)) return {level:"blue",text:"Robot aspirapolvere attivo"};
-        return {level:"good",text:"Tutto ok"}; }
-      case "balcone": {
-        if(this._on("binary_sensor.weather_rain") || (this._num("sensor.weather_rain_rate",0)>=0.1)) return {level:"warn",text:"Pioggia rilevata"};
-        if(this._num("sensor.weather_wind_gust",0)>=24) return {level:"warn",text:"Raffiche forti"};
-        if(this._on("switch.balcony_barbecue")) return {level:"blue",text:"Barbecue acceso"};
-        return {level:"good",text:"Meteo regolare"}; }
-      case "garage": {
-        if(this._on("binary_sensor.garage_door_contact")) return {level:"warn",text:"Basculante aperto"};
-        if(this._on("binary_sensor.ev_charging_at_home")) return {level:"blue",text:"EV in carica"};
-        if(this._on("binary_sensor.garage_dehumidifier_tank_full")) return {level:"bad",text:"Serbatoio pieno"};
-        return {level:"good",text:"Tutto ok"}; }
-    }
-    return {level:"good",text:"Tutto ok"};
-  }
-
-  _renderNav(force=false) {
-    const nav=this.shadowRoot.querySelector("#nav"); if(!nav) return;
-    if(force || !nav.children.length){
-      nav.innerHTML=NAV.map(([id,icon,label])=>`<button class="nav-btn ${id===this._active?"active":""}" data-nav="${id}" type="button"><ha-icon icon="${icon}"></ha-icon>${label}</button>`).join("");
-    } else {
-      nav.querySelectorAll(".nav-btn").forEach(btn=>btn.classList.toggle("active",btn.dataset.nav===this._active));
+  _s(id) { const eid=this._eid(id); return eid ? this._hass?.states?.[eid] : null; }
+  async _loadEntityConfig(force=false) {
+    if((this._entityConfigLoaded && !force) || this._entityConfigLoading) return;
+    this._entityConfigLoading=true;
+    try {
+      let entities=null;
+      if(this._hass?.callWS){
+        try {
+          const result=await this._hass.callWS({type:"casa_dashboard_community/config/get"});
+          if(result?.entities && typeof result.entities==="object") entities=result.entities;
+        } catch(_wsErr) { /* fallback below */ }
+      }
+      if(!entities){
+        const res=await fetch(`${ENTITY_CONFIG_URL}?v=${Date.now()}`, {cache:"no-store"});
+        if(res.ok){
+          const json=await res.json();
+          if(json?.entities && typeof json.entities==="object") entities=json.entities;
+        }
+      }
+      this._entityMap=entities || {};
+    } catch(_err) {
+      this._entityMap={};
+    } finally {
+      this._entityConfigLoaded=true;
+      this._entityConfigLoading=false;
+      this._renderPage(false);
     }
   }
-
-  _renderHeader() {
-    const host=this.shadowRoot.querySelector("#headerStatus"); if(!host||!this._hass) return;
-    const all=this._overall(); const temp=this._fmt("sensor.weather_outdoor_temperature",1,"°C");
-    host.innerHTML=`<div class="header-pill"><ha-icon icon="${all.icon}"></ha-icon>${this._esc(all.title)}</div><div class="header-pill"><ha-icon icon="mdi:thermometer"></ha-icon>${temp}</div>`;
+  _eid(id) {
+    if(!ENTITY_KEYS.has(id)) return id;
+    const mapped=this._entityMap?.[id];
+    return typeof mapped==="string" && mapped.trim() ? mapped.trim() : null;
   }
-
-  _renderPage(forceNav=false) {
-    if(!this._hass || !this.shadowRoot) return;
-    this._renderNav(forceNav); this._renderHeader(); this._applyThemeMode();
-    const host=this.shadowRoot.querySelector("#content"); if(!host) return;
-    const renderer={panoramica:()=>this._overview(),esterno:()=>this._esterno(),scale:()=>this._scale(),ingresso:()=>this._ingresso(),cucina:()=>this._cucina(),disimpegno:()=>this._disimpegno(),bagno:()=>this._bagno(),camera:()=>this._camera(),balcone:()=>this._balcone(),garage:()=>this._garage()}[this._active];
-    host.innerHTML=renderer ? renderer() : `<div class="empty">Pagina non disponibile</div>`;
-  }
-
-  _hero(title, subtitle, status, metrics=[]) {
-    const level=status.level||"good";
-    const heroIcon=level==='bad'?'mdi:alert-decagram':level==='warn'?'mdi:shield-alert-outline':level==='blue'?'mdi:home-lightning-bolt-outline':'mdi:home-heart';
-    return `<section class="scene-hero scene-${level}">
-      <div class="scene-copy">
-        <div class="scene-kicker">CASA · LIVE</div>
-        <div class="scene-title-row"><h1>${title}</h1><div class="scene-mark ${level}"><ha-icon icon="${heroIcon}"></ha-icon></div></div>
-        <div class="scene-sub">${subtitle}</div>
-        <div class="scene-status ${level}"><span class="pulse"></span><strong>${this._esc(status.title || status.text)}</strong>${status.title&&status.text?`<span>${this._esc(status.text)}</span>`:""}</div>
-      </div>
-      <div class="scene-dashboard">
-        ${metrics.map((m,i)=>`<div class="scene-stat s${i}"><span>${m.label}</span><strong>${m.value}</strong>${m.small?`<small>${m.small}</small>`:""}</div>`).join("")}
-      </div>
-    </section>`;
-  }
-
-  _section(title, sub="") { return `<div class="chapter"><div class="chapter-line"></div><div class="chapter-copy"><div class="chapter-title">${title}</div>${sub?`<div class="chapter-sub">${sub}</div>`:""}</div></div>`; }
-  _metric(icon,label,value,foot="",span=3,entity="",tone="") {
-    const configured=!entity || this._configured(entity);
-    const cls=tone || (entity?this._metricTone(entity,value):"");
-    const shown=entity&&!configured?"Non configurato":value;
-    const plain = String(shown).replace(/<[^>]+>/g,'').trim();
-    const longClass = plain.length > 26 ? 'value-long' : '';
-    return `<div class="data-node span-${span} ${entity&&configured?'clickable':''} ${cls} ${longClass} ${entity&&!configured?'state-off':''}" ${entity&&configured?`data-more="${entity}"`:""}>
-      <div class="data-node-top"><span class="data-label">${label}</span><ha-icon icon="${icon}"></ha-icon></div>
-      <div class="data-value">${shown}</div>
-      ${foot?`<div class="data-foot">${foot}</div>`:""}
-      <div class="data-glow"></div>
-    </div>`;
-  }
-  _control(entity,title,icon,sub="",mode="toggle",span=4) {
-    const configured=this._configured(entity);
-    const st=this._state(entity,"off");
-    const on=configured && (this._on(entity) || ["open","cool","heat","heating","cooling"].includes(st));
-    const cls=configured?this._controlTone(entity,on):"state-off";
-    return `<div class="command-strip span-${span} ${cls}">
-      <div class="command-symbol ${on?'active':''}"><ha-icon icon="${icon}"></ha-icon></div>
-      <div class="command-copy ${configured?'clickable':''}" ${configured?`data-more="${entity}"`:""}><div class="command-title">${title}</div><div class="command-sub">${configured?(sub || this._esc(st)):"Non configurato"}</div></div>
-      ${mode==='toggle'?`<button class="command-action ${on?'active':''}" ${configured?`data-toggle="${entity}"`:"disabled"} type="button"><span>${configured?(on?'ON':'OFF'):'—'}</span><i></i></button>`:""}
-    </div>`;
-  }
-  _coverControl(entity,title,inverted=false,span=6,subPrefix="Posizione"){
-    const configured=this._configured(entity);
-    const open=configured&&this._coverOpen(entity,inverted);
-    const pos=this._attr(entity,"current_position",null);
-    const stateText=inverted?(open?"Aperta":"Chiusa"):(open?"Giù / aperta":"Su / chiusa");
-    return `<div class="command-strip span-${span} ${configured?(open?'state-warn':'state-off'):'state-off'}">
-      <div class="command-symbol ${open?'warn':''}"><ha-icon icon="mdi:blinds-horizontal"></ha-icon></div>
-      <div class="command-copy ${configured?'clickable':''}" ${configured?`data-more="${entity}"`:""}><div class="command-title">${title}</div><div class="command-sub">${configured?`${pos!==null?`${subPrefix} ${pos}% · `:""}${stateText}`:"Non configurato"}</div></div>
-      <button class="command-action ${open?'warn':''}" ${configured?`data-cover-toggle="${entity}" data-inverted="${inverted?1:0}"`:"disabled"} type="button"><span>${configured?(open?'CHIUDI':'APRI'):'—'}</span><i></i></button>
-    </div>`;
-  }
-  _alert(level,icon,title,text) { return `<div class="signal ${level}"><div class="signal-icon"><ha-icon icon="${icon}"></ha-icon></div><div><strong>${title}</strong><span>${text}</span></div></div>`; }
-  _logic(title,text,lev
+  _configured(id) { const eid=this._eid(id); return !!eid && !!this._hass?.states?.[eid]; }
+  _configuredCount() { return [...ENTITY_KEYS].filter(id=>this._eid(id)).length; }
+  _configNotice() {
+    const configured=this._configuredCount();
+    const total=ENTITY_KEY
