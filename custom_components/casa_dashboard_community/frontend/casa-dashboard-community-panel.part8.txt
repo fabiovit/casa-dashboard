@@ -1,155 +1,269 @@
-derPage(false);
-    }
-  }
-  _eid(id) {
-    if(!ENTITY_KEYS.has(id)) return id;
-    const mapped=this._entityMap?.[id];
-    return typeof mapped==="string" && mapped.trim() ? mapped.trim() : null;
-  }
-  _configured(id) { const eid=this._eid(id); return !!eid && !!this._hass?.states?.[eid]; }
-  _configuredCount() { return [...ENTITY_KEYS].filter(id=>this._eid(id)).length; }
-  _configNotice() {
-    const configured=this._configuredCount();
-    const total=ENTITY_KEYS.size;
-    if(configured>=total) return "";
-    const title=configured===0?"Configurazione entità richiesta":"Configurazione entità incompleta";
-    const text=configured===0
-      ? "Associa le entità del tuo Home Assistant direttamente dalla dashboard. Le funzioni non configurate restano disabilitate e sicure."
-      : `${configured} di ${total} associazioni configurate. Puoi completarle o modificarle in qualsiasi momento.`;
-    return `<div class="alert warn config-alert"><ha-icon icon="mdi:cog-alert-outline"></ha-icon><div><strong>${title}</strong><span>${text}</span></div><button class="config-open-btn" data-action="entity-config" type="button"><ha-icon icon="mdi:tune-variant"></ha-icon> Configura</button></div>`;
-  }
+2px;border-radius:6px;background:#111b21}.daze-led{position:absolute;left:28px;top:81px;width:16px;height:16px;border-radius:50%;background:#48555f}.daze-led.active{background:#4de299;box-shadow:0 0 14px rgba(77,226,153,.6)}.daze-cable{position:absolute;left:52px;top:104px;width:84px;height:75px;border:6px solid #20272c;border-left:0;border-top:0;border-radius:0 0 70px 0}.daze-status{position:absolute;left:26px;bottom:20px;font-size:14px;font-weight:850;color:#9aabba}.daze-status span{display:inline-block;width:10px;height:10px;border-radius:50%;background:#5b6872;margin-right:8px}.daze-status.active{color:#59df9b}.daze-status.active span{background:#59df9b}
+      .daze-data{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.daze-data-card{min-height:128px;border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:15px;background:rgba(255,255,255,.016)}.daze-data-card.primary{border-color:rgba(74,189,255,.22);background:rgba(74,189,255,.03)}.daze-data-card span{display:block;font-size:8px;letter-spacing:.15em;color:#8da6bd}.daze-data-card strong{display:block;font-size:27px;margin-top:11px;letter-spacing:-.04em}.daze-data-card small{display:block;color:var(--secondary-text-color);margin-top:7px}.daze-diagnostics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
 
-  _configLabel(key) {
-    const pretty=key.split(".")[1]?.replaceAll("_"," ") || key;
-    return pretty.replace(/\b\w/g,c=>c.toUpperCase());
-  }
-  _configGroup(key) {
-    const name=key.split(".")[1] || key;
-    if(name.includes("solar_")) return "Energia solare";
-    if(name.includes("wallbox") || name.includes("ev_") || name.includes("grid_current")) return "Wallbox & EV";
-    if(name.includes("weather_")) return "Meteo";
-    if(name.includes("garage_")) return "Garage";
-    if(name.includes("bedroom")) return "Camera";
-    if(name.includes("kitchen")) return "Cucina";
-    if(name.includes("bathroom")) return "Bagno";
-    if(name.includes("balcony")) return "Balcone";
-    if(name.includes("entry_")) return "Ingresso";
-    if(name.includes("hallway")) return "Disimpegno";
-    if(name.includes("stairs")) return "Scale";
-    return "Casa & Generale";
-  }
-  _entityOptions() {
-    if(!this._hass?.states) return [];
-    return Object.entries(this._hass.states).map(([id,state])=>{
-      const name=String(state?.attributes?.friendly_name || "").trim();
-      return {id,name,label:name ? `${name} — ${id}` : id};
-    }).sort((a,b)=>(a.name || a.id).localeCompare(b.name || b.id, "it", {sensitivity:"base"}));
-  }
-  _entityIdFromFriendlyName(value) {
-    const raw=String(value || "").trim();
-    if(!raw || raw.includes(".")) return raw;
-    const normalized=raw.toLocaleLowerCase("it");
-    const matches=this._entityOptions().filter(item=>item.name && item.name.toLocaleLowerCase("it")===normalized);
-    return matches.length===1 ? matches[0].id : raw;
-  }
-  _renderConfigDialog() {
-    if(!this._configDialogOpen) return "";
-    const filter=(this._configFilter||"").trim().toLowerCase();
-    const entries=[...ENTITY_KEYS].filter(key=>{
-      if(!filter) return true;
-      return key.toLowerCase().includes(filter) || this._configLabel(key).toLowerCase().includes(filter) || this._configGroup(key).toLowerCase().includes(filter);
-    });
-    const groups=new Map();
-    for(const key of entries){ const g=this._configGroup(key); if(!groups.has(g)) groups.set(g,[]); groups.get(g).push(key); }
-    const datalist=this._entityOptions().map(e=>`<option value="${this._esc(e.id)}" label="${this._esc(e.label)}">${this._esc(e.label)}</option>`).join("");
-    const configured=[...ENTITY_KEYS].filter(k=>(this._configDraft[k]||"").trim()).length;
-    return `<div class="config-overlay" data-action="config-overlay-close">
-      <section class="config-dialog" role="dialog" aria-modal="true" aria-label="Configura Casa Dashboard Community">
-        <div class="config-dialog-head"><div><div class="config-kicker">CASA DASHBOARD COMMUNITY</div><h2>Configura le entità</h2><p>Cerca le entità anche con il nome assegnato in Home Assistant oppure digita direttamente la entity_id. Puoi lasciare vuote le funzioni che non utilizzi.</p></div><button class="config-close" data-action="config-close" type="button" aria-label="Chiudi"><ha-icon icon="mdi:close"></ha-icon></button></div>
-        <div class="config-toolbar"><label class="config-search"><ha-icon icon="mdi:magnify"></ha-icon><input id="configSearch" type="search" placeholder="Cerca stanza, funzione, chiave o nome entità…" value="${this._esc(this._configFilter||"")}"></label><div class="config-progress"><strong>${configured}</strong><span>/ ${ENTITY_KEYS.size}</span></div></div>
-        <div class="config-scroll">${[...groups.entries()].map(([group,keys])=>`<div class="config-group"><div class="config-group-title">${group}<span>${keys.length}</span></div>${keys.map(key=>{ const value=this._configDraft[key] ?? this._entityMap[key] ?? ""; const domain=key.split(".")[0]; return `<label class="config-row"><div class="config-row-copy"><strong>${this._configLabel(key)}</strong><code>${key}</code></div><div class="config-field"><input data-config-key="${key}" list="haEntityList" placeholder="${domain}.…" value="${this._esc(value)}"><button type="button" data-action="config-clear" data-config-clear="${key}" aria-label="Svuota"><ha-icon icon="mdi:close-circle-outline"></ha-icon></button></div></label>`;}).join("")}</div>`).join("") || `<div class="config-empty">Nessuna associazione corrisponde alla ricerca.</div>`}</div>
-        <datalist id="haEntityList">${datalist}</datalist>
-        <div class="config-dialog-foot"><div class="config-hint"><ha-icon icon="mdi:shield-check-outline"></ha-icon> Le modifiche vengono salvate nel file Community separato.</div><div class="config-actions"><button class="secondary" data-action="config-close" type="button">Annulla</button><button class="primary" data-action="config-save" type="button"><ha-icon icon="mdi:content-save-outline"></ha-icon> Salva configurazione</button></div></div>
-      </section></div>`;
-  }
-  _openConfigDialog() {
-    this._configDraft={...this._entityMap};
-    this._configFilter="";
-    this._configDialogOpen=true;
-    this._renderConfigLayer();
-  }
-  _closeConfigDialog() { this._configDialogOpen=false; this._renderConfigLayer(); }
-  _renderConfigLayer() {
-    let layer=this.shadowRoot.querySelector("#configLayer");
-    if(!layer){ layer=document.createElement("div"); layer.id="configLayer"; this.shadowRoot.appendChild(layer); }
-    layer.innerHTML=this._renderConfigDialog();
-    const search=layer.querySelector("#configSearch");
-    search?.addEventListener("input",ev=>{
-      layer.querySelectorAll("[data-config-key]").forEach(input=>{ this._configDraft[input.dataset.configKey]=input.value; });
-      this._configFilter=ev.target.value;
-      this._renderConfigLayer();
-      requestAnimationFrame(()=>{ const next=this.shadowRoot.querySelector("#configSearch"); next?.focus(); next?.setSelectionRange(next.value.length,next.value.length); });
-    });
-    layer.querySelectorAll("[data-config-key]").forEach(input=>{
-      input.addEventListener("input",ev=>{ this._configDraft[ev.target.dataset.configKey]=ev.target.value; });
-      input.addEventListener("change",ev=>{
-        const resolved=this._entityIdFromFriendlyName(ev.target.value);
-        if(resolved!==ev.target.value){ ev.target.value=resolved; this._configDraft[ev.target.dataset.configKey]=resolved; }
-      });
-    });
-  }
-  async _saveConfigDialog() {
-    const layer=this.shadowRoot.querySelector("#configLayer");
-    layer?.querySelectorAll("[data-config-key]").forEach(input=>{ this._configDraft[input.dataset.configKey]=input.value; });
-    const save=layer?.querySelector('[data-action="config-save"]');
-    if(save){ save.disabled=true; save.innerHTML='<ha-icon icon="mdi:loading" class="spin"></ha-icon> Salvataggio…'; }
-    try {
-      const result=await this._hass.callWS({type:"casa_dashboard_community/config/save",entities:this._configDraft});
-      this._entityMap=result?.entities || {...this._configDraft};
-      this._entityConfigLoaded=true;
-      this._configDialogOpen=false;
-      this._renderConfigLayer();
-      this._renderPage(false);
-    } catch(err) {
-      if(save){ save.disabled=false; save.innerHTML='<ha-icon icon="mdi:alert-circle-outline"></ha-icon> Riprova'; }
-      alert(`Impossibile salvare la configurazione: ${err?.message || err}`);
-    }
-  }
+      .air-console,.dehum-console{display:grid;grid-template-columns:280px 1fr;gap:18px;align-items:center;border:1px solid rgba(255,255,255,.07);border-radius:24px;padding:20px;background:rgba(255,255,255,.015)}
+      .air-visual,.dehum-visual{height:220px;border-radius:18px;background:linear-gradient(180deg,#15232d,#0f171e);display:grid;place-items:center}.air-purifier-body{position:relative;width:120px;height:180px;border-radius:28px;background:linear-gradient(180deg,#d9dfe3,#89949c)}.air-display{position:absolute;left:28px;right:28px;top:24px;height:58px;border-radius:12px;background:#142028;display:grid;place-items:center;color:#8cd7ff}.air-display span{font-size:26px;font-weight:900}.air-display small{font-size:8px}.air-intake{position:absolute;left:16px;right:16px;bottom:18px;height:58px;border-radius:18px;background:repeating-linear-gradient(0deg,#59646d 0 4px,#354047 4px 8px)}.air-flow{position:absolute;right:-34px;top:38px}.air-flow i{display:block;width:28px;height:3px;background:#5f7b8d;margin:12px 0;border-radius:3px}.air-visual.active .air-flow i{background:#55d6ff}
+      .air-info>div:first-child span{display:block;font-size:9px;letter-spacing:.17em;color:#8da6bd}.air-info>div:first-child strong{display:block;font-size:32px;margin-top:7px}.air-info>div:first-child small{display:block;color:var(--secondary-text-color);margin-top:4px}.air-controls{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
 
-  _state(id, fallback="—") {
-    const pending=this._optimistic.get(id);
-    if(pending && Date.now()-pending.at < 3500) return pending.state;
-    const s=this._s(id)?.state;
-    return (!s || ["unknown","unavailable","none",""].includes(s)) ? fallback : s;
-  }
-  _on(id) { return this._state(id,"off") === "on"; }
-  _num(id, fallback=null) { const v=parseFloat(this._state(id,"")); return Number.isFinite(v)?v:fallback; }
-  _attr(id, key, fallback=null) { const v=this._s(id)?.attributes?.[key]; return v ?? fallback; }
-  _fmt(id, digits=1, unit=null) {
-    const n=this._num(id,null); if(n===null) return "—";
-    const u=unit ?? this._attr(id,"unit_of_measurement","");
-    return `${n.toFixed(digits)}${u ? ` ${u}` : ""}`;
-  }
-  _fmtLuxCompact(id, digits=1){
-    const n=this._num(id,null); if(n===null) return "—";
-    if(Math.abs(n) >= 1000) return `${(n/1000).toFixed(digits)} klx`;
-    return `${n.toFixed(0)} lx`;
-  }
-  _fmtLuxExact(id){
-    const n=this._num(id,null); if(n===null) return "—";
-    return `${new Intl.NumberFormat('it-IT',{maximumFractionDigits:0}).format(n)} lx`;
-  }
-  _luxLabel(id){
-    const n=this._num(id,null); if(n===null) return "—";
-    const outdoor=id==="sensor.weather_solar_lux";
-    if(outdoor) return n>=40000?"Luce forte":n>=20000?"Luce buona":"Luce bassa";
-    return n>=500?"Luce forte":n>=100?"Luce buona":"Luce bassa";
-  }
-  _luxTone(id){
-    const n=this._num(id,null); if(n===null) return "state-off";
-    const outdoor=id==="sensor.weather_solar_lux";
-    if(outdoor) return n>=40000?"state-good":n>=20000?"state-active":"state-off";
-    return n>=500?"state-good":n>=100?"state-active":"state-off";
-  }
-  _radLabel(id){
-    const n=
+      .dehum-console.alert{border-color:rgba(255,91,91,.34)}.dehum-body{position:relative;width:150px;height:185px;border-radius:24px;background:linear-gradient(180deg,#e2e5e7,#9ea7ae)}.dehum-display{position:absolute;left:36px;right:36px;top:22px;height:50px;border-radius:10px;background:#142028;color:#70d0ff;display:grid;place-items:center}.dehum-display strong{font-size:24px}.dehum-display small{font-size:8px}.dehum-grille{position:absolute;left:24px;right:24px;top:88px;height:35px;background:repeating-linear-gradient(0deg,#69757e 0 4px,#4d585f 4px 8px)}.dehum-tank{position:absolute;left:18px;right:18px;bottom:13px;height:42px;border:2px solid #73818b;border-radius:8px;overflow:hidden}.dehum-tank div{position:absolute;left:0;right:0;bottom:0;height:20%;background:#5ecfff}.dehum-tank.full div{height:90%;background:#ff6b6b}
+      .dehum-top{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.dehum-top>div{padding:13px;border-radius:15px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02)}.dehum-top span{display:block;font-size:8px;letter-spacing:.15em;color:#8da6bd}.dehum-top strong{display:block;font-size:20px;margin-top:6px}.dehum-top strong.good{color:#59d99d}.dehum-top strong.bad{color:#ff7575}.dehum-controls{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}.dehum-target{display:grid;grid-template-columns:66px 1fr 66px;gap:10px;align-items:center;margin-top:12px}.dehum-target button,.dehum-target>div{height:52px;border-radius:14px;border:1px solid rgba(82,188,255,.23);background:rgba(82,188,255,.04);color:inherit}.dehum-target button{font-weight:900;font-size:18px}.dehum-target>div{display:grid;place-content:center;text-align:center}.dehum-target span{font-size:8px;letter-spacing:.14em;color:#8da6bd}.dehum-target strong{font-size:20px;margin-top:2px}
+
+      .app-shell.theme-light .garage-hero-card,.app-shell.theme-light .garage-door-card,.app-shell.theme-light .daze-visual,.app-shell.theme-light .daze-data-card,.app-shell.theme-light .air-console,.app-shell.theme-light .dehum-console{background:linear-gradient(180deg,#fff,#f5f9fd);border-color:rgba(15,23,42,.09)}
+      .app-shell.theme-light .garage-scene,.app-shell.theme-light .air-visual,.app-shell.theme-light .dehum-visual,.app-shell.theme-light .daze-visual{background:linear-gradient(180deg,#edf4f8,#dce7ee)}.app-shell.theme-light .garage-meta span,.app-shell.theme-light .garage-door-copy span,.app-shell.theme-light .daze-data-card span,.app-shell.theme-light .air-info span,.app-shell.theme-light .dehum-top span,.app-shell.theme-light .dehum-target span{color:#587292}
+
+      @media(max-width:1050px){.daze-console{grid-template-columns:1fr}.daze-data{grid-template-columns:repeat(3,1fr)}}
+      @media(max-width:900px){.garage-hero{grid-template-columns:1fr!important}.garage-hero-card,.garage-access-grid,.air-console,.dehum-console{grid-template-columns:1fr}.garage-controls{grid-template-columns:1fr 1fr}.daze-diagnostics{grid-template-columns:1fr 1fr 1fr}}
+      @media(max-width:620px){.garage-hero-card{padding:14px}.garage-controls,.daze-data,.air-controls,.dehum-top,.dehum-controls,.daze-diagnostics{grid-template-columns:1fr}.garage-door-card{grid-template-columns:1fr}.garage-door-mini{margin:auto}.daze-visual{min-height:240px}.daze-car{transform:scale(.82);transform-origin:left bottom}.daze-wallbox{transform:scale(.82);transform-origin:right bottom}.dehum-target{grid-template-columns:58px 1fr 58px}}
+
+
+      
+/* ===== v4.3.54 Panoramica - nuova casa theme-aware ===== */
+      .overview-house-v2{
+        position:relative!important;
+        min-height:290px!important;
+        overflow:hidden!important;
+        border-radius:20px!important;
+        background:
+          radial-gradient(circle at 78% 20%,rgba(95,205,255,.07),transparent 28%),
+          linear-gradient(180deg,#142833 0%,#102029 64%,#182126 64%,#12191d 100%)!important;
+        border:1px solid rgba(255,255,255,.06)!important;
+      }
+
+      .house-v2-sky{
+        position:absolute;inset:0 0 36% 0;
+        background:linear-gradient(180deg,rgba(36,72,91,.28),rgba(18,39,49,.08));
+      }
+      .house-v2-ground{
+        position:absolute;left:0;right:0;bottom:0;height:36%;
+        background:linear-gradient(180deg,#1f2a2f,#172025);
+      }
+      .house-v2-building{
+        position:absolute;
+        left:50%;bottom:38px;
+        width:250px;height:165px;
+        transform:translateX(-50%);
+      }
+      .house-v2-roof{
+        position:absolute;
+        left:16px;right:16px;top:0;height:58px;
+        clip-path:polygon(50% 0,100% 78%,91% 78%,91% 100%,9% 100%,9% 78%,0 78%);
+        background:linear-gradient(180deg,#4c5961,#3c464c);
+      }
+      .house-v2-body{
+        position:absolute;
+        left:34px;right:34px;top:46px;bottom:0;
+        background:linear-gradient(180deg,#4b565d,#3b444a);
+        border-left:5px solid #66747c;
+        border-right:5px solid #66747c;
+      }
+      .house-v2-window{
+        position:absolute;
+        width:47px;height:40px;
+        top:22px;
+        background:#22343e;
+        border:5px solid #71818b;
+        display:grid;place-items:center;
+      }
+      .house-v2-window.left{left:20px}
+      .house-v2-window.right{right:20px}
+      .house-v2-window i{
+        display:block;width:100%;height:100%;
+        background:linear-gradient(90deg,#65c3fa 0 48%,#9bdbff 48% 100%);
+      }
+      .house-v2-door{
+        position:absolute;
+        left:24px;bottom:0;
+        width:38px;height:63px;
+        background:#92744f;
+        border:4px solid #73828b;
+      }
+      .house-v2-garage{
+        position:absolute;
+        right:18px;bottom:0;
+        width:73px;height:52px;
+        border:4px solid #73818a;
+        background:#4a555d;
+        display:flex;
+        flex-direction:column;
+        justify-content:space-evenly;
+        padding:4px 3px;
+        box-sizing:border-box;
+      }
+      .house-v2-garage i{
+        display:block!important;
+        height:2px!important;
+        width:100%!important;
+        background:rgba(255,255,255,.16)!important;
+      }
+
+      /* Tema chiaro vero: cambia palette, non usa più il riquadro blu scuro */
+      .app-shell.theme-light .overview-house-v2{
+        background:
+          radial-gradient(circle at 78% 20%,rgba(82,170,225,.08),transparent 30%),
+          linear-gradient(180deg,#f4f8fb 0%,#e9f1f6 64%,#e2e8e2 64%,#d8dfd9 100%)!important;
+        border-color:rgba(15,23,42,.08)!important;
+      }
+      .app-shell.theme-light .house-v2-sky{
+        background:linear-gradient(180deg,rgba(190,219,237,.38),rgba(233,242,247,.12))!important;
+      }
+      .app-shell.theme-light .house-v2-ground{
+        background:linear-gradient(180deg,#dde6dd,#cfd9d0)!important;
+      }
+      .app-shell.theme-light .house-v2-roof{
+        background:linear-gradient(180deg,#9daab2,#87969f)!important;
+      }
+      .app-shell.theme-light .house-v2-body{
+        background:linear-gradient(180deg,#d7e0e5,#c6d1d7)!important;
+        border-color:#9caab3!important;
+      }
+      .app-shell.theme-light .house-v2-window{
+        background:#d7edf8!important;
+        border-color:#97a7b0!important;
+      }
+      .app-shell.theme-light .house-v2-window i{
+        background:linear-gradient(90deg,#63bdf1 0 48%,#a8ddfa 48% 100%)!important;
+      }
+      .app-shell.theme-light .house-v2-door{
+        background:#b69066!important;
+        border-color:#9caab3!important;
+      }
+      .app-shell.theme-light .house-v2-garage{
+        background:#b9c4ca!important;
+        border-color:#94a2ab!important;
+      }
+      .app-shell.theme-light .house-v2-garage i{
+        background:rgba(50,67,77,.18)!important;
+      }
+
+      /* nessun pseudo-elemento o segnale decorativo */
+      .overview-house-v2::before,
+      .overview-house-v2::after,
+      .house-v2-building::before,
+      .house-v2-building::after{
+        content:none!important;
+        display:none!important;
+      }
+
+      @media(max-width:620px){
+        .overview-house-v2{min-height:230px!important}
+        .house-v2-building{transform:translateX(-50%) scale(.82);transform-origin:center bottom}
+      }
+
+
+      
+/* ===== v4.3.54 Esterno + Balcone hero theme-aware ===== */
+
+      /* ESTERNO */
+      .gate-visual-v2{
+        position:relative!important;
+        overflow:hidden!important;
+        min-height:250px!important;
+        border-radius:18px!important;
+        background:linear-gradient(180deg,#172832 0%,#111d24 70%,#1a211f 70%,#121816 100%)!important;
+      }
+      .gate-v2-sky{position:absolute;inset:0 0 30% 0;background:linear-gradient(180deg,rgba(48,82,101,.24),rgba(21,39,48,.05))}
+      .gate-v2-ground{position:absolute;left:0;right:0;bottom:0;height:30%;background:linear-gradient(180deg,#202b28,#161d1b)}
+      .gate-v2-wall{position:absolute;bottom:58px;width:78px;height:92px;background:#555e62;border-top:8px solid #6e787d}
+      .gate-v2-wall.left{left:0}.gate-v2-wall.right{right:0}
+      .gate-v2-pillar{position:absolute;bottom:50px;width:22px;height:128px;background:#778188;border-top:7px solid #949da2}
+      .gate-v2-pillar.left{left:66px}.gate-v2-pillar.right{right:66px}
+      .gate-v2-leaf{
+        position:absolute;left:88px;right:88px;bottom:64px;height:98px;
+        border:6px solid #5f6b72;background:#323b40;display:flex;justify-content:space-around;
+        transform-origin:left center;perspective:500px
+      }
+      .gate-v2-leaf.open{transform:perspective(500px) rotateY(-46deg)}
+      .gate-v2-leaf i{display:block!important;width:5px!important;background:#707c83!important}
+      .gate-v2-handle{position:absolute;right:97px;bottom:106px;width:9px;height:9px;border-radius:50%;background:#d2c3a2}
+
+      .app-shell.theme-light .gate-visual-v2{
+        background:linear-gradient(180deg,#f4f8fb 0%,#e8f0f5 70%,#dfe7df 70%,#d4ddd5 100%)!important;
+      }
+      .app-shell.theme-light .gate-v2-sky{background:linear-gradient(180deg,rgba(190,219,237,.34),rgba(235,244,248,.08))!important}
+      .app-shell.theme-light .gate-v2-ground{background:linear-gradient(180deg,#e4ebe4,#d7dfd8)!important}
+      .app-shell.theme-light .gate-v2-wall{background:#d9dfe2!important;border-top-color:#bcc6cc!important}
+      .app-shell.theme-light .gate-v2-pillar{background:#c3ccd1!important;border-top-color:#a9b5bc!important}
+      .app-shell.theme-light .gate-v2-leaf{background:#8f999f!important;border-color:#7e8b92!important}
+      .app-shell.theme-light .gate-v2-leaf i{background:#6f7c83!important}
+      .app-shell.theme-light .gate-v2-handle{background:#6d6252!important}
+
+      /* BALCONE */
+      .balcony-scene-v2{
+        position:relative!important;
+        overflow:hidden!important;
+        min-height:250px!important;
+        border-radius:18px!important;
+        background:linear-gradient(180deg,#17303d 0%,#122631 66%,#182220 66%,#111817 100%)!important;
+      }
+      .balcony-v2-sky{position:absolute;inset:0 0 35% 0;background:linear-gradient(180deg,rgba(47,90,113,.28),rgba(18,43,54,.06))}
+      .balcony-v2-sun{position:absolute;right:28px;top:22px;width:38px;height:38px;border-radius:50%;background:#ffd05f;box-shadow:0 0 22px rgba(255,208,95,.18)}
+      .balcony-v2-wall{position:absolute;left:36px;right:36px;top:48px;height:116px;background:#4c565d;border-left:5px solid #68757d;border-right:5px solid #68757d}
+      .balcony-v2-window{position:absolute;top:25px;width:72px;height:70px;border:5px solid #73848e;background:#274654}
+      .balcony-v2-window.left{left:24px}.balcony-v2-window.right{right:24px}
+      .balcony-v2-window::after{content:"";position:absolute;left:50%;top:0;bottom:0;width:3px;background:#7e909a}
+      .balcony-v2-awning{position:absolute;top:44px;width:112px;max-height:72px;min-height:14px;background:repeating-linear-gradient(90deg,#3f89b8 0 14px,#67b3db 14px 28px);transform-origin:top;clip-path:polygon(0 0,100% 0,93% 100%,7% 100%)}
+      .balcony-v2-awning.left{left:46px}.balcony-v2-awning.right{right:46px}
+      .balcony-v2-railing{position:absolute;left:24px;right:24px;bottom:42px;height:66px;border-top:5px solid #7d898f;border-bottom:5px solid #7d898f;display:flex;justify-content:space-around}
+      .balcony-v2-railing i{display:block!important;width:4px!important;background:#707b81!important}
+      .balcony-v2-floor{position:absolute;left:0;right:0;bottom:0;height:44px;background:linear-gradient(180deg,#2b3331,#1b2220)}
+      .balcony-v2-pot{position:absolute;bottom:44px;width:28px;height:32px;background:#6b7774;clip-path:polygon(12% 0,88% 0,76% 100%,24% 100%)}
+      .balcony-v2-pot.left{left:42px}.balcony-v2-pot.right{right:42px}
+
+      .app-shell.theme-light .balcony-scene-v2{
+        background:linear-gradient(180deg,#f5f9fc 0%,#eaf2f7 66%,#e4ebe4 66%,#d9e1da 100%)!important;
+      }
+      .app-shell.theme-light .balcony-v2-sky{background:linear-gradient(180deg,rgba(190,219,237,.34),rgba(235,244,248,.08))!important}
+      .app-shell.theme-light .balcony-v2-wall{background:#d7e0e5!important;border-color:#9caab3!important}
+      .app-shell.theme-light .balcony-v2-window{background:#b9e2f7!important;border-color:#98a8b1!important}
+      .app-shell.theme-light .balcony-v2-window::after{background:#9aaab3!important}
+      .app-shell.theme-light .balcony-v2-awning{background:repeating-linear-gradient(90deg,#6fa7c8 0 14px,#9bc7df 14px 28px)!important}
+      .app-shell.theme-light .balcony-v2-railing{border-color:#9aa6ad!important}
+      .app-shell.theme-light .balcony-v2-railing i{background:#98a5ac!important}
+      .app-shell.theme-light .balcony-v2-floor{background:linear-gradient(180deg,#dde5df,#cfd8d1)!important}
+      .app-shell.theme-light .balcony-v2-pot{background:#9aa7a2!important}
+
+      .gate-visual-v2::before,.gate-visual-v2::after,
+      .balcony-scene-v2::before,.balcony-scene-v2::after{
+        content:none!important;
+        display:none!important;
+      }
+
+      @media(max-width:620px){
+        .gate-visual-v2,.balcony-scene-v2{min-height:210px!important}
+        .gate-v2-leaf{left:72px;right:72px}
+        .balcony-v2-wall{left:24px;right:24px}
+      }
+
+
+      
+/* ===== v4.3.54 Scale visuali ===== */
+      .scale-hero{grid-template-columns:minmax(360px,.95fr) minmax(520px,1.3fr)!important}
+      .stairs-hero-card{display:grid;grid-template-columns:minmax(330px,1.2fr) minmax(220px,.8fr);gap:18px;align-items:center;min-height:260px;padding:20px;border-radius:26px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(74,152,255,.05))}
+      .stairs-visual{position:relative;height:220px;overflow:hidden;border-radius:20px;background:linear-gradient(180deg,#161c22,#0f1318);box-shadow:inset 0 0 0 1px rgba(255,255,255,.035)}
+      .stairs-wall{position:absolute;inset:0;background:linear-gradient(120deg,rgba(255,255,255,.025),transparent 55%)}
+      .stairs-flight{position:absolute;left:34px;bottom:28px;width:215px;height:145px;display:flex;flex-direction:column-reverse;align-items:flex-start;gap:0}
+      .stairs-flight span{display:block;height:22px;border-top:2px solid #59636f;border-left:2px solid #59636f;background:linear-gradient(90deg,#2b333c,#1d242b);box-shadow:0 -5px 10px rgba(0,0,0,.16)}
+      .stairs-flight span:nth-child(1){width:210px}.stairs-flight span:nth-child(2){width:180px}.stairs-flight span:nth-child(3){width:150px}.stairs-flight span:nth-child(4){width:120px}.stairs-flight span:nth-child(5){width:90px}.stairs-flight span:nth-child(6){width:60px}
+      .stairs-rail{position:absolute;left:72px;bottom:145px;width:185px;height:4px;background:#8793a0;transform:rotate(-28deg);transform-origin:left center;border-radius:4px;box-shadow:0 0 10px rgba(140,190,255,.12)}
+      .stairs-door{position:absolute;right:38px;bottom:28px;width:92px;height:160px;border:5px solid #414952;border-radius:5px 5px 2px 2px;background:linear-gradient(180deg,#252c34,#171c22);box-shadow:0 10px 24px rgba(0,0,0,.25)}
+      .stairs-door.active{box-shadow:0 0 0 2px rgba(255,181,90,.18),0 0 25px rgba(255,181,90,.18)}
+      .stairs-door-panel{position:absolute;inset:12px;border:1px solid #535e69;border-radius:2px;background:linear-gradient(180deg,#303944,#1f252c)}
+      .stairs-door-handle{position:absolute;right:12px;top:78px;width:8px;height:8px;border-radius:50%;background:#d5dce4;box-shadow:0 0 0 3px #252c33}
+      .stairs-side{display:flex;flex-direction:column;gap:14px;padding:6px}
+      .stairs-meta span{display:block;font-size:9px;letter-spacing:.2em;font-weight:850;color:#8da6bd}
+      .stairs-meta strong{display:block;font-size:30px;letter-spacing:-.04em;margin-top:7px}
+      .stairs-meta small{display:block;color:var(--secondary-text-color);margin-top:4px}
+      .stairs-divider{height:1px;background:linear-gradient(90deg,rgba(84,180,255,.85),transparent)}
+      .stairs-open-btn{height:54px;border-radius:16px;border:1px solid rgba(84,180,255,.55);background:rgba(84,180,255,.06);color:#6bc4ff;font-weight:850;font-size:14px;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer}
+      .stairs-control-card{width:100%;border:1px solid rgba(255,255,255,.07);border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.028),rgba(255,255,255,.014));padding:15px 18px;display:grid;grid-template-columns:54px 1fr auto;align-items:center;gap:14px;text-align:left;color:inherit;cursor:pointer}
+      .stairs-mini-icon{width:48px;height:48px;border-radius:15px;background:rgba(84,180,255,.09);display:grid;place-items:center;color:#6bc4ff}
+      .stairs-mini-icon.light{background:rgba(255,190,74,.10);color:#ffc45b}
+      .stairs-mini-icon ha-icon{--mdc-icon-size:26px}
+      .stairs-mini-copy strong{display:block;font-size:14px}.stairs-mini-copy span{display:block;color:var(--secondary-text-color);font-size:11px;margin-top:4px}
+      .stairs-mini-state{font-size:10px;letter-spacing:.14em;font-weight:900}.stairs-mini-state.good{color:#8da5bc}.stairs-mini-state.warn{color:#ffbd64}
+      .app-shell.theme-light .stairs-hero-card{background:linear-gradient(145deg,#fff,#eef6ff);border-color:rgba(15,23,42,.10)}
+      .app-shell.theme-light .stairs-control-card{background:linear-gradient(180deg,#fff,#f5f9fd);border-color:rgba(15,23,42,.10)}
+      .app-shell.theme-light .stairs-visual{background:linear-gradient(180deg,#edf3f8,#dce6ef)}
+      .app-shell.theme-light .stairs-flight span{background:linear-gradient(90deg,#cad6e1,#b9c8d5);border-color:#91a3b4}
+      .app-shell.theme-light .stairs-door{background:linear-gradient(180deg,#dae4ed,#c7d2dc);border-color:#8798a8}
+      .app-shell.theme-light .stairs-door-panel{background:linear-gradient(180deg,#e8eef4,#

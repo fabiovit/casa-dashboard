@@ -1,74 +1,268 @@
-ing=hasLightning&&lightningCount>0&&lightningDistance<=5, water=this._on("binary_sensor.balcony_water"), motion=this._on("binary_sensor.balcony_motion"), occupied=this._on("binary_sensor.balcony_occupancy"), uv=this._num("sensor.weather_uv_index",0), manual=this._on("input_boolean.blinds_manual_mode");
-    const windLevel=(gust>=24||wind>=18)?"bad":(gust>=15||wind>=10)?"warn":"good";
-    const rainLevel=rain?"bad":rainRate>0?"warn":"good";
-    const dpc=this._state("binary_sensor.weather_storm_alert","—"), dpcLevel=Number(this._attr("binary_sensor.weather_storm_alert","level",1));
-    const ultima=this._state("input_datetime.blinds_last_wind_raise","—");
-    const nowTs=Date.now()/1000; const lastTs=Date.parse(ultima.replace(' ','T'))/1000; const block=Number.isFinite(lastTs)&&(nowTs-lastTs)<3600;
-    let discesa="Fuori fascia o sole insufficiente"; const nextSet=Date.parse(this._attr("sun.sun","next_setting","")||"")/1000; const secSun=nextSet-nowTs; const tempoOk=new Date().getHours()>=14&&this._state("sun.sun")==="above_horizon"&&secSun>3600; if(rain) discesa="Bloccata · pioggia"; else if(lightning) discesa="Bloccata · fulmini ≤5 km"; else if(gust>=15||wind>=10) discesa="Bloccata · vento"; else if(block) discesa="Bloccata · attesa 60 min dopo vento"; else if(tempoOk&&lux>=40000&&rad>=350) discesa="Condizioni OK per abbassare"; else if(tempoOk&&(lux>=20000||rad>=180)) discesa="Luminoso, ma non abbastanza";
-    let risalita="Nessuna condizione attiva"; const fasciaSerale=this._state("sun.sun")==="above_horizon"&&secSun>600&&secSun<=5400, preTramonto=this._state("sun.sun")==="above_horizon"&&secSun>=0&&secSun<=600, luceBassa=(fasciaSerale&&lux<1500&&rad<13)||(!fasciaSerale&&!preTramonto&&lux<3500&&rad<30), prevenzioneTemporale=lux<15000&&rad<150&&(gust>=18||wind>=12||rainRate>0||rain); if(preTramonto) risalita="10 minuti prima del tramonto"; else if(rain) risalita="Pioggia"; else if(gust>=24) risalita="Raffica ≥24 km/h"; else if(wind>=18) risalita="Vento medio ≥18 km/h"; else if(lightning) risalita="Fulmini entro 5 km"; else if(prevenzioneTemporale) risalita="Possibile temporale"; else if(luceBassa) risalita=fasciaSerale?"Luce bassa serale":"Luce bassa diurna";
-    const weatherStatus=rain?"Pioggia rilevata":lightning?"Fulmini vicini":(gust>=24||wind>=18)?"Vento forte":(gust>=15||wind>=10)?"Vento moderato":preTramonto?"Tramonto vicino":luceBassa?"Luce bassa":(lux>=40000&&rad>=350)?"Sole forte":(lux>=20000&&rad>=180)?"Luminoso":"Meteo tranquillo";
-    const weatherIcon=rain?"mdi:weather-pouring":lightning?"mdi:lightning-bolt":(gust>=15||wind>=10)?"mdi:weather-windy":preTramonto?"mdi:weather-sunset-down":(lux>=40000&&rad>=350)?"mdi:white-balance-sunny":"mdi:weather-partly-cloudy";
-    const discesaLevel=manual?"warn":(rain||lightning||gust>=24||wind>=18)?"bad":(gust>=15||wind>=10||block)?"warn":(tempoOk&&lux>=40000&&rad>=350)?"good":"warn";
-    const risalitaLevel=manual?"warn":(rain||lightning||gust>=24||wind>=18)?"bad":(preTramonto||luceBassa||prevenzioneTemporale)?"warn":"good";
-    return `<div class="page">${hasWeather?`<div class="weather-hero"><div class="weather-head"><div class="weather-now"><div class="weather-icon"><ha-icon icon="${weatherIcon}"></ha-icon></div><div><div class="hero-overline">METEO CASA</div><div class="weather-temp">${this._configured("sensor.weather_outdoor_temperature")?this._fmt("sensor.weather_outdoor_temperature",1,"°C"):"—"}</div><div class="weather-status">${weatherStatus}</div><div class="weather-sub">${this._configured("sensor.weather_feels_like_temperature")?`Percepita ${this._fmt("sensor.weather_feels_like_temperature",1,"°C")}`:""}${this._configured("sensor.weather_outdoor_humidity")?` · Umidità ${this._fmt("sensor.weather_outdoor_humidity",0,"%")}`:""}</div></div></div><div class="weather-station">Stazione meteo</div></div><div class="weather-strip">${hasRain?`<div class="weather-chip"><div class="k">Pioggia</div><div class="v">${rain?"🌧️ Rilevata":"✅ Asciutto"}</div></div>`:""}${hasWind?`<div class="weather-chip"><div class="k">Vento</div><div class="v">${this._fmt("sensor.weather_wind_speed",1,"km/h")}</div></div>`:""}${hasSun?`<div class="weather-chip"><div class="k">Sole</div><div class="v">${this._luxLabel("sensor.weather_solar_lux")} · ${this._fmtLuxCompact("sensor.weather_solar_lux")}</div></div>`:""}${hasLightning?`<div class="weather-chip"><div class="k">Fulmini</div><div class="v">${lightning?"⚡ ≤5 km":lightningCount>0?"⚡ Lontani":"✅ Nessuno"}</div></div>`:""}</div></div>`:""}
-    ${hasBalconyControls?this._section(hasBlinds?"Tende, luci e dispositivi":"Luci e dispositivi",hasBlinds?"Controlli configurati":"Dispositivi configurati"):""}<div class="grid">
-      ${this._control("input_boolean.blinds_manual_mode","Modalità manuale tende","mdi:hand-back-right-outline",manual?"Automazioni tende sospese":"Gestione automatica attiva","toggle",12)}
-      ${hasBlinds&&hasWeather?`<div class="decision-card ${discesaLevel} span-6"><div class="eyebrow">↓ DISCESA TENDE</div><strong>${manual?"Modalità manuale attiva":discesa}</strong><p>Dopo le 14:00 · almeno 1h dal tramonto · ≥40.000 lx · ≥350 W/m² · raffica &lt;15 · vento &lt;10 · nessuna pioggia/fulmini · blocco vento scaduto.</p></div><div class="decision-card ${risalitaLevel} span-6"><div class="eyebrow">↑ RISALITA TENDE</div><strong>${manual?"Modalità manuale attiva":risalita}</strong><p>Pioggia · raffica ≥24 · vento ≥18 · fulmini ≤5 km · luce bassa · prevenzione temporale · risalita garantita 10 min prima del tramonto.</p></div>`:""}
-      ${this._coverControl("cover.balcony_bedroom_blind","Tenda balcone camera",false,6,"Posizione")}
-      ${this._coverControl("cover.balcony_kitchen_blind","Tenda balcone cucina",false,6,"Posizione")}
-      ${this._control("light.balcony_bedroom","Luce balcone camera","mdi:wall-sconce",this._on("light.balcony_bedroom")?"Accesa":"Spenta","toggle",4)}
-      ${this._control("light.balcony_kitchen","Luce balcone cucina","mdi:wall-sconce",this._on("light.balcony_kitchen")?"Accesa":"Spenta","toggle",4)}
-      ${this._control("switch.balcony_barbecue","Barbecue","mdi:grill",this._on("switch.balcony_barbecue")?"Acceso":"Spento","toggle",4)}
-    </div>${hasUtility?this._section("Locale tecnico"):""}<div class="grid">
-      ${this._metric("mdi:thermometer","Temperatura locale tecnico",this._fmt("sensor.utility_room_temperature",1,"°C"),"Locale tecnico",6,"sensor.utility_room_temperature")}
-      ${this._metric("mdi:water-percent","Umidità locale tecnico",this._fmt("sensor.utility_room_humidity",0,"%"),"Locale tecnico",6,"sensor.utility_room_humidity")}
-    </div>${(()=>{
-      const candidates=["sensor.solar_pv_power"];
-      const found=this._firstId(candidates);
-      if(!found || !this._s(found)) return "";
-      const pv1Ids=["sensor.solar_pv1_power"];
-      const pv2Ids=["sensor.solar_pv2_power"];
-      const pv1VoltIds=["sensor.solar_pv1_voltage"];
-      const pv1CurrIds=["sensor.solar_pv1_current"];
-      const pv2VoltIds=["sensor.solar_pv2_voltage"];
-      const pv2CurrIds=["sensor.solar_pv2_current"];
-      const todayIds=["sensor.solar_energy_today"];
-      const loadIds=["sensor.solar_load_power"];
-      const gridIds=["sensor.solar_grid_power"];
-      const socIds=["sensor.solar_battery_soc"];
-      const battPowerIds=["sensor.solar_battery_power"];
-      const modeIds=["sensor.solar_battery_mode"];
-      const chargeTodayIds=["sensor.solar_battery_charged_today"];
-      const dischargeTodayIds=["sensor.solar_battery_discharged_today"];
-      const lossIds=["sensor.solar_battery_losses_today"];
-      const pvTotal = this._powerValueAuto(candidates);
-      const pv1 = this._powerValueAuto(pv1Ids);
-      const pv2 = this._powerValueAuto(pv2Ids);
-      const pvMax = Math.max(pv1||0,pv2||0,0.1);
-      const soc=this._firstNum(socIds,null);
-      const battPower=this._powerValueAuto(battPowerIds);
-      const battMode=String(this._firstState(modeIds,"")||"").toLowerCase();
-      const loadPower=this._powerValueAuto(loadIds);
-      const gridPower=this._powerValueAuto(gridIds);
-      const battPct = soc!==null ? Math.max(0, Math.min(100, soc)) : 0;
-      const battStatus = soc!==null ? `${soc.toFixed(0)}%` : 'Non disp.';
-      const battFlow = battPower===null ? '—' : this._fmtAbsPowerAuto(battPowerIds);
-      const battDirection = battPower===null ? 'idle' : battPower > 0 ? 'charge' : battPower < 0 ? 'discharge' : 'idle';
-      const battFlowLabel = battDirection === 'charge' ? 'Carica in corso' : battDirection === 'discharge' ? 'Scarica in corso' : (battMode.includes('charge') || battMode.includes('caric') ? 'Carica in corso' : battMode.includes('discharge') || battMode.includes('scar') ? 'Scarica in corso' : 'Energia accumulo');
-      const battDesc = battDirection === 'charge' ? 'Energia diretta verso l’accumulo' : battDirection === 'discharge' ? 'Energia diretta verso la casa' : 'Stato batteria disponibile';
-      const battTone = battDirection === 'charge' ? 'good' : battDirection === 'discharge' ? 'bad' : 'active';
-      const gridLabel = gridPower===null ? 'Scambio rete' : gridPower > 0 ? 'Prelievo dalla rete' : gridPower < 0 ? 'Export in rete' : 'Scambio nullo';
-      const gridTone = gridPower===null ? 'active' : gridPower > 0 ? 'warn' : gridPower < 0 ? 'good' : 'active';
-      const flowChips = [
-        {label:'Carica oggi', value:this._firstFmt(chargeTodayIds,2,'kWh')},
-        {label:'Scarica oggi', value:this._firstFmt(dischargeTodayIds,2,'kWh')},
-        {label:'Perdite', value:this._firstFmt(lossIds,2,'kWh')}
-      ].filter(x=>x.value && x.value!=='—');
-      return `${this._section("Energia solare","Solo ciò che serve, senza duplicare la dashboard Inverter")}
-        <div class="solar-showcase">
-          <div class="solar-panel solar-prod-card">
-            <div class="solar-prod-top">
-              <div class="solar-sun"><ha-icon icon="mdi:white-balance-sunny"></ha-icon></div>
-            </div>
-            <div class="solar-prod-copy">
-              <span>Produzione l
+st climates=byDomain("climate");
+    const fans=[...byDomain("fan"),...byDomain("humidifier")];
+    const binaries=byDomain("binary_sensor");
+    const sensors=byDomain("sensor");
+
+    const activeLights=lights.filter(e=>this._on(e));
+    const activeClimates=climates.filter(e=>this._climateActive(e));
+    const activeFans=fans.filter(e=>this._on(e));
+    const openBinary=binaries.filter(e=>{
+      const dc=String(this._attr(e,"device_class","")).toLowerCase();
+      return ["door","window","garage_door","opening"].includes(dc) && this._on(e);
+    });
+    const motionBinary=binaries.filter(e=>{
+      const dc=String(this._attr(e,"device_class","")).toLowerCase();
+      return ["motion","occupancy","vibration"].includes(dc) && this._on(e);
+    });
+
+    const activeItems=[
+      ...activeLights.map(e=>({icon:"mdi:lightbulb-on-outline",name:friendly(e),tone:"blue"})),
+      ...openBinary.map(e=>({icon:"mdi:door-open",name:friendly(e),tone:"warn"})),
+      ...motionBinary.map(e=>({icon:"mdi:motion-sensor",name:friendly(e),tone:"blue"})),
+      ...activeClimates.map(e=>({icon:"mdi:air-conditioner",name:friendly(e),tone:"blue"})),
+      ...activeFans.map(e=>({icon:"mdi:fan",name:friendly(e),tone:"blue"}))
+    ];
+
+    const tempSensors=sensors.filter(e=>{
+      const dc=String(this._attr(e,"device_class","")).toLowerCase();
+      const unit=String(this._attr(e,"unit_of_measurement",""));
+      return dc==="temperature" || /°c/i.test(unit) || /temperatura|temperature/i.test(friendly(e));
+    });
+
+    const externalSensors=entities.filter(e=>
+      /weather_|meteo|outdoor|esterno|vento|pioggia|rain|uv|solar_lux|solar_radiation/i.test(e+" "+friendly(e))
+    );
+
+    const solarSensors=entities.filter(e=>
+      /solar_|fotovolta|pv|battery|batteria|inverter/i.test(e+" "+friendly(e))
+    );
+
+    const wallboxSensors=entities.filter(e=>
+      /wallbox|ev_|charging|ricarica|grid_current/i.test(e+" "+friendly(e))
+    );
+
+    const hero=`<section class="scene-hero community-personal-overview compact">
+      <div class="scene-copy">
+        <div class="scene-kicker">CASA · LIVE</div>
+        <div class="scene-title-row"><h1>Panoramica</h1><div class="scene-icon"><ha-icon icon="mdi:home-analytics"></ha-icon></div></div>
+        <div class="scene-sub">Solo ciò che conta davvero, in un colpo d'occhio</div>
+        <div class="scene-status ${activeItems.length?"warn":"good"}"><span class="pulse"></span><strong>${activeItems.length?`${activeItems.length} stati attivi`:"Tutto tranquillo"}</strong></div>
+      </div>
+      <div class="personal-overview-hero-card compact">
+        <div class="personal-overview-house">
+          <div class="house-v2-sky"></div><div class="house-v2-ground"></div>
+          <div class="house-v2-building"><div class="house-v2-roof"></div><div class="house-v2-body">
+            <div class="house-v2-window left"><i></i></div><div class="house-v2-window right"><i></i></div>
+            <div class="house-v2-door"></div><div class="house-v2-garage"><i></i><i></i><i></i></div>
+          </div></div>
+        </div>
+      </div>
+    </section>`;
+
+    const activeSection=activeItems.length
+      ? `${this._section("Stati attivi","Solo ciò che in questo momento sta cambiando")}<div class="overview-active-strip">${activeItems.map(i=>`<div class="overview-active-chip ${i.tone}"><ha-icon icon="${i.icon}"></ha-icon><span>${this._esc(i.name)}</span></div>`).join("")}</div>`
+      : "";
+
+    const tempCards=tempSensors.slice(0,6).map(e=>`
+      <div class="overview-key-card temp"><span>${this._esc(friendly(e))}</span><strong>${this._state(e)}</strong><small>${this._attr(e,"unit_of_measurement","")||""}</small></div>
+    `).join("");
+    const tempSection=tempCards
+      ? `${this._section("Temperature","Le principali temperature della casa")}<div class="overview-key-grid">${tempCards}</div>`
+      : "";
+
+    const extCards=externalSensors.slice(0,5).map(e=>`
+      <div class="overview-key-card external"><span>${this._esc(friendly(e))}</span><strong>${this._state(e)}</strong><small>${this._attr(e,"unit_of_measurement","")||""}</small></div>
+    `).join("");
+    const extSection=extCards
+      ? `${this._section("Esterno","Meteo e condizioni principali")}<div class="overview-key-grid">${extCards}</div>`
+      : "";
+
+    const solarCards=solarSensors.slice(0,6).map(e=>`
+      <div class="overview-key-card solar"><span>${this._esc(friendly(e))}</span><strong>${this._state(e)}</strong><small>${this._attr(e,"unit_of_measurement","")||""}</small></div>
+    `).join("");
+    const solarSection=solarCards
+      ? `${this._section("Fotovoltaico & batteria","Produzione, accumulo e rete")}<div class="overview-key-grid">${solarCards}</div>`
+      : "";
+
+    const wallboxCards=wallboxSensors.slice(0,5).map(e=>`
+      <div class="overview-key-card wallbox"><span>${this._esc(friendly(e))}</span><strong>${this._state(e)}</strong><small>${this._attr(e,"unit_of_measurement","")||""}</small></div>
+    `).join("");
+    const wallboxSection=wallboxCards
+      ? `${this._section("Wallbox & EV","Stato e ricarica")}<div class="overview-key-grid">${wallboxCards}</div>`
+      : "";
+
+    return `<div class="page overview-personal-v2 summary-only">${this._configNotice()}${hero}${activeSection}${tempSection}${extSection}${solarSection}${wallboxSection}</div>`;
+  }
+
+  _overview() {
+    if(this._uiTheme==="v2") return this._overviewV2Personal();
+    const all=this._overall(); const lights=this._countOn(LIGHTS); const open=this._openCount();
+    const lightsConfigured=LIGHTS.some(id=>this._configured(id));
+    const openingsConfigured=OPENINGS.some(id=>this._configured(id));
+    const climateConfigured=this._configured("climate.kitchen") || this._configured("climate.bedroom");
+    const mobilityConfigured=this._configured("binary_sensor.ev_charging_at_home") || this._configured("sensor.wallbox_charging_power") || this._configured("sensor.wallbox_evse_status");
+    const clima=(this._configured("climate.kitchen")&&this._climateActive("climate.kitchen")?1:0)+(this._configured("climate.bedroom")&&this._climateActive("climate.bedroom")?1:0);
+    const ev=this._configured("binary_sensor.ev_charging_at_home")&&this._on("binary_sensor.ev_charging_at_home");
+    const hero=this._hero("Casa", "Una regia elegante della casa: sicurezza, comfort, energia e ambienti leggibili in un colpo d'occhio.", all, [
+      {label:"Luci",value:`${lights} accese`,small:lights?"Scene e illuminazione attive":"Atmosfera riposata",show:lightsConfigured},
+      {label:"Aperture",value:open?`${open} aperte`:"Tutto chiuso",small:"Porte, finestre e garage",show:openingsConfigured},
+      {label:"Clima",value:clima?`${clima} attivi`:"Spento",small:"Cucina + camera",show:climateConfigured},
+      {label:"Mobilità",value:ev?`${this._fmtPowerAuto("sensor.wallbox_charging_power",2)}`:"EV a riposo",small:this._state("sensor.wallbox_evse_status","Wallbox"),show:mobilityConfigured}
+    ],"panoramica");
+    const roomCards=NAV.filter(([id])=>id!=="panoramica").map(([room])=>this._roomCard(room)).join("");
+    const alarmConfigured=this._configured("alarm_control_panel.home_alarm");
+    const leakConfigured=this._configured("binary_sensor.bathroom_water_leak");
+    const tankConfigured=this._configured("binary_sensor.garage_dehumidifier_tank_full") || this._configured("sensor.garage_dehumidifier_tank_status");
+    const weatherConfigured=this._configured("sensor.weather_outdoor_temperature") || this._configured("binary_sensor.weather_rain");
+    const garageConfigured=this._configured("binary_sensor.garage_door_contact") || mobilityConfigured;
+    const comfortConfigured=this._configured("sensor.kitchen_temperature") || this._configured("sensor.bedroom_temperature");
+    const treadmillConfigured=this._configured("switch.garage_treadmill");
+    const alarm=this._state("alarm_control_panel.home_alarm","—");
+    const rain=this._configured("binary_sensor.weather_rain")&&this._on("binary_sensor.weather_rain");
+    const garage=this._configured("binary_sensor.garage_door_contact")&&this._on("binary_sensor.garage_door_contact");
+    const comfortTemp=this._configured("sensor.kitchen_temperature")?this._fmt("sensor.kitchen_temperature",1,"°C"):"—";
+    const bedroomTemp=this._configured("sensor.bedroom_temperature")?this._fmt("sensor.bedroom_temperature",1,"°C"):"—";
+    const outsideTemp=this._configured("sensor.weather_outdoor_temperature")?this._fmt("sensor.weather_outdoor_temperature",1,"°C"):"—";
+
+    const spotStats=[];
+    if(alarmConfigured || openingsConfigured) spotStats.push(`<div class="spot-stat"><span class="k">Sicurezza</span><strong>${alarmConfigured?(alarm==='triggered'?'Allarme':alarm==='disarmed'?'Disinserito':'Protetta'):(open?'Da controllare':'Nessuna apertura')}</strong><small>${openingsConfigured?(open?`${open} aperture aperte`:'Nessuna apertura critica'):'Allarme configurato'}</small></div>`);
+    if(comfortConfigured) spotStats.push(`<div class="spot-stat"><span class="k">Comfort</span><strong>${comfortTemp!=="—"?comfortTemp:bedroomTemp}</strong><small>${comfortTemp!=="—"&&bedroomTemp!=="—"?`Cucina · Camera ${bedroomTemp}`:comfortTemp!=="—"?'Cucina':'Camera'}</small></div>`);
+    if(weatherConfigured) spotStats.push(`<div class="spot-stat"><span class="k">Esterno</span><strong>${outsideTemp}</strong><small>${this._configured("binary_sensor.weather_rain")?(rain?'Pioggia in corso':'Meteo tranquillo'):'Meteo configurato'}</small></div>`);
+    if(garageConfigured) spotStats.push(`<div class="spot-stat"><span class="k">Garage</span><strong>${this._configured("binary_sensor.garage_door_contact")?(garage?'Aperto':'Chiuso'):(ev?'EV in carica':'Wallbox')}</strong><small>${mobilityConfigured?(ev?'EV in carica':'Wallbox pronta'):'Accesso garage'}</small></div>`);
+
+    const mainSpotlight=spotStats.length?`<section class="card spotlight span-8">
+      <div class="spotlight-kicker">HOUSE STATUS</div>
+      <div class="spotlight-title">${this._esc(all.title)}</div>
+      <div class="spotlight-copy">${this._esc(all.text)} · La casa viene raccontata per scenari, non per elenchi di entità.</div>
+      <div class="spotlight-stats">${spotStats.join("")}</div>
+    </section>`:"";
+
+    const atmosphereVisible=lightsConfigured || openingsConfigured || climateConfigured || weatherConfigured;
+    const atmosphere=atmosphereVisible?`<section class="card mini-panel atmosphere span-4">
+      <div class="panel-eyebrow">ATMOSFERA</div>
+      <div class="panel-title">Comfort istantaneo</div>
+      <div class="panel-big">${climateConfigured?(clima?`${clima} clima attivi`:'Comfort passivo'):'Casa monitorata'}</div>
+      <div class="panel-sub">${[outsideTemp!=="—"?`Fuori ${outsideTemp}`:"",comfortTemp!=="—"?`Cucina ${comfortTemp}`:"",bedroomTemp!=="—"?`Camera ${bedroomTemp}`:""].filter(Boolean).join(" · ")}</div>
+      <div class="mini-tags">${lightsConfigured?`<span class="mini-tag ${lights?'active':''}">💡 ${lights} luci</span>`:""}${this._configured("binary_sensor.weather_rain")?`<span class="mini-tag ${rain?'warn':''}">🌦️ ${rain?'Pioggia':'Asciutto'}</span>`:""}${openingsConfigured?`<span class="mini-tag ${open?'warn':''}">🚪 ${open?`${open} aperte`:'Tutto chiuso'}</span>`:""}</div>
+    </section>`:"";
+
+    const energyVisible=garageConfigured || mobilityConfigured || treadmillConfigured;
+    const energy=energyVisible?`<section class="card mini-panel energy-panel span-4">
+      <div class="panel-eyebrow">ENERGIA & MOBILITÀ</div>
+      <div class="panel-title">Garage + EV + Wallbox</div>
+      <div class="panel-big">${mobilityConfigured?(ev?this._fmtPowerAuto("sensor.wallbox_charging_power",2):'Pronta'):(garage?'Garage aperto':'Garage')}</div>
+      <div class="panel-sub">${mobilityConfigured?`${ev?'Ricarica in corso':'Nessuna ricarica attiva'}${this._configured("sensor.wallbox_evse_status")?` · EVSE ${this._state("sensor.wallbox_evse_status","—")}`:""}`:'Accesso garage configurato'}</div>
+      <div class="mini-tags">${this._configured("binary_sensor.garage_door_contact")?`<span class="mini-tag ${garage?'warn':''}">🚗 ${garage?'Basculante aperto':'Garage chiuso'}</span>`:""}${treadmillConfigured?`<span class="mini-tag ${this._on("switch.garage_treadmill")?'active':''}">🏃 ${this._on("switch.garage_treadmill")?'Tapis ON':'Tapis OFF'}</span>`:""}</div>
+    </section>`:"";
+
+    const securityVisible=alarmConfigured || leakConfigured || tankConfigured;
+    const security=securityVisible?`<section class="card mini-panel security-panel span-4">
+      <div class="panel-eyebrow">SICUREZZA</div>
+      <div class="panel-title">Segnali importanti</div>
+      <div class="panel-big">${all.level==='bad'?'Attenzione':all.level==='warn'?'Da controllare':'Serena'}</div>
+      <div class="panel-sub">${[alarmConfigured?`Allarme ${alarm}`:"",leakConfigured?`Sensori acqua ${this._on("binary_sensor.bathroom_water_leak")?'ATTIVI':'OK'}`:""].filter(Boolean).join(" · ")}</div>
+      <div class="mini-tags">${leakConfigured?`<span class="mini-tag ${this._on("binary_sensor.bathroom_water_leak")?'warn':''}">💧 ${this._on("binary_sensor.bathroom_water_leak")?'Perdita':'Acqua OK'}</span>`:""}${tankConfigured?`<span class="mini-tag ${this._on("binary_sensor.garage_dehumidifier_tank_full")?'warn':''}">🪣 ${this._on("binary_sensor.garage_dehumidifier_tank_full")?'Serbatoio pieno':'Serbatoio OK'}</span>`:""}</div>
+    </section>`:"";
+
+    const overviewPanels=[mainSpotlight,atmosphere,energy,security].filter(Boolean);
+    const spotlight=overviewPanels.length?`<div class="dashboard-grid">${overviewPanels.join("")}</div>`:"";
+    return `<div class="page overview-page">${this._configNotice()}${hero}${spotlight}${this._section("Ambienti","Una mappa elegante delle zone principali")}<div class="grid room-mosaic">${roomCards}</div></div>`;
+  }
+
+  _roomCard(room) {
+    if(!this._roomConfigured(room)) return "";
+    const m=ROOM_META[room], s=this._roomStatus(room); let tags=[];
+    if(room==="bagno") {
+      if(this._configured("sensor.bathroom_temperature")) tags.push(`🌡️ ${this._fmt("sensor.bathroom_temperature",1,"°C")}`);
+      if(this._configured("sensor.bathroom_humidity")) tags.push(`💧 ${this._fmt("sensor.bathroom_humidity",0,"%")}`);
+    }
+    if(room==="cucina") {
+      if(this._configured("sensor.kitchen_temperature")) tags.push(`🌡️ ${this._fmt("sensor.kitchen_temperature",1,"°C")}`);
+      if(this._configured("sensor.kitchen_humidity")) tags.push(`💧 ${this._fmt("sensor.kitchen_humidity",0,"%")}`);
+    }
+    if(room==="camera") {
+      if(this._configured("sensor.bedroom_temperature")) tags.push(`🌡️ ${this._fmt("sensor.bedroom_temperature",1,"°C")}`);
+      if(this._configured("sensor.bedroom_humidity")) tags.push(`💧 ${this._fmt("sensor.bedroom_humidity",0,"%")}`);
+    }
+    if(room==="balcone") {
+      if(this._configured("sensor.weather_outdoor_temperature")) tags.push(`🌡️ ${this._fmt("sensor.weather_outdoor_temperature",1,"°C")}`);
+      if(this._configured("sensor.weather_wind_gust")) tags.push(`💨 ${this._fmt("sensor.weather_wind_gust",0,"km/h")}`);
+    }
+    if(room==="garage") {
+      if(this._configured("sensor.garage_temperature")) tags.push(`🌡️ ${this._fmt("sensor.garage_temperature",1,"°C")}`);
+      if(this._configured("binary_sensor.ev_charging_at_home") || this._configured("sensor.wallbox_evse_status")) tags.push(this._on("binary_sensor.ev_charging_at_home")?"🔌 In carica":"🚗 Wallbox pronta");
+    }
+    if(room==="ingresso") {
+      if(this._configured("alarm_control_panel.home_alarm")) tags.push(this._state("alarm_control_panel.home_alarm") === "disarmed"?"🔓 Allarme OFF":"🛡️ Allarme ON");
+      if(this._configured("light.entry_main")) tags.push(this._on("light.entry_main")?"💡 Luce ON":"💡 Luce OFF");
+    }
+    return `<article class="card room-card premium-room clickable span-4" data-nav="${room}">
+      <div class="room-heading">
+        <div class="room-orb ${s.level}"><ha-icon icon="${m.icon}"></ha-icon></div>
+        <div class="room-arrow"><ha-icon icon="mdi:arrow-top-right"></ha-icon></div>
+      </div>
+      <div class="room-copy">
+        <div class="room-eyebrow">${m.subtitle}</div>
+        <h3>${m.title}</h3>
+        <div class="room-status-line ${s.level}">${this._esc(s.text)}</div>
+      </div>
+      <div class="room-pills">
+        ${tags.map(t=>`<span class="room-pill">${t}</span>`).join("")}
+      </div>
+    </article>`;
+  }
+
+  _anyConfigured(keys){ return (keys||[]).some(key=>this._configured(key)); }
+
+  _zoneHero(room, metrics) {
+    const m=ROOM_META[room], s=this._roomStatus(room);
+    const requirements={
+      esterno:{"Cancellino":["input_boolean.pedestrian_gate"],"Stato":["input_boolean.pedestrian_gate"]},
+      scale:{"Luce":["light.stairs"],"Portoncino":["input_boolean.main_gate"]},
+      ingresso:{"Porta":["binary_sensor.entry_door","input_boolean.entry_door_unlock"],"Allarme":["alarm_control_panel.home_alarm"],"Luminosità":["sensor.entry_illuminance"],"Presenza":["binary_sensor.entry_occupancy","binary_sensor.entry_motion"]},
+      cucina:{"Temperatura":["sensor.kitchen_temperature"],"Umidità":["sensor.kitchen_humidity"],"Clima":["climate.kitchen"],"Finestra":["binary_sensor.kitchen_door_window"]},
+      disimpegno:{"Movimento":["binary_sensor.hallway_motion"],"Occupazione":["binary_sensor.hallway_occupancy"],"Luminosità":["sensor.hallway_illuminance"],"Luce":["light.hallway_main"]},
+      bagno:{"Temperatura":["sensor.bathroom_temperature"],"Umidità":["sensor.bathroom_humidity"],"Finestra":["binary_sensor.bathroom_window"],"Acqua":["binary_sensor.bathroom_water_leak"]},
+      camera:{"Temperatura":["sensor.bedroom_temperature"],"Umidità":["sensor.bedroom_humidity"],"Clima":["climate.bedroom"],"Robot":["vacuum.robot_vacuum","sensor.robot_vacuum_battery"]}
+    };
+    const roomReq=requirements[room]||{};
+    const visible=metrics.map(metric=>{
+      const req=roomReq[metric.label];
+      return req ? {...metric,show:metric.show!==false&&this._anyConfigured(req)} : metric;
+    });
+    return this._hero(m.title,m.subtitle,{...s,title:s.text,text:""},visible,room);
+  }
+
+  _esterno(){
+    const open=this._on("input_boolean.pedestrian_gate");
+    return `<div class="page ${this._uiTheme==="v2"?"overview-v2-page":""}">${this._zoneHero("esterno",[
+      {label:"Cancellino",value:open?"Aperto / apertura…":"Chiuso",small:"Accesso esterno"},
+      {label:"Stato",value:open?"Attivo":"Pronto",small:"Comando pedonale"}
+    ])}${this._section("Accesso esterno")}<div class="grid">${this._control("input_boolean.pedestrian_gate","Cancellino","mdi:gate",open?"Apertura in corso / aperto":"Premi per aprire","toggle",12)}</div></div>`;
+  }
+
+  _scale(){
+    return `<div class="page">${this._zoneHero("scale",[
+      {label:"Luce",value:this._on("light.stairs")?"Accesa":"Spenta",small:"Illuminazione scale"},
+      {label:"Portoncino",value:this._on("input_boolean.main_gate")?"Apertura…":"Pronto",small:"Comando accesso"}
+    ])}${this._section("Controlli rapidi")}<div class="grid">${this._control("input_boolean.main_gate","Portoncino","mdi:gate",this._on("input_boolean.main_gate")?"Apertura in corso":"Premi per aprire","toggle",6)}${this._control("light.stairs","Luce scale","mdi:ceiling-light",this._on("light.stairs")?"Accesa":"Spenta","toggle",6)}</div></div>`;
+  }
+
+  _ingresso(){
+    const door=this._on("binary_sensor.entry_door");
+    const unlocked=this._on("input_boolean.entry_door_unlock");
+    const alarm=this._state("alarm_control_panel.home_alarm","—");
+    const motion=this._on("binary_sensor.entry_motion");
+    const occupied=this._on("binary_sensor.entry_occupancy");
+    const alerts=[];
+    if(!door && unlocked) alerts.push(this._alert("warn","mdi:lock-open-alert-outline","Porta chiusa ma sbloccata","La serratura risulta aperta anche se il contatto porta è chiuso."));
+    if(door) alerts.push(this._alert("bad","mdi:door-open","Porta ingresso aperta","La porta di casa risulta fisicamente aperta."));
+    return `<div class="page">${this._zoneHero("ingresso",[
+      {label:"Porta",value:door?"Aperta":unlocked?"Sbloccata":"Bloccata",small:"Contatto + serratura"},
+      {label:"Allarme",value:alarm,small:"Allarme"},
+      {label:"Luminosità",value:this._luxLabel("sensor.entry_illuminance"),small:this._fmtLuxExact("sensor.entry_illuminance")},
+      {label:"Presenza",value:occupied?"Occupato":"Libero",small:motion?"Movimento rilevato":"Nessun movimento"}
+    ])}${alerts.length?`<div class="logic-card" style="padding:0 18px;margin-top:16px;">${alerts.join("")}</div>`:""}${this._section("Sicurezza e accesso")}<div class="grid">
+      ${this._control("input_boolean.entry_door_unlock","Porta di casa",door?"mdi:door-open":unlocked?"mdi:lock-open-variant":"mdi:lock",door?"Aperta fisicamente":unlocked?"Chiusa · sbloccata":"Chiusa · bloccata","toggle",4)}
+      ${this._control("light.entry_main","Luce ingresso","mdi:ceiling-light",this._on("light.entry_main")?"Accesa":"Spenta","toggle",4)}
+      ${this._configured("alarm_control_panel.home_alarm")?`<div class="control span-4 ${alarm==='triggered'?'state-bad':alarm==='disarmed'?'state-warn':'state-on'}">${this._icon(alarm==='triggered'?"mdi:alarm-light":"mdi:shield-home",alarm==='triggered'?"bad":alarm==='disarmed'?"warn":"good")}<div class="control-main clickable" data-more="alarm_control_panel.home_alarm"><div class="control-title">Allarme</div><div class="control-sub">${this._esc(alarm)}

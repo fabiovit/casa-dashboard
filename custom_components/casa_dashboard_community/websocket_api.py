@@ -48,14 +48,18 @@ def _read_config(hass: HomeAssistant) -> dict[str, Any]:
         key: value if isinstance((value := entities.get(key, "")), str) else ""
         for key in valid
     }
+    rooms = current.get("rooms", [])
+    if not isinstance(rooms, list):
+        rooms = []
     return {
         "entities": merged,
+        "rooms": rooms,
         "configured": sum(1 for value in merged.values() if value.strip()),
         "total": len(merged),
     }
 
 
-def _save_config(hass: HomeAssistant, supplied: dict[str, Any]) -> dict[str, Any]:
+def _save_config(hass: HomeAssistant, supplied: dict[str, Any], supplied_rooms: list[Any] | None = None) -> dict[str, Any]:
     target, template_path = _paths(hass)
     template = _read_json(template_path)
     valid = template.get("entities", {})
@@ -73,6 +77,34 @@ def _save_config(hass: HomeAssistant, supplied: dict[str, Any]) -> dict[str, Any
         current_entities[key] = value.strip() if isinstance(value, str) else ""
 
     output["entities"] = current_entities
+    if supplied_rooms is not None:
+        clean_rooms = []
+        for room in supplied_rooms:
+            if not isinstance(room, dict):
+                continue
+            rid = str(room.get("id", "")).strip()
+            name = str(room.get("name", "")).strip()
+            if not rid or not name:
+                continue
+            entities = room.get("entities", [])
+            labels = room.get("entity_labels", {})
+            if not isinstance(labels, dict):
+                labels = {}
+            clean_entities = [str(x).strip() for x in entities if str(x).strip()] if isinstance(entities, list) else []
+            clean_labels = {
+                str(k).strip(): str(v).strip()
+                for k, v in labels.items()
+                if str(k).strip() in clean_entities and str(v).strip()
+            }
+            clean_rooms.append({
+                "id": rid,
+                "name": name,
+                "type": str(room.get("type", "generico")).strip() or "generico",
+                "icon": str(room.get("icon", "mdi:home-outline")).strip() or "mdi:home-outline",
+                "entities": clean_entities,
+                "entity_labels": clean_labels,
+            })
+        output["rooms"] = clean_rooms
     for meta_key in ("_description", "_author", "_support"):
         if meta_key not in output and meta_key in template:
             output[meta_key] = template[meta_key]
@@ -84,6 +116,7 @@ def _save_config(hass: HomeAssistant, supplied: dict[str, Any]) -> dict[str, Any
 
     return {
         "entities": {key: current_entities.get(key, "") for key in valid},
+        "rooms": output.get("rooms", []),
         "configured": sum(
             1 for key in valid if isinstance(current_entities.get(key), str) and current_entities[key].strip()
         ),
@@ -104,13 +137,14 @@ async def websocket_get_config(hass: HomeAssistant, connection, msg: dict[str, A
     {
         vol.Required("type"): WS_SAVE,
         vol.Required("entities"): dict,
+        vol.Optional("rooms", default=[]): list,
     }
 )
 @websocket_api.require_admin
 @websocket_api.async_response
 async def websocket_save_config(hass: HomeAssistant, connection, msg: dict[str, Any]) -> None:
     """Save the Community entity mapping."""
-    result = await hass.async_add_executor_job(_save_config, hass, msg["entities"])
+    result = await hass.async_add_executor_job(_save_config, hass, msg["entities"], msg.get("rooms", []))
     connection.send_result(msg["id"], result)
 
 

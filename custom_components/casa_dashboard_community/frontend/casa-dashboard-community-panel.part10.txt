@@ -1,138 +1,225 @@
-        if(this._state("alarm_control_panel.home_alarm")==="triggered") return {level:"bad",text:"Allarme in corso"};
-        if(this._on("binary_sensor.entry_door")) return {level:"warn",text:"Porta aperta"};
-        if(this._on("input_boolean.entry_door_unlock")) return {level:"warn",text:"Porta sbloccata"};
-        return {level:"good",text:"Ingresso sicuro"}; }
-      case "disimpegno": return active(["binary_sensor.hallway_motion","binary_sensor.hallway_occupancy"]) ? {level:"blue",text:"Presenza rilevata"}:{level:"good",text:"Libero"};
-      case "bagno": {
-        if(this._on("binary_sensor.bathroom_water_leak")) return {level:"bad",text:"Perdita acqua"};
-        if(this._on("binary_sensor.bathroom_window")) return {level:"warn",text:"Finestra aperta"};
-        return this._climateActive("fan.bathroom_extractor") ? {level:"blue",text:"Aspiratore attivo"}:{level:"good",text:"Tutto ok"}; }
-      case "cucina": {
-        if(this._on("binary_sensor.kitchen_door_window")) return {level:"warn",text:"Porta finestra aperta"};
-        if(this._climateActive("climate.kitchen")) return {level:"blue",text:"Clima attivo"};
-        return light(["light.kitchen_main","light.kitchen_led"]) ? {level:"blue",text:"Luci accese"}:{level:"good",text:"Tutto ok"}; }
-      case "camera": {
-        if(this._on("binary_sensor.bedroom_door_window")) return {level:"warn",text:"Porta finestra aperta"};
-        if(this._climateActive("climate.bedroom")) return {level:"blue",text:"Clima attivo"};
-        const v=this._state("vacuum.robot_vacuum",""); if(["cleaning","returning","paused"].includes(v)) return {level:"blue",text:"Robot aspirapolvere attivo"};
-        return {level:"good",text:"Tutto ok"}; }
-      case "balcone": {
-        if(this._on("binary_sensor.weather_rain") || (this._num("sensor.weather_rain_rate",0)>=0.1)) return {level:"warn",text:"Pioggia rilevata"};
-        if(this._num("sensor.weather_wind_gust",0)>=24) return {level:"warn",text:"Raffiche forti"};
-        if(this._on("switch.balcony_barbecue")) return {level:"blue",text:"Barbecue acceso"};
-        return {level:"good",text:"Meteo regolare"}; }
-      case "garage": {
-        if(this._on("binary_sensor.garage_door_contact")) return {level:"warn",text:"Basculante aperto"};
-        if(this._on("binary_sensor.ev_charging_at_home")) return {level:"blue",text:"EV in carica"};
-        if(this._on("binary_sensor.garage_dehumidifier_tank_full")) return {level:"bad",text:"Serbatoio pieno"};
-        return {level:"good",text:"Tutto ok"}; }
-    }
-    return {level:"good",text:"Tutto ok"};
-  }
+ty-search-wrap:focus-within{z-index:120}
+      .room-entity-suggestions{z-index:999!important;max-height:min(320px,42vh)!important}
+      .room-entity-suggestions.flip-up{top:auto!important;bottom:calc(100% + 5px)!important}
+      .config-dialog{overflow:hidden}
+      .config-scroll{position:relative;z-index:1}
+      .room-manager{position:relative;z-index:30}
+      .config-toolbar{position:relative;z-index:2}
 
-  _renderNav(force=false) {
-    const nav=this.shadowRoot.querySelector("#nav"); if(!nav) return;
-    const visibleNav=NAV.filter(([id])=>id==="panoramica" || this._roomConfigured(id));
-    if(this._active!=="panoramica" && !this._roomConfigured(this._active)) this._active="panoramica";
-    if(force || !nav.children.length || nav.children.length!==visibleNav.length){
-      nav.innerHTML=visibleNav.map(([id,icon,label])=>`<button class="nav-btn ${id===this._active?"active":""}" data-nav="${id}" type="button"><ha-icon icon="${icon}"></ha-icon>${label}</button>`).join("");
-    } else {
-      nav.querySelectorAll(".nav-btn").forEach(btn=>btn.classList.toggle("active",btn.dataset.nav===this._active));
-    }
-  }
-
-  _renderHeader() {
-    const host=this.shadowRoot.querySelector("#headerStatus"); if(!host||!this._hass) return;
-    const all=this._overall();
-    const temp=this._configured("sensor.weather_outdoor_temperature")?`<div class="header-pill"><ha-icon icon="mdi:thermometer"></ha-icon>${this._fmt("sensor.weather_outdoor_temperature",1,"°C")}</div>`:"";
-    host.innerHTML=`<div class="header-pill"><ha-icon icon="${all.icon}"></ha-icon>${this._esc(all.title)}</div>${temp}`;
-  }
-
-  _renderPage(forceNav=false) {
-    if(!this._hass || !this.shadowRoot) return;
-    this._renderNav(forceNav); this._renderHeader(); this._applyThemeMode();
-    const host=this.shadowRoot.querySelector("#content"); if(!host) return;
-    const renderer={panoramica:()=>this._overview(),esterno:()=>this._esterno(),scale:()=>this._scale(),ingresso:()=>this._ingresso(),cucina:()=>this._cucina(),disimpegno:()=>this._disimpegno(),bagno:()=>this._bagno(),camera:()=>this._camera(),balcone:()=>this._balcone(),garage:()=>this._garage()}[this._active];
-    host.innerHTML=renderer ? renderer() : `<div class="empty">Pagina non disponibile</div>`;
-    this._cleanEmptySections(host);
-    this._lastStateFingerprint=this._stateFingerprint();
-  }
-
-  _cleanEmptySections(host){
-    host.querySelectorAll(".grid").forEach(grid=>{
-      if(!grid.children.length){
-        const prev=grid.previousElementSibling;
-        if(prev?.classList?.contains("chapter")) prev.remove();
-        grid.remove();
+      /* v2.0.0 - unlimited dynamic rooms / independent room scrolling */
+      .room-manager{display:flex;flex-direction:column;max-height:min(52vh,620px)!important}
+      .room-manager-head{flex:0 0 auto}
+      .room-list{flex:1 1 auto;min-height:0;max-height:min(40vh,470px)!important;overflow-y:auto!important;overflow-x:visible!important;padding-right:5px;scrollbar-gutter:stable}
+      .room-friendly-hint{flex:0 0 auto}
+      .room-edit-row{min-width:0}
+      .room-list::-webkit-scrollbar{width:8px}.room-list::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--secondary-text-color) 35%,transparent);border-radius:999px}
+      @media(max-width:900px){
+        .room-manager{max-height:min(58vh,650px)!important}
+        .room-list{max-height:min(46vh,520px)!important}
       }
-    });
-    const mosaic=host.querySelector(".room-mosaic");
-    if(mosaic && !mosaic.children.length){
-      const prev=mosaic.previousElementSibling;
-      if(prev?.classList?.contains("chapter")) prev.remove();
-      mosaic.remove();
+
+      /* v2.0.0 - quick save inside Rooms manager */
+      .room-manager-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+      .room-save{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:1px solid color-mix(in srgb,#00a9df 58%,var(--divider-color));background:#00a9df;color:#fff;border-radius:12px;padding:9px 13px;font-weight:900;cursor:pointer}
+      .room-save ha-icon{--mdc-icon-size:17px}
+      .room-save:hover{filter:brightness(1.05)}
+      .room-save:disabled{opacity:.6;cursor:wait}
+      @media(max-width:760px){
+        .room-manager-actions{width:100%}
+        .room-manager-actions .room-add,.room-manager-actions .room-save{flex:1 1 180px}
+      }
+
+      /* v2.0.0 - Casa V2 overview aligned with personal Casa 4.3.54 */
+      .ui-v2 .community-personal-overview{grid-template-columns:minmax(360px,.78fr) minmax(650px,1.55fr)!important;min-height:340px!important}
+      .personal-overview-hero-card{display:grid;grid-template-columns:minmax(420px,1.25fr) minmax(250px,.75fr);gap:18px;align-items:stretch;min-height:255px;padding:18px;border-radius:26px;border:1px solid rgba(255,255,255,.075);background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(61,174,233,.04))}
+      .personal-overview-house{position:relative;min-height:220px;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#173143 0 48%,#182329 48%);display:grid;place-items:center}.personal-overview-house .house-v2-building{transform:scale(.9);transform-origin:center bottom}
+      .personal-overview-side{display:grid;grid-template-columns:1fr 1fr;gap:10px}.personal-overview-meta{padding:14px;border:1px solid rgba(255,255,255,.065);border-radius:16px;background:rgba(255,255,255,.025)}.personal-overview-meta span{display:block;font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:#8da6bd;font-weight:900}.personal-overview-meta strong{display:block;margin-top:7px;font-size:22px;line-height:1.05}.personal-overview-meta small{display:block;margin-top:6px;color:var(--secondary-text-color);font-size:9px;line-height:1.35}
+      .overview-active-strip{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0 28px}.overview-active-chip{display:flex;align-items:center;gap:8px;padding:11px 14px;border:1px solid rgba(72,191,255,.28);border-radius:14px;background:rgba(72,191,255,.045);color:#66ceff;font-weight:850;font-size:12px}.overview-active-chip.warn{border-color:rgba(255,175,74,.34);background:rgba(255,175,74,.055);color:#ffbd69}.overview-active-chip ha-icon{--mdc-icon-size:18px}
+      .overview-climate-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:12px 0 28px}.overview-climate-card{padding:16px 14px;border:1px solid rgba(255,255,255,.075);border-radius:18px;background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(58,178,235,.025))}.overview-climate-card span{display:block;font-size:8px;letter-spacing:.17em;text-transform:uppercase;color:#8da6bd;font-weight:900}.overview-climate-card strong{display:block;margin-top:8px;font-size:24px}.overview-climate-card small{display:block;margin-top:4px;color:var(--secondary-text-color);font-size:10px}
+      .overview-weather-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;padding:12px;border:1px solid rgba(255,255,255,.065);border-radius:22px;background:rgba(255,255,255,.015);margin-bottom:28px}.overview-weather-card{padding:14px;border-radius:16px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.025)}.overview-weather-card span{display:block;font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:#8da6bd;font-weight:900}.overview-weather-card strong{display:block;margin-top:7px;font-size:20px}.overview-weather-card small{display:block;margin-top:4px;color:var(--secondary-text-color);font-size:9px}
+      @media(max-width:1100px){.ui-v2 .community-personal-overview{grid-template-columns:1fr!important}.personal-overview-hero-card{grid-template-columns:1fr}.overview-climate-grid,.overview-weather-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+      @media(max-width:650px){.personal-overview-side{grid-template-columns:1fr 1fr}.overview-climate-grid,.overview-weather-grid{grid-template-columns:1fr 1fr}.personal-overview-house{min-height:180px}}
+
+      /* v2.0.0 - V2 overview summary only */
+      .ui-v2 .community-personal-overview.compact{grid-template-columns:minmax(380px,.85fr) minmax(520px,1.15fr)!important;min-height:285px!important}
+      .personal-overview-hero-card.compact{display:block!important;min-height:220px!important;padding:14px!important}
+      .personal-overview-hero-card.compact .personal-overview-house{min-height:220px}
+      .overview-key-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:12px 0 28px}
+      .overview-key-card{padding:15px 14px;border:1px solid rgba(255,255,255,.07);border-radius:18px;background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(65,178,235,.022))}
+      .overview-key-card span{display:block;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:#8da6bd;font-weight:900;line-height:1.35}
+      .overview-key-card strong{display:block;margin-top:8px;font-size:23px;line-height:1.1}
+      .overview-key-card small{display:block;margin-top:5px;color:var(--secondary-text-color);font-size:9px}
+      .overview-key-card.solar{background:linear-gradient(145deg,rgba(255,255,255,.02),rgba(255,190,65,.035))}
+      .overview-key-card.wallbox{background:linear-gradient(145deg,rgba(255,255,255,.02),rgba(61,200,255,.035))}
+      .overview-key-card.external{background:linear-gradient(145deg,rgba(255,255,255,.02),rgba(92,175,255,.025))}
+      @media(max-width:1100px){.overview-key-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+      @media(max-width:650px){.overview-key-grid{grid-template-columns:1fr 1fr}.ui-v2 .community-personal-overview.compact{grid-template-columns:1fr!important}}
+
+      /* v2.0.0 - Casa V2 room heroes aligned with personal Casa 4.3.54 */
+      .ui-v2 .original-room-hero{grid-template-columns:minmax(360px,.95fr) minmax(560px,1.35fr)!important;min-height:350px!important}
+      .original-room-hero-card{display:grid;grid-template-columns:minmax(340px,1.2fr) minmax(230px,.8fr);gap:18px;align-items:center;min-height:260px;padding:20px;border-radius:26px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(72,151,255,.045))}
+      .original-room-visual{min-width:0}.original-room-side{display:flex;flex-direction:column;gap:14px;padding:6px}.original-room-meta span{display:block;font-size:9px;letter-spacing:.2em;font-weight:850;color:#8da6bd}.original-room-meta strong{display:block;font-size:30px;letter-spacing:-.04em;margin-top:7px}.original-room-meta small{display:block;color:var(--secondary-text-color);margin-top:4px}.original-room-divider{height:1px;background:linear-gradient(90deg,rgba(84,180,255,.85),transparent)}
+      .community-original-scene{height:220px!important;border-radius:20px!important;overflow:hidden!important}
+      .living-scene,.office-scene,.laundry-scene,.hobby-scene,.generic-home-scene{position:relative;height:220px;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#17242d,#0d141a)}
+      .living-wall,.office-wall,.laundry-wall,.hobby-wall,.generic-room-wall{position:absolute;inset:0;background:linear-gradient(180deg,#27343d,#151c22)}
+      .living-tv{position:absolute;left:34px;top:36px;width:120px;height:66px;border:5px solid #566774;background:#102735}.living-sofa{position:absolute;left:50%;bottom:32px;width:180px;height:72px;transform:translateX(-50%);border-radius:20px 20px 10px 10px;background:#46545e}.living-sofa i{position:absolute;top:8px;width:72px;height:42px;border-radius:12px;background:#5a6973}.living-sofa i:first-child{left:12px}.living-sofa i:last-child{right:12px}.living-lamp{position:absolute;right:32px;top:30px;width:4px;height:110px;background:#7d8c96}.living-lamp:after{content:"";position:absolute;left:-20px;top:-2px;width:44px;height:24px;border-radius:50%;background:#d2b265}.living-rug{position:absolute;left:25%;right:25%;bottom:10px;height:18px;border-radius:50%;background:#263944}
+      .office-desk{position:absolute;left:32px;right:32px;bottom:42px;height:16px;background:#64727d}.office-monitor{position:absolute;left:50%;bottom:62px;width:116px;height:70px;transform:translateX(-50%);border:6px solid #596a76;background:#173246}.office-chair{position:absolute;left:50%;bottom:8px;width:64px;height:55px;transform:translateX(-50%);border-radius:16px 16px 8px 8px;background:#3f4c55}.office-lamp{position:absolute;right:28px;bottom:58px;width:5px;height:92px;background:#7b8993}
+      .laundry-machine{position:absolute;left:45px;bottom:28px;width:112px;height:142px;border-radius:10px;background:#d0d5d9}.laundry-door{position:absolute;left:21px;top:45px;width:68px;height:68px;border-radius:50%;background:#172b38;border:9px solid #7d8c95}.laundry-shelf{position:absolute;right:34px;top:38px;width:130px;height:12px;background:#63717a;box-shadow:0 48px 0 #63717a}.laundry-basket{position:absolute;right:58px;bottom:26px;width:78px;height:70px;background:#465762;clip-path:polygon(8% 0,92% 0,100% 100%,0 100%)}
+      .hobby-table{position:absolute;left:46px;right:46px;bottom:38px;height:18px;background:#755f48}.hobby-cabinet{position:absolute;right:34px;top:32px;width:92px;height:108px;background:#4b5359}.hobby-lamp{position:absolute;left:50%;top:0;width:4px;height:72px;background:#7b8993}.hobby-lamp:after{content:"";position:absolute;left:-25px;bottom:-8px;width:54px;height:28px;border-radius:50%;background:#d4ae62}
+      .generic-window{position:absolute;left:34px;top:30px;width:120px;height:90px;border:6px solid #63737e;background:#1d4054}.generic-table{position:absolute;left:48px;right:48px;bottom:38px;height:16px;background:#687781}.generic-lamp{position:absolute;right:40px;top:22px;width:5px;height:95px;background:#7c8b95}
+      .stairs-hero-scene{position:relative;height:220px;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#17232b,#0c1217)}.stairs-wall{position:absolute;inset:0;background:linear-gradient(135deg,#222e36,#131a20);clip-path:polygon(0 0,100% 0,100% 100%,38% 100%)}.stairs-flight{position:absolute;left:8%;bottom:10%;width:62%;height:66%;display:flex;flex-direction:column-reverse;gap:4px;transform:skewY(-18deg)}.stairs-flight i{height:13px;background:linear-gradient(90deg,#53636f,#29353e);border-top:1px solid #738592}.stairs-rail{position:absolute;left:19%;top:12%;width:5px;height:68%;background:#7f929e;transform:rotate(27deg);transform-origin:bottom}.stairs-door{position:absolute;right:9%;bottom:8%;width:68px;height:118px;border:5px solid #5f707d;background:#222c34}
+      @media(max-width:980px){.ui-v2 .original-room-hero{grid-template-columns:1fr!important}.original-room-hero-card{grid-template-columns:1fr}.original-room-side{display:grid;grid-template-columns:repeat(3,1fr)}}@media(max-width:620px){.original-room-hero-card{padding:14px}.original-room-side{grid-template-columns:1fr}.community-original-scene{height:185px!important}}
+
+      /* v2.0.0 - restore and emphasize original Casa V1 iconography */
+      .ui-v1 .command-symbol ha-icon{--mdc-icon-size:23px!important}
+      .ui-v1 .command-symbol{color:#8ba5bd}
+      .ui-v1 .command-strip.state-on .command-symbol,.ui-v1 .command-symbol.active{color:#55e6ad}
+      .ui-v1 .scene-mark ha-icon{--mdc-icon-size:24px}
+
+      /* v2.0.0 - original iconography in Casa V2 */
+      .ui-v2 .light-visual-toggle ha-icon,
+      .ui-v2 .universal-device-action ha-icon,
+      .ui-v2 .generic-sensor ha-icon{--mdc-icon-size:22px}
+      .ui-v2 .scene-icon ha-icon{--mdc-icon-size:25px}
+
+      /* v2.0.0 - per-room custom display names */
+      .room-entity-chip-wrap{display:flex;flex-direction:column;gap:5px;min-width:185px;max-width:100%}
+      .room-entity-alias{display:grid;grid-template-columns:auto minmax(0,1fr);gap:7px;align-items:center;padding:0 2px}
+      .room-entity-alias>span{font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:var(--secondary-text-color);font-weight:800}
+      .room-entity-alias input{min-width:0!important;padding:6px 8px!important;font-size:10px!important;border-radius:8px!important}
+      .room-entity-chips{align-items:flex-start}
+
+      /* v2.0.0 - dedicated Air Fryer visual */
+      .uv-airfryer{width:132px;height:132px;display:grid;place-items:center;position:relative}
+      .uv-airfryer-body{position:relative;width:88px;height:112px;border-radius:22px 22px 18px 18px;background:linear-gradient(155deg,#56636c,#222b31 55%,#151b20);border:2px solid #667781;box-shadow:0 18px 28px rgba(0,0,0,.28)}
+      .uv-airfryer-top{position:absolute;left:14px;right:14px;top:9px;height:20px;border-radius:10px;background:#1a2227;display:flex;align-items:center;justify-content:center;gap:9px}
+      .uv-airfryer-top i{width:7px;height:7px;border-radius:50%;border:1px solid #7e919d}
+      .uv-airfryer-display{position:absolute;left:23px;right:23px;top:34px;height:20px;border-radius:6px;background:#0d171d;display:grid;place-items:center;color:#7994a4;font-size:7px;letter-spacing:.12em}
+      .uv-airfryer.active .uv-airfryer-display{color:#57e7ae;box-shadow:0 0 15px rgba(87,231,174,.16) inset}
+      .uv-airfryer-basket{position:absolute;left:13px;right:13px;bottom:17px;height:42px;border-radius:7px 7px 13px 13px;background:#202a30;border:1px solid #596973}
+      .uv-airfryer-window{position:absolute;left:10px;right:10px;top:8px;height:20px;border-radius:5px;background:linear-gradient(180deg,#182832,#0c151a)}
+      .uv-airfryer-handle{position:absolute;left:50%;bottom:-17px;width:36px;height:20px;transform:translateX(-50%);border-radius:0 0 9px 9px;background:#333f46}
+      .uv-airfryer-heat{position:absolute;left:50%;bottom:7px;transform:translateX(-50%);display:flex;gap:5px;opacity:0}
+      .uv-airfryer.active .uv-airfryer-heat{opacity:1}
+      .uv-airfryer-heat i{width:3px;height:13px;border-radius:999px;background:#ffb454;box-shadow:0 0 9px rgba(255,180,84,.45)}
+    `;
+  }
+
+  _s(id) { const eid=this._eid(id); return eid ? this._hass?.states?.[eid] : null; }
+  async _loadEntityConfig(force=false) {
+    if((this._entityConfigLoaded && !force) || this._entityConfigLoading) return;
+    this._entityConfigLoading=true;
+    try {
+      let entities=null;
+      if(this._hass?.callWS){
+        try {
+          const result=await this._hass.callWS({type:"casa_dashboard_community/config/get"});
+          if(result?.entities && typeof result.entities==="object") entities=result.entities;
+          if(Array.isArray(result?.rooms)) this._rooms=result.rooms;
+        } catch(_wsErr) { /* fallback below */ }
+      }
+      if(!entities){
+        const res=await fetch(`${ENTITY_CONFIG_URL}?v=${Date.now()}`, {cache:"no-store"});
+        if(res.ok){
+          const json=await res.json();
+          if(json?.entities && typeof json.entities==="object") entities=json.entities;
+        }
+      }
+      this._entityMap=entities || {};
+    } catch(_err) {
+      this._entityMap={};
+    } finally {
+      this._entityConfigLoaded=true;
+      this._entityConfigLoading=false;
+      this._renderPage(false);
     }
   }
+  _eid(id) {
+    if(!ENTITY_KEYS.has(id)) return id;
+    const mapped=this._entityMap?.[id];
+    return typeof mapped==="string" && mapped.trim() ? mapped.trim() : null;
+  }
+  _configured(id) { const eid=this._eid(id); return !!eid && !!this._hass?.states?.[eid]; }
+  _configuredCount() { return [...ENTITY_KEYS].filter(id=>this._eid(id)).length; }
+  _configNotice() {
+    const configured=this._configuredCount();
+    const total=ENTITY_KEYS.size;
+    if(configured>=total) return "";
+    const title=configured===0?"Configurazione entità richiesta":"Configurazione entità incompleta";
+    const text=configured===0
+      ? "Associa le entità del tuo Home Assistant direttamente dalla dashboard. Le funzioni non configurate restano disabilitate e sicure."
+      : `${configured} di ${total} associazioni configurate. Puoi completarle o modificarle in qualsiasi momento.`;
+    return `<div class="alert warn config-alert"><ha-icon icon="mdi:cog-alert-outline"></ha-icon><div><strong>${title}</strong><span>${text}</span></div><button class="config-open-btn" data-action="entity-config" type="button"><ha-icon icon="mdi:tune-variant"></ha-icon> Configura</button></div>`;
+  }
 
-  _hero(title, subtitle, status, metrics=[]) {
-    const level=status.level||"good";
-    const heroIcon=level==='bad'?'mdi:alert-decagram':level==='warn'?'mdi:shield-alert-outline':level==='blue'?'mdi:home-lightning-bolt-outline':'mdi:home-heart';
-    const visibleMetrics=metrics.filter(m=>m.show!==false && String(m.value??"").trim() && String(m.value).trim()!=="—");
-    return `<section class="scene-hero scene-${level}">
-      <div class="scene-copy">
-        <div class="scene-kicker">CASA · LIVE</div>
-        <div class="scene-title-row"><h1>${title}</h1><div class="scene-mark ${level}"><ha-icon icon="${heroIcon}"></ha-icon></div></div>
-        <div class="scene-sub">${subtitle}</div>
-        <div class="scene-status ${level}"><span class="pulse"></span><strong>${this._esc(status.title || status.text)}</strong>${status.title&&status.text?`<span>${this._esc(status.text)}</span>`:""}</div>
+  _configLabel(key) {
+    const pretty=key.split(".")[1]?.replaceAll("_"," ") || key;
+    return pretty.replace(/\b\w/g,c=>c.toUpperCase());
+  }
+  _roomEntitySuggestions(query="", selected=[]){
+    const q=String(query||"").trim().toLocaleLowerCase("it");
+    const chosen=new Set(selected||[]);
+    return Object.entries(this._hass?.states||{})
+      .filter(([id])=>!chosen.has(id))
+      .map(([id,obj])=>({id,name:String(obj?.attributes?.friendly_name||id)}))
+      .filter(x=>!q || x.id.toLocaleLowerCase("it").includes(q) || x.name.toLocaleLowerCase("it").includes(q))
+      .sort((a,b)=>{
+        const an=a.name.toLocaleLowerCase("it"), bn=b.name.toLocaleLowerCase("it");
+        const ae=an===q?0:an.startsWith(q)?1:an.includes(q)?2:3;
+        const be=bn===q?0:bn.startsWith(q)?1:bn.includes(q)?2:3;
+        return ae-be || an.localeCompare(bn,"it");
+      }).slice(0,12);
+  }
+
+  _roomEntityPicker(room){
+    const entities=Array.isArray(room.entities)?room.entities:[];
+    return `<div class="room-entity-picker" data-room-picker="${room.id}">
+      <div class="room-entity-chips">
+        ${entities.map(e=>`<div class="room-entity-chip-wrap">
+          <span class="room-entity-chip" title="${this._esc(e)}">
+            <span>${this._esc(this._roomEntityDisplay(e,room))}</span>
+            <small>${this._esc(e)}</small>
+            <button type="button" data-room-entity-remove="${room.id}" data-entity="${this._esc(e)}" aria-label="Rimuovi"><ha-icon icon="mdi:close"></ha-icon></button>
+          </span>
+          <label class="room-entity-alias">
+            <span>Nome visualizzato</span>
+            <input data-room-entity-label-room="${room.id}" data-room-entity-label-entity="${this._esc(e)}"
+              value="${this._esc(this._roomEntityCustomLabel(e,room))}"
+              placeholder="${this._esc(this._hass?.states?.[e]?.attributes?.friendly_name||e)}">
+          </label>
+        </div>`).join("")}
       </div>
-      ${visibleMetrics.length?`<div class="scene-dashboard">
-        ${visibleMetrics.map((m,i)=>`<div class="scene-stat s${i}"><span>${m.label}</span><strong>${m.value}</strong>${m.small?`<small>${m.small}</small>`:""}</div>`).join("")}
-      </div>`:""}
-    </section>`;
+      <div class="room-entity-search-wrap">
+        <ha-icon icon="mdi:magnify"></ha-icon>
+        <input class="room-entity-search" data-room-entity-search="${room.id}" autocomplete="off" placeholder="Cerca per nome o entity_id…">
+        <div class="room-entity-suggestions" data-room-entity-suggestions="${room.id}" hidden></div>
+      </div>
+    </div>`;
   }
 
-  _section(title, sub="") { return `<div class="chapter"><div class="chapter-line"></div><div class="chapter-copy"><div class="chapter-title">${title}</div>${sub?`<div class="chapter-sub">${sub}</div>`:""}</div></div>`; }
-  _metric(icon,label,value,foot="",span=3,entity="",tone="") {
-    const configured=!entity || this._configured(entity);
-    if(entity && !configured) return "";
-    const cls=tone || (entity?this._metricTone(entity,value):"");
-    const shown=value;
-    const plain = String(shown).replace(/<[^>]+>/g,'').trim();
-    const longClass = plain.length > 26 ? 'value-long' : '';
-    return `<div class="data-node span-${span} ${entity&&configured?'clickable':''} ${cls} ${longClass} ${entity&&!configured?'state-off':''}" ${entity&&configured?`data-more="${entity}"`:""}>
-      <div class="data-node-top"><span class="data-label">${label}</span><ha-icon icon="${icon}"></ha-icon></div>
-      <div class="data-value">${shown}</div>
-      ${foot?`<div class="data-foot">${foot}</div>`:""}
-      <div class="data-glow"></div>
-    </div>`;
+  _renderRoomEntitySuggestions(roomId, query=""){
+    const layer=this.shadowRoot?.querySelector("#configLayer"); if(!layer)return;
+    const room=this._roomsDraft.find(r=>r.id===roomId); if(!room)return;
+    const box=layer.querySelector(`[data-room-entity-suggestions="${roomId}"]`); if(!box)return;
+    const results=this._roomEntitySuggestions(query,room.entities||[]);
+    box.innerHTML=results.length?results.map(x=>`<button type="button" class="room-entity-suggestion" data-room-entity-add="${roomId}" data-entity="${this._esc(x.id)}"><span>${this._esc(x.name)}</span><small>${this._esc(x.id)}</small></button>`).join(""):`<div class="room-entity-noresult">Nessuna entità trovata</div>`;
+    const wrap=box.closest(".room-entity-search-wrap");
+    const dialog=this.shadowRoot?.querySelector(".config-dialog");
+    if(wrap && dialog){
+      const wr=wrap.getBoundingClientRect(), dr=dialog.getBoundingClientRect();
+      const spaceBelow=dr.bottom-wr.bottom-86;
+      const spaceAbove=wr.top-dr.top-20;
+      box.classList.toggle("flip-up", spaceBelow<230 && spaceAbove>spaceBelow);
+    }
+    box.hidden=false;
   }
-  _control(entity,title,icon,sub="",mode="toggle",span=4) {
-    const configured=this._configured(entity);
-    if(!configured) return "";
-    const st=this._state(entity,"off");
-    const on=configured && (this._on(entity) || ["open","cool","heat","heating","cooling"].includes(st));
-    const cls=configured?this._controlTone(entity,on):"state-off";
-    return `<div class="command-strip span-${span} ${cls}">
-      <div class="command-symbol ${on?'active':''}"><ha-icon icon="${icon}"></ha-icon></div>
-      <div class="command-copy ${configured?'clickable':''}" ${configured?`data-more="${entity}"`:""}><div class="command-title">${title}</div><div class="command-sub">${configured?(sub || this._esc(st)):"Non configurato"}</div></div>
-      ${mode==='toggle'?`<button class="command-action ${on?'active':''}" ${configured?`data-toggle="${entity}"`:"disabled"} type="button"><span>${configured?(on?'ON':'OFF'):'—'}</span><i></i></button>`:""}
-    </div>`;
-  }
-  _coverControl(entity,title,inverted=false,span=6,subPrefix="Posizione"){
-    const configured=this._configured(entity);
-    if(!configured) return "";
-    const open=this._coverOpen(entity,inverted);
-    const pos=this._attr(entity,"current_position",null);
-    const stateText=inverted?(open?"Aperta":"Chiusa"):(open?"Giù / aperta":"Su / chiusa");
-    return `<div class="command-strip span-${span} ${configured?(open?'state-warn':'state-off'):'state-off'}">
-      <div class="command-symbol ${open?'warn':''}"><ha-icon icon="mdi:blinds-horizontal"></ha-icon></div>
-      <div class="command-copy ${configured?'clickable':''}" ${configured?`data-more="${entity}"`:""}><div class="command-title">${title}</div><div class="command-sub">${configured?`${pos!==null?`${subPrefix} ${pos}% · `:""}${stateText}`:"Non configurato"}</div></div>
-      <button class="command-action ${open?'warn':''}" ${configured?`data-cover-toggle="${entity}" data-inverted="${inverted?1:0}"`:"disabled"} type="button"><span>${configured?(open?'CHIUDI':'APRI'):'—'}</span><i></i></button>
-    </div>`;
-  }
-  _alert(level,icon,title,text) { return `<div class="signal ${level}"><div class="signal-icon"><ha-icon icon="${icon}"></ha-icon></div><div><strong>${title}</strong><span>${text}</span></div></div>`; }
-  _logic(title,text,level=""){ return `<div class="logic-ribbon ${level}"><span>${title}</span><strong>${text}</strong></div>`; }
-  _compareCard(title, items, foot="", span=6, icon="mdi:chart-line") {
-    const visible=items.filter(it=>String(it.value??"").trim() && String(it.value).trim()!=="—");
-    if(!visible.length) return "";
-    return `<div class="data-node compare-card span-${span}"><div class="data-node-top"><div class="data-label">${title}</div><ha-icon icon="${icon}"><
+
+  _resolveRoomEntityToken(token){
+    const raw=String(token||"").trim();
+    if(!raw) return "";
+    if(this._hass?.states?.[raw]) return raw;
+    const needle=raw.toLocaleLowerCase("it");
+    const states=Object.entries(this._hass?.states||{});
+
+    const exactFriendly=states.filter(([id,obj]) =>
+      St

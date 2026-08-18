@@ -1,98 +1,356 @@
-/ha-icon></div><div class="compare-grid">${visible.map(it=>`<div class="compare-cell"><div class="compare-label">${it.label}</div><div class="compare-value">${it.value}</div></div>`).join("")}</div>${foot&&foot.trim()!=="—"?`<div class="data-foot compare-foot">${foot}</div>`:""}</div>`;
+ring(obj?.attributes?.friendly_name||"").trim().toLocaleLowerCase("it")===needle
+    );
+    if(exactFriendly.length===1) return exactFriendly[0][0];
+
+    const exactTail=states.filter(([id]) =>
+      id.split(".").slice(1).join(".").replaceAll("_"," ").toLocaleLowerCase("it")===needle
+    );
+    if(exactTail.length===1) return exactTail[0][0];
+
+    const partialFriendly=states.filter(([id,obj]) =>
+      String(obj?.attributes?.friendly_name||"").trim().toLocaleLowerCase("it").includes(needle)
+    );
+    if(partialFriendly.length===1) return partialFriendly[0][0];
+
+    return raw;
   }
 
-  _overview() {
-    const all=this._overall(); const lights=this._countOn(LIGHTS); const open=this._openCount();
-    const lightsConfigured=LIGHTS.some(id=>this._configured(id));
-    const openingsConfigured=OPENINGS.some(id=>this._configured(id));
-    const climateConfigured=this._configured("climate.kitchen") || this._configured("climate.bedroom");
-    const mobilityConfigured=this._configured("binary_sensor.ev_charging_at_home") || this._configured("sensor.wallbox_charging_power") || this._configured("sensor.wallbox_evse_status");
-    const clima=(this._configured("climate.kitchen")&&this._climateActive("climate.kitchen")?1:0)+(this._configured("climate.bedroom")&&this._climateActive("climate.bedroom")?1:0);
-    const ev=this._configured("binary_sensor.ev_charging_at_home")&&this._on("binary_sensor.ev_charging_at_home");
-    const hero=this._hero("Casa", "Una regia elegante della casa: sicurezza, comfort, energia e ambienti leggibili in un colpo d'occhio.", all, [
-      {label:"Luci",value:`${lights} accese`,small:lights?"Scene e illuminazione attive":"Atmosfera riposata",show:lightsConfigured},
-      {label:"Aperture",value:open?`${open} aperte`:"Tutto chiuso",small:"Porte, finestre e garage",show:openingsConfigured},
-      {label:"Clima",value:clima?`${clima} attivi`:"Spento",small:"Cucina + camera",show:climateConfigured},
-      {label:"Mobilità",value:ev?`${this._fmtPowerAuto("sensor.wallbox_charging_power",2)}`:"EV a riposo",small:this._state("sensor.wallbox_evse_status","Wallbox"),show:mobilityConfigured}
-    ]);
-    const roomCards=NAV.filter(([id])=>id!=="panoramica").map(([room])=>this._roomCard(room)).join("");
-    const alarmConfigured=this._configured("alarm_control_panel.home_alarm");
-    const leakConfigured=this._configured("binary_sensor.bathroom_water_leak");
-    const tankConfigured=this._configured("binary_sensor.garage_dehumidifier_tank_full") || this._configured("sensor.garage_dehumidifier_tank_status");
-    const weatherConfigured=this._configured("sensor.weather_outdoor_temperature") || this._configured("binary_sensor.weather_rain");
-    const garageConfigured=this._configured("binary_sensor.garage_door_contact") || mobilityConfigured;
-    const comfortConfigured=this._configured("sensor.kitchen_temperature") || this._configured("sensor.bedroom_temperature");
-    const treadmillConfigured=this._configured("switch.garage_treadmill");
-    const alarm=this._state("alarm_control_panel.home_alarm","—");
-    const rain=this._configured("binary_sensor.weather_rain")&&this._on("binary_sensor.weather_rain");
-    const garage=this._configured("binary_sensor.garage_door_contact")&&this._on("binary_sensor.garage_door_contact");
-    const comfortTemp=this._configured("sensor.kitchen_temperature")?this._fmt("sensor.kitchen_temperature",1,"°C"):"—";
-    const bedroomTemp=this._configured("sensor.bedroom_temperature")?this._fmt("sensor.bedroom_temperature",1,"°C"):"—";
-    const outsideTemp=this._configured("sensor.weather_outdoor_temperature")?this._fmt("sensor.weather_outdoor_temperature",1,"°C"):"—";
-
-    const spotStats=[];
-    if(alarmConfigured || openingsConfigured) spotStats.push(`<div class="spot-stat"><span class="k">Sicurezza</span><strong>${alarmConfigured?(alarm==='triggered'?'Allarme':alarm==='disarmed'?'Disinserito':'Protetta'):(open?'Da controllare':'Nessuna apertura')}</strong><small>${openingsConfigured?(open?`${open} aperture aperte`:'Nessuna apertura critica'):'Allarme configurato'}</small></div>`);
-    if(comfortConfigured) spotStats.push(`<div class="spot-stat"><span class="k">Comfort</span><strong>${comfortTemp!=="—"?comfortTemp:bedroomTemp}</strong><small>${comfortTemp!=="—"&&bedroomTemp!=="—"?`Cucina · Camera ${bedroomTemp}`:comfortTemp!=="—"?'Cucina':'Camera'}</small></div>`);
-    if(weatherConfigured) spotStats.push(`<div class="spot-stat"><span class="k">Esterno</span><strong>${outsideTemp}</strong><small>${this._configured("binary_sensor.weather_rain")?(rain?'Pioggia in corso':'Meteo tranquillo'):'Meteo configurato'}</small></div>`);
-    if(garageConfigured) spotStats.push(`<div class="spot-stat"><span class="k">Garage</span><strong>${this._configured("binary_sensor.garage_door_contact")?(garage?'Aperto':'Chiuso'):(ev?'EV in carica':'Wallbox')}</strong><small>${mobilityConfigured?(ev?'EV in carica':'Wallbox pronta'):'Accesso garage'}</small></div>`);
-
-    const mainSpotlight=spotStats.length?`<section class="card spotlight span-8">
-      <div class="spotlight-kicker">HOUSE STATUS</div>
-      <div class="spotlight-title">${this._esc(all.title)}</div>
-      <div class="spotlight-copy">${this._esc(all.text)} · La casa viene raccontata per scenari, non per elenchi di entità.</div>
-      <div class="spotlight-stats">${spotStats.join("")}</div>
-    </section>`:"";
-
-    const atmosphereVisible=lightsConfigured || openingsConfigured || climateConfigured || weatherConfigured;
-    const atmosphere=atmosphereVisible?`<section class="card mini-panel atmosphere span-4">
-      <div class="panel-eyebrow">ATMOSFERA</div>
-      <div class="panel-title">Comfort istantaneo</div>
-      <div class="panel-big">${climateConfigured?(clima?`${clima} clima attivi`:'Comfort passivo'):'Casa monitorata'}</div>
-      <div class="panel-sub">${[outsideTemp!=="—"?`Fuori ${outsideTemp}`:"",comfortTemp!=="—"?`Cucina ${comfortTemp}`:"",bedroomTemp!=="—"?`Camera ${bedroomTemp}`:""].filter(Boolean).join(" · ")}</div>
-      <div class="mini-tags">${lightsConfigured?`<span class="mini-tag ${lights?'active':''}">💡 ${lights} luci</span>`:""}${this._configured("binary_sensor.weather_rain")?`<span class="mini-tag ${rain?'warn':''}">🌦️ ${rain?'Pioggia':'Asciutto'}</span>`:""}${openingsConfigured?`<span class="mini-tag ${open?'warn':''}">🚪 ${open?`${open} aperte`:'Tutto chiuso'}</span>`:""}</div>
-    </section>`:"";
-
-    const energyVisible=garageConfigured || mobilityConfigured || treadmillConfigured;
-    const energy=energyVisible?`<section class="card mini-panel energy-panel span-4">
-      <div class="panel-eyebrow">ENERGIA & MOBILITÀ</div>
-      <div class="panel-title">Garage + EV + Wallbox</div>
-      <div class="panel-big">${mobilityConfigured?(ev?this._fmtPowerAuto("sensor.wallbox_charging_power",2):'Pronta'):(garage?'Garage aperto':'Garage')}</div>
-      <div class="panel-sub">${mobilityConfigured?`${ev?'Ricarica in corso':'Nessuna ricarica attiva'}${this._configured("sensor.wallbox_evse_status")?` · EVSE ${this._state("sensor.wallbox_evse_status","—")}`:""}`:'Accesso garage configurato'}</div>
-      <div class="mini-tags">${this._configured("binary_sensor.garage_door_contact")?`<span class="mini-tag ${garage?'warn':''}">🚗 ${garage?'Basculante aperto':'Garage chiuso'}</span>`:""}${treadmillConfigured?`<span class="mini-tag ${this._on("switch.garage_treadmill")?'active':''}">🏃 ${this._on("switch.garage_treadmill")?'Tapis ON':'Tapis OFF'}</span>`:""}</div>
-    </section>`:"";
-
-    const securityVisible=alarmConfigured || leakConfigured || tankConfigured;
-    const security=securityVisible?`<section class="card mini-panel security-panel span-4">
-      <div class="panel-eyebrow">SICUREZZA</div>
-      <div class="panel-title">Segnali importanti</div>
-      <div class="panel-big">${all.level==='bad'?'Attenzione':all.level==='warn'?'Da controllare':'Serena'}</div>
-      <div class="panel-sub">${[alarmConfigured?`Allarme ${alarm}`:"",leakConfigured?`Sensori acqua ${this._on("binary_sensor.bathroom_water_leak")?'ATTIVI':'OK'}`:""].filter(Boolean).join(" · ")}</div>
-      <div class="mini-tags">${leakConfigured?`<span class="mini-tag ${this._on("binary_sensor.bathroom_water_leak")?'warn':''}">💧 ${this._on("binary_sensor.bathroom_water_leak")?'Perdita':'Acqua OK'}</span>`:""}${tankConfigured?`<span class="mini-tag ${this._on("binary_sensor.garage_dehumidifier_tank_full")?'warn':''}">🪣 ${this._on("binary_sensor.garage_dehumidifier_tank_full")?'Serbatoio pieno':'Serbatoio OK'}</span>`:""}</div>
-    </section>`:"";
-
-    const overviewPanels=[mainSpotlight,atmosphere,energy,security].filter(Boolean);
-    const spotlight=overviewPanels.length?`<div class="dashboard-grid">${overviewPanels.join("")}</div>`:"";
-    return `<div class="page overview-page">${this._configNotice()}${hero}${spotlight}${this._section("Ambienti","Una mappa elegante delle zone principali")}<div class="grid room-mosaic">${roomCards}</div></div>`;
+  _roomEntityDisplay(entity,room=null){
+    const custom=room?.entity_labels && typeof room.entity_labels==="object"
+      ? String(room.entity_labels[entity]||"").trim()
+      : "";
+    if(custom) return custom;
+    const obj=this._hass?.states?.[entity];
+    return obj?.attributes?.friendly_name || entity;
   }
 
-  _roomCard(room) {
-    if(!this._roomConfigured(room)) return "";
-    const m=ROOM_META[room], s=this._roomStatus(room); let tags=[];
-    if(room==="bagno") {
-      if(this._configured("sensor.bathroom_temperature")) tags.push(`🌡️ ${this._fmt("sensor.bathroom_temperature",1,"°C")}`);
-      if(this._configured("sensor.bathroom_humidity")) tags.push(`💧 ${this._fmt("sensor.bathroom_humidity",0,"%")}`);
+  _roomEntityCustomLabel(entity,room=null){
+    return room?.entity_labels && typeof room.entity_labels==="object"
+      ? String(room.entity_labels[entity]||"").trim()
+      : "";
+  }
+
+  _setRoomEntityLabel(roomId,entity,value){
+    const room=this._roomsDraft.find(r=>r.id===roomId);
+    if(!room) return;
+    room.entity_labels=(room.entity_labels && typeof room.entity_labels==="object") ? {...room.entity_labels} : {};
+    const clean=String(value||"").trim();
+    if(clean) room.entity_labels[entity]=clean;
+    else delete room.entity_labels[entity];
+  }
+
+  _legacyRoomForConfigKey(key){
+    const full=String(key||"").toLowerCase();
+    const name=full.split(".")[1]||"";
+    if(name.includes("bathroom") || name.includes("shower")) return "bagno";
+    if(name.includes("bedroom") || name.includes("robot_vacuum")) return "camera";
+    if(name.includes("kitchen")) return "cucina";
+    if(name.includes("hallway")) return "disimpegno";
+    if(name.includes("entry_") || full==="alarm_control_panel.home_alarm") return "ingresso";
+    if(name.includes("stairs") || name==="main_gate") return "scale";
+    if(name==="pedestrian_gate") return "esterno";
+    if(name.includes("balcony") || name.includes("weather_") || name.includes("solar_") || name.includes("utility_room") || name.includes("blinds_")) return "balcone";
+    if(name.includes("garage_") || name.includes("wallbox") || name.includes("ev_") || name.includes("grid_current")) return "garage";
+    const group=String(this._configGroup?.(key)||"").toLocaleLowerCase("it");
+    const byGroup={"bagno":"bagno","camera":"camera","cucina":"cucina","disimpegno":"disimpegno","ingresso":"ingresso","scale":"scale","balcone":"balcone","garage":"garage","meteo":"balcone","energia solare":"balcone","wallbox & ev":"garage"};
+    return byGroup[group]||"";
+  }
+  _mergeConfiguredEntitiesIntoRooms(rooms){
+    const out=(Array.isArray(rooms)?rooms:[]).map(r=>({...r,entities:[...(r.entities||[])],entity_labels:{...(r.entity_labels||{})}}));
+    const defaults=new Map(this._defaultRooms().map(r=>[r.id,r]));
+    const configured=[...ENTITY_KEYS].map(key=>{
+      const entity=String(this._configDraft?.[key] ?? this._entityMap?.[key] ?? "").trim();
+      return {key,entity,room:this._legacyRoomForConfigKey(key)};
+    }).filter(x=>x.entity && x.room);
+
+    for(const item of configured){
+      const meta=defaults.get(item.room);
+      let room=out.find(r=>r.id===item.room)
+        || out.find(r=>r.type===item.room)
+        || out.find(r=>String(r.name||"").toLocaleLowerCase("it")===String(meta?.name||"").toLocaleLowerCase("it"));
+      if(!room && meta){ room={...meta,entities:[],entity_labels:{}}; out.push(room); }
+      if(room){
+        room.entities=Array.isArray(room.entities)?room.entities:[];
+        if(!room.entities.includes(item.entity)) room.entities.push(item.entity);
+      }
     }
-    if(room==="cucina") {
-      if(this._configured("sensor.kitchen_temperature")) tags.push(`🌡️ ${this._fmt("sensor.kitchen_temperature",1,"°C")}`);
-      if(this._configured("sensor.kitchen_humidity")) tags.push(`💧 ${this._fmt("sensor.kitchen_humidity",0,"%")}`);
+    return out;
+  }
+  _syncConfiguredKeyToRoom(key,oldEntity,newEntity){
+    // Legacy 173 mappings are used only to bootstrap the room list once.
+    // After rooms have been saved, room membership is controlled exclusively
+    // from the Rooms manager and must never be recreated automatically.
+    if(Array.isArray(this._rooms) && this._rooms.length) return;
+    const roomId=this._legacyRoomForConfigKey(key);
+    if(!roomId) return;
+    const defaults=new Map(this._defaultRooms().map(r=>[r.id,r]));
+    let room=this._roomsDraft.find(r=>r.id===roomId) || this._roomsDraft.find(r=>r.type===roomId);
+    if(!room && newEntity){
+      const meta=defaults.get(roomId);
+      if(meta){ room={...meta,entities:[],entity_labels:{}}; this._roomsDraft.push(room); }
     }
-    if(room==="camera") {
-      if(this._configured("sensor.bedroom_temperature")) tags.push(`🌡️ ${this._fmt("sensor.bedroom_temperature",1,"°C")}`);
-      if(this._configured("sensor.bedroom_humidity")) tags.push(`💧 ${this._fmt("sensor.bedroom_humidity",0,"%")}`);
+    if(!room) return;
+    room.entities=Array.isArray(room.entities)?room.entities:[];
+    if(oldEntity && oldEntity!==newEntity){
+      const stillUsed=[...ENTITY_KEYS].some(k=>
+        k!==key &&
+        this._legacyRoomForConfigKey(k)===roomId &&
+        String(this._configDraft[k]||"").trim()===oldEntity
+      );
+      if(!stillUsed) room.entities=room.entities.filter(e=>e!==oldEntity);
     }
-    if(room==="balcone") {
-      if(this._configured("sensor.weather_outdoor_temperature")) tags.push(`🌡️ ${this._fmt("sensor.weather_outdoor_temperature",1,"°C")}`);
-      if(this._configured("sensor.weather_wind_gust")) tags.push(`💨 ${this._fmt("sensor.weather_wind_gust",0,"km/h")}`);
+    if(newEntity && !room.entities.includes(newEntity)) room.entities.push(newEntity);
+  }
+
+  _defaultRooms(){
+    return [
+      {id:"esterno",name:"Esterno",type:"esterno",icon:"mdi:tree-outline"},
+      {id:"scale",name:"Scale",type:"scale",icon:"mdi:stairs"},
+      {id:"ingresso",name:"Ingresso",type:"ingresso",icon:"mdi:door"},
+      {id:"cucina",name:"Cucina",type:"cucina",icon:"mdi:chef-hat"},
+      {id:"disimpegno",name:"Disimpegno",type:"disimpegno",icon:"mdi:walk"},
+      {id:"bagno",name:"Bagno",type:"bagno",icon:"mdi:shower"},
+      {id:"camera",name:"Camera",type:"camera",icon:"mdi:bed-king-outline"},
+      {id:"balcone",name:"Balcone",type:"balcone",icon:"mdi:balcony"},
+      {id:"garage",name:"Garage",type:"garage",icon:"mdi:garage-variant"}
+    ];
+  }
+  _roomTypes(){
+    return [
+      ["generico","Ambiente generico","mdi:home-outline"],["soggiorno","Soggiorno","mdi:sofa-outline"],
+      ["cucina","Cucina","mdi:chef-hat"],["camera","Camera","mdi:bed-king-outline"],
+      ["bagno","Bagno","mdi:shower"],["studio","Studio","mdi:desk"],
+      ["lavanderia","Lavanderia","mdi:washing-machine"],["taverna","Taverna / Sala hobby","mdi:glass-mug-variant"],
+      ["disimpegno","Corridoio / Disimpegno","mdi:walk"],["ingresso","Ingresso","mdi:door"],
+      ["scale","Scale","mdi:stairs"],["balcone","Balcone / Terrazzo","mdi:balcony"],
+      ["esterno","Giardino / Esterno","mdi:tree-outline"],["garage","Garage","mdi:garage-variant"]
+    ];
+  }
+  _effectiveRooms(){
+    if(Array.isArray(this._rooms) && this._rooms.length) return this._rooms;
+    return this._uiTheme==="v1"?this._defaultRooms():[];
+  }
+  _roomById(id){ return this._effectiveRooms().find(r=>r.id===id)||null; }
+  _roomIcon(type){ return this._roomTypes().find(x=>x[0]===type)?.[2]||"mdi:home-outline"; }
+  _slugRoom(name){
+    const base=String(name||"stanza").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")||"stanza";
+    let id=`room-${base}`, n=2; const used=new Set(this._roomsDraft.map(r=>r.id));
+    while(used.has(id)) id=`room-${base}-${n++}`; return id;
+  }
+  _addRoomDraft(){
+    const id=this._slugRoom("Nuova stanza");
+    this._roomsDraft.push({id,name:"Nuova stanza",type:"generico",icon:"mdi:home-outline",entities:[],entity_labels:{}});
+    this._renderConfigLayer();
+    requestAnimationFrame(()=>{
+      const list=this.shadowRoot?.querySelector(".room-list");
+      if(list) list.scrollTop=list.scrollHeight;
+      const input=this.shadowRoot?.querySelector(`[data-room-name="${id}"]`);
+      input?.focus(); input?.select();
+    });
+  }
+  _removeRoomDraft(id){ this._roomsDraft=this._roomsDraft.filter(r=>r.id!==id); this._renderConfigLayer(); }
+  _dynamicRoomConfigured(room){
+    if(!room) return false;
+    if(Array.isArray(room.entities) && room.entities.some(e=>this._hass?.states?.[e])) return true;
+    if(!room.id.startsWith("room-")) return this._roomConfigured(room.id);
+    return true;
+  }
+  _v1RoomIcon(type){
+    const map={
+      esterno:"mdi:tree-outline",
+      scale:"mdi:stairs",
+      ingresso:"mdi:door",
+      cucina:"mdi:chef-hat",
+      disimpegno:"mdi:walk",
+      bagno:"mdi:shower",
+      camera:"mdi:bed-king-outline",
+      balcone:"mdi:balcony",
+      garage:"mdi:garage-variant",
+      soggiorno:"mdi:sofa-outline",
+      studio:"mdi:desk",
+      lavanderia:"mdi:washing-machine",
+      taverna:"mdi:glass-mug-variant",
+      generico:"mdi:home-outline"
+    };
+    return map[type]||"mdi:home-outline";
+  }
+
+  _v1OriginalIcon(entity,roomType="",displayName=""){
+    const legacy={"input_boolean.pedestrian_gate":{"icon":"mdi:gate","room":"esterno"},"input_boolean.main_gate":{"icon":"mdi:gate","room":"scale"},"light.stairs":{"icon":"mdi:ceiling-light","room":"scale"},"input_boolean.entry_door_unlock":{"icon":"mdi:lock","room":"ingresso"},"light.entry_main":{"icon":"mdi:ceiling-light","room":"ingresso"},"input_boolean.kitchen_climate_manual":{"icon":"mdi:hand-back-right-outline","room":"cucina"},"light.kitchen_main":{"icon":"mdi:ceiling-light","room":"cucina"},"light.kitchen_led":{"icon":"mdi:led-strip-variant","room":"cucina"},"switch.kitchen_hood":{"icon":"mdi:stove-hood","room":"cucina"},"switch.kitchen_appliance_1":{"icon":"mdi:blender","room":"cucina"},"switch.kitchen_appliance_2":{"icon":"mdi:toaster-oven","room":"cucina"},"switch.kitchen_tv":{"icon":"mdi:television","room":"cucina"},"light.hallway_main":{"icon":"mdi:ceiling-light","room":"disimpegno"},"light.bathroom_main":{"icon":"mdi:ceiling-light","room":"bagno"},"light.bathroom_cabinet":{"icon":"mdi:led-strip-variant","room":"bagno"},"fan.bathroom_extractor":{"icon":"mdi:fan","room":"bagno"},"input_boolean.shower_mode":{"icon":"mdi:shower-head","room":"bagno"},"input_boolean.bathroom_custom_mode":{"icon":"mdi:emoticon-poop","room":"bagno"},"input_boolean.bedroom_climate_manual":{"icon":"mdi:hand-back-right-outline","room":"camera"},"light.bedroom_main":{"icon":"mdi:ceiling-light","room":"camera"},"light.bedroom_lamp_1":{"icon":"mdi:lamp","room":"camera"},"light.bedroom_lamp_2":{"icon":"mdi:lamp","room":"camera"},"light.bedroom_led":{"icon":"mdi:led-strip-variant","room":"camera"},"switch.bedroom_tv":{"icon":"mdi:television","room":"camera"},"input_boolean.blinds_manual_mode":{"icon":"mdi:hand-back-right-outline","room":"balcone"},"light.balcony_bedroom":{"icon":"mdi:wall-sconce","room":"balcone"},"light.balcony_kitchen":{"icon":"mdi:wall-sconce","room":"balcone"},"switch.balcony_barbecue":{"icon":"mdi:grill","room":"balcone"},"switch.gate_command":{"icon":"mdi:gate","room":"garage"},"switch.garage_door_command":{"icon":"mdi:garage-open","room":"garage"},"light.garage_1":{"icon":"mdi:ceiling-light","room":"garage"},"light.garage_2":{"icon":"mdi:ceiling-light","room":"garage"},"switch.garage_treadmill":{"icon":"mdi:treadmill","room":"garage"},"switch.garage_tv":{"icon":"mdi:television","room":"garage"},"switch.garage_air_purifier_power":{"icon":"mdi:power","room":"garage"},"fan.garage_air_purifier":{"icon":"mdi:air-purifier","room":"garage"},"light.garage_air_purifier_backlight":{"icon":"mdi:led-strip-variant","room":"garage"},"switch.garage_dehumidifier_power":{"icon":"mdi:air-humidifier","room":"garage"},"switch.garage_dehumidifier_display":{"icon":"mdi:monitor","room":"garage"},"switch.garage_dehumidifier_buzzer":{"icon":"mdi:volume-high","room":"garage"}};
+    const mappedKeys=[...ENTITY_KEYS].filter(k=>String(this._entityMap?.[k]||"").trim()===entity);
+    const preferred=mappedKeys.find(k=>legacy[k]?.room===roomType) || mappedKeys.find(k=>legacy[k]) || "";
+    if(preferred && legacy[preferred]?.icon) return legacy[preferred].icon;
+
+    const obj=this._hass?.states?.[entity];
+    const name=String(displayName||obj?.attributes?.friendly_name||entity).toLocaleLowerCase("it");
+    const domain=String(entity).split(".")[0];
+    const dc=String(obj?.attributes?.device_class||"").toLowerCase();
+    const explicit=String(obj?.attributes?.icon||"").trim();
+
+    /* Kitchen / appliances */
+    if(/friggitrice|friggitr|air[\s_-]*fryer|airfryer/.test(name)) return "mdi:toaster-oven";
+    if(/bimby|thermomix|frull|blender/.test(name)) return "mdi:blender";
+    if(/cappa|hood/.test(name)) return "mdi:stove-hood";
+    if(/forno|oven/.test(name)) return "mdi:stove";
+    if(/microonde|microwave/.test(name)) return "mdi:microwave";
+    if(/lavastov|dishwasher/.test(name)) return "mdi:dishwasher";
+    if(/lavatrice|washing/.test(name)) return "mdi:washing-machine";
+    if(/asciugatric|dryer/.test(name)) return "mdi:tumble-dryer";
+    if(/bollitore|kettle/.test(name)) return "mdi:kettle";
+    if(/macchina.*caff|coffee/.test(name)) return "mdi:coffee-maker";
+    if(/frigo|frigorif|refriger/.test(name)) return "mdi:fridge-outline";
+    if(/freezer|congel/.test(name)) return "mdi:snowflake";
+
+    /* Lighting */
+    if(/led|striscia/.test(name)) return "mdi:led-strip-variant";
+    if(/lampad|abat|comodino|lamp\b/.test(name)) return "mdi:lamp";
+    if(/balcone|estern.*luce|luce.*ester|giardino.*luce/.test(name) && domain==="light") return "mdi:wall-sconce";
+    if(/luce|light|plafon|soffitto/.test(name)) return "mdi:ceiling-light";
+
+    /* Access / openings */
+    if(/bascul|garage.*door|porta.*garage/.test(name)) return "mdi:garage-open";
+    if(/garage/.test(name) && (domain==="cover"||dc==="garage_door")) return "mdi:garage-open";
+    if(/cancell|gate/.test(name)) return "mdi:gate";
+    if(/portoncino|pedonale|wicket/.test(name)) return "mdi:gate";
+    if(/porta|door/.test(name)) return dc==="door"||domain==="binary_sensor"?"mdi:door":"mdi:door-closed";
+    if(/finestra|window/.test(name)) return "mdi:window-closed-variant";
+    if(/tenda|blind|venezian|tapparella|shutter/.test(name)) return "mdi:blinds-horizontal";
+    if(/serranda|roller/.test(name)) return "mdi:roller-shade";
+
+    /* Climate / air */
+    if(/clima|condizion|air.?condition/.test(name) || domain==="climate") return "mdi:air-conditioner";
+    if(/ventol|aspirat|extractor|fan/.test(name) || domain==="fan") return "mdi:fan";
+    if(/purific/.test(name)) return "mdi:air-purifier";
+    if(/deumid/.test(name)) return "mdi:air-humidifier-off";
+    if(/humidif/.test(name) || domain==="humidifier") return "mdi:air-humidifier";
+    if(/termostat|thermostat/.test(name)) return "mdi:thermostat";
+
+    /* Media / entertainment */
+    if(/televis|\btv\b/.test(name) || domain==="media_player") return "mdi:television";
+    if(/playstation|ps5|console/.test(name)) return "mdi:sony-playstation";
+    if(/speaker|cassa|homepod/.test(name)) return "mdi:speaker";
+
+    /* Power / sockets */
+    if(/bipresa|presa|socket|plug/.test(name)) return "mdi:power-socket-eu";
+    if(/interruttor|switch/.test(name) || domain==="switch" || domain==="input_boolean") return "mdi:toggle-switch-outline";
+
+    /* Cleaning / robots / garden */
+    if(/robot.*aspir|vacuum|roomba/.test(name) || domain==="vacuum") return "mdi:robot-vacuum";
+    if(/tagliaerba|mower|landroid/.test(name)) return "mdi:robot-mower";
+    if(/irrig|sprinkler/.test(name)) return "mdi:sprinkler-variant";
+
+    /* Garage / fitness */
+    if(/tapis|treadmill/.test(name)) return "mdi:treadmill";
+    if(/barbecue|grill/.test(name)) return "mdi:grill";
+
+    /* EV / wallbox / energy */
+    if(/wallbox|evse|colonnina/.test(name)) return "mdi:ev-station";
+    if(/ricarica.*auto|charging.*car|ev.*charging/.test(name)) return "mdi:car-electric";
+    if(/auto|vehicle|byd|tesla|jeep/.test(name)) return "mdi:car-electric";
+    if(/fotovolta|solar|\bpv\b/.test(name)) return "mdi:solar-power-variant";
+    if(/inverter/.test(name)) return "mdi:current-ac";
+    if(/batteria|battery/.test(name)) return "mdi:battery";
+    if(/rete|grid|contatore|meter/.test(name)) return "mdi:transmission-tower";
+    if(/potenza|power/.test(name) && domain==="sensor") return "mdi:flash";
+    if(/energia|energy|kwh/.test(name)) return "mdi:lightning-bolt-circle";
+
+    /* Security / presence / water */
+    if(/allarme|alarm/.test(name) || domain==="alarm_control_panel") return "mdi:shield-home-outline";
+    if(/movimento|motion/.test(name) || dc==="motion") return "mdi:motion-sensor";
+    if(/occupaz|occupancy|presenza/.test(name) || dc==="occupancy") return "mdi:account-check-outline";
+    if(/vibraz|vibration/.test(name) || dc==="vibration") return "mdi:vibrate";
+    if(/perdita.*acqua|water.*leak|leak/.test(name) || dc==="moisture") return "mdi:water-alert";
+    if(/fumo|smoke/.test(name) || dc==="smoke") return "mdi:smoke-detector";
+    if(/gas/.test(name) || dc==="gas") return "mdi:gas-cylinder";
+
+    /* Environment sensors */
+    if(/temperatura|temperature/.test(name) || dc==="temperature") return "mdi:thermometer";
+    if(/umidità|humidity/.test(name) || dc==="humidity") return "mdi:water-percent";
+    if(/pressione|pressure/.test(name) || dc==="pressure") return "mdi:gauge";
+    if(/lux|illuminance|luminos/.test(name) || dc==="illuminance") return "mdi:brightness-5";
+    if(/pioggia|rain/.test(name)) return "mdi:weather-rainy";
+    if(/vento|wind/.test(name)) return "mdi:weather-windy";
+    if(/uv/.test(name)) return "mdi:weather-sunny-alert";
+    if(/fulmini|lightning/.test(name)) return "mdi:weather-lightning";
+    if(/meteo|weather/.test(name)) return "mdi:weather-partly-cloudy";
+
+    /* Explicit Home Assistant icon is a fallback, not the first choice.
+       This allows e.g. switch.shucko named "Friggitrice" to use mdi:toaster-oven. */
+    if(explicit.startsWith("mdi:")) return explicit;
+
+    /* Generic domain fallbacks */
+    if(domain==="light") return (roomType==="balcone"||roomType==="esterno")?"mdi:wall-sconce":"mdi:ceiling-light";
+    if(domain==="cover") return "mdi:blinds-horizontal";
+    if(domain==="climate") return "mdi:air-conditioner";
+    if(domain==="fan") return "mdi:fan";
+    if(domain==="humidifier") return "mdi:air-humidifier";
+    if(domain==="media_player") return "mdi:television";
+    if(domain==="vacuum") return "mdi:robot-vacuum";
+    if(domain==="switch") return "mdi:toggle-switch-outline";
+    if(domain==="input_boolean") return "mdi:toggle-switch-outline";
+    if(domain==="script") return "mdi:script-text-outline";
+    if(domain==="button") return "mdi:gesture-tap-button";
+    if(domain==="binary_sensor"){
+      const map={door:"mdi:door",window:"mdi:window-closed-variant",motion:"mdi:motion-sensor",occupancy:"mdi:account-check-outline",moisture:"mdi:water-alert",smoke:"mdi:smoke-detector",vibration:"mdi:vibrate",garage_door:"mdi:garage-open"};
+      if(map[dc]) return map[dc];
+      return "mdi:radiobox-marked";
     }
-    if(room==="garage") {
-      if(this._configured("sensor.garage_temperature")) tags.pus
+    if(domain==="sensor"){
+      const map={temperature:"mdi:thermometer",humidity:"mdi:water-percent",power:"mdi:flash",energy:"mdi:lightning-bolt-circle",current:"mdi:current-ac",voltage:"mdi:sine-wave",battery:"mdi:battery",illuminance:"mdi:brightness-5",pressure:"mdi:gauge"};
+      if(map[dc]) return map[dc];
+      return "mdi:gauge";
+    }
+    return this._roomIcon(roomType);
+  }
+  _v2DeviceType(entity){
+    const obj=this._hass?.states?.[entity];
+    const name=String(obj?.attributes?.friendly_name||entity).toLocaleLowerCase("it");
+    const domain=String(entity).split(".")[0];
+    if(/friggitrice|friggitr|air[\\s_-]*fryer|airfryer/.test(name)) return "airfryer";
+    if(/cancell|gate/.test(name)) return "gate";
+    if(/portoncino|pedonale|wicket/.test(name)) return "wicket";
+    if(/bascul|garage.*door/.test(name)) return "garage";
+    if(/lavatrice|washing/.test(name)) return "washer";
+    if(/robot.*aspir|vacuum/.test(name) || domain==="vacuum") return "vacuum";
+    if(/tagliaerba|mower|landroid/.test(name)) return "mower";
+    if(/irrig|sprinkler/.test(name)) return "irrigation";
+    if(/deumid|humidif/.test(name) || domain==="humidifier") return "humidifier";
+    return "generic";
+  }
+
+  _dynamicRoom(room){
+    const entities=(room.entities||[]).filter(e=>this._hass?.states?.[e]);
+    const display=e=>this._roomEntityDisplay(e,room);
+    const byDomain=d=>entities.filter(e=>e.startsWith(d+"."));
+    const lights=byDomain("light");
+    const climates=byDomain("climate");
+    const covers=byDomain("cover");
+    const sensors=[...byDomain("sensor"),...byDomain("binary_sensor")];
+    const switches=[...byDomain("switch"),...byDomain("fan"),...byDomain("humidifier"),...byDomain("input_boolean")];
+    const scripts=byDomain("script");
+    const buttons=byDomain("button");
+    const media=byDomain("media_player");
+
+    const temp=sensors.find(e=>{
+      const dc=String(this._attr(e,"device_class","")).toLowerCase();
+      const name=String(display(e));
+      return dc==="temperature" || /temperatura|temperature/i.test(name);
+    });
+    const hum=sensors.find(e=>{
+      const dc=String(this._attr(e,"device_class","")).toLowerCase();
+      const name=String(display(e));
+      return dc==="humidity" || /umidità|humidity/i.test(name);
+    });
+    const opening=sensors.find(e=>{
+      const dc=String(this._attr(e,"device_class","")).toLowerCase();
+      return ["door","window","opening","garage_door"].includes(dc);
+    });
+    const motion=sensors.find(e=>{
+      const dc=String(this._attr(e,"device_class","")).toLowerCase();
+      return ["motion","occupancy","vibration"].includes(dc);
+    });
+
+    const lightOn=lights.filter(e=>this._on(e)).length;
+    const climateOn=climates.filter(e=>this._climateActive(e)).length;
+    const switchOn=switches.filter(e=>this._on(e)).length;
+    

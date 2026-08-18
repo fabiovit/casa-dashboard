@@ -1,106 +1,352 @@
-h(`🌡️ ${this._fmt("sensor.garage_temperature",1,"°C")}`);
-      if(this._configured("binary_sensor.ev_charging_at_home") || this._configured("sensor.wallbox_evse_status")) tags.push(this._on("binary_sensor.ev_charging_at_home")?"🔌 In carica":"🚗 Wallbox pronta");
-    }
-    if(room==="ingresso") {
-      if(this._configured("alarm_control_panel.home_alarm")) tags.push(this._state("alarm_control_panel.home_alarm") === "disarmed"?"🔓 Allarme OFF":"🛡️ Allarme ON");
-      if(this._configured("light.entry_main")) tags.push(this._on("light.entry_main")?"💡 Luce ON":"💡 Luce OFF");
-    }
-    return `<article class="card room-card premium-room clickable span-4" data-nav="${room}">
-      <div class="room-heading">
-        <div class="room-orb ${s.level}"><ha-icon icon="${m.icon}"></ha-icon></div>
-        <div class="room-arrow"><ha-icon icon="mdi:arrow-top-right"></ha-icon></div>
-      </div>
-      <div class="room-copy">
-        <div class="room-eyebrow">${m.subtitle}</div>
-        <h3>${m.title}</h3>
-        <div class="room-status-line ${s.level}">${this._esc(s.text)}</div>
-      </div>
-      <div class="room-pills">
-        ${tags.map(t=>`<span class="room-pill">${t}</span>`).join("")}
-      </div>
-    </article>`;
+const openingOn=opening&&this._on(opening);
+    const motionOn=motion&&this._on(motion);
+    const activeCount=lightOn+climateOn+switchOn+(openingOn?1:0)+(motionOn?1:0);
+
+    const firstDevice=[...switches,...media,...scripts,...buttons][0]||null;
+    const metrics=[
+      temp?{
+        label:"Comfort",
+        value:`${this._state(temp)}${this._attr(temp,"unit_of_measurement","")||""}`,
+        small:hum?`Umidità ${this._state(hum)}${this._attr(hum,"unit_of_measurement","")||""}`:"",
+        show:true
+      }:null,
+      opening?{
+        label:"Apertura",
+        value:this._on(opening)?"Aperta":"Chiusa",
+        small:display(opening),
+        show:true
+      }:null,
+      climates[0]?{
+        label:"Clima",
+        value:this._climateActive(climates[0])?"Attivo":"Spento",
+        small:display(climates[0]),
+        show:true
+      }:null,
+      lights.length?{
+        label:"Luci",
+        value:lightOn?`${lightOn} accese`:"Spente",
+        small:lights.length>1?`${lights.length} punti luce`:(display(lights[0])),
+        show:true
+      }:null,
+      firstDevice?{
+        label:"Dispositivo",
+        value:firstDevice.startsWith("script.")||firstDevice.startsWith("button.")?"Disponibile":(this._on(firstDevice)?"Acceso":this._state(firstDevice,"Pronto")),
+        small:display(firstDevice),
+        show:true
+      }:null
+    ].filter(Boolean).slice(0,3);
+
+    const roomLabel=this._roomTypes().find(x=>x[0]===room.type)?.[1]||"Ambiente";
+    const hero=this._hero(
+      room.name,
+      this._uiTheme==="v1"
+        ? `${roomLabel} · comfort, luci ed elettrodomestici`
+        : `${roomLabel} · comfort, luci e dispositivi`,
+      {level:activeCount?"warn":"good",title:activeCount?`${activeCount} stati attivi`:"Tutto tranquillo",text:""},
+      metrics,
+      room.type||"generico"
+    );
+
+    const controlCards=[
+      ...lights.map(e=>this._control(
+        e,
+        display(e),
+        this._v1OriginalIcon(e,room.type,display(e)),
+        this._on(e)?"Accesa":"Spenta",
+        "toggle",6
+      )),
+      ...switches.map(e=>this._control(
+        e,
+        display(e),
+        this._v1OriginalIcon(e,room.type,display(e)),
+        this._on(e)?"Acceso":"Spento",
+        "toggle",6
+      )),
+      ...media.map(e=>`<div class="command-strip span-6"><div class="command-symbol"><ha-icon icon="${this._v1OriginalIcon(e,room.type,display(e))}"></ha-icon></div><div class="command-copy clickable" data-more="${e}"><div class="command-title">${this._esc(display(e))}</div><div class="command-sub">${this._esc(this._state(e,"—"))}</div></div></div>`),
+      ...scripts.map(e=>`<div class="command-strip span-6"><div class="command-symbol"><ha-icon icon="${this._v1OriginalIcon(e,room.type,display(e))}"></ha-icon></div><div class="command-copy"><div class="command-title">${this._esc(display(e))}</div><div class="command-sub">Azione</div></div><button class="command-action" data-script="${e}" type="button"><span>ESEGUI</span><i></i></button></div>`),
+      ...buttons.map(e=>`<div class="command-strip span-6"><div class="command-symbol"><ha-icon icon="${this._v1OriginalIcon(e,room.type,display(e))}"></ha-icon></div><div class="command-copy clickable" data-more="${e}"><div class="command-title">${this._esc(display(e))}</div><div class="command-sub">Comando</div></div></div>`)
+    ].join("");
+
+    const coverCards=covers.map(e=>this._uiTheme==="v1"
+      ? `<div class="command-strip span-6"><div class="command-symbol"><ha-icon icon="${this._v1OriginalIcon(e,room.type,display(e))}"></ha-icon></div><div class="command-copy clickable" data-more="${e}"><div class="command-title">${this._esc(display(e))}</div><div class="command-sub">${this._esc(this._state(e,"—"))}</div></div><button class="command-action" data-cover-toggle="${e}" data-inverted="0" type="button"><span>GESTISCI</span><i></i></button></div>`
+      : this._coverControl(e,display(e),false,6)
+    ).join("");
+
+    const climateCards=climates.map(e=>this._climateBlock(
+      e,"","",
+      this._hass.states[e]?.attributes?.friendly_name||room.name,""
+    )).join("");
+
+    const sensorCards=sensors.map(e=>{
+      const obj=this._hass.states[e], name=obj?.attributes?.friendly_name||e;
+      const dc=String(obj?.attributes?.device_class||"").toLowerCase();
+      const icon=this._v1OriginalIcon(e,room.type,display(e));
+      const unit=obj?.attributes?.unit_of_measurement||"";
+      return this._metric(icon,name,this._state(e),unit,4,e);
+    }).join("");
+
+    const hasControls=!!(controlCards||coverCards||climateCards);
+    return `<div class="page">
+      ${hero}
+      ${hasControls?this._section(this._uiTheme==="v1"?"Luci, tende ed elettrodomestici":"Luci, tende e dispositivi"):""}
+      <div class="grid">${controlCards}${coverCards}${climateCards}</div>
+      ${sensorCards?this._section("Sensori","Stato dell'ambiente"):""}
+      <div class="grid">${sensorCards}</div>
+    </div>`;
   }
 
-  _anyConfigured(keys){ return (keys||[]).some(key=>this._configured(key)); }
-
-  _zoneHero(room, metrics) {
-    const m=ROOM_META[room], s=this._roomStatus(room);
-    const requirements={
-      esterno:{"Cancellino":["input_boolean.pedestrian_gate"],"Stato":["input_boolean.pedestrian_gate"]},
-      scale:{"Luce":["light.stairs"],"Portoncino":["input_boolean.main_gate"]},
-      ingresso:{"Porta":["binary_sensor.entry_door","input_boolean.entry_door_unlock"],"Allarme":["alarm_control_panel.home_alarm"],"Luminosità":["sensor.entry_illuminance"],"Presenza":["binary_sensor.entry_occupancy","binary_sensor.entry_motion"]},
-      cucina:{"Temperatura":["sensor.kitchen_temperature"],"Umidità":["sensor.kitchen_humidity"],"Clima":["climate.kitchen"],"Finestra":["binary_sensor.kitchen_door_window"]},
-      disimpegno:{"Movimento":["binary_sensor.hallway_motion"],"Occupazione":["binary_sensor.hallway_occupancy"],"Luminosità":["sensor.hallway_illuminance"],"Luce":["light.hallway_main"]},
-      bagno:{"Temperatura":["sensor.bathroom_temperature"],"Umidità":["sensor.bathroom_humidity"],"Finestra":["binary_sensor.bathroom_window"],"Acqua":["binary_sensor.bathroom_water_leak"]},
-      camera:{"Temperatura":["sensor.bedroom_temperature"],"Umidità":["sensor.bedroom_humidity"],"Clima":["climate.bedroom"],"Robot":["vacuum.robot_vacuum","sensor.robot_vacuum_battery"]}
-    };
-    const roomReq=requirements[room]||{};
-    const visible=metrics.map(metric=>{
-      const req=roomReq[metric.label];
-      return req ? {...metric,show:metric.show!==false&&this._anyConfigured(req)} : metric;
+  _configGroup(key) {
+    const name=key.split(".")[1] || key;
+    if(name.includes("solar_")) return "Energia solare";
+    if(name.includes("wallbox") || name.includes("ev_") || name.includes("grid_current")) return "Wallbox & EV";
+    if(name.includes("weather_")) return "Meteo";
+    if(name.includes("garage_")) return "Garage";
+    if(name.includes("bedroom")) return "Camera";
+    if(name.includes("kitchen")) return "Cucina";
+    if(name.includes("bathroom")) return "Bagno";
+    if(name.includes("balcony")) return "Balcone";
+    if(name.includes("entry_")) return "Ingresso";
+    if(name.includes("hallway")) return "Disimpegno";
+    if(name.includes("stairs")) return "Scale";
+    return "Casa & Generale";
+  }
+  _entityOptions() {
+    if(!this._hass?.states) return [];
+    return Object.entries(this._hass.states).map(([id,state])=>{
+      const name=String(state?.attributes?.friendly_name || "").trim();
+      return {id,name,label:name ? `${name} — ${id}` : id};
+    }).sort((a,b)=>(a.name || a.id).localeCompare(b.name || b.id, "it", {sensitivity:"base"}));
+  }
+  _entityIdFromFriendlyName(value) {
+    const raw=String(value || "").trim();
+    if(!raw || raw.includes(".")) return raw;
+    const normalized=raw.toLocaleLowerCase("it");
+    const matches=this._entityOptions().filter(item=>item.name && item.name.toLocaleLowerCase("it")===normalized);
+    return matches.length===1 ? matches[0].id : raw;
+  }
+  _renderConfigDialog() {
+    if(!this._configDialogOpen) return "";
+    const filter=(this._configFilter||"").trim().toLowerCase();
+    const entries=[...ENTITY_KEYS].filter(key=>{
+      if(!filter) return true;
+      return key.toLowerCase().includes(filter) || this._configLabel(key).toLowerCase().includes(filter) || this._configGroup(key).toLowerCase().includes(filter);
     });
-    return this._hero(m.title,m.subtitle,{...s,title:s.text,text:""},visible);
+    const groups=new Map();
+    for(const key of entries){ const g=this._configGroup(key); if(!groups.has(g)) groups.set(g,[]); groups.get(g).push(key); }
+    const datalist=this._entityOptions().map(e=>`<option value="${this._esc(e.id)}" label="${this._esc(e.label)}">${this._esc(e.label)}</option>`).join("");
+    const configured=[...ENTITY_KEYS].filter(k=>(this._configDraft[k]||"").trim()).length;
+    return `<div class="config-overlay" data-action="config-overlay-close">
+      <section class="config-dialog" role="dialog" aria-modal="true" aria-label="Configura Casa Dashboard Community">
+        <div class="config-dialog-head"><div><div class="config-kicker">CASA DASHBOARD COMMUNITY</div><h2>Configura le entità</h2><p>Cerca le entità anche con il nome assegnato in Home Assistant oppure digita direttamente la entity_id. Puoi lasciare vuote le funzioni che non utilizzi.</p></div><button class="config-close" data-action="config-close" type="button" aria-label="Chiudi"><ha-icon icon="mdi:close"></ha-icon></button></div>
+        <div class="room-manager">
+          <div class="room-manager-head"><div><strong>Stanze <em class="room-count">${this._roomsDraft.length}</em></strong><span>Crea, rinomina e ordina gli ambienti della dashboard. In Casa V2 non esistono ambienti preimpostati: compariranno solo quelli creati qui.</span></div><div class="room-manager-actions"><button class="room-add" data-action="room-add" type="button"><ha-icon icon="mdi:plus"></ha-icon> Aggiungi stanza</button><button class="room-save" data-action="config-save" type="button"><ha-icon icon="mdi:content-save-outline"></ha-icon> Salva configurazione</button></div></div>
+          <div class="room-list">${this._roomsDraft.map((r,i)=>`<div class="room-edit-row" data-room-id="${r.id}">
+            <span class="room-order">${i+1}</span>
+            <input data-room-name="${r.id}" value="${this._esc(r.name||"")}" placeholder="Nome stanza">
+            <select data-room-type="${r.id}">${this._roomTypes().map(([v,l])=>`<option value="${v}" ${r.type===v?"selected":""}>${l}</option>`).join("")}</select>
+            <input data-room-icon="${r.id}" value="${this._esc(r.icon||this._roomIcon(r.type))}" placeholder="mdi:icona">
+            ${this._roomEntityPicker(r)}
+            <div class="room-row-actions"><button data-action="room-up" data-room="${r.id}" type="button" title="Sposta su"><ha-icon icon="mdi:chevron-up"></ha-icon></button><button data-action="room-down" data-room="${r.id}" type="button" title="Sposta giù"><ha-icon icon="mdi:chevron-down"></ha-icon></button><button data-action="room-remove" data-room="${r.id}" type="button" title="Elimina"><ha-icon icon="mdi:trash-can-outline"></ha-icon></button></div>
+          </div>`).join("")||`<div class="room-empty"><ha-icon icon="mdi:home-plus-outline"></ha-icon><strong>Nessuna stanza creata</strong><span>Casa V2 partirà vuota. Premi “Aggiungi stanza” per costruire la tua casa.</span></div>`}</div>
+        <div class="room-friendly-hint"><ha-icon icon="mdi:magnify"></ha-icon><span>Al primo utilizzo le entità già configurate nelle 173 associazioni vengono importate nelle stanze. Dopo il primo salvataggio, le stanze vengono gestite solo da questa sezione e le entità rimosse non vengono reinserite automaticamente.</span></div></div>
+        <div class="config-toolbar"><label class="config-search"><ha-icon icon="mdi:magnify"></ha-icon><input id="configSearch" type="search" placeholder="Cerca stanza, funzione, chiave o nome entità…" value="${this._esc(this._configFilter||"")}"></label><div class="config-progress"><strong>${configured}</strong><span>/ ${ENTITY_KEYS.size}</span></div></div>
+        <div class="config-scroll">${[...groups.entries()].map(([group,keys])=>`<div class="config-group"><div class="config-group-title">${group}<span>${keys.length}</span></div>${keys.map(key=>{ const value=this._configDraft[key] ?? this._entityMap[key] ?? ""; const domain=key.split(".")[0]; return `<label class="config-row"><div class="config-row-copy"><strong>${this._configLabel(key)}</strong><code>${key}</code></div><div class="config-field"><input data-config-key="${key}" list="haEntityList" placeholder="${domain}.…" value="${this._esc(value)}"><button type="button" data-action="config-clear" data-config-clear="${key}" aria-label="Svuota"><ha-icon icon="mdi:close-circle-outline"></ha-icon></button></div></label>`;}).join("")}</div>`).join("") || `<div class="config-empty">Nessuna associazione corrisponde alla ricerca.</div>`}</div>
+        <datalist id="haEntityList">${datalist}</datalist>
+        <div class="config-dialog-foot"><div class="config-hint"><ha-icon icon="mdi:shield-check-outline"></ha-icon> Le modifiche vengono salvate nel file Community separato.</div><div class="config-actions"><button class="secondary" data-action="config-close" type="button">Annulla</button><button class="primary" data-action="config-save" type="button"><ha-icon icon="mdi:content-save-outline"></ha-icon> Salva configurazione</button></div></div>
+      </section></div>`;
+  }
+  _openConfigDialog() {
+    this._configDraft={...this._entityMap};
+    const savedRooms=(Array.isArray(this._rooms)?this._rooms:[]).map(r=>({...r,entities:[...(r.entities||[])],entity_labels:{...(r.entity_labels||{})}}));
+    this._roomsDraft=savedRooms.length
+      ? savedRooms
+      : this._mergeConfiguredEntitiesIntoRooms([]);
+    this._configFilter="";
+    this._configDialogOpen=true;
+    this._renderConfigLayer();
+  }
+  _closeConfigDialog() { this._configDialogOpen=false; this._renderConfigLayer(); }
+  _renderConfigLayer() {
+    let layer=this.shadowRoot.querySelector("#configLayer");
+    if(!layer){ layer=document.createElement("div"); layer.id="configLayer"; this.shadowRoot.appendChild(layer); }
+    layer.innerHTML=this._renderConfigDialog();
+    if(!this._configDialogOpen) return;
+
+    const syncRooms=()=>{
+      for(const r of this._roomsDraft){
+        const n=layer.querySelector(`[data-room-name="${r.id}"]`); if(n) r.name=n.value.trim()||"Stanza";
+        const t=layer.querySelector(`[data-room-type="${r.id}"]`); if(t){ r.type=t.value; if(!r.icon) r.icon=this._roomIcon(r.type); }
+        const ic=layer.querySelector(`[data-room-icon="${r.id}"]`); if(ic) r.icon=ic.value.trim()||this._roomIcon(r.type);
+      }
+    };
+    layer.querySelectorAll("[data-room-name],[data-room-type],[data-room-icon]").forEach(el=>el.addEventListener("change",syncRooms));
+
+    layer.querySelectorAll("[data-room-entity-label-room]").forEach(input=>{
+      const roomId=input.dataset.roomEntityLabelRoom;
+      const entity=input.dataset.roomEntityLabelEntity;
+      input.addEventListener("input",()=>this._setRoomEntityLabel(roomId,entity,input.value));
+      input.addEventListener("change",()=>this._setRoomEntityLabel(roomId,entity,input.value));
+    });
+    layer.querySelectorAll("[data-room-entity-search]").forEach(input=>{
+      const roomId=input.dataset.roomEntitySearch;
+      const show=()=>this._renderRoomEntitySuggestions(roomId,input.value);
+      input.addEventListener("focus",show);
+      input.addEventListener("input",show);
+      input.addEventListener("click",show);
+      input.addEventListener("keydown",ev=>{
+        if(ev.key==="Enter"){
+          ev.preventDefault();
+          const room=this._roomsDraft.find(r=>r.id===roomId); if(!room)return;
+          const suggestions=this._roomEntitySuggestions(input.value,room.entities||[]);
+          const resolved=suggestions[0]?.id || this._resolveRoomEntityToken(input.value);
+          if(this._hass?.states?.[resolved] && !(room.entities||[]).includes(resolved)){
+            room.entities=[...(room.entities||[]),resolved]; this._renderConfigLayer();
+          }
+        } else if(ev.key==="Escape"){
+          const box=layer.querySelector(`[data-room-entity-suggestions="${roomId}"]`); if(box) box.hidden=true;
+        }
+      });
+    });
+
+    const search=layer.querySelector("#configSearch");
+    search?.addEventListener("input",ev=>{
+      syncRooms();
+      layer.addEventListener("click",ev=>{
+      const add=ev.target.closest?.("[data-room-entity-add]");
+      if(add){
+        ev.preventDefault();
+        const room=this._roomsDraft.find(r=>r.id===add.dataset.roomEntityAdd);
+        const entity=add.dataset.entity;
+        if(room && entity && this._hass?.states?.[entity] && !(room.entities||[]).includes(entity)){
+          room.entities=[...(room.entities||[]),entity]; this._renderConfigLayer();
+        }
+        return;
+      }
+      const rem=ev.target.closest?.("[data-room-entity-remove]");
+      if(rem){
+        ev.preventDefault();
+        const room=this._roomsDraft.find(r=>r.id===rem.dataset.roomEntityRemove);
+        if(room){ room.entities=(room.entities||[]).filter(e=>e!==rem.dataset.entity); this._renderConfigLayer(); }
+      }
+    });
+
+    layer.querySelectorAll("[data-config-key]").forEach(input=>{ this._configDraft[input.dataset.configKey]=input.value; });
+      this._configFilter=ev.target.value;
+      this._renderConfigLayer();
+      requestAnimationFrame(()=>{ const next=this.shadowRoot.querySelector("#configSearch"); next?.focus(); next?.setSelectionRange(next.value.length,next.value.length); });
+    });
+
+    layer.querySelectorAll("[data-config-key]").forEach(input=>{
+      input.addEventListener("input",ev=>{
+        const key=ev.target.dataset.configKey;
+        const oldEntity=String(this._configDraft[key]||"").trim();
+        const newEntity=ev.target.value;
+        this._configDraft[key]=newEntity;
+        this._syncConfiguredKeyToRoom(key,oldEntity,newEntity);
+      });
+      input.addEventListener("change",ev=>{
+        const key=ev.target.dataset.configKey;
+        const oldEntity=String(this._configDraft[key]||"").trim();
+        const resolved=this._entityIdFromFriendlyName(ev.target.value);
+        ev.target.value=resolved;
+        this._configDraft[key]=resolved;
+        this._syncConfiguredKeyToRoom(key,oldEntity,resolved);
+      });
+    });
+  }
+  async _saveConfigDialog() {
+    const layer=this.shadowRoot.querySelector("#configLayer");
+    layer?.querySelectorAll("[data-config-key]").forEach(input=>{
+      const key=input.dataset.configKey;
+      const oldEntity=String(this._configDraft[key]||"").trim();
+      const resolved=this._entityIdFromFriendlyName(input.value);
+      this._configDraft[key]=resolved;
+      this._syncConfiguredKeyToRoom(key,oldEntity,resolved);
+    });
+    const saveButtons=[...(layer?.querySelectorAll('[data-action="config-save"]')||[])];
+    saveButtons.forEach(save=>{ save.disabled=true; save.innerHTML='<ha-icon icon="mdi:loading" class="spin"></ha-icon> Salvataggio…'; });
+    try {
+      const result=await this._hass.callWS({type:"casa_dashboard_community/config/save",entities:this._configDraft,rooms:this._roomsDraft});
+      this._rooms=Array.isArray(result?.rooms)?result.rooms:this._roomsDraft;
+      this._entityMap=result?.entities || {...this._configDraft};
+      this._entityConfigLoaded=true;
+      this._configDialogOpen=false;
+      this._renderConfigLayer();
+      this._renderPage(false);
+    } catch(err) {
+      saveButtons.forEach(save=>{ save.disabled=false; save.innerHTML='<ha-icon icon="mdi:alert-circle-outline"></ha-icon> Riprova'; });
+      alert(`Impossibile salvare la configurazione: ${err?.message || err}`);
+    }
   }
 
-  _esterno(){
-    const open=this._on("input_boolean.pedestrian_gate");
-    return `<div class="page">${this._zoneHero("esterno",[
-      {label:"Cancellino",value:open?"Aperto / apertura…":"Chiuso",small:"Accesso esterno"},
-      {label:"Stato",value:open?"Attivo":"Pronto",small:"Comando pedonale"}
-    ])}${this._section("Accesso esterno")}<div class="grid">${this._control("input_boolean.pedestrian_gate","Cancellino","mdi:gate",open?"Apertura in corso / aperto":"Premi per aprire","toggle",12)}</div></div>`;
+  _state(id, fallback="—") {
+    const pending=this._optimistic.get(id);
+    if(pending && Date.now()-pending.at < 3500) return pending.state;
+    const s=this._s(id)?.state;
+    return (!s || ["unknown","unavailable","none",""].includes(s)) ? fallback : s;
   }
-
-  _scale(){
-    return `<div class="page">${this._zoneHero("scale",[
-      {label:"Luce",value:this._on("light.stairs")?"Accesa":"Spenta",small:"Illuminazione scale"},
-      {label:"Portoncino",value:this._on("input_boolean.main_gate")?"Apertura…":"Pronto",small:"Comando accesso"}
-    ])}${this._section("Controlli rapidi")}<div class="grid">${this._control("input_boolean.main_gate","Portoncino","mdi:gate",this._on("input_boolean.main_gate")?"Apertura in corso":"Premi per aprire","toggle",6)}${this._control("light.stairs","Luce scale","mdi:ceiling-light",this._on("light.stairs")?"Accesa":"Spenta","toggle",6)}</div></div>`;
+  _on(id) { return this._state(id,"off") === "on"; }
+  _num(id, fallback=null) { const v=parseFloat(this._state(id,"")); return Number.isFinite(v)?v:fallback; }
+  _attr(id, key, fallback=null) { const v=this._s(id)?.attributes?.[key]; return v ?? fallback; }
+  _fmt(id, digits=1, unit=null) {
+    const n=this._num(id,null); if(n===null) return "—";
+    const u=unit ?? this._attr(id,"unit_of_measurement","");
+    return `${n.toFixed(digits)}${u ? ` ${u}` : ""}`;
   }
-
-  _ingresso(){
-    const door=this._on("binary_sensor.entry_door");
-    const unlocked=this._on("input_boolean.entry_door_unlock");
-    const alarm=this._state("alarm_control_panel.home_alarm","—");
-    const motion=this._on("binary_sensor.entry_motion");
-    const occupied=this._on("binary_sensor.entry_occupancy");
-    const alerts=[];
-    if(!door && unlocked) alerts.push(this._alert("warn","mdi:lock-open-alert-outline","Porta chiusa ma sbloccata","La serratura risulta aperta anche se il contatto porta è chiuso."));
-    if(door) alerts.push(this._alert("bad","mdi:door-open","Porta ingresso aperta","La porta di casa risulta fisicamente aperta."));
-    return `<div class="page">${this._zoneHero("ingresso",[
-      {label:"Porta",value:door?"Aperta":unlocked?"Sbloccata":"Bloccata",small:"Contatto + serratura"},
-      {label:"Allarme",value:alarm,small:"Allarme"},
-      {label:"Luminosità",value:this._luxLabel("sensor.entry_illuminance"),small:this._fmtLuxExact("sensor.entry_illuminance")},
-      {label:"Presenza",value:occupied?"Occupato":"Libero",small:motion?"Movimento rilevato":"Nessun movimento"}
-    ])}${alerts.length?`<div class="logic-card" style="padding:0 18px;margin-top:16px;">${alerts.join("")}</div>`:""}${this._section("Sicurezza e accesso")}<div class="grid">
-      ${this._control("input_boolean.entry_door_unlock","Porta di casa",door?"mdi:door-open":unlocked?"mdi:lock-open-variant":"mdi:lock",door?"Aperta fisicamente":unlocked?"Chiusa · sbloccata":"Chiusa · bloccata","toggle",4)}
-      ${this._control("light.entry_main","Luce ingresso","mdi:ceiling-light",this._on("light.entry_main")?"Accesa":"Spenta","toggle",4)}
-      ${this._configured("alarm_control_panel.home_alarm")?`<div class="control span-4 ${alarm==='triggered'?'state-bad':alarm==='disarmed'?'state-warn':'state-on'}">${this._icon(alarm==='triggered'?"mdi:alarm-light":"mdi:shield-home",alarm==='triggered'?"bad":alarm==='disarmed'?"warn":"good")}<div class="control-main clickable" data-more="alarm_control_panel.home_alarm"><div class="control-title">Allarme</div><div class="control-sub">${this._esc(alarm)}</div></div><button class="switch-btn" data-more="alarm_control_panel.home_alarm" type="button">GESTISCI</button></div>
-      <div class="control span-12 ${alarm==='triggered'?'state-bad':alarm==='disarmed'?'state-warn':'state-on'}"><div class="control-main"><div class="control-title">Comandi allarme</div><div class="control-sub">Inserimento rapido</div></div><button class="mini-btn ${alarm==='armed_home'?'active':''}" data-alarm="alarm_arm_home" type="button">CASA</button><button class="mini-btn ${alarm==='armed_away'?'active':''}" data-alarm="alarm_arm_away" type="button">FUORI</button><button class="mini-btn ${alarm==='disarmed'?'active':''}" data-alarm="alarm_disarm" type="button">OFF</button></div>`:""}
-    </div>${this._section("Sensori ingresso")}<div class="grid">
-      ${this._metric("mdi:door", "Stato porta",door?"Aperta":"Chiusa","Sensore magnetico",3,"binary_sensor.entry_door")}
-      ${this._metric("mdi:weather-sunny","Luminosità",this._luxLabel("sensor.entry_illuminance"),`${this._fmtLuxExact("sensor.entry_illuminance")} · Sensore`,3,"sensor.entry_illuminance",this._luxTone("sensor.entry_illuminance"))}
-      ${this._metric("mdi:motion-sensor","Movimento",motion?"Rilevato":"Assente","Sensore ingresso",3,"binary_sensor.entry_motion")}
-      ${this._metric("mdi:account-group","Occupazione",occupied?"Occupato":"Libero","Presenza",3,"binary_sensor.entry_occupancy")}
-    </div></div>`;
+  _fmtLuxCompact(id, digits=1){
+    const n=this._num(id,null); if(n===null) return "—";
+    if(Math.abs(n) >= 1000) return `${(n/1000).toFixed(digits)} klx`;
+    return `${n.toFixed(0)} lx`;
   }
-
-  _climateBlock(entity,tempEntity,humEntity,title,schedule="09:00–22:00"){
-    if(!this._configured(entity)) return "";
-    const t=this._num(tempEntity,null), h=this._num(humEntity,null), state=this._state(entity,"off"), action=this._attr(entity,"hvac_action",state), set=this._attr(entity,"temperature",null), fan=this._attr(entity,"fan_mode","—");
-    const active=this._climateActive(entity);
-    return `<div class="climate-panel span-12 ${active?'state-on':''}"><div><div class="hero-overline">${title}</div><div class="climate-temp">${t===null?"—":t.toFixed(1)+"°"}</div><div class="climate-meta"><span class="tag ${active?'blue':''}">${this._esc(action||state)}</span><span class="tag">💧 ${h===null?"—":h.toFixed(0)+"%"}</span><span class="tag">Set ${set ?? "—"}°C</span><span class="tag">Ventola ${this._esc(fan)}</span><span class="tag">Auto ${schedule}</span></div><div class="action-row"><button class="mini-btn" data-climate-temp="${entity}" data-delta="-1" type="button">− 1°C</button><button class="mini-btn" data-climate-temp="${entity}" data-delta="1" type="button">+ 1°C</button></div></div><div class="climate-actions"><button class="round-action" data-climate="${entity}" data-mode="cool" title="Raffrescamento"><ha-icon icon="mdi:snowflake"></ha-icon></button><button class="round-action" data-climate="${entity}" data-mode="off" title="Spegni"><ha-icon icon="mdi:power"></ha-icon></button><button class="round-action" data-more="${entity}" title="Dettagli"><ha-icon icon="mdi:tune-variant"></ha-icon></button></div></div>`;
+  _fmtLuxExact(id){
+    const n=this._num(id,null); if(n===null) return "—";
+    return `${new Intl.NumberFormat('it-IT',{maximumFractionDigits:0}).format(n)} lx`;
   }
-
-  _cucina(){
-    const windowOpen=this._on("binary_sensor.kitchen_door_window");
-    const vibration=this._on("binary_sensor.kitchen_window_vibration");
-    const anta=this._on("binary_sensor.kitchen_cabinet_door");
-    const motion=this._on("binary_sensor.kitchen_motion");
-    const occupied=this._on("binary_sensor.kitchen_occupancy");
-    const heat="climate.home_heating";
-    const heatAction=this._attr(heat,"hvac_action",this._state(heat,"off"));
-    const tendaOpen=this._coverOpen("cover.kitchen_blind",true);
-    const t=this._num("sensor.kitchen_temperature",null), h=this._num("sensor.kitchen_humidity",null), manual=this._on("input_boolean.kitchen_climate_manual");
-    const now=new Date(), mins=now.getHours()*60+now.getMinutes();
-    const early=mins>=420&&mins<540, normal=mins>=540&&mins<1320;
-    let auto="Fuori fascia automatica";
+  _luxLabel(id){
+    const n=this._num(id,null); if(n===null) return "—";
+    const outdoor=id==="sensor.weather_solar_lux";
+    if(outdoor) return n>=40000?"Luce forte":n>=20000?"Luce buona":"Luce bassa";
+    return n>=500?"Luce forte":n>=100?"Luce buona":"Luce bassa";
+  }
+  _luxTone(id){
+    const n=this._num(id,null); if(n===null) return "state-off";
+    const outdoor=id==="sensor.weather_solar_lux";
+    if(outdoor) return n>=40000?"state-good":n>=20000?"state-active":"state-off";
+    return n>=500?"state-good":n>=100?"state-active":"state-off";
+  }
+  _radLabel(id){
+    const n=this._num(id,null); if(n===null) return "—";
+    return n>=350?"Radiazione forte":n>=150?"Radiazione moderata":n>=30?"Radiazione bassa":"Radiazione minima";
+  }
+  _radTone(id){
+    const n=this._num(id,null); if(n===null) return "state-off";
+    return n>=350?"state-good":n>=150?"state-active":n>=30?"state-warn":"state-off";
+  }
+  _fmtAcPowerFromCurrent(currentId, voltageId, digits=2){
+    const a=this._num(currentId,null), v=this._num(voltageId,null);
+    if(a===null || v===null) return "—";
+    return `${((a*v)/1000).toFixed(digits)} kW`;
+  }
+  _esc(v) { return String(v ?? "").replace(/[&<>'"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c])); }
+  _icon(icon, cls="") { return `<div class="iconbox ${cls}"><ha-icon icon="${icon}"></ha-icon></div>`; }
+  _setOptimistic(id,state){ this._optimistic.set(id,{state,at:Date.now()}); this._renderPage(false); }
+  _syncOptimistic(){
+    const now=Date.now();
+    for(const [id,p] of this._optimistic){
+      const eid=this._eid(id); const actual=eid?this._hass?.states?.[eid]?.state:null;
+      if(actual===p.state || now-p.at>3500) this._optimistic.delete(id);
+    }
+  }
+  _stateFingerprint(){
+    if(!this._hass?.states || !this._entityConfigLoaded) return "";
+    const rows=[];
+    const seen=new Set();
+    for(const logical of ENTITY_KEYS){
+      const eid=this._eid(logical);
+      if(!eid || seen.has(eid)) continue;
+      seen.add(eid);
+      const st=this._hass.states[eid];
+      if(!st){ rows.push(`${eid}|missing`); continue; }
+      let attrs="";
+      try { attrs=JSON.stringify(st.attributes || {}); } catch(_err) {}
+      rows.push(`$

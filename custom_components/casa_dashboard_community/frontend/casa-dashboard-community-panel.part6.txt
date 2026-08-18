@@ -1,28 +1,152 @@
-850}.logic-ribbon strong{font-size:15px;line-height:1.4}
-      .card,.metric,.control,.alert,.logic-card{box-shadow:none}
-      .solar-showcase{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px;margin-top:10px}.solar-panel{position:relative;overflow:hidden;border-radius:28px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(255,255,255,.028),rgba(255,255,255,.012));box-shadow:0 18px 40px rgba(0,0,0,.12)}.solar-panel:before{content:"";position:absolute;inset:auto auto -40px -20px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(64,201,255,.18),transparent 65%);pointer-events:none}.solar-battery-hero{grid-column:span 7;display:grid;grid-template-columns:240px 1fr;gap:24px;padding:28px 30px;align-items:center;min-height:340px}.solar-battery-shell{position:relative;width:150px;height:250px;border-radius:30px;border:6px solid rgba(255,255,255,.76);margin:0 auto;background:linear-gradient(180deg,rgba(255,255,255,.025),rgba(255,255,255,.01));box-shadow:inset 0 0 0 1px rgba(255,255,255,.05)}.solar-battery-shell:before{content:"";position:absolute;top:-20px;left:50%;transform:translateX(-50%);width:62px;height:18px;border-radius:8px 8px 2px 2px;background:rgba(255,255,255,.78)}.solar-battery-fill{position:absolute;left:14px;right:14px;bottom:14px;border-radius:18px;background:linear-gradient(180deg,rgba(103,255,182,.92),rgba(69,212,140,.92));box-shadow:0 0 34px rgba(103,255,182,.26)}.solar-battery-soc{position:absolute;inset:0;z-index:3;display:grid;place-items:center;text-align:center;pointer-events:none}.solar-battery-soc>div{padding:10px 14px 9px;border-radius:16px;background:rgba(7,14,25,.68);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 8px 24px rgba(0,0,0,.20)}.solar-battery-soc span,.solar-prod-copy span,.solar-pv-bars span,.solar-node-label,.solar-energy-pill span{font-size:10px;letter-spacing:.18em;font-weight:850;color:#87a0bb;text-transform:uppercase}.solar-battery-soc strong{display:block;font-size:52px;letter-spacing:-.06em;color:#ffffff;margin-top:6px;text-shadow:0 2px 10px rgba(0,0,0,.28)}.solar-battery-copy .eyebrow{font-size:11px;letter-spacing:.24em;font-weight:900;color:#59e39d;text-transform:uppercase}.solar-battery-copy .power{font-size:72px;line-height:.95;font-weight:880;letter-spacing:-.07em;margin-top:10px}.solar-battery-copy .power.good{color:#59e39d}.solar-battery-copy .power.bad{color:#ff8d87}.solar-battery-copy .power small{font-size:.46em}.solar-battery-copy .desc{margin-top:10px;font-size:15px;color:var(--secondary-text-color)}.solar-energy-pills{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}.solar-energy-pill{padding:10px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.04)}.solar-energy-pill strong{font-size:14px;margin-left:8px}.solar-prod-card{grid-column:span 5;padding:24px 28px;min-height:340px;display:flex;flex-direction:column;justify-content:space-between}.solar-prod-top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}.solar-sun{width:74px;height:74px;border-radius:22px;display:grid;place-items:center;background:radial-gradient(circle,rgba(255,204,72,.22),rgba(255,204,72,.05) 60%,transparent 62%);color:#ffd05c}.solar-sun ha-icon{--mdc-icon-size:42px}.solar-prod-copy strong{display:block;font-size:58px;letter-spacing:-.06em;line-height:.95;margin-top:12px}.solar-prod-copy small{display:block;color:var(--secondary-text-color);margin-top:10px}.solar-pv-bars{margin-top:18px;display:grid;gap:18px}.solar-pv-line{display:grid;grid-template-columns:176px minmax(0,1fr);gap:18px;align-items:center}.solar-pv-meta strong{display:block;font-size:22px;letter-spacing:-.04em;margin-top:8px}.solar-pv-meta small{display:block;color:var(--secondary-text-color);margin-top:4px}.solar-pv-track{position:relative;height:12px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}.solar-pv-fill{position:absolute;left:0;top:0;bottom:0;border-radius:999px;background:linear-gradient(90deg,#f4e88b,#f0c447)}.solar-pv-fill.west{background:linear-gradient(90deg,#f8d56b,#ff9a5a)}.solar-flow-card{grid-column:span 12;padding:24px 28px 26px}.solar-flow-grid{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;align-items:flex-start}.solar-flow-grid:before{display:none}.solar-node{position:relative;padding-top:4px;text-align:center}.solar-node-orb{width:84px;height:84px;margin:0 auto;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 50% 50%,rgba(64,201,255,.20),rgba(64,201,255,.03) 62%,transparent 64%);border:1px solid rgba(64,201,255,.20);box-shadow:0 0 30px rgba(64,201,255,.10)}.solar-node-orb ha-icon{--mdc-icon-size:34px;color:#7fd9ff}.solar-node.house .solar-node-orb ha-icon{color:#69f0a8}.solar-node.grid .solar-node-orb ha-icon{color:#ffcf72}.solar-node.battery .solar-node-orb ha-icon{color:#59e39d}.solar-node strong{display:block;font-size:34px;line-height:1;letter-spacing:-.05em;margin-top:16px}.solar-node strong.good{color:#59e39d}.solar-node strong.bad{color:#ff8d87}.solar-node small{display:block;color:var(--secondary-text-color);margin-top:6px;line-height:1.4}.solar-node-chip{display:inline-flex;align-items:center;gap:8px;margin-top:12px;padding:7px 11px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);font-size:11px;font-weight:800}.solar-node-chip.good{background:rgba(76,175,80,.12);border-color:rgba(76,175,80,.20);color:#8aeab4}.solar-node-chip.warn{background:rgba(255,152,0,.12);border-color:rgba(255,152,0,.20);color:#ffcc80}.solar-node-chip.bad{background:rgba(244,67,54,.12);border-color:rgba(244,67,54,.20);color:#ff8d87}.solar-node-chip.active{background:rgba(64,201,255,.12);border-color:rgba(64,201,255,.20);color:#98e6ff}
+t:55%;background:#50bce9;border-radius:6px}
 
-      .data-node.value-long .data-value{font-size:22px;line-height:1.12;margin-top:20px}
-      .data-node.value-long .data-foot{margin-top:10px}
-      .app-shell.theme-light{background:radial-gradient(circle at 10% -10%, rgba(68,144,255,.10), transparent 38%),radial-gradient(circle at 100% 0%, rgba(0,180,160,.10), transparent 26%),linear-gradient(180deg,#f4f7fb,#edf2f8 58%,#eef4fb)}
-      .app-shell.theme-light .topbar{background:rgba(248,250,253,.92);border-bottom:1px solid rgba(15,23,42,.10);box-shadow:0 10px 30px rgba(15,23,42,.06)}
-      .app-shell.theme-light .nav-btn{color:#5b6f88}.app-shell.theme-light .nav-btn.active,.app-shell.theme-light .nav-btn.active ha-icon{color:#1666d9}
-      .app-shell.theme-light .scene-hero{background:linear-gradient(140deg,rgba(255,255,255,.96),rgba(247,250,255,.98));border-color:rgba(26,81,160,.16);box-shadow:0 24px 50px rgba(28,46,84,.08)}
-      .app-shell.theme-light .scene-hero:before{background:linear-gradient(115deg,transparent 0 47%,rgba(15,23,42,.03) 47.2% 47.6%,transparent 47.8%)}
-      .app-shell.theme-light .scene-hero:after{border-color:rgba(30,64,175,.07);box-shadow:0 0 0 70px rgba(30,64,175,.03),0 0 0 140px rgba(30,64,175,.02)}
-      .app-shell.theme-light .scene-kicker,.app-shell.theme-light .data-label,.app-shell.theme-light .chapter-title,.app-shell.theme-light .panel-eyebrow,.app-shell.theme-light .spotlight-kicker,.app-shell.theme-light .room-eyebrow,.app-shell.theme-light .hero-overline{color:#537096}
-      .app-shell.theme-light .scene-sub,.app-shell.theme-light .chapter-sub,.app-shell.theme-light .data-foot,.app-shell.theme-light .command-sub,.app-shell.theme-light .brand-subtitle,.app-shell.theme-light .weather-sub,.app-shell.theme-light .muted{color:#5f6f83}
-      .app-shell.theme-light .scene-dashboard,.app-shell.theme-light .hero-metric,.app-shell.theme-light .spot-stat,.app-shell.theme-light .weather-chip,.app-shell.theme-light .tag{background:rgba(246,249,253,.9);border-color:rgba(15,23,42,.08)}
-      .app-shell.theme-light .spotlight,.app-shell.theme-light .mini-panel,.app-shell.theme-light .premium-room,.app-shell.theme-light .data-node,.app-shell.theme-light .command-strip,.app-shell.theme-light .climate-panel,.app-shell.theme-light .weather-hero,.app-shell.theme-light .decision-card,.app-shell.theme-light .logic-card,.app-shell.theme-light .solar-stage,.app-shell.theme-light .alert{background:linear-gradient(180deg,rgba(255,255,255,.95),rgba(246,249,253,.96));border-color:rgba(15,23,42,.10);box-shadow:0 16px 34px rgba(15,23,42,.05)}
-      .app-shell.theme-light .data-node:hover,.app-shell.theme-light .command-strip:hover{background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(243,247,252,.98))}
-      .app-shell.theme-light .command-symbol,.app-shell.theme-light .iconbox,.app-shell.theme-light .weather-icon,.app-shell.theme-light .room-arrow{background:rgba(21,40,72,.05);color:#4b6384}
-      .app-shell.theme-light .data-node-top ha-icon,.app-shell.theme-light .metric-icon ha-icon,.app-shell.theme-light .command-action,.app-shell.theme-light .room-arrow,.app-shell.theme-light .spot-stat .k{color:#567190}
-      .app-shell.theme-light .command-action i{border-color:rgba(15,23,42,.14);background:rgba(15,23,42,.03)}
-      .app-shell.theme-light .command-action i:after{background:#6b7f99}
-      .app-shell.theme-light .status-dot{box-shadow:0 0 0 6px rgba(34,197,94,.12)}
-      .app-shell.theme-light .data-node{border-top:1px solid rgba(15,23,42,.12);border-bottom:1px solid rgba(15,23,42,.08)}
-      .app-shell.theme-light .data-glow{opacity:.28}
-      .app-shell.theme-light .solar-panel{background:linear-gradient(180deg,rgba(255,255,255,.95),rgba(245,249,253,.98));border-color:rgba(15,23,42,.10);box-shadow:0 16px 34px rgba(15,23,42,.05)}
-      .app-shell.theme-light .solar-battery-shell{border-color:rgba(113,124,141,.70)}
-      .app-shell.theme-light .solar-battery-shell:before{background:rgba(113,124,141,.65)}
-      .app-shell.theme-light .solar-battery-soc>div{background:rgba(255,255,255,.90);border-color:rgba(15,23,42,.12);box-shadow:0 8px 22px rgba(15,23,42,.10)}.app
+      .generic-sensor{width:70px;height:70px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(101,190,239,.30);background:rgba(101,190,239,.05);color:#72caff}.generic-sensor ha-icon{--mdc-icon-size:34px}
+
+      .app-shell.theme-light .device-visual-card,.app-shell.theme-light .sensor-visual-card{background:linear-gradient(180deg,#fff,#f5f9fd);border-color:rgba(15,23,42,.10)}
+      .app-shell.theme-light .device-visual,.app-shell.theme-light .sensor-visual{background:linear-gradient(180deg,#edf5fa,#dde8ef)}
+      .app-shell.theme-light .device-visual-copy span,.app-shell.theme-light .sensor-visual-copy span{color:#587292}
+      .device-visual-card,.device-visual-card *,.sensor-visual-card,.sensor-visual-card *{transition:none!important;animation:none!important}
+
+      @media(max-width:620px){
+        .device-visual-card,.sensor-visual-card{grid-template-columns:100px 1fr auto;min-height:135px}
+        .device-visual,.sensor-visual{height:94px}
+        .device-visual-copy strong,.sensor-visual-copy strong{font-size:21px}
+      }
+
+      /* ===== RICCARDO V2 · Libreria visuali universali da Casa v4.3.54 ===== */
+      .universal-device-card{
+        min-height:180px;border:1px solid rgba(255,255,255,.07);border-radius:20px;padding:14px;
+        display:grid;grid-template-columns:145px minmax(0,1fr) auto;align-items:center;gap:14px;
+        background:linear-gradient(180deg,rgba(255,255,255,.024),rgba(255,255,255,.011));
+        color:inherit
+      }
+      .universal-device-scene{
+        position:relative;height:128px;border-radius:16px;overflow:hidden;
+        background:linear-gradient(180deg,#182630,#10181e);
+        border:1px solid rgba(255,255,255,.06)
+      }
+      .universal-device-copy{min-width:0}
+      .universal-device-copy span{display:block;font-size:9px;letter-spacing:.15em;color:#8da6bd;font-weight:850;text-transform:uppercase}
+      .universal-device-copy strong{display:block;font-size:22px;margin-top:7px}
+      .universal-device-copy small{display:block;color:var(--secondary-text-color);margin-top:5px;line-height:1.35}
+      .universal-device-action{
+        min-width:48px;height:48px;padding:0 12px;border-radius:14px;border:1px solid rgba(255,255,255,.08);
+        display:flex;gap:7px;align-items:center;justify-content:center;background:rgba(255,255,255,.025);color:#8697a3;cursor:pointer;font-weight:850;font-size:10px
+      }
+      .universal-device-action.active{color:#62dca0;border-color:rgba(98,220,160,.24);background:rgba(98,220,160,.07)}
+      .universal-device-action.warn{color:#ffc16a;border-color:rgba(255,193,106,.24);background:rgba(255,193,106,.07)}
+      .universal-device-action ha-icon{--mdc-icon-size:23px}
+
+      .uv-wicket,.uv-gate,.uv-garage,.uv-irrigation,.uv-mower,.uv-washer,.uv-thermostat,.uv-vacuum,.uv-catfood,.uv-humidifier{position:absolute;inset:0}
+
+      /* cancellino */
+      .uv-wall{position:absolute;bottom:20px;width:34px;height:76px;background:#667075}.uv-wall.left{left:0}.uv-wall.right{right:0}
+      .uv-post{position:absolute;bottom:18px;width:12px;height:94px;background:#7f898e}.uv-post.left{left:30px}.uv-post.right{right:30px}
+      .uv-wicket-leaf{position:absolute;left:42px;right:42px;bottom:27px;height:70px;border:4px solid #67747b;display:flex;justify-content:space-around;transform-origin:left center;background:rgba(41,50,55,.28)}
+      .uv-wicket-leaf.open{transform:perspective(350px) rotateY(-48deg)}.uv-wicket-leaf i{width:4px;background:#7b878d}
+
+      /* cancello */
+      .uv-gate-pillar{position:absolute;bottom:14px;width:16px;height:98px;background:#747f86}.uv-gate-pillar.left{left:16px}.uv-gate-pillar.right{right:16px}
+      .uv-gate-leaf{position:absolute;left:32px;right:32px;bottom:24px;height:74px;border:5px solid #647178;display:flex;justify-content:space-around;background:#343d42;transform-origin:left center}
+      .uv-gate-leaf.open{transform:perspective(400px) rotateY(-40deg)}.uv-gate-leaf i{width:4px;background:#707d84}
+
+      /* basculante */
+      .uv-garage-frame{position:absolute;left:20px;right:20px;top:16px;bottom:16px;border:8px solid #737f86;background:#20272b}
+      .uv-garage-door{position:absolute;inset:0;background:#4f5a61;display:flex;flex-direction:column;justify-content:space-evenly;transform-origin:top center}
+      .uv-garage-door.open{transform:perspective(450px) rotateX(65deg)}.uv-garage-door i{height:3px;background:#6e7a81}
+
+      /* irrigazione */
+      .uv-grass{position:absolute;left:0;right:0;bottom:0;height:45px;background:#314b32}
+      .uv-sprinkler{position:absolute;left:50%;bottom:28px;width:14px;height:30px;transform:translateX(-50%);background:#727d83;border-radius:5px}
+      .uv-water{position:absolute;left:50%;bottom:54px;width:120px;height:58px;transform:translateX(-50%)}
+      .uv-water i{position:absolute;left:58px;bottom:0;width:3px;height:56px;background:#66c8ff;transform-origin:bottom;opacity:.25}
+      .uv-water.active i{opacity:.85}.uv-water i:nth-child(1){transform:rotate(-55deg)}.uv-water i:nth-child(2){transform:rotate(-30deg)}.uv-water i:nth-child(4){transform:rotate(30deg)}.uv-water i:nth-child(5){transform:rotate(55deg)}
+
+      /* mower */
+      .uv-lawn{position:absolute;left:0;right:0;bottom:0;height:46px;background:#2d4d32}
+      .uv-mower-body{position:absolute;left:50%;bottom:29px;width:78px;height:44px;border-radius:32px 32px 18px 18px;background:#59656c;transform:translateX(-50%)}
+      .uv-mower-body.active{box-shadow:0 0 18px rgba(98,220,160,.14)}.uv-mower-top{position:absolute;left:20px;right:20px;top:8px;height:18px;border-radius:13px;background:#252d31}.uv-mower-eye{position:absolute;left:34px;top:13px;width:10px;height:10px;border-radius:50%;background:#70e0b1}
+
+      /* lavatrice */
+      .uv-washer-body{position:absolute;left:50%;top:12px;width:82px;height:104px;transform:translateX(-50%);border-radius:12px;background:#c0c8cd;border:4px solid #7d898f}
+      .uv-washer-panel{position:absolute;left:8px;right:8px;top:8px;height:18px;display:flex;gap:5px}.uv-washer-panel i{width:9px;height:9px;border-radius:50%;background:#53636d}
+      .uv-washer-door{position:absolute;left:18px;right:18px;bottom:10px;height:52px;border-radius:50%;border:7px solid #5f6b72;background:#1d2d36}.uv-washer-door div{position:absolute;inset:6px;border-radius:50%;background:#3e7388}
+      .uv-washer.active .uv-washer-door div{box-shadow:inset 0 0 18px rgba(99,211,255,.35)}
+
+      /* termostato */
+      .uv-thermostat-ring{position:absolute;left:50%;top:16px;width:82px;height:82px;border-radius:50%;transform:translateX(-50%);border:8px solid #65727a;display:grid;place-items:center;background:#172028;color:#85d6ff}
+      .uv-thermostat-ring.active{border-color:#5fcfff;box-shadow:0 0 18px rgba(95,207,255,.14)}.uv-thermostat-ring ha-icon{--mdc-icon-size:35px}.uv-thermostat-base{position:absolute;left:50%;bottom:15px;width:56px;height:10px;border-radius:10px;background:#59656c;transform:translateX(-50%)}
+
+      /* vacuum/mop */
+      .uv-vacuum-body{position:absolute;left:50%;top:23px;width:86px;height:86px;border-radius:50%;transform:translateX(-50%);background:#56636a;border:7px solid #6d7a82}
+      .uv-vacuum-body.active{box-shadow:0 0 18px rgba(98,220,160,.14)}.uv-vacuum-top{position:absolute;left:20px;right:20px;top:16px;height:24px;border-radius:50%;background:#273139}.uv-vacuum-eye{position:absolute;left:37px;top:23px;width:12px;height:12px;border-radius:50%;background:#67d8ff}
+      .uv-mop-pad{position:absolute;left:14px;right:14px;bottom:-8px;height:18px;border-radius:50%;background:#71b8cc;opacity:.8}
+
+      /* gatto + crocchette */
+      .uv-cat{position:absolute;left:19px;bottom:18px;width:73px;height:90px}.uv-cat-head{position:absolute;left:16px;top:7px;width:42px;height:39px;border-radius:48%;background:#89939a}.uv-cat-ear{position:absolute;top:0;width:21px;height:27px;background:#89939a;clip-path:polygon(50% 0,100% 100%,0 83%)}.uv-cat-ear.left{left:11px}.uv-cat-ear.right{right:8px}.uv-cat-head i{position:absolute;top:15px;width:5px;height:6px;border-radius:50%;background:#d8e866}.uv-cat-head i:first-child{left:10px}.uv-cat-head i:nth-child(2){right:10px}.uv-cat-head b{position:absolute;left:18px;top:25px;width:6px;height:4px;border-radius:50%;background:#4a3639}.uv-cat-body{position:absolute;left:18px;bottom:0;width:48px;height:54px;border-radius:50% 50% 32% 32%;background:#7e8990}
+      .uv-bowl{position:absolute;right:17px;bottom:19px;width:50px;height:25px;border-radius:5px 5px 22px 22px;background:#55798d;border-top:5px solid #7397a9}.uv-kibble{position:absolute;left:5px;right:5px;top:-9px;height:12px}.uv-kibble i{position:absolute;width:7px;height:6px;border-radius:50%;background:#9c744a}.uv-kibble i:nth-child(1){left:1px;top:3px}.uv-kibble i:nth-child(2){left:8px}.uv-kibble i:nth-child(3){left:15px;top:4px}.uv-kibble i:nth-child(4){left:22px}.uv-kibble i:nth-child(5){left:29px;top:4px}.uv-kibble i:nth-child(6){left:35px}.uv-kibble i:nth-child(7){left:12px;top:7px}
+
+      /* umidificatore */
+      .uv-hum-body{position:absolute;left:50%;top:14px;width:74px;height:100px;transform:translateX(-50%);border-radius:22px;background:#b8c3c9;border:4px solid #758188}.uv-hum-tank{position:absolute;left:12px;right:12px;top:9px;height:45px;border-radius:14px;background:linear-gradient(180deg,#cdeff9,#7fc9df)}.uv-hum-display{position:absolute;left:23px;right:23px;bottom:16px;height:18px;border-radius:7px;background:#15232b}.uv-hum-mist{position:absolute;left:12px;right:12px;top:-19px;height:22px}.uv-hum-mist i{position:absolute;bottom:0;width:3px;height:18px;border-radius:5px;background:#8edfff;opacity:.2}.uv-humidifier.active .uv-hum-mist i{opacity:.9}.uv-hum-mist i:nth-child(1){left:9px;transform:rotate(-11deg)}.uv-hum-mist i:nth-child(2){left:33px}.uv-hum-mist i:nth-child(3){right:9px;transform:rotate(11deg)}
+
+      /* termostato V2 con controlli */
+      .universal-climate-actions{display:grid;grid-template-columns:48px 48px;gap:7px;align-content:center}.universal-climate-actions .universal-device-action{min-width:48px;padding:0}.universal-climate-actions .wide{grid-column:1/-1;width:103px}
+
+      /* light theme */
+      .app-shell.theme-light .universal-device-card{background:linear-gradient(180deg,#fff,#f6f9fc);border-color:rgba(15,23,42,.09);box-shadow:0 12px 28px rgba(15,23,42,.04)}
+      .app-shell.theme-light .universal-device-scene{background:linear-gradient(180deg,#edf5fa,#dde8ef);border-color:rgba(15,23,42,.07)}
+      .app-shell.theme-light .universal-device-copy span{color:#587292}.app-shell.theme-light .universal-device-copy small{color:#607289}
+      .app-shell.theme-light .universal-device-action{background:#f3f7fa;border-color:rgba(15,23,42,.09);color:#62778d}
+      .app-shell.theme-light .universal-device-action.active{color:#1fa95f;border-color:rgba(31,169,95,.18);background:rgba(31,169,95,.07)}
+      .app-shell.theme-light .uv-thermostat-ring{background:#f8fbfd;color:#247cb3;border-color:#9aabb5}.app-shell.theme-light .uv-thermostat-ring.active{border-color:#4eb6e8}
+      .universal-device-card,.universal-device-card *{transition:none!important;animation:none!important}
+
+      @media(max-width:620px){
+        .universal-device-card{grid-template-columns:105px minmax(0,1fr);grid-template-rows:auto auto;min-height:150px}
+        .universal-device-scene{height:105px}
+        .universal-device-action{grid-column:1/-1;width:100%}
+        .universal-climate-actions{grid-column:1/-1;grid-template-columns:1fr 1fr;width:100%}.universal-climate-actions .universal-device-action{width:100%}.universal-climate-actions .wide{width:100%}
+      }
+
+
+      .community-support-box{margin-top:22px;padding:18px 20px;border:1px solid rgba(49,208,255,.28);border-radius:20px;display:flex;justify-content:space-between;align-items:center;gap:18px;background:linear-gradient(135deg,rgba(49,208,255,.06),rgba(85,230,173,.04))}.community-support-box span{font-size:9px;font-weight:900;letter-spacing:.14em;color:#31d0ff}.community-support-box strong{display:block;margin-top:4px}.community-support-box p{font-size:11px;color:var(--secondary-text-color);margin:4px 0 0}.community-support-box a{white-space:nowrap;text-decoration:none;padding:10px 14px;border:1px solid rgba(49,208,255,.35);border-radius:999px;color:#31d0ff;font-weight:900}.ui-v2 .blind-visual{width:112px;height:92px;position:relative}.ui-v2 .blind-box{height:10px;border-radius:5px;background:#74879b}.ui-v2 .blind-slats{display:flex;flex-direction:column;gap:5px;margin-top:5px}.ui-v2 .blind-slats i{height:7px;border-radius:4px;background:linear-gradient(90deg,#7e95aa,#46576a)}.ui-v2 .blind-visual.open .blind-slats{transform:scaleY(.42);transform-origin:top}.ui-v2 .blind-cord{position:absolute;right:-8px;top:8px;width:2px;height:70px;background:#7b8ea2}.ui-v2 .universal-device-actions{display:flex;gap:7px;align-items:center}@media(max-width:760px){.community-support-box{flex-direction:column;align-items:flex-start}.community-support-box a{width:100%;text-align:center}}
+
+/* ===== v4.3.54 Cucina corretta: tenda interna + tutte le entità ===== */
+      .kitchen-hero{grid-template-columns:minmax(360px,.95fr) minmax(520px,1.3fr)!important}
+      .kitchen-hero-card{display:grid;grid-template-columns:minmax(330px,1.2fr) minmax(220px,.8fr);gap:18px;align-items:center;min-height:260px;padding:20px;border-radius:26px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(103,164,255,.045))}
+      .kitchen-scene{position:relative;height:220px;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#141a20,#0d1116)}
+      .kitchen-window{position:absolute;left:42px;top:25px;width:190px;height:138px;border:5px solid #47525d;background:#1c3544;overflow:hidden}
+      .kitchen-window-sky{position:absolute;inset:0;background:linear-gradient(180deg,#315d76,#203d4e)}
+      .kitchen-blind-cassette,.blind-cassette{position:absolute;left:0;right:0;top:0;height:15px;background:linear-gradient(180deg,#89949d,#5e6972);z-index:4;box-shadow:0 3px 6px rgba(0,0,0,.2)}
+      .kitchen-blind-fabric,.blind-sheet{position:absolute;left:4px;right:4px;top:14px;background:repeating-linear-gradient(0deg,#a6afb6 0 7px,#939da5 7px 14px);z-index:3;transition:height .25s ease;max-height:calc(100% - 18px)}
+      .kitchen-blind-bottom,.blind-bar{position:absolute;left:3px;right:3px;height:6px;background:#66727c;z-index:4;transform:translateY(8px);transition:top .25s ease}
+      .kitchen-counter{position:absolute;left:24px;right:24px;bottom:25px;height:44px;background:linear-gradient(180deg,#343d45,#22292f);border-top:6px solid #5a646c;display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+      .kitchen-counter div{border-right:1px solid #4b555e}
+      .kitchen-pendant{position:absolute;right:72px;top:18px}.kitchen-pendant i{display:block;width:52px;height:24px;border-radius:50% 50% 10px 10px;background:#59636d}.kitchen-pendant span{display:block;width:2px;height:32px;background:#737d87;margin:auto}.kitchen-pendant.on i{background:#ffd476;box-shadow:0 14px 34px rgba(255,207,96,.26)}
+      .kitchen-side{display:flex;flex-direction:column;gap:14px}.kitchen-meta span{display:block;font-size:9px;letter-spacing:.2em;font-weight:850;color:#8da6bd}.kitchen-meta strong{display:block;font-size:30px;margin-top:7px;letter-spacing:-.04em}.kitchen-meta small{display:block;color:var(--secondary-text-color);margin-top:4px}.kitchen-divider{height:1px;background:linear-gradient(90deg,rgba(90,188,255,.8),transparent)}
+      .kitchen-action-btn{height:54px;border-radius:16px;border:1px solid rgba(90,188,255,.5);background:rgba(90,188,255,.06);color:#72c8ff;font-weight:850;font-size:14px;display:flex;align-items:center;justify-content:center;gap:9px;cursor:pointer}
+
+      .kitchen-thermostat-panel{display:grid;grid-template-columns:320px 1fr;gap:28px;align-items:center;padding:24px;border-radius:28px;border:1px solid rgba(255,255,255,.07);background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(73,154,255,.04))}
+      .kitchen-thermo-ring{width:245px;height:245px;margin:auto;border-radius:50%;display:grid;place-items:center;background:conic-gradient(from 220deg,#27343e 0 56%,#384750 56% 78%,#27343e 78%);position:relative}.kitchen-thermo-ring:before{content:"";position:absolute;inset:15px;border-radius:50%;background:var(--card-background-color)}.kitchen-thermo-ring.active{background:conic-gradient(from 220deg,#47c8ff 0 58%,#2d8fff 58% 78%,#27343e 78%)}
+      .kitchen-thermo-center{position:relative;z-index:2;text-align:center}.kitchen-thermo-center span{display:block;font-size:9px;letter-spacing:.18em;color:#8da6bd}.kitchen-thermo-center strong{display:block;font-size:48px;letter-spacing:-.06em;margin-top:7px}.kitchen-thermo-center small{display:block;color:var(--secondary-text-color);margin-top:4px}
+      .kitchen-thermo-info{display:flex;flex-direction:column;gap:16px}.kitchen-thermo-top{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.kitchen-thermo-top div,.kitchen-thermo-state{padding:14px;border-radius:16px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.025)}.kitchen-thermo-top span,.kitchen-thermo-state span{display:block;font-size:8px;letter-spacing:.16em;color:#8da6bd}.kitchen-thermo-top strong{display:block;font-size:22px;margin-top:7px}.kitchen-thermo-state{display:flex;align-items:center;gap:12px}.kitchen-thermo-state ha-icon{--mdc-icon-size:28px;color:#8298ad}.kitchen-thermo-state.active ha-icon{color:#5ec5ff}.kitchen-thermo-state strong{display:block;font-size:18px;margin-top:4px}.kitchen-thermo-state small{display:block;color:var(--secondary-text-color);margin-top:2px}
+      .kitchen-thermo-details{height:52px;border-radius:15px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.025);color:inherit;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+
+      .blind-card{display:grid;grid-template-columns:230px 1fr auto;gap:22px;align-items:center;padding:20px;border-radius:24px;border:1px solid rgba(255,255,255,.07);background:linear-gradient(180deg,rgba(255,255,255,.025),rgba(255,255,255,.012))}
+      .blind-visual{position:relative;width:230px;height:150px;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.08);background:#1e3a4b}
+      .blind-window{position:absolute;inset:10px;background:linear-gradient(180deg,#315d76,#203d4e);border:3px solid #56636d}
+      .blind-copy span{display:block;font-size:9px;letter-spacing:.18em;color:#8da6bd}.blind-copy strong{display:block;font-size:30px;margin-top:7px}.blind-copy small{display:block;color:var(--secondary-text-color);margin-top:4px}
+      .blind-card button{height:46px;padding:0 16px;border-radius:14px;border:1px solid rgba(90,188,255,.35);background:rgba(90,188,255,.05);color:#72c8ff;font-weight:800;cursor:pointer}
+
+      .app-shell.theme-light .kitchen-hero-card,.app-shell.theme-light .kitchen-thermostat-panel,.app-shell.theme-light .blind-card{background:linear-gradient(145deg,#fff,#f3f8fd);border-color:rgba(15,23,42,.09)}
+      .app-shell.theme-light .kitchen-scene{background:linear-gradient(180deg,#eef3f7,#dce5ec)}.app-shell.theme-light .kitchen-counter{background:linear-gradient(180deg,#d0dae2,#bfcbd4);border-top-color:#94a2ad}.app-shell.theme-light .kitchen-window,.app-shell.theme-light .blind-visual{background:#d5ebf7}.app-shell.theme-light .kitchen-thermo-ring:before{background:#fff}.app-shell.theme-light .kitchen-thermo-top div,.app-shell.theme-light .kitchen-thermo-state{background:#f8fbfe;border-color:rgba(15,23,42,.08)}.app-shell.theme-light .kitchen-meta span,.app-shell.theme-light .kitchen-thermo-top span,.app-shell.theme-light .kitchen-thermo-state span,.app-shell.theme-light .blind-copy span{color:#587292}
+      @media(max-width:900px){.kitchen-hero{grid-template-columns:1fr!important}.kitchen-hero-card{grid-template-columns:1fr}.kitchen-thermostat-panel{grid-template-columns:1fr}.blind-card{grid-template-columns:190px 1fr}.blind-card button{grid-column:1/-1}.blind-visual{width:190px}}
+      @media(max-width:620px){.kitchen-hero-card{padding:14px}.kitchen-thermo-ring{width:210px;height:210px}.kitchen-thermo-top{grid-template-columns:1fr}.blind-card{grid-template-columns:1fr}.blind-visual{width:100%}}
+
+
+      
+/* ===== v4.3.54 Camera da letto ===== */
+      .bedroom-hero{grid-template-columns:minmax(360px,.95fr) minmax(520px,1.3fr)!important}
+      .bedroom-hero-card{display:grid;grid-template-columns:minmax(330px,1.2fr) minmax(220px,.8fr);gap:18px;align-items:center;min-height:260px;padding:20px;border-radius:26px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(123,101,255,.045))}
+      .bedroom-scene{position:relative;height:220px;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#171924,#0e1018)}
+      .bedroom-bed{position:absolute;left:34px;bottom:28px;width:235px;height:92px}.bed-head{position:absolute;left:0;right:0;bottom:45px;height:54px;border-radius:14px 14px 4px 4px;background:#3c414c}.bed-cover{position:absolute;left:10px;right:10px;bottom:0;height:58px;border-radius:12px;background:linear-gradient(180deg,#545d6a,#333943)}.bed-pillow{position:absolute;top:28px;width:72px;height:30px;border-radius:12px;background:#c5cbd1;z-index:2}.bed-

@@ -1,170 +1,80 @@
-this._num(id,null); if(n===null) return "—";
-    return n>=350?"Radiazione forte":n>=150?"Radiazione moderata":n>=30?"Radiazione bassa":"Radiazione minima";
-  }
-  _radTone(id){
-    const n=this._num(id,null); if(n===null) return "state-off";
-    return n>=350?"state-good":n>=150?"state-active":n>=30?"state-warn":"state-off";
-  }
-  _fmtAcPowerFromCurrent(currentId, voltageId, digits=2){
-    const a=this._num(currentId,null), v=this._num(voltageId,null);
-    if(a===null || v===null) return "—";
-    return `${((a*v)/1000).toFixed(digits)} kW`;
-  }
-  _esc(v) { return String(v ?? "").replace(/[&<>'"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c])); }
-  _icon(icon, cls="") { return `<div class="iconbox ${cls}"><ha-icon icon="${icon}"></ha-icon></div>`; }
-  _setOptimistic(id,state){ this._optimistic.set(id,{state,at:Date.now()}); this._renderPage(false); }
-  _syncOptimistic(){
-    const now=Date.now();
-    for(const [id,p] of this._optimistic){
-      const eid=this._eid(id); const actual=eid?this._hass?.states?.[eid]?.state:null;
-      if(actual===p.state || now-p.at>3500) this._optimistic.delete(id);
-    }
-  }
-  _stateFingerprint(){
-    if(!this._hass?.states || !this._entityConfigLoaded) return "";
-    const rows=[];
-    const seen=new Set();
-    for(const logical of ENTITY_KEYS){
-      const eid=this._eid(logical);
-      if(!eid || seen.has(eid)) continue;
-      seen.add(eid);
-      const st=this._hass.states[eid];
-      if(!st){ rows.push(`${eid}|missing`); continue; }
-      let attrs="";
-      try { attrs=JSON.stringify(st.attributes || {}); } catch(_err) {}
-      rows.push(`${eid}|${st.state}|${attrs}`);
-    }
-    return rows.join("\n");
-  }
+d2dde7);border-color:#9badbd}
+      .app-shell.theme-light .stairs-meta span{color:#587292}
+      .app-shell.theme-light .stairs-open-btn{background:#f3f9ff;color:#237bc0;border-color:#86c8f5}
+      @media(max-width:900px){.scale-hero{grid-template-columns:1fr!important}.stairs-hero-card{grid-template-columns:1fr}.stairs-side{display:grid;grid-template-columns:1fr 1fr}.stairs-open-btn{grid-column:1/-1}}
+      @media(max-width:620px){.stairs-hero-card{padding:14px}.stairs-side{grid-template-columns:1fr}.stairs-open-btn{grid-column:auto}.stairs-flight{transform:scale(.86);transform-origin:left bottom}.stairs-door{right:20px}}
 
-  _scheduleRender(){
-    if(this._pointerBusy){ this._renderPending=true; return; }
-    if(this._renderTimer) return;
-    this._renderTimer=setTimeout(()=>{
-      this._renderTimer=null;
-      if(this._pointerBusy){ this._renderPending=true; return; }
-      this._renderPage(false);
-    },70);
-  }
-  _countOn(list) { return list.filter(id=>this._on(id)).length; }
-  _openCount() { return OPENINGS.filter(id=>this._on(id)).length; }
-  _climateActive(id) { const st=this._state(id,"off"); const act=this._attr(id,"hvac_action",""); return st!=="off" || ["heating","cooling","drying","fan"].includes(act); }
-  _coverOpen(id, invertedPosition=false) {
-    const p=this._optimistic.get(id); if(p && ["open","closed"].includes(p.state)) return p.state==="open";
-    return invertedPosition ? Number(this._attr(id,"current_position",0))>5 : this._state(id)==="open";
-  }
-  _imageUrl(id){ const p=this._attr(id,"entity_picture",""); return p ? this._esc(p) : ""; }
-  _firstId(ids=[]){ return ids.find(id=>this._s(id)) || ids[0] || ""; }
-  _firstState(ids=[], fallback="—"){ const id=this._firstId(ids); return id ? this._state(id,fallback) : fallback; }
-  _firstNum(ids=[], fallback=null){ const id=this._firstId(ids); return id ? this._num(id,fallback) : fallback; }
-  _firstFmt(ids=[], digits=1, unit=null){ const id=this._firstId(ids); return id ? this._fmt(id,digits,unit) : "—"; }
-  _fmtPowerAuto(idOrIds, digits=2){
-    const ids = Array.isArray(idOrIds) ? idOrIds : [idOrIds];
-    const id = this._firstId(ids);
-    if(!id) return "—";
-    const n = this._num(id, null);
-    if(n===null) return "—";
-    const rawUnit = String(this._attr(id, "unit_of_measurement", "") || "").toLowerCase();
-    if(rawUnit === 'w' || (!rawUnit && Math.abs(n) >= 100)) return `${(n/1000).toFixed(digits)} kW`;
-    if(rawUnit === 'kw') return `${n.toFixed(digits)} kW`;
-    return `${n.toFixed(digits)} ${rawUnit || 'kW'}`;
-  }
-  _powerValueAuto(idOrIds){
-    const ids = Array.isArray(idOrIds) ? idOrIds : [idOrIds];
-    const id = this._firstId(ids);
-    if(!id) return null;
-    let n = this._num(id, null);
-    if(n===null) return null;
-    const rawUnit = String(this._attr(id, "unit_of_measurement", "") || "").toLowerCase();
-    if(rawUnit === 'w' || (!rawUnit && Math.abs(n) >= 100)) n = n / 1000;
-    return n;
-  }
-  _fmtSignedPowerAuto(idOrIds, digits=2){
-    const n = this._powerValueAuto(idOrIds);
-    if(n===null) return "—";
-    const sign = n > 0 ? '+' : n < 0 ? '−' : '±';
-    return `${sign}${Math.abs(n).toFixed(digits)} kW`;
-  }
-  _fmtAbsPowerAuto(idOrIds, digits=2){
-    const n = this._powerValueAuto(idOrIds);
-    if(n===null) return "—";
-    return `${Math.abs(n).toFixed(digits)} kW`;
-  }
-  _themeIsLight(){
-    const v = getComputedStyle(this).getPropertyValue('--primary-background-color').trim();
-    if(!v) return false;
-    let r=255,g=255,b=255;
-    if(v.startsWith('#')){
-      const h=v.slice(1);
-      if(h.length===3){ r=parseInt(h[0]+h[0],16); g=parseInt(h[1]+h[1],16); b=parseInt(h[2]+h[2],16); }
-      else if(h.length>=6){ r=parseInt(h.slice(0,2),16); g=parseInt(h.slice(2,4),16); b=parseInt(h.slice(4,6),16); }
-    } else {
-      const m=v.match(/rgba?\(([^)]+)\)/i);
-      if(m){ const p=m[1].split(',').map(s=>parseFloat(s.trim())); [r,g,b]=p; }
-    }
-    const luminance = (0.2126*r + 0.7152*g + 0.0722*b) / 255;
-    return luminance > 0.62;
-  }
-  _applyThemeMode(){
-    const shell = this.shadowRoot?.querySelector('.app-shell');
-    if(!shell) return;
-    const light = this._themeIsLight();
-    shell.classList.toggle('theme-light', light);
-    shell.classList.toggle('theme-dark', !light);
-  }
-  _windDir(id){ const deg=this._num(id,null); if(deg===null) return "—"; const dirs=['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSO','SO','OSO','O','ONO','NO','NNO']; return `${Math.round(deg)}° · ${dirs[Math.floor((deg+11.25)/22.5)%16]}`; }
-  _metricTone(entity,value=""){
-    const st=this._state(entity,""); const val=String(value).toLowerCase();
-    if((entity.includes("wleak")||entity.includes("water_leak")) && this._on(entity)) return "state-bad";
-    if(entity.includes("tank_status") && this._on(entity)) return "state-bad";
-    if(entity==="alarm_control_panel.home_alarm") return st==="triggered"?"state-bad":st==="disarmed"?"state-warn":"state-good";
-    if(entity.startsWith("binary_sensor.") && this._on(entity)) return entity.includes("motion")||entity.includes("occupancy")||entity.includes("occupazione")?"state-active":"state-warn";
-    if(["aperta","aperto","sbloccata","rilevata","rilevato","pieno","allarme"].some(x=>val.includes(x))) return val.includes("perdita")||val.includes("pieno")||val.includes("allarme")?"state-bad":"state-warn";
-    if(["accesa","acceso","attivo","attiva","occupato","in carica","cleaning"].some(x=>val.includes(x))) return "state-active";
-    if(["chiusa","chiuso","spenta","spento","libero","assente","ok","nessuna"].some(x=>val.includes(x))) return "state-good";
-    return "";
-  }
-  _controlTone(entity,on){
-    if(!on) return "state-off";
-    if(entity.startsWith("light.")) return "state-on light-tone";
-    if(entity.startsWith("climate.")) return "state-on blue-tone";
-    return "state-on";
-  }
 
-  _overall() {
-    const configured=this._configuredCount();
-    if(configured===0) return {level:"blue", icon:"mdi:tune-variant", title:"Configura la dashboard", text:"Associa le entità che vuoi utilizzare"};
-    const alarm=this._state("alarm_control_panel.home_alarm","unknown");
-    const leak=this._on("binary_sensor.bathroom_water_leak");
-    const tank=this._on("binary_sensor.garage_dehumidifier_tank_full") || ["full","pieno","water full","tank full"].includes(this._state("sensor.garage_dehumidifier_tank_status","").toLowerCase());
-    const open=this._openCount();
-    if(alarm==="triggered" || leak || tank) return {level:"bad", icon:"mdi:alert-octagon", title:"Attenzione richiesta", text: alarm==="triggered"?"Allarme in corso":leak?"Perdita acqua rilevata":"Serbatoio deumidificatore pieno"};
-    if(open>0) return {level:"warn", icon:"mdi:shield-alert-outline", title:"Casa da controllare", text:`${open} aperture aperte`};
-    if(alarm==="disarmed") return {level:"warn", icon:"mdi:shield-off-outline", title:"Casa tranquilla", text:"Allarme disinserito"};
-    return {level:"good", icon:"mdi:shield-check-outline", title:"Tutto sotto controllo", text:"Nessuna criticità rilevata"};
-  }
+      
+/* ===== v4.3.54 Ingresso visual hero ===== */
+      .entrance-hero-v433{grid-template-columns:minmax(360px,.95fr) minmax(520px,1.3fr)!important}
+      .entrance-showcase{display:grid;grid-template-columns:minmax(300px,1.1fr) minmax(230px,.9fr);gap:18px;align-items:center;min-height:260px;padding:20px;border-radius:26px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(70,168,255,.05))}
+      .entrance-door-scene{position:relative;height:220px;overflow:hidden;border-radius:20px;background:radial-gradient(circle at 50% 48%,rgba(61,180,255,.10),transparent 40%),linear-gradient(180deg,#151b21,#0d1116);display:grid;place-items:center}
+      .entrance-wall-glow{position:absolute;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(67,188,255,.11),transparent 67%)}
+      .entrance-door{position:relative;width:136px;height:184px;border:6px solid #56616d;border-bottom-width:8px;border-radius:6px 6px 3px 3px;background:#11171c;box-shadow:0 14px 28px rgba(0,0,0,.28),0 0 28px rgba(61,180,255,.08)}
+      .entrance-door-inner{position:absolute;inset:10px;background:linear-gradient(135deg,#303a44,#1d242b 62%,#252e36);border:1px solid #687581;border-radius:2px;transform-origin:left center;transition:transform .25s ease}.entrance-door.open .entrance-door-inner{transform:perspective(500px) rotateY(-22deg)}
+      .entrance-door-window{position:absolute;left:18px;right:18px;top:16px;height:40px;border:1px solid #687785;background:linear-gradient(180deg,rgba(104,194,255,.14),rgba(25,39,50,.4))}.entrance-door-lines{position:absolute;left:18px;right:18px;top:72px;bottom:18px;border-top:1px solid #596672;border-bottom:1px solid #596672}.entrance-door-lines:after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:#596672}.entrance-door-handle{position:absolute;right:13px;top:90px;width:7px;height:7px;border-radius:50%;background:#e0e6eb;box-shadow:0 0 0 3px #252c33}
+      .entrance-door-state{position:absolute;left:50%;bottom:-16px;transform:translateX(-50%);padding:6px 10px;border-radius:999px;background:#19232d;border:1px solid rgba(255,255,255,.10);font-size:8px;letter-spacing:.1em;font-weight:900;white-space:nowrap}.entrance-door-state.good{color:#66e0a4}.entrance-door-state.warn{color:#ffc067}.entrance-door-state.bad{color:#ff7f79}
+      .entrance-showcase-side{display:flex;flex-direction:column;gap:14px;padding:6px}.entrance-showcase-meta span{display:block;font-size:9px;letter-spacing:.2em;font-weight:850;color:#8da6bd}.entrance-showcase-meta strong{display:block;font-size:30px;letter-spacing:-.04em;margin-top:7px}.entrance-showcase-meta small{display:block;color:var(--secondary-text-color);margin-top:4px}.entrance-showcase-divider{height:1px;background:linear-gradient(90deg,rgba(84,180,255,.85),transparent)}.entrance-showcase-btn{height:54px;border-radius:16px;border:1px solid rgba(84,180,255,.55);background:rgba(84,180,255,.06);color:#6bc4ff;font-weight:850;font-size:14px;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer}
+      .app-shell.theme-light .entrance-showcase{background:linear-gradient(145deg,#fff,#eef7ff);border-color:rgba(15,23,42,.10)}.app-shell.theme-light .entrance-door-scene{background:radial-gradient(circle at 50% 48%,rgba(50,175,255,.10),transparent 42%),linear-gradient(180deg,#edf3f8,#dce6ef)}.app-shell.theme-light .entrance-door{background:#d4dee7;border-color:#8798a8}.app-shell.theme-light .entrance-door-inner{background:linear-gradient(135deg,#eef3f7,#cbd7e1);border-color:#91a3b4}.app-shell.theme-light .entrance-showcase-meta span{color:#587292}.app-shell.theme-light .entrance-showcase-btn{background:#f3f9ff;color:#237bc0;border-color:#86c8f5}.app-shell.theme-light .entrance-door-state{background:#f8fbff;border-color:rgba(15,23,42,.10)}
+      @media(max-width:900px){.entrance-hero-v433{grid-template-columns:1fr!important}.entrance-showcase{grid-template-columns:1fr}.entrance-showcase-side{display:grid;grid-template-columns:1fr 1fr}.entrance-showcase-btn{grid-column:1/-1}}@media(max-width:620px){.entrance-showcase{padding:14px}.entrance-showcase-side{grid-template-columns:1fr}.entrance-showcase-btn{grid-column:auto}}
 
-  _anyConfigured(ids=[]) { return ids.some(id=>this._configured(id)); }
+      @media(max-width:1000px){.hero-grid{grid-template-columns:1fr}.span-2,.span-3{grid-column:span 4}.span-4{grid-column:span 6}.span-5,.span-7,.span-8{grid-column:span 12}}
+      @media(max-width:760px){.weather-strip{grid-template-columns:repeat(2,minmax(0,1fr))}.weather-temp{font-size:48px}.weather-icon{width:58px;height:58px;border-radius:18px}.weather-icon ha-icon{--mdc-icon-size:32px}.weather-head{align-items:center}.menu-btn{display:flex}.topbar-main{min-height:62px;padding:9px 10px 7px;gap:7px}.app-identity{gap:8px}.app-icon{width:39px;height:39px;border-radius:12px}.app-icon ha-icon{--mdc-icon-size:22px}.brand-title{font-size:19px}.brand-subtitle{font-size:10px;margin-top:3px}.version-badge{font-size:8px;padding:3px 6px}.nav-scroller{padding:0 10px}.nav{gap:18px}.nav-btn{padding:9px 1px 11px;font-size:12px;min-height:42px}.nav-btn ha-icon{--mdc-icon-size:18px}main{padding:12px 10px 30px}.page{gap:13px}.hero{border-radius:22px;padding:19px}.hero h1{font-size:38px}.hero-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.hero-metric{padding:12px}.hero-metric .value{font-size:17px}.grid{gap:9px}.span-2,.span-3,.span-4,.span-5,.span-6,.span-7,.span-8{grid-column:span 6}.room-card{min-height:154px}.card,.metric{border-radius:18px;padding:14px}.metric{min-height:108px}.climate-panel{grid-template-columns:1fr;border-radius:20px}.climate-actions{display:flex}.climate-temp{font-size:44px}}
+      @media(max-width:480px){.weather-head{align-items:flex-start}.weather-now{gap:12px}.weather-temp{font-size:42px}.weather-station{font-size:9px;padding:6px 8px}.span-2,.span-3,.span-4,.span-5,.span-6,.span-7,.span-8{grid-column:span 12}.hero-metrics{grid-template-columns:1fr 1fr}.room-card{min-height:140px}.header-pill{font-size:11px;padding:7px 9px}}
 
-  _roomConfigured(room) {
-    const groups={
-      esterno:["input_boolean.pedestrian_gate","switch.gate_command"],
-      scale:["light.stairs","input_boolean.main_gate"],
-      ingresso:["alarm_control_panel.home_alarm","binary_sensor.entry_door","binary_sensor.entry_motion","binary_sensor.entry_occupancy","input_boolean.entry_door_unlock","light.entry_main","sensor.entry_illuminance"],
-      disimpegno:["binary_sensor.hallway_motion","binary_sensor.hallway_occupancy","light.hallway_main","sensor.hallway_illuminance"],
-      bagno:[...ENTITY_KEYS].filter(id=>id.includes("bathroom_") || id==="fan.bathroom_extractor"),
-      cucina:[...ENTITY_KEYS].filter(id=>id.includes("kitchen_") || id.startsWith("sensor.heating_") || id==="climate.home_heating" || id==="calendar.heating_program" || id==="water_heater.domestic_hot_water" || id.startsWith("sensor.weather_indoor_")),
-      camera:[...ENTITY_KEYS].filter(id=>id.includes("bedroom_") || id.includes("robot_vacuum")),
-      balcone:[...ENTITY_KEYS].filter(id=>id.includes("balcony_") || id.startsWith("sensor.weather_") || id.startsWith("binary_sensor.weather_") || id.startsWith("sensor.solar_")),
-      garage:[...ENTITY_KEYS].filter(id=>id.includes("garage_") || id.includes("wallbox_") || id.includes("ev_") || id==="sensor.grid_current_l1" || id.startsWith("sensor.utility_room_"))
-    };
-    return this._anyConfigured(groups[room]||[]);
-  }
+      
 
-  _roomStatus(room) {
-    const light=(ids)=>ids.some(id=>this._on(id));
-    const active=(ids)=>ids.some(id=>this._on(id));
-    switch(room){
-      case "esterno": return this._on("input_boolean.pedestrian_gate") ? {level:"warn",text:"Cancellino aperto"}:{level:"good",text:"Accesso chiuso"};
-      case "scale": return light(["light.stairs"]) ? {level:"blue",text:"Luce accesa"}:{level:"good",text:"Tutto ok"};
-      case "ingresso": {
+      /* Casa V2 — hero illustrati e panoramica distinta */
+      .ui-v2 .community-v2-hero{grid-template-columns:minmax(330px,.82fr) minmax(560px,1.45fr)!important;min-height:390px!important}
+      .community-v2-hero-card{display:grid;grid-template-columns:minmax(330px,1.2fr) minmax(220px,.8fr);gap:18px;align-items:center;min-height:285px;padding:19px;border-radius:26px;border:1px solid rgba(255,255,255,.075);background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(65,170,235,.045))}
+      .community-v2-hero-visual{min-width:0}.community-v2-hero-side{display:flex;flex-direction:column;gap:12px;padding:4px 2px}.community-v2-meta span{display:block;font-size:9px;letter-spacing:.19em;font-weight:900;color:#8da6bd}.community-v2-meta strong{display:block;margin-top:5px;font-size:27px;letter-spacing:-.04em}.community-v2-meta small{display:block;margin-top:4px;color:var(--secondary-text-color);font-size:10px;line-height:1.35}.community-v2-divider{height:1px;background:linear-gradient(90deg,rgba(70,190,255,.72),transparent)}
+      .community-v2-house{height:235px;position:relative;overflow:hidden;border-radius:20px;background:linear-gradient(180deg,#12202a,#0d151b)}.community-v2-house .house-v2-building{transform:scale(.88);transform-origin:center bottom}
+      .community-stairs-scene{height:220px;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#17232b,#0c1217);display:grid;place-items:center}.css-stairs{position:relative;width:86%;height:86%}.css-stairs-wall{position:absolute;inset:0;background:linear-gradient(135deg,#222e36,#131a20);clip-path:polygon(0 0,100% 0,100% 100%,38% 100%)}.css-stairs-flight{position:absolute;left:8%;bottom:10%;width:62%;height:66%;display:flex;flex-direction:column-reverse;gap:4px;transform:skewY(-18deg)}.css-stairs-flight i{height:13px;background:linear-gradient(90deg,#53636f,#29353e);border-top:1px solid #738592}.css-stairs-rail{position:absolute;left:19%;top:12%;width:5px;height:68%;background:#7f929e;transform:rotate(27deg);transform-origin:bottom}.css-stairs-door{position:absolute;right:9%;bottom:8%;width:68px;height:118px;border:5px solid #5f707d;background:#222c34}.css-stairs-door i{position:absolute;right:8px;top:52%;width:6px;height:6px;border-radius:50%;background:#d6dce1}
+      .community-kitchen-scene{height:220px;border-radius:20px;position:relative;overflow:hidden;background:linear-gradient(180deg,#17242d,#0e151b)}.community-kitchen-scene .kitchen-wall{position:absolute;inset:0;background:linear-gradient(180deg,#26343d,#171e24)}.community-kitchen-scene .kitchen-window{position:absolute;left:24px;top:22px;width:120px;height:92px;border:5px solid #61717d;background:#1f4055}.community-kitchen-scene .kitchen-sky{position:absolute;inset:0;background:linear-gradient(180deg,#385f76,#203b4c)}.community-kitchen-scene .kitchen-cabinets{position:absolute;right:24px;top:24px;display:flex;gap:6px}.community-kitchen-scene .kitchen-cabinets i{width:54px;height:72px;border:2px solid #697b88;background:#34434d}.community-kitchen-scene .kitchen-counter{position:absolute;left:20px;right:20px;bottom:24px;height:70px;background:#29343c;border-top:8px solid #707c84;display:flex}.community-kitchen-scene .kitchen-counter div{flex:1;border-right:2px solid #43515b}.community-kitchen-scene .kitchen-pendant{position:absolute;left:50%;top:0;width:3px;height:55px;background:#8b969e}.community-kitchen-scene .kitchen-pendant span{position:absolute;left:-24px;bottom:-17px;width:50px;height:26px;border-radius:50% 50% 10px 10px;background:#596671}.community-kitchen-scene .kitchen-pendant.on i{position:absolute;left:-40px;bottom:-45px;width:82px;height:82px;border-radius:50%;background:radial-gradient(circle,rgba(255,210,105,.22),transparent 68%)}
+      .community-generic-scene{height:220px;border-radius:20px;display:grid;place-items:center;background:linear-gradient(145deg,#17242d,#0d141a);color:#55c8ff}.community-generic-scene ha-icon{--mdc-icon-size:72px}
+      .overview-v2-page .spotlight{background:linear-gradient(145deg,color-mix(in srgb,var(--card-background-color) 88%,#0a1b29 12%),color-mix(in srgb,var(--card-background-color) 96%,#132a3c 4%));border-radius:28px}.overview-v2-page .premium-room{border-radius:24px}.overview-v2-page .panel-title{font-size:18px}
+      @media(max-width:980px){.ui-v2 .community-v2-hero{grid-template-columns:1fr!important}.community-v2-hero-card{grid-template-columns:1fr}.community-v2-hero-side{display:grid;grid-template-columns:repeat(3,1fr)}}@media(max-width:620px){.community-v2-hero-card{padding:13px}.community-v2-hero-side{grid-template-columns:1fr}.community-v2-house,.community-stairs-scene,.community-kitchen-scene,.hallway-scene,.bathroom-scene,.bedroom-scene,.balcony-scene-v2,.garage-scene,.entrance-door-scene,.gate-visual-v2{height:185px!important}}
+
+      /* Casa V2 uniform room heroes */
+      .ui-v2 .v2-room-balcone .community-v2-hero-visual,
+      .ui-v2 .v2-room-garage .community-v2-hero-visual{min-height:220px}
+      .ui-v2 .v2-room-balcone .balcony-scene-v2{display:block!important;position:relative!important;width:100%!important;height:235px!important;border-radius:20px!important;overflow:hidden!important;background:linear-gradient(180deg,#183244,#101b23)!important}
+      .ui-v2 .v2-room-balcone .balcony-v2-sky{position:absolute;inset:0;background:linear-gradient(180deg,#234c64 0 52%,#17252e 52%)}
+      .ui-v2 .v2-room-balcone .balcony-v2-sun{position:absolute;right:28px;top:22px;width:38px;height:38px;border-radius:50%;background:#ffd36a;box-shadow:0 0 28px rgba(255,211,106,.35)}
+      .ui-v2 .v2-room-balcone .balcony-v2-wall{position:absolute;left:18px;right:18px;bottom:56px;height:120px;background:#38444c;border-radius:8px 8px 0 0}
+      .ui-v2 .v2-room-balcone .balcony-v2-window{position:absolute;top:18px;width:82px;height:76px;border:5px solid #71818d;background:#203b4a}
+      .ui-v2 .v2-room-balcone .balcony-v2-window.left{left:30px}.ui-v2 .v2-room-balcone .balcony-v2-window.right{right:30px}
+      .ui-v2 .v2-room-balcone .balcony-v2-awning{position:absolute;top:12px;width:110px;height:42px;background:repeating-linear-gradient(90deg,#b8c4cc 0 14px,#687984 14px 28px);transform:skewX(-8deg);transform-origin:top}
+      .ui-v2 .v2-room-balcone .balcony-v2-awning.left{left:24px}.ui-v2 .v2-room-balcone .balcony-v2-awning.right{right:24px}
+      .ui-v2 .v2-room-balcone .balcony-v2-railing{position:absolute;left:12px;right:12px;bottom:24px;height:52px;border-top:5px solid #667985;border-bottom:5px solid #667985;display:flex;justify-content:space-around}
+      .ui-v2 .v2-room-balcone .balcony-v2-railing i{width:4px;height:100%;background:#667985}
+      .ui-v2 .v2-room-balcone .balcony-v2-floor{position:absolute;left:0;right:0;bottom:0;height:28px;background:#29363d}
+      .ui-v2 .v2-room-garage .garage-scene{display:block!important;position:relative!important;width:100%!important;height:235px!important;border-radius:20px!important;overflow:hidden!important;background:linear-gradient(180deg,#16232d,#0e151b)!important}
+      .ui-v2 .v2-room-garage .garage-building{position:absolute;left:36px;right:36px;bottom:18px;height:180px}
+      .ui-v2 .v2-room-garage .garage-roof{position:absolute;left:10px;right:10px;top:0;height:56px;background:#404a51;clip-path:polygon(50% 0,100% 72%,92% 72%,92% 100%,8% 100%,8% 72%,0 72%)}
+      .ui-v2 .v2-room-garage .garage-frame{position:absolute;left:30px;right:30px;top:52px;bottom:0;border:7px solid #59666f;background:#11171c;overflow:hidden}
+      .ui-v2 .v2-room-garage .garage-door-visual{position:absolute;inset:0;background:#46525b;display:flex;flex-direction:column}
+      .ui-v2 .v2-room-garage .garage-door-visual i{flex:1;border-bottom:2px solid #6b7881}
+      .ui-v2 .v2-room-garage .garage-car{position:absolute;left:50%;bottom:6px;width:150px;height:60px;transform:translateX(-50%)}
+      .ui-v2 .v2-room-garage .car-body{position:absolute;left:8px;right:8px;bottom:10px;height:34px;border-radius:38px 38px 12px 12px;background:linear-gradient(180deg,#8d98a3,#56616b)}
+      .ui-v2 .v2-room-garage .car-window{position:absolute;left:43px;top:3px;width:64px;height:28px;border-radius:28px 28px 4px 4px;background:#263744}
+      .ui-v2 .v2-room-garage .car-wheel{position:absolute;bottom:0;width:24px;height:24px;border-radius:50%;background:#111;border:5px solid #3a4045}
+      .ui-v2 .v2-room-garage .car-wheel.left{left:24px}.ui-v2 .v2-room-garage .car-wheel.right{right:24px}
+      .ui-v2 .v2-room-garage .garage-charge-dot{position:absolute;right:17px;top:17px;width:16px;height:16px;border-radius:50%;background:#55616c}
+
+      .room-manager{margin:0 0 18px;padding:16px;border:1px solid var(--divider-color);border-radius:18px;background:color-mix(in srgb,var(--card-background-color) 94%,transparent)}.room-manager-head{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:12px}.room-manager-head strong{display:block;font-size:16px}.room-manager-head span{display:block;margin-top:4px;color:var(--secondary-text-color);font-size:11px}.room-add{border:1px solid color-mix(in srgb,var(--primary-color) 40%,var(--divider-color));background:color-mix(in srgb,var(--primary-color) 8%,var(--card-background-color));color:var(--primary-color);border-radius:12px;padding:9px 12px;font-weight:800}.room-edit-row{display:grid;grid-template-columns:28px minmax(130px,1fr) minmax(150px,1fr) minmax(130px,.8fr) minmax(220px,1.4fr) auto;gap:8px;align-items:center;padding:9px 0;border-top:1px solid var(--divider-color)}.room-edit-row input,.room-edit-row select{min-width:0;border:1px solid var(--divider-color);border-radius:10px;padding:9px;background:var(--primary-background-color);color:var(--primary-text-color)}.room-order{font-weight:900;color:var(--secondary-text-color);text-align:center}.room-row-actions{display:flex;gap:4px}.room-row-actions button{width:34px;height:34px;border:1px solid var(--divider-color);border-radius:9px;background:var(--card-background-color);color:var(--primary-text-color)}.room-empty{display:flex;flex-direction:column;align-items:center;text-align:center;padding:24px;color:var(--secondary-text-color);gap:5px}.room-empty ha-icon{--mdc-icon-size:36px;color:var(--primary-color)}.dynamic-room-scene{height:235px;position:relative;overflow:hidden;border-radius:20px;background:radial-gradient(circle at 50% 35%,rgba(47,196,255,.15),transparent 34%),linear-gradient(145deg,#15232d,#0b1217)}.dynamic-room-icon{position:absolute;left:50%;top:50%;transform:translate(-50%,-54%);width:112px;height:112px;border-radius:30px;display:grid;place-items:center;border:1px solid rgba(90,205,255,.25);background:rgba(21,42,55,.72);box-shadow:0 20px 55px rgba(0,0,0,.25)}.dynamic-room-icon ha-icon{--mdc-icon-size:58px;color:#65d1ff}.dynamic-room-orbit{position:absolute;left:50%;top:50%;border:1px solid rgba(101,209,255,.16);border-radius:50%;transform:translate(-50%,-50%)}.dynamic-room-orbit.a{width:180px;height:180px}.dynamic-room-orbit.b{width:260px;height:260px}.dynamic-room-floor{position:absolute;left:12%;right:12%;bottom:22px;height:1px;background:linear-gradient(90deg,transparent,#65d1ff,transparent)}@media(max-width:900px){.room-edit-row{grid-template-columns:28px 1fr 1fr}.room-edit-row [data-room-icon],.room-edit-row [data-room-entities]{grid-column:2/-1}.room-row-actions{grid-column:2/-1}.room-manager-head{align-items:flex-start;flex-direction:column}}
+
+      .room-friendly-hint{display:flex;align-items:flex-start;gap:8px;margin-top:12px;padding:10px 12px;border-radius:12px;background:color-mix(in srgb,var(--primary-color) 6%,var(--card-background-color));color:var(--secondary-text-color);font-size:10px;line-height:1.45}
+      .room-friendly-hint ha-icon{--mdc-icon-size:16px;color:var(--primary-color);flex:0 0 auto;margin-top:1px}.room-friendly-hint b{color:var(--primary-text-color)}
+
+      .room-edit-row{grid-template-columns:28px minmax(130px,.8fr) minmax(145px,.8fr) minmax(125px,.72fr) minmax(320px,1.65fr) auto!important;align-items:start!important}
+      .room-entity-picker{min-width:0}.room-entity-chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:6px}.room-entity-chip{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:7px;position:relative;padding:6px 29px 6px 9px;border:1px solid color-mix(in srgb,var(--primary-color) 26%,var(--divider-color));border-radius:10px;background:color-mix(in srgb,var(--primary-color) 6%,var(--card-background-color));min-width:145px;max-width:100%}.room-entity-chip>span{font-size:11px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.room-entity-chip small{grid-column:1;color:var(--secondary-text-color);font-size:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.room-entity-chip button{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:24px;height:24px;border:0;background:transparent;color:var(--secondary-text-color);padding:0}.room-entity-chip button ha-icon{--mdc-icon-size:15px}
+      .room-entity-search-wrap{position:relative;display:flex;align-items:center;border:1px solid var(--divider-color);border-radius:10px;background:var(--primary-background-color)}.room-entity-search-wrap>ha-icon{margin-left:9px;color:var(--secondary-text-color);--mdc-icon-size:16px}.room-entity-search{width:100%;border:0!important;background:transparent!important;padding:9px 10px!important;outline:none;color:var(--primary-text-color)}.room-entity-suggestions{position:absolute;z-index:80;left:-1px;right:-1px;top:calc(100% + 5px);max-height:300px;overflow:auto;padding:6px;border:1px solid color-mix(in srgb,var(--primary-color) 25%,var(--divider-color));border-radius:12px;background:var(--card-background-color);box-shadow:0 18px 45px rgba(0,0,0,.36)}.room-entity-suggestion{display:flex;width:100%;flex-direction:column;align-items:flex-start;border:0;border-radius:8px;padding:8px 9px;background:transparent;color:var(--primary-text-color);text-align:left;cursor:pointer}.room-entity-suggestion:hover{background:color-mix(in srgb,var(--primary-color) 9%,transparent)}.room-entity-suggestion span{font-size:11px;font-weight:800}.room-entity-suggestion small{font-size:9px;color:var(--secondary-text-color);margin-top:2px}.room-entity-noresult{padding:12px;color:var(--secondary-text-color);font-size:10px}
+      @media(max-width:1050px){.room-edit-row{grid-template-columns:28px 1fr 1fr!important}.room-entity-picker{grid-column:2/-1}.room-row-actions{grid-column:2/-1}}
+
+      /* v2.0.0 - room entity picker popover fix */
+      .room-manager,.room-list,.room-edit-row,.room-entity-picker{overflow:visible!important}
+      .room-edit-row{position:relative}
+      .room-entity-search-wrap{z-index:20}
+      .room-enti
