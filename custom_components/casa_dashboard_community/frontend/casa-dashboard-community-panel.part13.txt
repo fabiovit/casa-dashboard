@@ -183,6 +183,55 @@
     host.innerHTML=`<div class="header-pill"><ha-icon icon="${all.icon}"></ha-icon>${this._esc(all.title)}</div>${temp}`;
   }
 
+  _translations(){
+    return {
+      "Panoramica":"Overview","Informazioni":"Information","Configura le entità":"Configure entities","Configura":"Configure","Chiudi":"Close",
+      "Caricamento Casa Dashboard…":"Loading Casa Dashboard…","Realizzato da":"Created by","Offrimi un caffè":"Buy me a coffee",
+      "Pagina non disponibile":"Page unavailable","Dashboard pronta":"Dashboard ready","Versione":"Version","Piattaforma":"Platform",
+      "Dettagli e personalizzazione di Casa Dashboard Community.":"Casa Dashboard Community details and customization.",
+      "Dashboard app-like, adattiva e configurabile per Home Assistant.":"An app-like, adaptive and configurable dashboard for Home Assistant.",
+      "In uso":"Active","Grafica originale di Casa Dashboard Community v2.1.0.":"Original Casa Dashboard Community interface.",
+      "Nuova grafica derivata da Casa Dashboard v4.3.54, con visual dedicati per luci, sensori, clima, dispositivi e aperture.":"New dynamic interface with dedicated visuals for lights, sensors, climate, devices and openings.",
+      "La scelta viene salvata sul browser/dispositivo e non modifica entità o automazioni.":"Your choice is saved on this browser/device and does not change entities or automations.",
+      "SUPPORTA IL PROGETTO":"SUPPORT THE PROJECT","Casa Dashboard Community è gratuita":"Casa Dashboard Community is free","Se ti piace, puoi supportarne lo sviluppo.":"If you like it, you can support its development.",
+      "Stanze":"Rooms","Crea, rinomina e ordina gli ambienti della dashboard. In Casa V2 non esistono ambienti preimpostati: compariranno solo quelli creati qui.":"Create, rename and reorder dashboard rooms. Casa V2 has no preset rooms: only the rooms you create here will appear.",
+      "Aggiungi stanza":"Add room","Salva configurazione":"Save configuration","Nome stanza":"Room name","Sposta su":"Move up","Sposta giù":"Move down","Elimina":"Delete",
+      "Nessuna stanza creata":"No rooms created","Casa V2 partirà vuota. Premi “Aggiungi stanza” per costruire la tua casa.":"Casa V2 starts empty. Press “Add room” to build your home.",
+      "Al primo utilizzo le entità già configurate nelle 173 associazioni vengono importate nelle stanze. Dopo il primo salvataggio, le stanze vengono gestite solo da questa sezione e le entità rimosse non vengono reinserite automaticamente.":"On first use, entities already configured in the 173 mappings are imported into rooms. After the first save, rooms are managed only from this section and removed entities are not automatically added again.",
+      "Cerca stanza, funzione, chiave o nome entità…":"Search room, function, key or entity name…","Nessuna associazione corrisponde alla ricerca.":"No mappings match your search.",
+      "Le modifiche vengono salvate nel file Community separato.":"Changes are saved in the separate Community file.","Annulla":"Cancel","Svuota":"Clear","Salvataggio…":"Saving…","Riprova":"Retry","Nessuna entità trovata":"No entities found",
+      "Cerca per nome o entity_id…":"Search by name or entity_id…","Cerca le entità anche con il nome assegnato in Home Assistant oppure digita direttamente la entity_id. Puoi lasciare vuote le funzioni che non utilizzi.":"Search entities using the name assigned in Home Assistant or enter the entity_id directly. You can leave unused functions empty.",
+      "CASA & GENERALE":"HOME & GENERAL","Casa":"Home","Stanza":"Room","Ambiente generico":"Generic room","Ingresso":"Entrance","Cucina":"Kitchen","Bagno":"Bathroom","Camera":"Bedroom","Scale":"Stairs","Balcone / Terrazzo":"Balcony / Terrace","Garage":"Garage","Soggiorno":"Living room","Ufficio / Studio":"Office / Study","Lavanderia":"Laundry","Taverna":"Basement / Den","Cantina":"Cellar","Giardino":"Garden",
+      "Stati attivi":"Active states","Solo ciò che in questo momento sta cambiando":"Only what is changing right now","Clima casa":"Home climate","Sintesi interno ed esterno":"Indoor and outdoor summary","Meteo balcone":"Outdoor weather","Condizioni esterne in tempo reale":"Real-time outdoor conditions","Fotovoltaico":"Solar","BYD + DAZE":"EV + WALLBOX",
+      "Luci":"Lights","Luci accese":"Lights on","Aperture":"Openings","Presenze":"Presence","Vibrazioni":"Vibrations","Nessuna":"None","Nessuno":"None","Assente":"None","Rilevata":"Detected","Rilevato":"Detected","Attivo":"Active","Attiva":"Active","Spento":"Off","Spenta":"Off","Acceso":"On","Accesa":"On","Chiuso":"Closed","Chiusa":"Closed","Aperto":"Open","Aperta":"Open","Bloccata":"Locked","Non armato":"Disarmed","Pronta":"Ready","standby":"standby",
+      "Temperatura":"Temperature","Umidità":"Humidity","Esterno":"Outdoor","Vento":"Wind","Pioggia":"Rain","Radiazione":"Radiation","Indice UV":"UV index","Pressione":"Pressure","Batteria":"Battery","Scarica":"Discharging","Carica":"Charging","Produzione":"Production","Consumo":"Consumption","Prelievo":"Grid import","Immissione":"Grid export","Potenza":"Power","Energia sessione":"Session energy","Ultima sessione":"Last session","Limite ricarica":"Charge limit","Stato EVSE":"EVSE status","Stato DAZE":"DAZE status",
+      "Sicurezza e accesso":"Security and access","Accessi, ricarica e qualità aria":"Access, charging and air quality","Comfort, luci ed elettrodomestici":"Comfort, lights and appliances","Luci, tende e dispositivi":"Lights, blinds and devices","Ambiente":"Environment","Dispositivo":"Device","Gestisci clima":"Manage climate","Porta di casa":"Front door","Accesso principale":"Main entrance","Sistema pronto per l’inserimento":"System ready to arm","Apri pannello allarme":"Open alarm panel","Sicurezza e accesso":"Security and access","Sensori ingresso":"Entrance sensors",
+      "Qualità aria":"Air quality","Purificatore":"Air purifier","Deumidificatore":"Dehumidifier","Serbatoio":"Tank","PIENO":"FULL","Svuotare serbatoio":"Empty tank","Regolare":"Normal","Umidità rilevata":"Detected humidity","Blocco tasti":"Child lock","Livello acqua":"Water level","Retroilluminazione":"Backlight","Alimentazione":"Power","Display":"Display","Buzzer":"Buzzer",
+      "Luce forte":"Strong light","Luce buona":"Good light","Luce bassa":"Low light","Meteo tranquillo":"Calm weather","Pioggia rilevata":"Rain detected","Vento forte":"Strong wind","Vento moderato":"Moderate wind","Tramonto vicino":"Sunset approaching","Sole forte":"Strong sun","Luminoso":"Bright","Nessuna precipitazione":"No precipitation","Raffica":"Gust","Direzione vento":"Wind direction","Istantanea":"Instantaneous","Settimana":"Week","Mese":"Month","Anno":"Year","Evento":"Event","Cumulata":"Total","Cumulata giornaliera":"Daily total","Ultima ora":"Last hour","24 ore":"24 hours",
+      "ON":"ON","OFF":"OFF"
+    };
+  }
+  _tr(value){
+    if(this._language!=="en") return value;
+    let out=String(value??""); const map=this._translations();
+    if(map[out]!==undefined) return map[out];
+    const keys=Object.keys(map).sort((a,b)=>b.length-a.length);
+    for(const k of keys) if(out.includes(k)) out=out.split(k).join(map[k]);
+    return out;
+  }
+  _applyLanguage(root=this.shadowRoot){
+    if(!root) return;
+    root.querySelectorAll?.('[data-language]').forEach(b=>b.classList.toggle('active',b.dataset.language===this._language));
+    if(this._language!=="en") return;
+    const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT); const nodes=[]; while(walker.nextNode()) nodes.push(walker.currentNode);
+    for(const n of nodes){ const v=n.nodeValue; if(v&&v.trim()){ const t=this._tr(v); if(t!==v)n.nodeValue=t; } }
+    root.querySelectorAll?.('[placeholder],[title],[aria-label]').forEach(el=>{ for(const a of ['placeholder','title','aria-label']) if(el.hasAttribute(a)) el.setAttribute(a,this._tr(el.getAttribute(a))); });
+  }
+  _setLanguage(lang){
+    if(!["it","en"].includes(lang)) return; this._language=lang; try{localStorage.setItem("casa_dashboard_community_language",lang)}catch(e){}
+    this._renderShell(); this._renderPage(true); if(this._configDialogOpen)this._renderConfigLayer(); this._applyLanguage();
+  }
+
   _renderPage(forceNav=false) {
     if(!this._hass || !this.shadowRoot) return;
     this._renderNav(forceNav); this._renderHeader(); this._applyThemeMode();
@@ -198,6 +247,7 @@
     host.innerHTML=renderer ? renderer() : `<div class="empty">Pagina non disponibile</div>`;
     this._cleanEmptySections(host);
     this._lastStateFingerprint=this._stateFingerprint();
+    this._applyLanguage();
   }
 
   _setUiTheme(theme){
@@ -212,12 +262,12 @@
   _info(){
     const selected=this._uiTheme;
     return `<div class="page">${this._hero("Informazioni","Dettagli e personalizzazione di Casa Dashboard Community.",{level:"good",text:"Dashboard pronta"},[
-      {label:"Versione",value:"2.0.0",small:"Casa Dashboard Community"},
+      {label:"Versione",value:"2.1.0",small:"Casa Dashboard Community"},
       {label:"Piattaforma",value:"Home Assistant",small:"Custom integration"}
     ])}<div class="info-card"><div class="info-icon"><ha-icon icon="mdi:home-heart"></ha-icon></div><h2>Casa Dashboard Community</h2>
     <p>Dashboard app-like, adattiva e configurabile per Home Assistant.</p>
     <div class="style-picker">
-      <button class="style-option ${selected==="v1"?"active":""}" data-ui-theme="v1" type="button">${selected==="v1"?'<span class="selected">In uso</span>':""}<div class="style-head"><ha-icon icon="mdi:home-variant-outline"></ha-icon><strong>Casa V1</strong></div><p>Grafica originale di Casa Dashboard Community v2.0.0.</p></button>
+      <button class="style-option ${selected==="v1"?"active":""}" data-ui-theme="v1" type="button">${selected==="v1"?'<span class="selected">In uso</span>':""}<div class="style-head"><ha-icon icon="mdi:home-variant-outline"></ha-icon><strong>Casa V1</strong></div><p>Grafica originale di Casa Dashboard Community v2.1.0.</p></button>
       <button class="style-option ${selected==="v2"?"active":""}" data-ui-theme="v2" type="button">${selected==="v2"?'<span class="selected">In uso</span>':""}<div class="style-head"><ha-icon icon="mdi:vector-square"></ha-icon><strong>Casa V2</strong></div><p>Nuova grafica derivata da Casa Dashboard v4.3.54, con visual dedicati per luci, sensori, clima, dispositivi e aperture.</p></button>
     </div>
     <div class="style-note">La scelta viene salvata sul browser/dispositivo e non modifica entità o automazioni.</div>

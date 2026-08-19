@@ -246,6 +246,10 @@ class CasaDashboardPanel extends HTMLElement {
       const migrated=saved==="community"?"v1":saved==="casa4354"?"v2":saved;
       this._uiTheme=["v1","v2"].includes(migrated)?migrated:"v1";
     } catch(e) { this._uiTheme="v1"; }
+    try {
+      const savedLang=localStorage.getItem("casa_dashboard_community_language");
+      this._language=["it","en"].includes(savedLang)?savedLang:((navigator.language||"it").toLowerCase().startsWith("en")?"en":"it");
+    } catch(e) { this._language="it"; }
   }
 
   set panel(value) { this._panel = value; }
@@ -293,15 +297,16 @@ class CasaDashboardPanel extends HTMLElement {
             <div class="app-identity">
               <div class="app-icon"><ha-icon icon="mdi:home-assistant"></ha-icon></div>
               <div class="brand">
-                <div class="brand-line"><div class="brand-title">Casa</div><span class="version-badge">2.0.0 Community</span></div>
+                <div class="brand-line"><div class="brand-title">Casa</div><span class="version-badge">2.1.0 Community</span></div>
                 <div class="brand-subtitle">Home Assistant · Community Dashboard</div>
               </div>
             </div>
+          <div class="language-switch" aria-label="Language"><button type="button" data-language="it">IT</button><button type="button" data-language="en">EN</button></div>
           </div>
           <div class="nav-scroller"><nav class="nav" id="nav"></nav></div>
         </header>
         <main id="content"><div class="loading">Caricamento Casa Dashboard…</div></main>
-        <footer><span>Casa Dashboard Community · v2.0.0 · Realizzato da Fabio Vittori</span><a class="coffee-link" href="https://ko-fi.com/fabvittori" target="_blank" rel="noopener noreferrer">☕ Offrimi un caffè</a></footer>
+        <footer><span>Casa Dashboard Community · v2.1.0 · Realizzato da Fabio Vittori</span><a class="coffee-link" href="https://ko-fi.com/fabvittori" target="_blank" rel="noopener noreferrer">☕ Offrimi un caffè</a></footer>
       </div>
     `;
     this.shadowRoot.addEventListener("click", (ev) => this._handleClick(ev));
@@ -315,7 +320,7 @@ class CasaDashboardPanel extends HTMLElement {
       radial-gradient(circle at 100% 5%, color-mix(in srgb,#20c997 9%,transparent), transparent 28%),
       var(--primary-background-color)}
       .topbar{--casa-accent:var(--primary-color,#03a9f4);position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--primary-background-color) 96%,transparent);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid color-mix(in srgb,var(--divider-color) 78%,transparent);box-shadow:0 10px 28px color-mix(in srgb,#000 4%,transparent)}
-      .topbar-main{max-width:1480px;margin:auto;min-height:72px;padding:15px 18px 9px;display:flex;align-items:center;gap:12px}
+      .topbar-main{max-width:1480px;margin:auto;min-height:72px;padding:15px 18px 9px;display:flex;align-items:center;gap:12px}.language-switch{margin-left:auto;display:flex;gap:4px;padding:3px;border:1px solid color-mix(in srgb,var(--divider-color) 85%,transparent);border-radius:10px;background:var(--card-background-color)}.language-switch button{border:0;background:transparent;color:var(--secondary-text-color);font-size:10px;font-weight:900;padding:6px 8px;border-radius:7px;cursor:pointer}.language-switch button.active{background:color-mix(in srgb,var(--primary-color) 16%,transparent);color:var(--primary-color)}
       .menu-btn{display:none;border:0;background:transparent;color:var(--primary-text-color);width:42px;height:42px;border-radius:13px;align-items:center;justify-content:center;cursor:pointer;flex:none}.menu-btn ha-icon{--mdc-icon-size:27px}
       .menu-btn:active{background:var(--secondary-background-color)}
       .app-identity{display:flex;align-items:center;gap:11px;min-width:0}.app-icon{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;flex:none;border:1px solid color-mix(in srgb,var(--casa-accent) 30%,var(--divider-color));background:color-mix(in srgb,var(--casa-accent) 9%,var(--card-background-color));color:var(--casa-accent)}.app-icon ha-icon{--mdc-icon-size:25px}.brand{min-width:0}.brand-line{display:flex;align-items:center;gap:8px;min-width:0}.brand-title{font-size:21px;line-height:1.05;font-weight:850;letter-spacing:-.025em}.version-badge{display:inline-flex;align-items:center;justify-content:center;padding:3px 7px;border-radius:999px;border:1px solid color-mix(in srgb,var(--casa-accent) 30%,var(--divider-color));background:color-mix(in srgb,var(--casa-accent) 9%,var(--card-background-color));color:var(--casa-accent);font-size:9px;font-weight:900;line-height:1;white-space:nowrap}.brand-subtitle{font-size:11px;color:var(--secondary-text-color);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}

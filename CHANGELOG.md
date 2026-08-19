@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.1.0
+- Added built-in Italian / English interface support.
+- Added IT / EN language selector in the dashboard header.
+- Language preference is saved locally per browser/device.
+- Added English translations across Casa V1, Casa V2, Overview, dynamic rooms, configurator, information, weather, energy and EV/wallbox UI.
+- Preserved Home Assistant friendly names, entity IDs and custom user room/device names.
+- Existing 2.0.0 configuration remains compatible.
+
+
 ## 2.0.0 - 2026-08-18
 
 - Introdotte **Casa V1 — Classic** e **Casa V2 — Dynamic**.

@@ -170,6 +170,7 @@ const openingOn=opening&&this._on(opening);
     let layer=this.shadowRoot.querySelector("#configLayer");
     if(!layer){ layer=document.createElement("div"); layer.id="configLayer"; this.shadowRoot.appendChild(layer); }
     layer.innerHTML=this._renderConfigDialog();
+    this._applyLanguage(layer);
     if(!this._configDialogOpen) return;
 
     const syncRooms=()=>{

@@ -89,9 +89,10 @@ wind_chill")}
   }
 
   _handleClick(ev) {
-    const target=ev.target.closest?.("[data-action],[data-nav],[data-toggle],[data-more],[data-cover-toggle],[data-climate],[data-climate-temp],[data-vacuum],[data-alarm],[data-humidity-delta],[data-script],[data-ui-theme],[data-room-entity-add],[data-room-entity-remove]"); if(!target) return;
+    const target=ev.target.closest?.("[data-action],[data-nav],[data-toggle],[data-more],[data-cover-toggle],[data-climate],[data-climate-temp],[data-vacuum],[data-alarm],[data-humidity-delta],[data-script],[data-ui-theme],[data-language],[data-room-entity-add],[data-room-entity-remove]"); if(!target) return;
     if(target.dataset.action==="ha-menu") { this.dispatchEvent(new CustomEvent("hass-toggle-menu",{bubbles:true,composed:true})); return; }
     if(target.dataset.uiTheme){ this._setUiTheme(target.dataset.uiTheme); return; }
+    if(target.dataset.language){ this._setLanguage(target.dataset.language); return; }
     if(target.dataset.action==="room-add"){ this._addRoomDraft(); return; }
     if(target.dataset.roomEntityAdd){
       const room=this._roomsDraft.find(r=>r.id===target.dataset.roomEntityAdd);
