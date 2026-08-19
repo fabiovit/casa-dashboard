@@ -2,7 +2,7 @@
 
 🇬🇧 **English** | [🇮🇹 Italiano](README.it.md)
 
-[![Release](https://img.shields.io/badge/release-v2.1.1-blue)](https://github.com/fabiovit/casa-dashboard/releases)
+[![Release](https://img.shields.io/badge/release-v2.1.2-blue)](https://github.com/fabiovit/casa-dashboard/releases)
 [![HACS](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz/)
 [![Validate](https://img.shields.io/github/actions/workflow/status/fabiovit/casa-dashboard/hacs.yml?branch=main&label=Validate)](https://github.com/fabiovit/casa-dashboard/actions/workflows/hacs.yml)
 [![Hassfest](https://img.shields.io/github/actions/workflow/status/fabiovit/casa-dashboard/hassfest.yml?branch=main&label=Hassfest)](https://github.com/fabiovit/casa-dashboard/actions/workflows/hassfest.yml)
@@ -12,15 +12,15 @@
 
 Casa Dashboard Community is an app-like dashboard for **Home Assistant**, built as a complete custom panel and designed to adapt to very different installations without relying on traditional Lovelace cards.
 
-**Casa Dashboard Community v2.1.1** includes two visual experiences, **Casa V1** and **Casa V2**, dynamic rooms, in-dashboard entity configuration and native **English / Italian** language support.
+**Casa Dashboard Community v2.1.2** includes two visual experiences, **Casa V1** and **Casa V2**, dynamic rooms, in-dashboard entity configuration and native **English / Italian** language support.
 
 The Community Edition uses the technical domain `casa_dashboard_community`, the panel `casa-dashboard-community` and the dedicated file `/config/www/casa-dashboard-community-entities.json`, so it can coexist with other Casa Dashboard installations without overwriting them.
 
 **Created by Fabio Vittori** · [☕ Buy me a coffee](https://ko-fi.com/fabvittori)
 
-# 🚀 Version 2.1.1
+# 🚀 Version 2.1.2
 
-Version 2.1.1 adds native **English / Italian** language support directly inside the dashboard.
+Version 2.1.2 adds native **English / Italian** language support directly inside the dashboard.
 
 You can switch the interface language between:
 

@@ -1,4 +1,29 @@
-ltRooms().map(r=>[r.id,r]));
+ const configured=[...ENTITY_KEYS].map(key=>{
+      const entity=String(this._configDraft?.[key] ?? this._entityMap?.[key] ?? "").trim();
+      return {key,entity,room:this._legacyRoomForConfigKey(key)};
+    }).filter(x=>x.entity && x.room);
+
+    for(const item of configured){
+      const meta=defaults.get(item.room);
+      let room=out.find(r=>r.id===item.room)
+        || out.find(r=>r.type===item.room)
+        || out.find(r=>String(r.name||"").toLocaleLowerCase("it")===String(meta?.name||"").toLocaleLowerCase("it"));
+      if(!room && meta){ room={...meta,entities:[],entity_labels:{}}; out.push(room); }
+      if(room){
+        room.entities=Array.isArray(room.entities)?room.entities:[];
+        if(!room.entities.includes(item.entity)) room.entities.push(item.entity);
+      }
+    }
+    return out;
+  }
+  _syncConfiguredKeyToRoom(key,oldEntity,newEntity){
+    // Legacy 173 mappings are used only to bootstrap the room list once.
+    // After rooms have been saved, room membership is controlled exclusively
+    // from the Rooms manager and must never be recreated automatically.
+    if(Array.isArray(this._rooms) && this._rooms.length) return;
+    const roomId=this._legacyRoomForConfigKey(key);
+    if(!roomId) return;
+    const defaults=new Map(this._defaultRooms().map(r=>[r.id,r]));
     let room=this._roomsDraft.find(r=>r.id===roomId) || this._roomsDraft.find(r=>r.type===roomId);
     if(!room && newEntity){
       const meta=defaults.get(roomId);
@@ -338,25 +363,4 @@ ltRooms().map(r=>[r.id,r]));
     ].join("");
 
     const coverCards=covers.map(e=>this._uiTheme==="v1"
-      ? `<div class="command-strip span-6"><div class="command-symbol"><ha-icon icon="${this._v1OriginalIcon(e,room.type,display(e))}"></ha-icon></div><div class="command-copy clickable" data-more="${e}"><div class="command-title">${this._esc(display(e))}</div><div class="command-sub">${this._esc(this._state(e,"—"))}</div></div><button class="command-action" data-cover-toggle="${e}" data-inverted="0" type="button"><span>GESTISCI</span><i></i></button></div>`
-      : this._coverControl(e,display(e),false,6)
-    ).join("");
-
-    const climateCards=climates.map(e=>this._climateBlock(
-      e,"","",
-      this._hass.states[e]?.attributes?.friendly_name||room.name,""
-    )).join("");
-
-    const sensorCards=sensors.map(e=>{
-      const obj=this._hass.states[e], name=obj?.attributes?.friendly_name||e;
-      const dc=String(obj?.attributes?.device_class||"").toLowerCase();
-      const icon=this._v1OriginalIcon(e,room.type,display(e));
-      const unit=obj?.attributes?.unit_of_measurement||"";
-      return this._metric(icon,name,this._state(e),unit,4,e);
-    }).join("");
-
-    const hasControls=!!(controlCards||coverCards||climateCards);
-    return `<div class="page">
-      ${hero}
-      ${hasControls?this._section(this._uiTheme==="v1"?"Luci, tende ed elettrodomestici":"Luci, tende e dispositivi"):""}
-      <div class="grid">${controlCards}${c
+      ? `<div class="command-strip span-6"><div class="command-symbol"><ha-icon icon="${this._v1OriginalIcon(e,room.type,display(e))}"></ha-icon></div><div class="command-copy clickable" data-more="${e}"><div class="command-title">${this._esc

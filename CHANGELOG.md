@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.1.2 - 2026-08-19
+
+- Fixed configurator scrolling with large room and entity configurations.
+- Rooms now use a dedicated, height-limited scroll area so they cannot consume the whole dialog.
+- The 173 entity mappings always retain a useful minimum visible area with independent scrolling.
+- Header, search toolbar and bottom action bar remain accessible.
+- Improved layout and touch scrolling on desktop, mobile and Home Assistant webviews.
+
 ## 2.1.1 - 2026-08-19
 
 - Fixed IT / EN language selector not activating reliably in Home Assistant.

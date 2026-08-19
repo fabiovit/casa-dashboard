@@ -1,4 +1,8 @@
-ntal"></ha-icon></div><div class="command-copy clickable" data-more="${entity}"><div class="command-title">${title}</div><div class="command-sub">${pos!==null?`${subPrefix} ${pos}% · `:""}${stateText}</div></div><button class="command-action ${open?'warn':''}" data-cover-toggle="${entity}" data-inverted="${inverted?1:0}" type="button"><span>${open?'CHIUDI':'APRI'}</span><i></i></button></div>`;
+       <div class="universal-device-copy clickable" data-more="${entity}"><span>${this._esc(title)}</span><strong>${this._esc(stateText)}</strong><small>${pos!==null?`${subPrefix} ${pos}%`:"Serramento"}</small></div>
+        <button class="universal-device-action ${open?'active':''}" data-cover-toggle="${entity}" data-inverted="${inverted?1:0}" type="button"><ha-icon icon="mdi:blinds-horizontal"></ha-icon><span>${open?'CHIUDI':'APRI'}</span></button>
+      </div>`;
+    }
+    return `<div class="command-strip span-${span} ${open?'state-warn':'state-off'}"><div class="command-symbol ${open?'warn':''}"><ha-icon icon="mdi:blinds-horizontal"></ha-icon></div><div class="command-copy clickable" data-more="${entity}"><div class="command-title">${title}</div><div class="command-sub">${pos!==null?`${subPrefix} ${pos}% · `:""}${stateText}</div></div><button class="command-action ${open?'warn':''}" data-cover-toggle="${entity}" data-inverted="${inverted?1:0}" type="button"><span>${open?'CHIUDI':'APRI'}</span><i></i></button></div>`;
   }
   _alert(level,icon,title,text) { return `<div class="signal ${level}"><div class="signal-icon"><ha-icon icon="${icon}"></ha-icon></div><div><strong>${title}</strong><span>${text}</span></div></div>`; }
   _logic(title,text,level=""){ return `<div class="logic-ribbon ${level}"><span>${title}</span><strong>${text}</strong></div>`; }
@@ -272,9 +276,4 @@ ntal"></ha-icon></div><div class="command-copy clickable" data-more="${entity}">
   _ingresso(){
     const door=this._on("binary_sensor.entry_door");
     const unlocked=this._on("input_boolean.entry_door_unlock");
-    const alarm=this._state("alarm_control_panel.home_alarm","—");
-    const motion=this._on("binary_sensor.entry_motion");
-    const occupied=this._on("binary_sensor.entry_occupancy");
-    const alerts=[];
-    if(!door && unlocked) alerts.push(this._alert("warn","mdi:lock-open-alert-outline","Porta chiusa ma sbloccata","La serratura risulta aperta anche se il contatto porta è chiuso."));
-    if(door) alerts.push(this._alert("bad","mdi:door-open","Porta ingresso aperta","La porta di casa 
+    const al

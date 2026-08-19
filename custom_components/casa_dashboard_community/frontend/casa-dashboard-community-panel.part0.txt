@@ -297,7 +297,7 @@ class CasaDashboardPanel extends HTMLElement {
             <div class="app-identity">
               <div class="app-icon"><ha-icon icon="mdi:home-assistant"></ha-icon></div>
               <div class="brand">
-                <div class="brand-line"><div class="brand-title">Casa</div><span class="version-badge">2.1.1 Community</span></div>
+                <div class="brand-line"><div class="brand-title">Casa</div><span class="version-badge">2.1.2 Community</span></div>
                 <div class="brand-subtitle">Home Assistant · Community Dashboard</div>
               </div>
             </div>
@@ -306,7 +306,7 @@ class CasaDashboardPanel extends HTMLElement {
           <div class="nav-scroller"><nav class="nav" id="nav"></nav></div>
         </header>
         <main id="content"><div class="loading">Caricamento Casa Dashboard…</div></main>
-        <footer><span>Casa Dashboard Community · v2.1.1 · Realizzato da Fabio Vittori</span><a class="coffee-link" href="https://ko-fi.com/fabvittori" target="_blank" rel="noopener noreferrer">☕ Offrimi un caffè</a></footer>
+        <footer><span>Casa Dashboard Community · v2.1.2 · Realizzato da Fabio Vittori</span><a class="coffee-link" href="https://ko-fi.com/fabvittori" target="_blank" rel="noopener noreferrer">☕ Offrimi un caffè</a></footer>
       </div>
     `;
     this.shadowRoot.addEventListener("click", (ev) => this._handleClick(ev));
@@ -341,4 +341,4 @@ class CasaDashboardPanel extends HTMLElement {
       .card{border:1px solid color-mix(in srgb,var(--divider-color) 85%,transparent);background:color-mix(in srgb,var(--card-background-color) 95%,transparent);border-radius:22px;padding:17px;min-width:0;box-shadow:var(--ha-card-box-shadow,none);transition:transform .18s ease,border-color .18s ease}.clickable{cursor:pointer}.clickable:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--primary-color) 40%,var(--divider-color))}.room-card{display:flex;flex-direction:column;min-height:174px}.card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.iconbox{width:46px;height:46px;border-radius:15px;display:grid;place-items:center;background:color-mix(in srgb,var(--primary-color) 12%,var(--secondary-background-color));color:var(--primary-color);flex:none}.iconbox ha-icon{--mdc-icon-size:25px}.iconbox.good{color:var(--success-color,#4caf50);background:color-mix(in srgb,var(--success-color,#4caf50) 12%,var(--secondary-background-color))}.iconbox.warn{color:var(--warning-color,#ff9800);background:color-mix(in srgb,var(--warning-color,#ff9800) 13%,var(--secondary-background-color))}.iconbox.bad{color:var(--error-color,#f44336);background:color-mix(in srgb,var(--error-color,#f44336) 12%,var(--secondary-background-color))}.iconbox.blue{color:#2196f3;background:color-mix(in srgb,#2196f3 12%,var(--secondary-background-color))}
       .room-card h3,.card h3{margin:15px 0 4px;font-size:17px}.room-card .desc,.muted{font-size:12px;color:var(--secondary-text-color);line-height:1.4}.room-footer{display:flex;gap:7px;flex-wrap:wrap;margin-top:auto;padding-top:14px}.tag{font-size:11px;border-radius:999px;padding:5px 8px;background:var(--secondary-background-color);color:var(--secondary-text-color);white-space:nowrap}.tag.good{color:var(--success-color,#4caf50)}.tag.warn{color:var(--warning-color,#ff9800)}.tag.bad{color:var(--error-color,#f44336)}.tag.blue{color:#2196f3}
       .metric{border:1px solid color-mix(in srgb,var(--divider-color) 85%,transparent);background:color-mix(in srgb,var(--card-background-color) 95%,transparent);border-radius:20px;padding:16px;min-height:120px;display:flex;flex-direction:column;justify-content:space-between}.metric .metric-icon{display:flex;align-items:center;justify-content:space-between;color:var(--secondary-text-color)}.metric .metric-icon ha-icon{--mdc-icon-size:23px}.metric .value{font-size:25px;font-weight:800;letter-spacing:-.03em;margin-top:10px;overflow-wrap:anywhere}.metric .foot{font-size:11px;color:var(--secondary-text-color);margin-top:3px}
-      .control{display:flex;align-items:center;gap:12px;border:1px solid color-mix(in srgb,var(--divider-color) 85%,transparent);background:color-mix(in srgb,var(--card-background-color) 95%,transparent);border-radius:18px;padding:13px;min-height:76px}.control .iconbox{width:42px;height:
+      .control{display:flex;align-items:center;gap:12px;border:1px solid color-mix(in srgb,var(--divider-color) 85%,transparent);background:color-mix(in srgb,var(--card-background-color) 95%,transparent);border-radius:18px;padding:13px;min-height:76px}.control .iconbox{width:42px;height:42px;border-radius:14px}.control-main{min-width:0;flex:1}.control-title{font-size:14px;font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellips

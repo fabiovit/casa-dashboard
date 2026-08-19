@@ -1,4 +1,14 @@
-n blue-tone";
+control_panel.home_alarm") return st==="triggered"?"state-bad":st==="disarmed"?"state-warn":"state-good";
+    if(entity.startsWith("binary_sensor.") && this._on(entity)) return entity.includes("motion")||entity.includes("occupancy")||entity.includes("occupazione")?"state-active":"state-warn";
+    if(["aperta","aperto","sbloccata","rilevata","rilevato","pieno","allarme"].some(x=>val.includes(x))) return val.includes("perdita")||val.includes("pieno")||val.includes("allarme")?"state-bad":"state-warn";
+    if(["accesa","acceso","attivo","attiva","occupato","in carica","cleaning"].some(x=>val.includes(x))) return "state-active";
+    if(["chiusa","chiuso","spenta","spento","libero","assente","ok","nessuna"].some(x=>val.includes(x))) return "state-good";
+    return "";
+  }
+  _controlTone(entity,on){
+    if(!on) return "state-off";
+    if(entity.startsWith("light.")) return "state-on light-tone";
+    if(entity.startsWith("climate.")) return "state-on blue-tone";
     return "state-on";
   }
 
@@ -95,7 +105,7 @@ n blue-tone";
       "Pagina non disponibile":"Page unavailable","Dashboard pronta":"Dashboard ready","Versione":"Version","Piattaforma":"Platform",
       "Dettagli e personalizzazione di Casa Dashboard Community.":"Casa Dashboard Community details and customization.",
       "Dashboard app-like, adattiva e configurabile per Home Assistant.":"An app-like, adaptive and configurable dashboard for Home Assistant.",
-      "In uso":"Active","Grafica originale di Casa Dashboard Community v2.1.1.":"Original Casa Dashboard Community interface.",
+      "In uso":"Active","Grafica originale di Casa Dashboard Community v2.1.2.":"Original Casa Dashboard Community interface.",
       "Nuova grafica derivata da Casa Dashboard v4.3.54, con visual dedicati per luci, sensori, clima, dispositivi e aperture.":"New dynamic interface with dedicated visuals for lights, sensors, climate, devices and openings.",
       "La scelta viene salvata sul browser/dispositivo e non modifica entità o automazioni.":"Your choice is saved on this browser/device and does not change entities or automations.",
       "SUPPORTA IL PROGETTO":"SUPPORT THE PROJECT","Casa Dashboard Community è gratuita":"Casa Dashboard Community is free","Se ti piace, puoi supportarne lo sviluppo.":"If you like it, you can support its development.",
@@ -175,12 +185,12 @@ n blue-tone";
   _info(){
     const selected=this._uiTheme;
     return `<div class="page">${this._hero("Informazioni","Dettagli e personalizzazione di Casa Dashboard Community.",{level:"good",text:"Dashboard pronta"},[
-      {label:"Versione",value:"2.1.1",small:"Casa Dashboard Community"},
+      {label:"Versione",value:"2.1.2",small:"Casa Dashboard Community"},
       {label:"Piattaforma",value:"Home Assistant",small:"Custom integration"}
     ])}<div class="info-card"><div class="info-icon"><ha-icon icon="mdi:home-heart"></ha-icon></div><h2>Casa Dashboard Community</h2>
     <p>Dashboard app-like, adattiva e configurabile per Home Assistant.</p>
     <div class="style-picker">
-      <button class="style-option ${selected==="v1"?"active":""}" data-ui-theme="v1" type="button">${selected==="v1"?'<span class="selected">In uso</span>':""}<div class="style-head"><ha-icon icon="mdi:home-variant-outline"></ha-icon><strong>Casa V1</strong></div><p>Grafica originale di Casa Dashboard Community v2.1.1.</p></button>
+      <button class="style-option ${selected==="v1"?"active":""}" data-ui-theme="v1" type="button">${selected==="v1"?'<span class="selected">In uso</span>':""}<div class="style-head"><ha-icon icon="mdi:home-variant-outline"></ha-icon><strong>Casa V1</strong></div><p>Grafica originale di Casa Dashboard Community v2.1.2.</p></button>
       <button class="style-option ${selected==="v2"?"active":""}" data-ui-theme="v2" type="button">${selected==="v2"?'<span class="selected">In uso</span>':""}<div class="style-head"><ha-icon icon="mdi:vector-square"></ha-icon><strong>Casa V2</strong></div><p>Nuova grafica derivata da Casa Dashboard v4.3.54, con visual dedicati per luci, sensori, clima, dispositivi e aperture.</p></button>
     </div>
     <div class="style-note">La scelta viene salvata sul browser/dispositivo e non modifica entità o automazioni.</div>
@@ -222,13 +232,4 @@ n blue-tone";
 
   _sensorVisual(icon,label,value,foot="",span=3,entity="",tone=""){
     const l=String(label||"").toLowerCase(), i=String(icon||"").toLowerCase(); let type="generic";
-    if(l.includes("vento")||l.includes("raffica")||i.includes("weather-windy")||i.includes("tornado")) type="wind";
-    else if(l.includes("pioggia")||l.includes("rain")||i.includes("weather-rain")) type="rain";
-    else if(l==="vpd"||l.includes("vapour pressure")) type="vpd";
-    else if(l.includes("radiazione")||i.includes("solar-power")) type="radiation";
-    else if(l.includes("indice uv")||l.includes("sole e uv")||i.includes("sunny-alert")) type="uv";
-    else if(l.includes("pressione")||i.includes("gauge")) type="pressure";
-    else if(l.includes("direzione")||i.includes("compass")) type="compass";
-    else if(l.includes("fulmini")||l.includes("temporali")||i.includes("lightning")) type="lightning";
-    else if(l.includes("blocco")||i.includes("timer")) type="timer";
-    else if(l.includes("livell
+    if(l.includes

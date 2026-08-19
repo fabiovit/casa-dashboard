@@ -1,4 +1,7 @@
-à Sensore",this._fmt("sensor.bedroom_humidity",0,"%"),"Camera",4,"sensor.bedroom_humidity")}
+._coverControl("cover.bedroom_blind","Tenda camera",true,6)}
+    </div>${this._section("Ambiente camera")}<div class="grid">
+      ${this._metric("mdi:thermometer","Temperatura Sensore",this._fmt("sensor.bedroom_temperature",1,"°C"),"Camera",4,"sensor.bedroom_temperature")}
+      ${this._metric("mdi:water-percent","Umidità Sensore",this._fmt("sensor.bedroom_humidity",0,"%"),"Camera",4,"sensor.bedroom_humidity")}
       ${this._metric("mdi:air-conditioner","Temp clima",this._fmt("sensor.bedroom_climate_temperature",1,"°C"),"Climatizzatore",4,"sensor.bedroom_climate_temperature")}
     </div>${this._section("Sicurezza finestra")}<div class="grid">
       ${this._metric("mdi:door-open","Porta finestra",windowOpen?"Aperta":"Chiusa","Camera",4,"binary_sensor.bedroom_door_window")}
@@ -176,5 +179,4 @@
       ${this._metric("mdi:weather-rainy","Pioggia",rain?"Rilevata":"Assente",`Rate ${this._fmt("sensor.weather_rain_rate",1,"mm/h")} · Oggi ${this._fmt("sensor.weather_rain_daily",1,"mm")}`,3,"sensor.weather_rain_rate",rain?"state-bad":rainRate>0?"state-warn":"state-good")}
       ${this._metric("mdi:white-balance-sunny","Sole e UV",this._luxLabel("sensor.weather_solar_lux"),`${this._fmtLuxCompact("sensor.weather_solar_lux")} · ${this._fmtLuxExact("sensor.weather_solar_lux")} · ${this._radLabel("sensor.weather_solar_radiation")} ${this._fmt("sensor.weather_solar_radiation",0,"W/m²")} · UV ${this._fmt("sensor.weather_uv_index",1)}`,3,"sensor.weather_solar_lux",this._luxTone("sensor.weather_solar_lux"))}
     </div>${hasWeather?this._section("Atmosfera esterna","Temperatura, umidità e comfort percepito"):""}<div class="grid">
-      ${this._metric("mdi:thermometer","Temperatura",this._fmt("sensor.weather_outdoor_temperature",1,"°C"),"Esterno",3,"sensor.weather_outdoor_temperature")}
-      ${this._metric("mdi:thermometer-alert","Percepita",this._fmt("sensor.weather_feels_like_temperature",1
+      ${this._metric("mdi:thermometer","Temperatura",this._fmt("sensor.weather_outdoor_temperature",1,

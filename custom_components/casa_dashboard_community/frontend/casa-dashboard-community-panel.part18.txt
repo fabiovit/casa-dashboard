@@ -1,4 +1,5 @@
-,"°C"),"Esterno",3,"sensor.weather_feels_like_temperature")}
+"°C"),"Esterno",3,"sensor.weather_outdoor_temperature")}
+      ${this._metric("mdi:thermometer-alert","Percepita",this._fmt("sensor.weather_feels_like_temperature",1,"°C"),"Esterno",3,"sensor.weather_feels_like_temperature")}
       ${this._metric("mdi:water-percent","Umidità",this._fmt("sensor.weather_outdoor_humidity",0,"%"),"Esterno",3,"sensor.weather_outdoor_humidity")}
       ${this._metric("mdi:water-thermometer","Punto di rugiada",this._fmt("sensor.weather_dewpoint",1,"°C"),"Esterno",3,"sensor.weather_dewpoint")}
       ${this._metric("mdi:snowflake-thermometer","Wind chill",this._fmt("sensor.weather_wind_chill",1,"°C"),"Esterno",3,"sensor.weather_wind_chill")}

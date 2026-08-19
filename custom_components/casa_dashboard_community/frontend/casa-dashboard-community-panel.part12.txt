@@ -1,4 +1,25 @@
-overCards}${climateCards}</div>
+(display(e))}</div><div class="command-sub">${this._esc(this._state(e,"—"))}</div></div><button class="command-action" data-cover-toggle="${e}" data-inverted="0" type="button"><span>GESTISCI</span><i></i></button></div>`
+      : this._coverControl(e,display(e),false,6)
+    ).join("");
+
+    const climateCards=climates.map(e=>this._climateBlock(
+      e,"","",
+      this._hass.states[e]?.attributes?.friendly_name||room.name,""
+    )).join("");
+
+    const sensorCards=sensors.map(e=>{
+      const obj=this._hass.states[e], name=obj?.attributes?.friendly_name||e;
+      const dc=String(obj?.attributes?.device_class||"").toLowerCase();
+      const icon=this._v1OriginalIcon(e,room.type,display(e));
+      const unit=obj?.attributes?.unit_of_measurement||"";
+      return this._metric(icon,name,this._state(e),unit,4,e);
+    }).join("");
+
+    const hasControls=!!(controlCards||coverCards||climateCards);
+    return `<div class="page">
+      ${hero}
+      ${hasControls?this._section(this._uiTheme==="v1"?"Luci, tende ed elettrodomestici":"Luci, tende e dispositivi"):""}
+      <div class="grid">${controlCards}${coverCards}${climateCards}</div>
       ${sensorCards?this._section("Sensori","Stato dell'ambiente"):""}
       <div class="grid">${sensorCards}</div>
     </div>`;
@@ -344,14 +365,4 @@ overCards}${climateCards}</div>
     const st=this._state(entity,""); const val=String(value).toLowerCase();
     if((entity.includes("wleak")||entity.includes("water_leak")) && this._on(entity)) return "state-bad";
     if(entity.includes("tank_status") && this._on(entity)) return "state-bad";
-    if(entity==="alarm_control_panel.home_alarm") return st==="triggered"?"state-bad":st==="disarmed"?"state-warn":"state-good";
-    if(entity.startsWith("binary_sensor.") && this._on(entity)) return entity.includes("motion")||entity.includes("occupancy")||entity.includes("occupazione")?"state-active":"state-warn";
-    if(["aperta","aperto","sbloccata","rilevata","rilevato","pieno","allarme"].some(x=>val.includes(x))) return val.includes("perdita")||val.includes("pieno")||val.includes("allarme")?"state-bad":"state-warn";
-    if(["accesa","acceso","attivo","attiva","occupato","in carica","cleaning"].some(x=>val.includes(x))) return "state-active";
-    if(["chiusa","chiuso","spenta","spento","libero","assente","ok","nessuna"].some(x=>val.includes(x))) return "state-good";
-    return "";
-  }
-  _controlTone(entity,on){
-    if(!on) return "state-off";
-    if(entity.startsWith("light.")) return "state-on light-tone";
-    if(entity.startsWith("climate.")) return "state-o
+    if(entity==="alarm_

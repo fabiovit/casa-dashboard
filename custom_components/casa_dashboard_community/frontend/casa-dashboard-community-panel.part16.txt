@@ -1,4 +1,9 @@
-risulta fisicamente aperta."));
+arm=this._state("alarm_control_panel.home_alarm","—");
+    const motion=this._on("binary_sensor.entry_motion");
+    const occupied=this._on("binary_sensor.entry_occupancy");
+    const alerts=[];
+    if(!door && unlocked) alerts.push(this._alert("warn","mdi:lock-open-alert-outline","Porta chiusa ma sbloccata","La serratura risulta aperta anche se il contatto porta è chiuso."));
+    if(door) alerts.push(this._alert("bad","mdi:door-open","Porta ingresso aperta","La porta di casa risulta fisicamente aperta."));
     return `<div class="page">${this._zoneHero("ingresso",[
       {label:"Porta",value:door?"Aperta":unlocked?"Sbloccata":"Bloccata",small:"Contatto + serratura"},
       {label:"Allarme",value:alarm,small:"Allarme"},
@@ -161,7 +166,4 @@ risulta fisicamente aperta."));
       ${this._control("light.bedroom_lamp_2","Lampada 2","mdi:lamp",this._on("light.bedroom_lamp_2")?"Accesa":"Spenta","toggle",3)}
       ${this._control("light.bedroom_led","LED camera","mdi:led-strip-variant",this._on("light.bedroom_led")?"Accesi":"Spenti","toggle",3)}
       ${this._control("switch.bedroom_tv","Presa TV camera","mdi:television",this._on("switch.bedroom_tv")?"Accesa":"Spenta","toggle",6)}
-      ${this._coverControl("cover.bedroom_blind","Tenda camera",true,6)}
-    </div>${this._section("Ambiente camera")}<div class="grid">
-      ${this._metric("mdi:thermometer","Temperatura Sensore",this._fmt("sensor.bedroom_temperature",1,"°C"),"Camera",4,"sensor.bedroom_temperature")}
-      ${this._metric("mdi:water-percent","Umidit
+      ${this
