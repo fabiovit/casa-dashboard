@@ -1,31 +1,4 @@
-t:55%;background:#50bce9;border-radius:6px}
-
-      .generic-sensor{width:70px;height:70px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(101,190,239,.30);background:rgba(101,190,239,.05);color:#72caff}.generic-sensor ha-icon{--mdc-icon-size:34px}
-
-      .app-shell.theme-light .device-visual-card,.app-shell.theme-light .sensor-visual-card{background:linear-gradient(180deg,#fff,#f5f9fd);border-color:rgba(15,23,42,.10)}
-      .app-shell.theme-light .device-visual,.app-shell.theme-light .sensor-visual{background:linear-gradient(180deg,#edf5fa,#dde8ef)}
-      .app-shell.theme-light .device-visual-copy span,.app-shell.theme-light .sensor-visual-copy span{color:#587292}
-      .device-visual-card,.device-visual-card *,.sensor-visual-card,.sensor-visual-card *{transition:none!important;animation:none!important}
-
-      @media(max-width:620px){
-        .device-visual-card,.sensor-visual-card{grid-template-columns:100px 1fr auto;min-height:135px}
-        .device-visual,.sensor-visual{height:94px}
-        .device-visual-copy strong,.sensor-visual-copy strong{font-size:21px}
-      }
-
-      /* ===== RICCARDO V2 · Libreria visuali universali da Casa v4.3.54 ===== */
-      .universal-device-card{
-        min-height:180px;border:1px solid rgba(255,255,255,.07);border-radius:20px;padding:14px;
-        display:grid;grid-template-columns:145px minmax(0,1fr) auto;align-items:center;gap:14px;
-        background:linear-gradient(180deg,rgba(255,255,255,.024),rgba(255,255,255,.011));
-        color:inherit
-      }
-      .universal-device-scene{
-        position:relative;height:128px;border-radius:16px;overflow:hidden;
-        background:linear-gradient(180deg,#182630,#10181e);
-        border:1px solid rgba(255,255,255,.06)
-      }
-      .universal-device-copy{min-width:0}
+niversal-device-copy{min-width:0}
       .universal-device-copy span{display:block;font-size:9px;letter-spacing:.15em;color:#8da6bd;font-weight:850;text-transform:uppercase}
       .universal-device-copy strong{display:block;font-size:22px;margin-top:7px}
       .universal-device-copy small{display:block;color:var(--secondary-text-color);margin-top:5px;line-height:1.35}
@@ -149,4 +122,11 @@ t:55%;background:#50bce9;border-radius:6px}
       .bedroom-hero{grid-template-columns:minmax(360px,.95fr) minmax(520px,1.3fr)!important}
       .bedroom-hero-card{display:grid;grid-template-columns:minmax(330px,1.2fr) minmax(220px,.8fr);gap:18px;align-items:center;min-height:260px;padding:20px;border-radius:26px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(123,101,255,.045))}
       .bedroom-scene{position:relative;height:220px;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#171924,#0e1018)}
-      .bedroom-bed{position:absolute;left:34px;bottom:28px;width:235px;height:92px}.bed-head{position:absolute;left:0;right:0;bottom:45px;height:54px;border-radius:14px 14px 4px 4px;background:#3c414c}.bed-cover{position:absolute;left:10px;right:10px;bottom:0;height:58px;border-radius:12px;background:linear-gradient(180deg,#545d6a,#333943)}.bed-pillow{position:absolute;top:28px;width:72px;height:30px;border-radius:12px;background:#c5cbd1;z-index:2}.bed-
+      .bedroom-bed{position:absolute;left:34px;bottom:28px;width:235px;height:92px}.bed-head{position:absolute;left:0;right:0;bottom:45px;height:54px;border-radius:14px 14px 4px 4px;background:#3c414c}.bed-cover{position:absolute;left:10px;right:10px;bottom:0;height:58px;border-radius:12px;background:linear-gradient(180deg,#545d6a,#333943)}.bed-pillow{position:absolute;top:28px;width:72px;height:30px;border-radius:12px;background:#c5cbd1;z-index:2}.bed-pillow.left{left:26px}.bed-pillow.right{right:26px}
+      .bedroom-window{position:absolute;right:42px;top:25px;width:145px;height:115px;border:5px solid #4d5964;background:#203b4e;overflow:hidden}.bedroom-sky{position:absolute;inset:0;background:linear-gradient(180deg,#284965,#172b3c)}.bedroom-blind{position:absolute;left:0;right:0;top:0;background:repeating-linear-gradient(0deg,#8a949d 0 7px,#757f88 7px 14px);z-index:2}.bedroom-blind-bar{position:absolute;left:0;right:0;height:6px;background:#5f6a74;z-index:3}
+      .bedroom-lamp{position:absolute;left:315px;top:40px;width:38px;height:38px;border-radius:50% 50% 12px 12px;background:#b1a78b;box-shadow:0 12px 25px rgba(255,220,130,.14)}
+      .bedroom-side{display:flex;flex-direction:column;gap:14px}.bedroom-meta span{display:block;font-size:9px;letter-spacing:.2em;font-weight:850;color:#8da6bd}.bedroom-meta strong{display:block;font-size:30px;margin-top:7px;letter-spacing:-.04em}.bedroom-meta small{display:block;color:var(--secondary-text-color);margin-top:4px}.bedroom-divider{height:1px;background:linear-gradient(90deg,rgba(140,120,255,.8),transparent)}.bedroom-action-btn{height:54px;border-radius:16px;border:1px solid rgba(125,145,255,.5);background:rgba(125,145,255,.06);color:#9db3ff;font-weight:850;font-size:14px;display:flex;align-items:center;justify-content:center;gap:9px;cursor:pointer}
+
+      .bedroom-thermostat-panel{display:grid;grid-template-columns:320px 1fr;gap:28px;align-items:center;padding:24px;border-radius:28px;border:1px solid rgba(255,255,255,.07);background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(105,125,255,.04))}
+      .bedroom-thermo-ring{width:245px;height:245px;margin:auto;border-radius:50%;display:grid;place-items:center;background:conic-gradient(from 220deg,#27343e 0 56%,#384750 56% 78%,#27343e 78%);position:relative}.bedroom-thermo-ring:before{content:"";position:absolute;inset:15px;border-radius:50%;background:var(--card-background-color)}.bedroom-thermo-ring.active{background:conic-gradient(from 220deg,#6ec7ff 0 58%,#698cff 58% 78%,#27343e 78%)}
+      .bedroom-thermo-center{position:relative;z-index:2;text-align:center}.bedroom-thermo-center span{display:block;font-size:9px;letter-spacing:.18em;color:#8da6bd}.bedroom-thermo-center

@@ -1,4 +1,7 @@
-wind_chill")}
+,"°C"),"Esterno",3,"sensor.weather_feels_like_temperature")}
+      ${this._metric("mdi:water-percent","Umidità",this._fmt("sensor.weather_outdoor_humidity",0,"%"),"Esterno",3,"sensor.weather_outdoor_humidity")}
+      ${this._metric("mdi:water-thermometer","Punto di rugiada",this._fmt("sensor.weather_dewpoint",1,"°C"),"Esterno",3,"sensor.weather_dewpoint")}
+      ${this._metric("mdi:snowflake-thermometer","Wind chill",this._fmt("sensor.weather_wind_chill",1,"°C"),"Esterno",3,"sensor.weather_wind_chill")}
       ${this._metric("mdi:molecule","VPD",this._fmt("sensor.weather_vpd",2),"Vapour pressure deficit",3,"sensor.weather_vpd")}
     </div>${hasWeather?this._section("Sole e UV","Luminosità, radiazione e intensità solare"):""}<div class="grid">
       ${this._metric("mdi:white-balance-sunny","Luminosità",this._luxLabel("sensor.weather_solar_lux"),`${this._fmtLuxCompact("sensor.weather_solar_lux")} · ${this._fmtLuxExact("sensor.weather_solar_lux")}`,4,"sensor.weather_solar_lux",this._luxTone("sensor.weather_solar_lux"))}
@@ -89,10 +92,9 @@ wind_chill")}
   }
 
   _handleClick(ev) {
-    const target=ev.target.closest?.("[data-action],[data-nav],[data-toggle],[data-more],[data-cover-toggle],[data-climate],[data-climate-temp],[data-vacuum],[data-alarm],[data-humidity-delta],[data-script],[data-ui-theme],[data-language],[data-room-entity-add],[data-room-entity-remove]"); if(!target) return;
+    const target=ev.target.closest?.("[data-action],[data-nav],[data-toggle],[data-more],[data-cover-toggle],[data-climate],[data-climate-temp],[data-vacuum],[data-alarm],[data-humidity-delta],[data-script],[data-ui-theme],[data-room-entity-add],[data-room-entity-remove]"); if(!target) return;
     if(target.dataset.action==="ha-menu") { this.dispatchEvent(new CustomEvent("hass-toggle-menu",{bubbles:true,composed:true})); return; }
     if(target.dataset.uiTheme){ this._setUiTheme(target.dataset.uiTheme); return; }
-    if(target.dataset.language){ this._setLanguage(target.dataset.language); return; }
     if(target.dataset.action==="room-add"){ this._addRoomDraft(); return; }
     if(target.dataset.roomEntityAdd){
       const room=this._roomsDraft.find(r=>r.id===target.dataset.roomEntityAdd);

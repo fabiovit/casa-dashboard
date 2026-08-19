@@ -2,7 +2,7 @@
 
 [🇬🇧 English](README.md) | 🇮🇹 **Italiano**
 
-[![Release](https://img.shields.io/badge/release-v2.1.0-blue)](https://github.com/fabiovit/casa-dashboard/releases)
+[![Release](https://img.shields.io/badge/release-v2.1.1-blue)](https://github.com/fabiovit/casa-dashboard/releases)
 [![HACS](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz/)
 [![Validate](https://img.shields.io/github/actions/workflow/status/fabiovit/casa-dashboard/hacs.yml?branch=main&label=Validate)](https://github.com/fabiovit/casa-dashboard/actions/workflows/hacs.yml)
 [![Hassfest](https://img.shields.io/github/actions/workflow/status/fabiovit/casa-dashboard/hassfest.yml?branch=main&label=Hassfest)](https://github.com/fabiovit/casa-dashboard/actions/workflows/hassfest.yml)
@@ -12,13 +12,13 @@
 
 Casa Dashboard Community è una dashboard app-like per **Home Assistant**, realizzata come pannello custom completo e pensata per adattarsi a installazioni molto diverse senza dipendere dalle classiche card Lovelace.
 
-**Casa Dashboard Community v2.1.0** include due esperienze grafiche, **Casa V1** e **Casa V2**, stanze dinamiche, configurazione delle entità direttamente dalla dashboard e supporto nativo **Italiano / Inglese**.
+**Casa Dashboard Community v2.1.1** include due esperienze grafiche, **Casa V1** e **Casa V2**, stanze dinamiche, configurazione delle entità direttamente dalla dashboard e supporto nativo **Italiano / Inglese**.
 
 La Community Edition usa il domain tecnico `casa_dashboard_community`, il pannello `casa-dashboard-community` e il file dedicato `/config/www/casa-dashboard-community-entities.json`, così può convivere con altre installazioni Casa Dashboard senza sovrascriverle.
 
 **Realizzato da Fabio Vittori** · [☕ Offrimi un caffè](https://ko-fi.com/fabvittori)
 
-# 🚀 Versione 2.1.0
+# 🚀 Versione 2.1.1
 
 La versione 2.1.0 introduce il supporto nativo **Italiano / Inglese** direttamente all'interno della dashboard.
 

@@ -1,4 +1,25 @@
-st climates=byDomain("climate");
+ntal"></ha-icon></div><div class="command-copy clickable" data-more="${entity}"><div class="command-title">${title}</div><div class="command-sub">${pos!==null?`${subPrefix} ${pos}% · `:""}${stateText}</div></div><button class="command-action ${open?'warn':''}" data-cover-toggle="${entity}" data-inverted="${inverted?1:0}" type="button"><span>${open?'CHIUDI':'APRI'}</span><i></i></button></div>`;
+  }
+  _alert(level,icon,title,text) { return `<div class="signal ${level}"><div class="signal-icon"><ha-icon icon="${icon}"></ha-icon></div><div><strong>${title}</strong><span>${text}</span></div></div>`; }
+  _logic(title,text,level=""){ return `<div class="logic-ribbon ${level}"><span>${title}</span><strong>${text}</strong></div>`; }
+  _compareCard(title, items, foot="", span=6, icon="mdi:chart-line") {
+    const visible=items.filter(it=>String(it.value??"").trim() && String(it.value).trim()!=="—");
+    if(!visible.length) return "";
+    return `<div class="data-node compare-card span-${span}"><div class="data-node-top"><div class="data-label">${title}</div><ha-icon icon="${icon}"></ha-icon></div><div class="compare-grid">${visible.map(it=>`<div class="compare-cell"><div class="compare-label">${it.label}</div><div class="compare-value">${it.value}</div></div>`).join("")}</div>${foot&&foot.trim()!=="—"?`<div class="data-foot compare-foot">${foot}</div>`:""}</div>`;
+  }
+
+  _configuredEntitiesForOverview(){
+    const roomEntities=(this._effectiveRooms()||[]).flatMap(r=>Array.isArray(r.entities)?r.entities:[]);
+    const mapped=[...ENTITY_KEYS].map(k=>String(this._entityMap?.[k]||"").trim()).filter(Boolean);
+    return [...new Set([...roomEntities,...mapped])].filter(e=>this._hass?.states?.[e]);
+  }
+
+  _overviewV2Personal(){
+    const entities=this._configuredEntitiesForOverview();
+    const friendly=e=>this._hass?.states?.[e]?.attributes?.friendly_name||e;
+    const byDomain=d=>entities.filter(e=>e.startsWith(d+"."));
+    const lights=byDomain("light");
+    const climates=byDomain("climate");
     const fans=[...byDomain("fan"),...byDomain("humidifier")];
     const binaries=byDomain("binary_sensor");
     const sensors=byDomain("sensor");
@@ -256,13 +277,4 @@ st climates=byDomain("climate");
     const occupied=this._on("binary_sensor.entry_occupancy");
     const alerts=[];
     if(!door && unlocked) alerts.push(this._alert("warn","mdi:lock-open-alert-outline","Porta chiusa ma sbloccata","La serratura risulta aperta anche se il contatto porta è chiuso."));
-    if(door) alerts.push(this._alert("bad","mdi:door-open","Porta ingresso aperta","La porta di casa risulta fisicamente aperta."));
-    return `<div class="page">${this._zoneHero("ingresso",[
-      {label:"Porta",value:door?"Aperta":unlocked?"Sbloccata":"Bloccata",small:"Contatto + serratura"},
-      {label:"Allarme",value:alarm,small:"Allarme"},
-      {label:"Luminosità",value:this._luxLabel("sensor.entry_illuminance"),small:this._fmtLuxExact("sensor.entry_illuminance")},
-      {label:"Presenza",value:occupied?"Occupato":"Libero",small:motion?"Movimento rilevato":"Nessun movimento"}
-    ])}${alerts.length?`<div class="logic-card" style="padding:0 18px;margin-top:16px;">${alerts.join("")}</div>`:""}${this._section("Sicurezza e accesso")}<div class="grid">
-      ${this._control("input_boolean.entry_door_unlock","Porta di casa",door?"mdi:door-open":unlocked?"mdi:lock-open-variant":"mdi:lock",door?"Aperta fisicamente":unlocked?"Chiusa · sbloccata":"Chiusa · bloccata","toggle",4)}
-      ${this._control("light.entry_main","Luce ingresso","mdi:ceiling-light",this._on("light.entry_main")?"Accesa":"Spenta","toggle",4)}
-      ${this._configured("alarm_control_panel.home_alarm")?`<div class="control span-4 ${alarm==='triggered'?'state-bad':alarm==='disarmed'?'state-warn':'state-on'}">${this._icon(alarm==='triggered'?"mdi:alarm-light":"mdi:shield-home",alarm==='triggered'?"bad":alarm==='disarmed'?"warn":"good")}<div class="control-main clickable" data-more="alarm_control_panel.home_alarm"><div class="control-title">Allarme</div><div class="control-sub">${this._esc(alarm)}
+    if(door) alerts.push(this._alert("bad","mdi:door-open","Porta ingresso aperta","La porta di casa 

@@ -1,4 +1,31 @@
-be"><i style="height:${valid?Math.max(12,Math.min(90,(n+5)/45*100)):30}%"></i></div><div class="thermo-bulb"></div></div>`:scene==="humidity"?`<div class="humidity-drop"><div class="humidity-fill" style="height:${valid?Math.max(8,Math.min(100,n)):35}%"></div></div>`:`<div class="sun-meter"><div class="sun-core"></div>${Array.from({length:8},(_,i)=>`<i class="r${i+1}"></i>`).join("")}</div>`}
+o acqua")||l.includes("serbatoio")||i.includes("cup-water")) type="water";
+    return `<div class="sensor-visual-card ${type} span-${span} ${tone||''}" ${entity?`data-more="${entity}"`:""}>
+      <div class="sensor-visual ${type}">
+        ${type==="wind"?`<div class="wind-lines"><i></i><i></i><i></i></div><div class="wind-vane"><span></span></div>`:
+          type==="rain"?`<div class="rain-cloud"></div><div class="rain-drops"><i></i><i></i><i></i><i></i></div>`:
+          type==="vpd"?`<div class="vpd-leaf"></div><div class="vpd-air"><i></i><i></i><i></i></div>`:
+          type==="radiation"?`<div class="solar-disc"></div><div class="solar-rays">${Array.from({length:8},(_,n)=>`<i class="r${n+1}"></i>`).join("")}</div>`:
+          type==="uv"?`<div class="uv-sun"></div><div class="uv-shield">UV</div>`:
+          type==="pressure"?`<div class="pressure-dial"><i></i><span></span></div>`:
+          type==="compass"?`<div class="compass-ring"><i></i><b>N</b></div>`:
+          type==="lightning"?`<div class="storm-cloud"></div><div class="bolt"></div>`:
+          type==="timer"?`<div class="timer-ring"><i></i><span></span></div>`:
+          type==="water"?`<div class="water-tank"><div></div></div>`:
+          `<div class="generic-sensor"><ha-icon icon="${icon}"></ha-icon></div>`}
+      </div>
+      <div class="sensor-visual-copy"><span>${this._esc(label)}</span><strong>${this._esc(value)}</strong>${foot?`<small>${this._esc(foot)}</small>`:""}</div><div class="sensor-visual-icon"><ha-icon icon="${icon}"></ha-icon></div>
+    </div>`;
+  }
+
+  _environmentVisual(entity,label,type="temperature",span=3,subtitle=""){
+    const raw=this._state(entity,"unknown"); const n=Number(raw), valid=Number.isFinite(n);
+    let value="—", icon="mdi:gauge", scene=type, tone="normal";
+    if(type==="temperature"){ value=valid?`${n.toFixed(1)} °C`:"—"; icon="mdi:thermometer"; tone=valid?(n>=28?"hot":n<=18?"cold":"normal"):"normal"; }
+    else if(type==="humidity"){ value=valid?`${Math.round(n)} %`:"—"; icon="mdi:water-percent"; tone=valid?(n>=65?"humid":n<=35?"dry":"normal"):"normal"; }
+    else if(type==="lux"){ value=this._fmtLuxExact(entity); icon="mdi:white-balance-sunny"; const l=valid?n:0; tone=l>=20000?"bright":l>=3500?"good":"low"; }
+    return `<button class="environment-card ${scene} ${tone} span-${span}" data-more="${entity}">
+      <div class="environment-visual ${scene}">
+        ${scene==="temperature"?`<div class="thermometer"><div class="thermo-tube"><i style="height:${valid?Math.max(12,Math.min(90,(n+5)/45*100)):30}%"></i></div><div class="thermo-bulb"></div></div>`:scene==="humidity"?`<div class="humidity-drop"><div class="humidity-fill" style="height:${valid?Math.max(8,Math.min(100,n)):35}%"></div></div>`:`<div class="sun-meter"><div class="sun-core"></div>${Array.from({length:8},(_,i)=>`<i class="r${i+1}"></i>`).join("")}</div>`}
       </div>
       <div class="environment-copy"><span>${this._esc(label)}</span><strong>${this._esc(value)}</strong><small>${this._esc(subtitle)}</small></div><div class="environment-state"><ha-icon icon="${icon}"></ha-icon></div>
     </button>`;
@@ -211,25 +238,4 @@ be"><i style="height:${valid?Math.max(12,Math.min(90,(n+5)/45*100)):30}%"></i></
         <button class="universal-device-action ${open?'active':''}" data-cover-toggle="${entity}" data-inverted="${inverted?1:0}" type="button"><ha-icon icon="mdi:blinds-horizontal"></ha-icon><span>${open?'CHIUDI':'APRI'}</span></button>
       </div>`;
     }
-    return `<div class="command-strip span-${span} ${open?'state-warn':'state-off'}"><div class="command-symbol ${open?'warn':''}"><ha-icon icon="mdi:blinds-horizontal"></ha-icon></div><div class="command-copy clickable" data-more="${entity}"><div class="command-title">${title}</div><div class="command-sub">${pos!==null?`${subPrefix} ${pos}% · `:""}${stateText}</div></div><button class="command-action ${open?'warn':''}" data-cover-toggle="${entity}" data-inverted="${inverted?1:0}" type="button"><span>${open?'CHIUDI':'APRI'}</span><i></i></button></div>`;
-  }
-  _alert(level,icon,title,text) { return `<div class="signal ${level}"><div class="signal-icon"><ha-icon icon="${icon}"></ha-icon></div><div><strong>${title}</strong><span>${text}</span></div></div>`; }
-  _logic(title,text,level=""){ return `<div class="logic-ribbon ${level}"><span>${title}</span><strong>${text}</strong></div>`; }
-  _compareCard(title, items, foot="", span=6, icon="mdi:chart-line") {
-    const visible=items.filter(it=>String(it.value??"").trim() && String(it.value).trim()!=="—");
-    if(!visible.length) return "";
-    return `<div class="data-node compare-card span-${span}"><div class="data-node-top"><div class="data-label">${title}</div><ha-icon icon="${icon}"></ha-icon></div><div class="compare-grid">${visible.map(it=>`<div class="compare-cell"><div class="compare-label">${it.label}</div><div class="compare-value">${it.value}</div></div>`).join("")}</div>${foot&&foot.trim()!=="—"?`<div class="data-foot compare-foot">${foot}</div>`:""}</div>`;
-  }
-
-  _configuredEntitiesForOverview(){
-    const roomEntities=(this._effectiveRooms()||[]).flatMap(r=>Array.isArray(r.entities)?r.entities:[]);
-    const mapped=[...ENTITY_KEYS].map(k=>String(this._entityMap?.[k]||"").trim()).filter(Boolean);
-    return [...new Set([...roomEntities,...mapped])].filter(e=>this._hass?.states?.[e]);
-  }
-
-  _overviewV2Personal(){
-    const entities=this._configuredEntitiesForOverview();
-    const friendly=e=>this._hass?.states?.[e]?.attributes?.friendly_name||e;
-    const byDomain=d=>entities.filter(e=>e.startsWith(d+"."));
-    const lights=byDomain("light");
-    con
+    return `<div class="command-strip span-${span} ${open?'state-warn':'state-off'}"><div class="command-symbol ${open?'warn':''}"><ha-icon icon="mdi:blinds-horizo

@@ -1,95 +1,4 @@
-const openingOn=opening&&this._on(opening);
-    const motionOn=motion&&this._on(motion);
-    const activeCount=lightOn+climateOn+switchOn+(openingOn?1:0)+(motionOn?1:0);
-
-    const firstDevice=[...switches,...media,...scripts,...buttons][0]||null;
-    const metrics=[
-      temp?{
-        label:"Comfort",
-        value:`${this._state(temp)}${this._attr(temp,"unit_of_measurement","")||""}`,
-        small:hum?`Umidità ${this._state(hum)}${this._attr(hum,"unit_of_measurement","")||""}`:"",
-        show:true
-      }:null,
-      opening?{
-        label:"Apertura",
-        value:this._on(opening)?"Aperta":"Chiusa",
-        small:display(opening),
-        show:true
-      }:null,
-      climates[0]?{
-        label:"Clima",
-        value:this._climateActive(climates[0])?"Attivo":"Spento",
-        small:display(climates[0]),
-        show:true
-      }:null,
-      lights.length?{
-        label:"Luci",
-        value:lightOn?`${lightOn} accese`:"Spente",
-        small:lights.length>1?`${lights.length} punti luce`:(display(lights[0])),
-        show:true
-      }:null,
-      firstDevice?{
-        label:"Dispositivo",
-        value:firstDevice.startsWith("script.")||firstDevice.startsWith("button.")?"Disponibile":(this._on(firstDevice)?"Acceso":this._state(firstDevice,"Pronto")),
-        small:display(firstDevice),
-        show:true
-      }:null
-    ].filter(Boolean).slice(0,3);
-
-    const roomLabel=this._roomTypes().find(x=>x[0]===room.type)?.[1]||"Ambiente";
-    const hero=this._hero(
-      room.name,
-      this._uiTheme==="v1"
-        ? `${roomLabel} · comfort, luci ed elettrodomestici`
-        : `${roomLabel} · comfort, luci e dispositivi`,
-      {level:activeCount?"warn":"good",title:activeCount?`${activeCount} stati attivi`:"Tutto tranquillo",text:""},
-      metrics,
-      room.type||"generico"
-    );
-
-    const controlCards=[
-      ...lights.map(e=>this._control(
-        e,
-        display(e),
-        this._v1OriginalIcon(e,room.type,display(e)),
-        this._on(e)?"Accesa":"Spenta",
-        "toggle",6
-      )),
-      ...switches.map(e=>this._control(
-        e,
-        display(e),
-        this._v1OriginalIcon(e,room.type,display(e)),
-        this._on(e)?"Acceso":"Spento",
-        "toggle",6
-      )),
-      ...media.map(e=>`<div class="command-strip span-6"><div class="command-symbol"><ha-icon icon="${this._v1OriginalIcon(e,room.type,display(e))}"></ha-icon></div><div class="command-copy clickable" data-more="${e}"><div class="command-title">${this._esc(display(e))}</div><div class="command-sub">${this._esc(this._state(e,"—"))}</div></div></div>`),
-      ...scripts.map(e=>`<div class="command-strip span-6"><div class="command-symbol"><ha-icon icon="${this._v1OriginalIcon(e,room.type,display(e))}"></ha-icon></div><div class="command-copy"><div class="command-title">${this._esc(display(e))}</div><div class="command-sub">Azione</div></div><button class="command-action" data-script="${e}" type="button"><span>ESEGUI</span><i></i></button></div>`),
-      ...buttons.map(e=>`<div class="command-strip span-6"><div class="command-symbol"><ha-icon icon="${this._v1OriginalIcon(e,room.type,display(e))}"></ha-icon></div><div class="command-copy clickable" data-more="${e}"><div class="command-title">${this._esc(display(e))}</div><div class="command-sub">Comando</div></div></div>`)
-    ].join("");
-
-    const coverCards=covers.map(e=>this._uiTheme==="v1"
-      ? `<div class="command-strip span-6"><div class="command-symbol"><ha-icon icon="${this._v1OriginalIcon(e,room.type,display(e))}"></ha-icon></div><div class="command-copy clickable" data-more="${e}"><div class="command-title">${this._esc(display(e))}</div><div class="command-sub">${this._esc(this._state(e,"—"))}</div></div><button class="command-action" data-cover-toggle="${e}" data-inverted="0" type="button"><span>GESTISCI</span><i></i></button></div>`
-      : this._coverControl(e,display(e),false,6)
-    ).join("");
-
-    const climateCards=climates.map(e=>this._climateBlock(
-      e,"","",
-      this._hass.states[e]?.attributes?.friendly_name||room.name,""
-    )).join("");
-
-    const sensorCards=sensors.map(e=>{
-      const obj=this._hass.states[e], name=obj?.attributes?.friendly_name||e;
-      const dc=String(obj?.attributes?.device_class||"").toLowerCase();
-      const icon=this._v1OriginalIcon(e,room.type,display(e));
-      const unit=obj?.attributes?.unit_of_measurement||"";
-      return this._metric(icon,name,this._state(e),unit,4,e);
-    }).join("");
-
-    const hasControls=!!(controlCards||coverCards||climateCards);
-    return `<div class="page">
-      ${hero}
-      ${hasControls?this._section(this._uiTheme==="v1"?"Luci, tende ed elettrodomestici":"Luci, tende e dispositivi"):""}
-      <div class="grid">${controlCards}${coverCards}${climateCards}</div>
+overCards}${climateCards}</div>
       ${sensorCards?this._section("Sensori","Stato dell'ambiente"):""}
       <div class="grid">${sensorCards}</div>
     </div>`;
@@ -350,4 +259,99 @@ const openingOn=opening&&this._on(opening);
       if(!st){ rows.push(`${eid}|missing`); continue; }
       let attrs="";
       try { attrs=JSON.stringify(st.attributes || {}); } catch(_err) {}
-      rows.push(`$
+      rows.push(`${eid}|${st.state}|${attrs}`);
+    }
+    return rows.join("\n");
+  }
+
+  _scheduleRender(){
+    if(this._pointerBusy){ this._renderPending=true; return; }
+    if(this._renderTimer) return;
+    this._renderTimer=setTimeout(()=>{
+      this._renderTimer=null;
+      if(this._pointerBusy){ this._renderPending=true; return; }
+      this._renderPage(false);
+    },70);
+  }
+  _countOn(list) { return list.filter(id=>this._on(id)).length; }
+  _openCount() { return OPENINGS.filter(id=>this._on(id)).length; }
+  _climateActive(id) { const st=this._state(id,"off"); const act=this._attr(id,"hvac_action",""); return st!=="off" || ["heating","cooling","drying","fan"].includes(act); }
+  _coverOpen(id, invertedPosition=false) {
+    const p=this._optimistic.get(id); if(p && ["open","closed"].includes(p.state)) return p.state==="open";
+    return invertedPosition ? Number(this._attr(id,"current_position",0))>5 : this._state(id)==="open";
+  }
+  _imageUrl(id){ const p=this._attr(id,"entity_picture",""); return p ? this._esc(p) : ""; }
+  _firstId(ids=[]){ return ids.find(id=>this._s(id)) || ids[0] || ""; }
+  _firstState(ids=[], fallback="—"){ const id=this._firstId(ids); return id ? this._state(id,fallback) : fallback; }
+  _firstNum(ids=[], fallback=null){ const id=this._firstId(ids); return id ? this._num(id,fallback) : fallback; }
+  _firstFmt(ids=[], digits=1, unit=null){ const id=this._firstId(ids); return id ? this._fmt(id,digits,unit) : "—"; }
+  _fmtPowerAuto(idOrIds, digits=2){
+    const ids = Array.isArray(idOrIds) ? idOrIds : [idOrIds];
+    const id = this._firstId(ids);
+    if(!id) return "—";
+    const n = this._num(id, null);
+    if(n===null) return "—";
+    const rawUnit = String(this._attr(id, "unit_of_measurement", "") || "").toLowerCase();
+    if(rawUnit === 'w' || (!rawUnit && Math.abs(n) >= 100)) return `${(n/1000).toFixed(digits)} kW`;
+    if(rawUnit === 'kw') return `${n.toFixed(digits)} kW`;
+    return `${n.toFixed(digits)} ${rawUnit || 'kW'}`;
+  }
+  _powerValueAuto(idOrIds){
+    const ids = Array.isArray(idOrIds) ? idOrIds : [idOrIds];
+    const id = this._firstId(ids);
+    if(!id) return null;
+    let n = this._num(id, null);
+    if(n===null) return null;
+    const rawUnit = String(this._attr(id, "unit_of_measurement", "") || "").toLowerCase();
+    if(rawUnit === 'w' || (!rawUnit && Math.abs(n) >= 100)) n = n / 1000;
+    return n;
+  }
+  _fmtSignedPowerAuto(idOrIds, digits=2){
+    const n = this._powerValueAuto(idOrIds);
+    if(n===null) return "—";
+    const sign = n > 0 ? '+' : n < 0 ? '−' : '±';
+    return `${sign}${Math.abs(n).toFixed(digits)} kW`;
+  }
+  _fmtAbsPowerAuto(idOrIds, digits=2){
+    const n = this._powerValueAuto(idOrIds);
+    if(n===null) return "—";
+    return `${Math.abs(n).toFixed(digits)} kW`;
+  }
+  _themeIsLight(){
+    const v = getComputedStyle(this).getPropertyValue('--primary-background-color').trim();
+    if(!v) return false;
+    let r=255,g=255,b=255;
+    if(v.startsWith('#')){
+      const h=v.slice(1);
+      if(h.length===3){ r=parseInt(h[0]+h[0],16); g=parseInt(h[1]+h[1],16); b=parseInt(h[2]+h[2],16); }
+      else if(h.length>=6){ r=parseInt(h.slice(0,2),16); g=parseInt(h.slice(2,4),16); b=parseInt(h.slice(4,6),16); }
+    } else {
+      const m=v.match(/rgba?\(([^)]+)\)/i);
+      if(m){ const p=m[1].split(',').map(s=>parseFloat(s.trim())); [r,g,b]=p; }
+    }
+    const luminance = (0.2126*r + 0.7152*g + 0.0722*b) / 255;
+    return luminance > 0.62;
+  }
+  _applyThemeMode(){
+    const shell = this.shadowRoot?.querySelector('.app-shell');
+    if(!shell) return;
+    const light = this._themeIsLight();
+    shell.classList.toggle('theme-light', light);
+    shell.classList.toggle('theme-dark', !light);
+  }
+  _windDir(id){ const deg=this._num(id,null); if(deg===null) return "—"; const dirs=['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSO','SO','OSO','O','ONO','NO','NNO']; return `${Math.round(deg)}° · ${dirs[Math.floor((deg+11.25)/22.5)%16]}`; }
+  _metricTone(entity,value=""){
+    const st=this._state(entity,""); const val=String(value).toLowerCase();
+    if((entity.includes("wleak")||entity.includes("water_leak")) && this._on(entity)) return "state-bad";
+    if(entity.includes("tank_status") && this._on(entity)) return "state-bad";
+    if(entity==="alarm_control_panel.home_alarm") return st==="triggered"?"state-bad":st==="disarmed"?"state-warn":"state-good";
+    if(entity.startsWith("binary_sensor.") && this._on(entity)) return entity.includes("motion")||entity.includes("occupancy")||entity.includes("occupazione")?"state-active":"state-warn";
+    if(["aperta","aperto","sbloccata","rilevata","rilevato","pieno","allarme"].some(x=>val.includes(x))) return val.includes("perdita")||val.includes("pieno")||val.includes("allarme")?"state-bad":"state-warn";
+    if(["accesa","acceso","attivo","attiva","occupato","in carica","cleaning"].some(x=>val.includes(x))) return "state-active";
+    if(["chiusa","chiuso","spenta","spento","libero","assente","ok","nessuna"].some(x=>val.includes(x))) return "state-good";
+    return "";
+  }
+  _controlTone(entity,on){
+    if(!on) return "state-off";
+    if(entity.startsWith("light.")) return "state-on light-tone";
+    if(entity.startsWith("climate.")) return "state-o

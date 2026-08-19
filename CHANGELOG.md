@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.1.1 - 2026-08-19
+
+- Fixed IT / EN language selector not activating reliably in Home Assistant.
+- Language buttons now use dedicated click handlers instead of the global dashboard event delegation.
+- Hardened DOM translation for Home Assistant webviews by avoiding dependency on an unqualified `NodeFilter` global.
+- Language switching now performs a clean interface rebuild and reapplies the selected translation.
+- Language preference remains stored locally on the browser/device.
+
 ## 2.1.0
 - Added built-in Italian / English interface support.
 - Added IT / EN language selector in the dashboard header.

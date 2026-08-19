@@ -1,4 +1,13 @@
-</div></div><button class="switch-btn" data-more="alarm_control_panel.home_alarm" type="button">GESTISCI</button></div>
+risulta fisicamente aperta."));
+    return `<div class="page">${this._zoneHero("ingresso",[
+      {label:"Porta",value:door?"Aperta":unlocked?"Sbloccata":"Bloccata",small:"Contatto + serratura"},
+      {label:"Allarme",value:alarm,small:"Allarme"},
+      {label:"Luminosità",value:this._luxLabel("sensor.entry_illuminance"),small:this._fmtLuxExact("sensor.entry_illuminance")},
+      {label:"Presenza",value:occupied?"Occupato":"Libero",small:motion?"Movimento rilevato":"Nessun movimento"}
+    ])}${alerts.length?`<div class="logic-card" style="padding:0 18px;margin-top:16px;">${alerts.join("")}</div>`:""}${this._section("Sicurezza e accesso")}<div class="grid">
+      ${this._control("input_boolean.entry_door_unlock","Porta di casa",door?"mdi:door-open":unlocked?"mdi:lock-open-variant":"mdi:lock",door?"Aperta fisicamente":unlocked?"Chiusa · sbloccata":"Chiusa · bloccata","toggle",4)}
+      ${this._control("light.entry_main","Luce ingresso","mdi:ceiling-light",this._on("light.entry_main")?"Accesa":"Spenta","toggle",4)}
+      ${this._configured("alarm_control_panel.home_alarm")?`<div class="control span-4 ${alarm==='triggered'?'state-bad':alarm==='disarmed'?'state-warn':'state-on'}">${this._icon(alarm==='triggered'?"mdi:alarm-light":"mdi:shield-home",alarm==='triggered'?"bad":alarm==='disarmed'?"warn":"good")}<div class="control-main clickable" data-more="alarm_control_panel.home_alarm"><div class="control-title">Allarme</div><div class="control-sub">${this._esc(alarm)}</div></div><button class="switch-btn" data-more="alarm_control_panel.home_alarm" type="button">GESTISCI</button></div>
       <div class="control span-12 ${alarm==='triggered'?'state-bad':alarm==='disarmed'?'state-warn':'state-on'}"><div class="control-main"><div class="control-title">Comandi allarme</div><div class="control-sub">Inserimento rapido</div></div><button class="mini-btn ${alarm==='armed_home'?'active':''}" data-alarm="alarm_arm_home" type="button">CASA</button><button class="mini-btn ${alarm==='armed_away'?'active':''}" data-alarm="alarm_arm_away" type="button">FUORI</button><button class="mini-btn ${alarm==='disarmed'?'active':''}" data-alarm="alarm_disarm" type="button">OFF</button></div>`:""}
     </div>${this._section("Sensori ingresso")}<div class="grid">
       ${this._metric("mdi:door", "Stato porta",door?"Aperta":"Chiusa","Sensore magnetico",3,"binary_sensor.entry_door")}
@@ -155,12 +164,4 @@
       ${this._coverControl("cover.bedroom_blind","Tenda camera",true,6)}
     </div>${this._section("Ambiente camera")}<div class="grid">
       ${this._metric("mdi:thermometer","Temperatura Sensore",this._fmt("sensor.bedroom_temperature",1,"°C"),"Camera",4,"sensor.bedroom_temperature")}
-      ${this._metric("mdi:water-percent","Umidità Sensore",this._fmt("sensor.bedroom_humidity",0,"%"),"Camera",4,"sensor.bedroom_humidity")}
-      ${this._metric("mdi:air-conditioner","Temp clima",this._fmt("sensor.bedroom_climate_temperature",1,"°C"),"Climatizzatore",4,"sensor.bedroom_climate_temperature")}
-    </div>${this._section("Sicurezza finestra")}<div class="grid">
-      ${this._metric("mdi:door-open","Porta finestra",windowOpen?"Aperta":"Chiusa","Camera",4,"binary_sensor.bedroom_door_window")}
-      ${this._metric("mdi:window-open-variant","Anta",anta?"Aperta":"Chiusa","Camera",4,"binary_sensor.bedroom_window")}
-      ${this._metric("mdi:vibrate","Vibrazione",vibration?"Rilevata":"Assente","Finestra",4,"binary_sensor.bedroom_window_vibration")}
-    </div>${this._section("Robot aspirapolvere","Robot aspirapolvere")}<div class="grid">
-      ${this._metric("mdi:robot-vacuum","Stato",v,"Robot aspirapolvere",3,"vacuum.robot_vacuum")}
-      ${this._metric("mdi:battery","Batteria",this._fmt("sensor.robot_vacuum_battery",
+      ${this._metric("mdi:water-percent","Umidit

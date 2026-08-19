@@ -1,89 +1,4 @@
-ring(obj?.attributes?.friendly_name||"").trim().toLocaleLowerCase("it")===needle
-    );
-    if(exactFriendly.length===1) return exactFriendly[0][0];
-
-    const exactTail=states.filter(([id]) =>
-      id.split(".").slice(1).join(".").replaceAll("_"," ").toLocaleLowerCase("it")===needle
-    );
-    if(exactTail.length===1) return exactTail[0][0];
-
-    const partialFriendly=states.filter(([id,obj]) =>
-      String(obj?.attributes?.friendly_name||"").trim().toLocaleLowerCase("it").includes(needle)
-    );
-    if(partialFriendly.length===1) return partialFriendly[0][0];
-
-    return raw;
-  }
-
-  _roomEntityDisplay(entity,room=null){
-    const custom=room?.entity_labels && typeof room.entity_labels==="object"
-      ? String(room.entity_labels[entity]||"").trim()
-      : "";
-    if(custom) return custom;
-    const obj=this._hass?.states?.[entity];
-    return obj?.attributes?.friendly_name || entity;
-  }
-
-  _roomEntityCustomLabel(entity,room=null){
-    return room?.entity_labels && typeof room.entity_labels==="object"
-      ? String(room.entity_labels[entity]||"").trim()
-      : "";
-  }
-
-  _setRoomEntityLabel(roomId,entity,value){
-    const room=this._roomsDraft.find(r=>r.id===roomId);
-    if(!room) return;
-    room.entity_labels=(room.entity_labels && typeof room.entity_labels==="object") ? {...room.entity_labels} : {};
-    const clean=String(value||"").trim();
-    if(clean) room.entity_labels[entity]=clean;
-    else delete room.entity_labels[entity];
-  }
-
-  _legacyRoomForConfigKey(key){
-    const full=String(key||"").toLowerCase();
-    const name=full.split(".")[1]||"";
-    if(name.includes("bathroom") || name.includes("shower")) return "bagno";
-    if(name.includes("bedroom") || name.includes("robot_vacuum")) return "camera";
-    if(name.includes("kitchen")) return "cucina";
-    if(name.includes("hallway")) return "disimpegno";
-    if(name.includes("entry_") || full==="alarm_control_panel.home_alarm") return "ingresso";
-    if(name.includes("stairs") || name==="main_gate") return "scale";
-    if(name==="pedestrian_gate") return "esterno";
-    if(name.includes("balcony") || name.includes("weather_") || name.includes("solar_") || name.includes("utility_room") || name.includes("blinds_")) return "balcone";
-    if(name.includes("garage_") || name.includes("wallbox") || name.includes("ev_") || name.includes("grid_current")) return "garage";
-    const group=String(this._configGroup?.(key)||"").toLocaleLowerCase("it");
-    const byGroup={"bagno":"bagno","camera":"camera","cucina":"cucina","disimpegno":"disimpegno","ingresso":"ingresso","scale":"scale","balcone":"balcone","garage":"garage","meteo":"balcone","energia solare":"balcone","wallbox & ev":"garage"};
-    return byGroup[group]||"";
-  }
-  _mergeConfiguredEntitiesIntoRooms(rooms){
-    const out=(Array.isArray(rooms)?rooms:[]).map(r=>({...r,entities:[...(r.entities||[])],entity_labels:{...(r.entity_labels||{})}}));
-    const defaults=new Map(this._defaultRooms().map(r=>[r.id,r]));
-    const configured=[...ENTITY_KEYS].map(key=>{
-      const entity=String(this._configDraft?.[key] ?? this._entityMap?.[key] ?? "").trim();
-      return {key,entity,room:this._legacyRoomForConfigKey(key)};
-    }).filter(x=>x.entity && x.room);
-
-    for(const item of configured){
-      const meta=defaults.get(item.room);
-      let room=out.find(r=>r.id===item.room)
-        || out.find(r=>r.type===item.room)
-        || out.find(r=>String(r.name||"").toLocaleLowerCase("it")===String(meta?.name||"").toLocaleLowerCase("it"));
-      if(!room && meta){ room={...meta,entities:[],entity_labels:{}}; out.push(room); }
-      if(room){
-        room.entities=Array.isArray(room.entities)?room.entities:[];
-        if(!room.entities.includes(item.entity)) room.entities.push(item.entity);
-      }
-    }
-    return out;
-  }
-  _syncConfiguredKeyToRoom(key,oldEntity,newEntity){
-    // Legacy 173 mappings are used only to bootstrap the room list once.
-    // After rooms have been saved, room membership is controlled exclusively
-    // from the Rooms manager and must never be recreated automatically.
-    if(Array.isArray(this._rooms) && this._rooms.length) return;
-    const roomId=this._legacyRoomForConfigKey(key);
-    if(!roomId) return;
-    const defaults=new Map(this._defaultRooms().map(r=>[r.id,r]));
+ltRooms().map(r=>[r.id,r]));
     let room=this._roomsDraft.find(r=>r.id===roomId) || this._roomsDraft.find(r=>r.type===roomId);
     if(!room && newEntity){
       const meta=defaults.get(roomId);
@@ -353,4 +268,95 @@ ring(obj?.attributes?.friendly_name||"").trim().toLocaleLowerCase("it")===needle
     const lightOn=lights.filter(e=>this._on(e)).length;
     const climateOn=climates.filter(e=>this._climateActive(e)).length;
     const switchOn=switches.filter(e=>this._on(e)).length;
-    
+    const openingOn=opening&&this._on(opening);
+    const motionOn=motion&&this._on(motion);
+    const activeCount=lightOn+climateOn+switchOn+(openingOn?1:0)+(motionOn?1:0);
+
+    const firstDevice=[...switches,...media,...scripts,...buttons][0]||null;
+    const metrics=[
+      temp?{
+        label:"Comfort",
+        value:`${this._state(temp)}${this._attr(temp,"unit_of_measurement","")||""}`,
+        small:hum?`Umidità ${this._state(hum)}${this._attr(hum,"unit_of_measurement","")||""}`:"",
+        show:true
+      }:null,
+      opening?{
+        label:"Apertura",
+        value:this._on(opening)?"Aperta":"Chiusa",
+        small:display(opening),
+        show:true
+      }:null,
+      climates[0]?{
+        label:"Clima",
+        value:this._climateActive(climates[0])?"Attivo":"Spento",
+        small:display(climates[0]),
+        show:true
+      }:null,
+      lights.length?{
+        label:"Luci",
+        value:lightOn?`${lightOn} accese`:"Spente",
+        small:lights.length>1?`${lights.length} punti luce`:(display(lights[0])),
+        show:true
+      }:null,
+      firstDevice?{
+        label:"Dispositivo",
+        value:firstDevice.startsWith("script.")||firstDevice.startsWith("button.")?"Disponibile":(this._on(firstDevice)?"Acceso":this._state(firstDevice,"Pronto")),
+        small:display(firstDevice),
+        show:true
+      }:null
+    ].filter(Boolean).slice(0,3);
+
+    const roomLabel=this._roomTypes().find(x=>x[0]===room.type)?.[1]||"Ambiente";
+    const hero=this._hero(
+      room.name,
+      this._uiTheme==="v1"
+        ? `${roomLabel} · comfort, luci ed elettrodomestici`
+        : `${roomLabel} · comfort, luci e dispositivi`,
+      {level:activeCount?"warn":"good",title:activeCount?`${activeCount} stati attivi`:"Tutto tranquillo",text:""},
+      metrics,
+      room.type||"generico"
+    );
+
+    const controlCards=[
+      ...lights.map(e=>this._control(
+        e,
+        display(e),
+        this._v1OriginalIcon(e,room.type,display(e)),
+        this._on(e)?"Accesa":"Spenta",
+        "toggle",6
+      )),
+      ...switches.map(e=>this._control(
+        e,
+        display(e),
+        this._v1OriginalIcon(e,room.type,display(e)),
+        this._on(e)?"Acceso":"Spento",
+        "toggle",6
+      )),
+      ...media.map(e=>`<div class="command-strip span-6"><div class="command-symbol"><ha-icon icon="${this._v1OriginalIcon(e,room.type,display(e))}"></ha-icon></div><div class="command-copy clickable" data-more="${e}"><div class="command-title">${this._esc(display(e))}</div><div class="command-sub">${this._esc(this._state(e,"—"))}</div></div></div>`),
+      ...scripts.map(e=>`<div class="command-strip span-6"><div class="command-symbol"><ha-icon icon="${this._v1OriginalIcon(e,room.type,display(e))}"></ha-icon></div><div class="command-copy"><div class="command-title">${this._esc(display(e))}</div><div class="command-sub">Azione</div></div><button class="command-action" data-script="${e}" type="button"><span>ESEGUI</span><i></i></button></div>`),
+      ...buttons.map(e=>`<div class="command-strip span-6"><div class="command-symbol"><ha-icon icon="${this._v1OriginalIcon(e,room.type,display(e))}"></ha-icon></div><div class="command-copy clickable" data-more="${e}"><div class="command-title">${this._esc(display(e))}</div><div class="command-sub">Comando</div></div></div>`)
+    ].join("");
+
+    const coverCards=covers.map(e=>this._uiTheme==="v1"
+      ? `<div class="command-strip span-6"><div class="command-symbol"><ha-icon icon="${this._v1OriginalIcon(e,room.type,display(e))}"></ha-icon></div><div class="command-copy clickable" data-more="${e}"><div class="command-title">${this._esc(display(e))}</div><div class="command-sub">${this._esc(this._state(e,"—"))}</div></div><button class="command-action" data-cover-toggle="${e}" data-inverted="0" type="button"><span>GESTISCI</span><i></i></button></div>`
+      : this._coverControl(e,display(e),false,6)
+    ).join("");
+
+    const climateCards=climates.map(e=>this._climateBlock(
+      e,"","",
+      this._hass.states[e]?.attributes?.friendly_name||room.name,""
+    )).join("");
+
+    const sensorCards=sensors.map(e=>{
+      const obj=this._hass.states[e], name=obj?.attributes?.friendly_name||e;
+      const dc=String(obj?.attributes?.device_class||"").toLowerCase();
+      const icon=this._v1OriginalIcon(e,room.type,display(e));
+      const unit=obj?.attributes?.unit_of_measurement||"";
+      return this._metric(icon,name,this._state(e),unit,4,e);
+    }).join("");
+
+    const hasControls=!!(controlCards||coverCards||climateCards);
+    return `<div class="page">
+      ${hero}
+      ${hasControls?this._section(this._uiTheme==="v1"?"Luci, tende ed elettrodomestici":"Luci, tende e dispositivi"):""}
+      <div class="grid">${controlCards}${c

@@ -1,40 +1,4 @@
-ty-search-wrap:focus-within{z-index:120}
-      .room-entity-suggestions{z-index:999!important;max-height:min(320px,42vh)!important}
-      .room-entity-suggestions.flip-up{top:auto!important;bottom:calc(100% + 5px)!important}
-      .config-dialog{overflow:hidden}
-      .config-scroll{position:relative;z-index:1}
-      .room-manager{position:relative;z-index:30}
-      .config-toolbar{position:relative;z-index:2}
-
-      /* v2.0.0 - unlimited dynamic rooms / independent room scrolling */
-      .room-manager{display:flex;flex-direction:column;max-height:min(52vh,620px)!important}
-      .room-manager-head{flex:0 0 auto}
-      .room-list{flex:1 1 auto;min-height:0;max-height:min(40vh,470px)!important;overflow-y:auto!important;overflow-x:visible!important;padding-right:5px;scrollbar-gutter:stable}
-      .room-friendly-hint{flex:0 0 auto}
-      .room-edit-row{min-width:0}
-      .room-list::-webkit-scrollbar{width:8px}.room-list::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--secondary-text-color) 35%,transparent);border-radius:999px}
-      @media(max-width:900px){
-        .room-manager{max-height:min(58vh,650px)!important}
-        .room-list{max-height:min(46vh,520px)!important}
-      }
-
-      /* v2.0.0 - quick save inside Rooms manager */
-      .room-manager-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-      .room-save{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:1px solid color-mix(in srgb,#00a9df 58%,var(--divider-color));background:#00a9df;color:#fff;border-radius:12px;padding:9px 13px;font-weight:900;cursor:pointer}
-      .room-save ha-icon{--mdc-icon-size:17px}
-      .room-save:hover{filter:brightness(1.05)}
-      .room-save:disabled{opacity:.6;cursor:wait}
-      @media(max-width:760px){
-        .room-manager-actions{width:100%}
-        .room-manager-actions .room-add,.room-manager-actions .room-save{flex:1 1 180px}
-      }
-
-      /* v2.0.0 - Casa V2 overview aligned with personal Casa 4.3.54 */
-      .ui-v2 .community-personal-overview{grid-template-columns:minmax(360px,.78fr) minmax(650px,1.55fr)!important;min-height:340px!important}
-      .personal-overview-hero-card{display:grid;grid-template-columns:minmax(420px,1.25fr) minmax(250px,.75fr);gap:18px;align-items:stretch;min-height:255px;padding:18px;border-radius:26px;border:1px solid rgba(255,255,255,.075);background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(61,174,233,.04))}
-      .personal-overview-house{position:relative;min-height:220px;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#173143 0 48%,#182329 48%);display:grid;place-items:center}.personal-overview-house .house-v2-building{transform:scale(.9);transform-origin:center bottom}
-      .personal-overview-side{display:grid;grid-template-columns:1fr 1fr;gap:10px}.personal-overview-meta{padding:14px;border:1px solid rgba(255,255,255,.065);border-radius:16px;background:rgba(255,255,255,.025)}.personal-overview-meta span{display:block;font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:#8da6bd;font-weight:900}.personal-overview-meta strong{display:block;margin-top:7px;font-size:22px;line-height:1.05}.personal-overview-meta small{display:block;margin-top:6px;color:var(--secondary-text-color);font-size:9px;line-height:1.35}
-      .overview-active-strip{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0 28px}.overview-active-chip{display:flex;align-items:center;gap:8px;padding:11px 14px;border:1px solid rgba(72,191,255,.28);border-radius:14px;background:rgba(72,191,255,.045);color:#66ceff;font-weight:850;font-size:12px}.overview-active-chip.warn{border-color:rgba(255,175,74,.34);background:rgba(255,175,74,.055);color:#ffbd69}.overview-active-chip ha-icon{--mdc-icon-size:18px}
+}
       .overview-climate-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:12px 0 28px}.overview-climate-card{padding:16px 14px;border:1px solid rgba(255,255,255,.075);border-radius:18px;background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(58,178,235,.025))}.overview-climate-card span{display:block;font-size:8px;letter-spacing:.17em;text-transform:uppercase;color:#8da6bd;font-weight:900}.overview-climate-card strong{display:block;margin-top:8px;font-size:24px}.overview-climate-card small{display:block;margin-top:4px;color:var(--secondary-text-color);font-size:10px}
       .overview-weather-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;padding:12px;border:1px solid rgba(255,255,255,.065);border-radius:22px;background:rgba(255,255,255,.015);margin-bottom:28px}.overview-weather-card{padding:14px;border-radius:16px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.025)}.overview-weather-card span{display:block;font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:#8da6bd;font-weight:900}.overview-weather-card strong{display:block;margin-top:7px;font-size:20px}.overview-weather-card small{display:block;margin-top:4px;color:var(--secondary-text-color);font-size:9px}
       @media(max-width:1100px){.ui-v2 .community-personal-overview{grid-template-columns:1fr!important}.personal-overview-hero-card{grid-template-columns:1fr}.overview-climate-grid,.overview-weather-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -222,4 +186,89 @@ ty-search-wrap:focus-within{z-index:120}
     const states=Object.entries(this._hass?.states||{});
 
     const exactFriendly=states.filter(([id,obj]) =>
-      St
+      String(obj?.attributes?.friendly_name||"").trim().toLocaleLowerCase("it")===needle
+    );
+    if(exactFriendly.length===1) return exactFriendly[0][0];
+
+    const exactTail=states.filter(([id]) =>
+      id.split(".").slice(1).join(".").replaceAll("_"," ").toLocaleLowerCase("it")===needle
+    );
+    if(exactTail.length===1) return exactTail[0][0];
+
+    const partialFriendly=states.filter(([id,obj]) =>
+      String(obj?.attributes?.friendly_name||"").trim().toLocaleLowerCase("it").includes(needle)
+    );
+    if(partialFriendly.length===1) return partialFriendly[0][0];
+
+    return raw;
+  }
+
+  _roomEntityDisplay(entity,room=null){
+    const custom=room?.entity_labels && typeof room.entity_labels==="object"
+      ? String(room.entity_labels[entity]||"").trim()
+      : "";
+    if(custom) return custom;
+    const obj=this._hass?.states?.[entity];
+    return obj?.attributes?.friendly_name || entity;
+  }
+
+  _roomEntityCustomLabel(entity,room=null){
+    return room?.entity_labels && typeof room.entity_labels==="object"
+      ? String(room.entity_labels[entity]||"").trim()
+      : "";
+  }
+
+  _setRoomEntityLabel(roomId,entity,value){
+    const room=this._roomsDraft.find(r=>r.id===roomId);
+    if(!room) return;
+    room.entity_labels=(room.entity_labels && typeof room.entity_labels==="object") ? {...room.entity_labels} : {};
+    const clean=String(value||"").trim();
+    if(clean) room.entity_labels[entity]=clean;
+    else delete room.entity_labels[entity];
+  }
+
+  _legacyRoomForConfigKey(key){
+    const full=String(key||"").toLowerCase();
+    const name=full.split(".")[1]||"";
+    if(name.includes("bathroom") || name.includes("shower")) return "bagno";
+    if(name.includes("bedroom") || name.includes("robot_vacuum")) return "camera";
+    if(name.includes("kitchen")) return "cucina";
+    if(name.includes("hallway")) return "disimpegno";
+    if(name.includes("entry_") || full==="alarm_control_panel.home_alarm") return "ingresso";
+    if(name.includes("stairs") || name==="main_gate") return "scale";
+    if(name==="pedestrian_gate") return "esterno";
+    if(name.includes("balcony") || name.includes("weather_") || name.includes("solar_") || name.includes("utility_room") || name.includes("blinds_")) return "balcone";
+    if(name.includes("garage_") || name.includes("wallbox") || name.includes("ev_") || name.includes("grid_current")) return "garage";
+    const group=String(this._configGroup?.(key)||"").toLocaleLowerCase("it");
+    const byGroup={"bagno":"bagno","camera":"camera","cucina":"cucina","disimpegno":"disimpegno","ingresso":"ingresso","scale":"scale","balcone":"balcone","garage":"garage","meteo":"balcone","energia solare":"balcone","wallbox & ev":"garage"};
+    return byGroup[group]||"";
+  }
+  _mergeConfiguredEntitiesIntoRooms(rooms){
+    const out=(Array.isArray(rooms)?rooms:[]).map(r=>({...r,entities:[...(r.entities||[])],entity_labels:{...(r.entity_labels||{})}}));
+    const defaults=new Map(this._defaultRooms().map(r=>[r.id,r]));
+    const configured=[...ENTITY_KEYS].map(key=>{
+      const entity=String(this._configDraft?.[key] ?? this._entityMap?.[key] ?? "").trim();
+      return {key,entity,room:this._legacyRoomForConfigKey(key)};
+    }).filter(x=>x.entity && x.room);
+
+    for(const item of configured){
+      const meta=defaults.get(item.room);
+      let room=out.find(r=>r.id===item.room)
+        || out.find(r=>r.type===item.room)
+        || out.find(r=>String(r.name||"").toLocaleLowerCase("it")===String(meta?.name||"").toLocaleLowerCase("it"));
+      if(!room && meta){ room={...meta,entities:[],entity_labels:{}}; out.push(room); }
+      if(room){
+        room.entities=Array.isArray(room.entities)?room.entities:[];
+        if(!room.entities.includes(item.entity)) room.entities.push(item.entity);
+      }
+    }
+    return out;
+  }
+  _syncConfiguredKeyToRoom(key,oldEntity,newEntity){
+    // Legacy 173 mappings are used only to bootstrap the room list once.
+    // After rooms have been saved, room membership is controlled exclusively
+    // from the Rooms manager and must never be recreated automatically.
+    if(Array.isArray(this._rooms) && this._rooms.length) return;
+    const roomId=this._legacyRoomForConfigKey(key);
+    if(!roomId) return;
+    const defaults=new Map(this._defau
