@@ -1,5 +1,21 @@
 # Changelog
 
+## 3.0.0 - 2026-08-26
+
+### Major cleanup and consolidation
+
+- Unified integration, frontend and panel versioning to **3.0.0**.
+- Removed stale internal version references left from the 1.x series.
+- Preserved both **Casa V1 — Classic** and **Casa V2 — Dynamic**.
+- Preserved dynamic rooms, room reordering, custom names, icons and multi-entity assignment.
+- Preserved smart device recognition based on display name, friendly name, icon, device class and entity domain.
+- Preserved the 173 Community entity mappings and the in-dashboard configurator.
+- Preserved the balanced configurator scrolling introduced in the 2.1.x series.
+- Preserved native **Italian / English** interface support and local language preference.
+- Removed obsolete standalone release-note files from the repository root; release history remains in this changelog.
+- Removed cache/build artifacts and verified the package structure for HACS distribution.
+- Refreshed English and Italian documentation for the 3.0 generation.
+
 ## 2.1.2 - 2026-08-19
 
 - Fixed configurator scrolling with large room and entity configurations.

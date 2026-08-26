@@ -105,7 +105,7 @@ control_panel.home_alarm") return st==="triggered"?"state-bad":st==="disarmed"?"
       "Pagina non disponibile":"Page unavailable","Dashboard pronta":"Dashboard ready","Versione":"Version","Piattaforma":"Platform",
       "Dettagli e personalizzazione di Casa Dashboard Community.":"Casa Dashboard Community details and customization.",
       "Dashboard app-like, adattiva e configurabile per Home Assistant.":"An app-like, adaptive and configurable dashboard for Home Assistant.",
-      "In uso":"Active","Grafica originale di Casa Dashboard Community v2.1.2.":"Original Casa Dashboard Community interface.",
+      "In uso":"Active","Grafica originale di Casa Dashboard Community v3.0.0.":"Original Casa Dashboard Community interface.",
       "Nuova grafica derivata da Casa Dashboard v4.3.54, con visual dedicati per luci, sensori, clima, dispositivi e aperture.":"New dynamic interface with dedicated visuals for lights, sensors, climate, devices and openings.",
       "La scelta viene salvata sul browser/dispositivo e non modifica entità o automazioni.":"Your choice is saved on this browser/device and does not change entities or automations.",
       "SUPPORTA IL PROGETTO":"SUPPORT THE PROJECT","Casa Dashboard Community è gratuita":"Casa Dashboard Community is free","Se ti piace, puoi supportarne lo sviluppo.":"If you like it, you can support its development.",
@@ -185,12 +185,12 @@ control_panel.home_alarm") return st==="triggered"?"state-bad":st==="disarmed"?"
   _info(){
     const selected=this._uiTheme;
     return `<div class="page">${this._hero("Informazioni","Dettagli e personalizzazione di Casa Dashboard Community.",{level:"good",text:"Dashboard pronta"},[
-      {label:"Versione",value:"2.1.2",small:"Casa Dashboard Community"},
+      {label:"Versione",value:"3.0.0",small:"Casa Dashboard Community"},
       {label:"Piattaforma",value:"Home Assistant",small:"Custom integration"}
     ])}<div class="info-card"><div class="info-icon"><ha-icon icon="mdi:home-heart"></ha-icon></div><h2>Casa Dashboard Community</h2>
     <p>Dashboard app-like, adattiva e configurabile per Home Assistant.</p>
     <div class="style-picker">
-      <button class="style-option ${selected==="v1"?"active":""}" data-ui-theme="v1" type="button">${selected==="v1"?'<span class="selected">In uso</span>':""}<div class="style-head"><ha-icon icon="mdi:home-variant-outline"></ha-icon><strong>Casa V1</strong></div><p>Grafica originale di Casa Dashboard Community v2.1.2.</p></button>
+      <button class="style-option ${selected==="v1"?"active":""}" data-ui-theme="v1" type="button">${selected==="v1"?'<span class="selected">In uso</span>':""}<div class="style-head"><ha-icon icon="mdi:home-variant-outline"></ha-icon><strong>Casa V1</strong></div><p>Grafica originale di Casa Dashboard Community v3.0.0.</p></button>
       <button class="style-option ${selected==="v2"?"active":""}" data-ui-theme="v2" type="button">${selected==="v2"?'<span class="selected">In uso</span>':""}<div class="style-head"><ha-icon icon="mdi:vector-square"></ha-icon><strong>Casa V2</strong></div><p>Nuova grafica derivata da Casa Dashboard v4.3.54, con visual dedicati per luci, sensori, clima, dispositivi e aperture.</p></button>
     </div>
     <div class="style-note">La scelta viene salvata sul browser/dispositivo e non modifica entità o automazioni.</div>
