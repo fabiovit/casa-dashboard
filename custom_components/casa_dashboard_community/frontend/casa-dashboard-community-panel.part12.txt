@@ -1,25 +1,4 @@
-(display(e))}</div><div class="command-sub">${this._esc(this._state(e,"—"))}</div></div><button class="command-action" data-cover-toggle="${e}" data-inverted="0" type="button"><span>GESTISCI</span><i></i></button></div>`
-      : this._coverControl(e,display(e),false,6)
-    ).join("");
-
-    const climateCards=climates.map(e=>this._climateBlock(
-      e,"","",
-      this._hass.states[e]?.attributes?.friendly_name||room.name,""
-    )).join("");
-
-    const sensorCards=sensors.map(e=>{
-      const obj=this._hass.states[e], name=obj?.attributes?.friendly_name||e;
-      const dc=String(obj?.attributes?.device_class||"").toLowerCase();
-      const icon=this._v1OriginalIcon(e,room.type,display(e));
-      const unit=obj?.attributes?.unit_of_measurement||"";
-      return this._metric(icon,name,this._state(e),unit,4,e);
-    }).join("");
-
-    const hasControls=!!(controlCards||coverCards||climateCards);
-    return `<div class="page">
-      ${hero}
-      ${hasControls?this._section(this._uiTheme==="v1"?"Luci, tende ed elettrodomestici":"Luci, tende e dispositivi"):""}
-      <div class="grid">${controlCards}${coverCards}${climateCards}</div>
+class="grid">${controlCards}${coverCards}${climateCards}</div>
       ${sensorCards?this._section("Sensori","Stato dell'ambiente"):""}
       <div class="grid">${sensorCards}</div>
     </div>`;
@@ -59,7 +38,8 @@
     const filter=(this._configFilter||"").trim().toLowerCase();
     const entries=[...ENTITY_KEYS].filter(key=>{
       if(!filter) return true;
-      return key.toLowerCase().includes(filter) || this._configLabel(key).toLowerCase().includes(filter) || this._configGroup(key).toLowerCase().includes(filter);
+      const custom=String(this._configLabelDraft?.[key] ?? this._entityLabels?.[key] ?? "").toLowerCase();
+      return key.toLowerCase().includes(filter) || this._configLabel(key).toLowerCase().includes(filter) || this._configGroup(key).toLowerCase().includes(filter) || custom.includes(filter);
     });
     const groups=new Map();
     for(const key of entries){ const g=this._configGroup(key); if(!groups.has(g)) groups.set(g,[]); groups.get(g).push(key); }
@@ -67,7 +47,7 @@
     const configured=[...ENTITY_KEYS].filter(k=>(this._configDraft[k]||"").trim()).length;
     return `<div class="config-overlay" data-action="config-overlay-close">
       <section class="config-dialog" role="dialog" aria-modal="true" aria-label="Configura Casa Dashboard Community">
-        <div class="config-dialog-head"><div><div class="config-kicker">CASA DASHBOARD COMMUNITY</div><h2>Configura le entità</h2><p>Cerca le entità anche con il nome assegnato in Home Assistant oppure digita direttamente la entity_id. Puoi lasciare vuote le funzioni che non utilizzi.</p></div><button class="config-close" data-action="config-close" type="button" aria-label="Chiudi"><ha-icon icon="mdi:close"></ha-icon></button></div>
+        <div class="config-dialog-head"><div><div class="config-kicker">CASA DASHBOARD COMMUNITY</div><h2>Configura le entità</h2><p>Cerca le entità anche con il nome assegnato in Home Assistant oppure digita direttamente la entity_id. Puoi lasciare vuote le funzioni che non utilizzi e personalizzare il nome mostrato nella Panoramica.</p></div><button class="config-close" data-action="config-close" type="button" aria-label="Chiudi"><ha-icon icon="mdi:close"></ha-icon></button></div>
         <div class="room-manager">
           <div class="room-manager-head"><div><strong>Stanze <em class="room-count">${this._roomsDraft.length}</em></strong><span>Crea, rinomina e ordina gli ambienti della dashboard. In Casa V2 non esistono ambienti preimpostati: compariranno solo quelli creati qui.</span></div><div class="room-manager-actions"><button class="room-add" data-action="room-add" type="button"><ha-icon icon="mdi:plus"></ha-icon> Aggiungi stanza</button><button class="room-save" data-action="config-save" type="button"><ha-icon icon="mdi:content-save-outline"></ha-icon> Salva configurazione</button></div></div>
           <div class="room-list">${this._roomsDraft.map((r,i)=>`<div class="room-edit-row" data-room-id="${r.id}">
@@ -80,13 +60,25 @@
           </div>`).join("")||`<div class="room-empty"><ha-icon icon="mdi:home-plus-outline"></ha-icon><strong>Nessuna stanza creata</strong><span>Casa V2 partirà vuota. Premi “Aggiungi stanza” per costruire la tua casa.</span></div>`}</div>
         <div class="room-friendly-hint"><ha-icon icon="mdi:magnify"></ha-icon><span>Al primo utilizzo le entità già configurate nelle 173 associazioni vengono importate nelle stanze. Dopo il primo salvataggio, le stanze vengono gestite solo da questa sezione e le entità rimosse non vengono reinserite automaticamente.</span></div></div>
         <div class="config-toolbar"><label class="config-search"><ha-icon icon="mdi:magnify"></ha-icon><input id="configSearch" type="search" placeholder="Cerca stanza, funzione, chiave o nome entità…" value="${this._esc(this._configFilter||"")}"></label><div class="config-progress"><strong>${configured}</strong><span>/ ${ENTITY_KEYS.size}</span></div></div>
-        <div class="config-scroll">${[...groups.entries()].map(([group,keys])=>`<div class="config-group"><div class="config-group-title">${group}<span>${keys.length}</span></div>${keys.map(key=>{ const value=this._configDraft[key] ?? this._entityMap[key] ?? ""; const domain=key.split(".")[0]; return `<label class="config-row"><div class="config-row-copy"><strong>${this._configLabel(key)}</strong><code>${key}</code></div><div class="config-field"><input data-config-key="${key}" list="haEntityList" placeholder="${domain}.…" value="${this._esc(value)}"><button type="button" data-action="config-clear" data-config-clear="${key}" aria-label="Svuota"><ha-icon icon="mdi:close-circle-outline"></ha-icon></button></div></label>`;}).join("")}</div>`).join("") || `<div class="config-empty">Nessuna associazione corrisponde alla ricerca.</div>`}</div>
+        <div class="config-scroll">${[...groups.entries()].map(([group,keys])=>`<div class="config-group"><div class="config-group-title">${group}<span>${keys.length}</span></div>${keys.map(key=>{
+          const value=this._configDraft[key] ?? this._entityMap[key] ?? "";
+          const domain=key.split(".")[0];
+          const displayName=this._configLabelDraft[key] ?? this._entityLabels[key] ?? "";
+          return `<div class="config-row">
+            <div class="config-row-copy"><strong>${this._configLabel(key)}</strong><code>${key}</code></div>
+            <div class="config-global-fields">
+              <div class="config-field"><input data-config-key="${key}" list="haEntityList" placeholder="${domain}.…" value="${this._esc(value)}"><button type="button" data-action="config-clear" data-config-clear="${key}" aria-label="Svuota"><ha-icon icon="mdi:close-circle-outline"></ha-icon></button></div>
+              <label class="config-display-name"><span>NOME VISUALIZZATO</span><input data-config-label="${key}" placeholder="${this._esc(this._configLabel(key))}" value="${this._esc(displayName)}"></label>
+            </div>
+          </div>`;
+        }).join("")}</div>`).join("") || `<div class="config-empty">Nessuna associazione corrisponde alla ricerca.</div>`}</div>
         <datalist id="haEntityList">${datalist}</datalist>
         <div class="config-dialog-foot"><div class="config-hint"><ha-icon icon="mdi:shield-check-outline"></ha-icon> Le modifiche vengono salvate nel file Community separato.</div><div class="config-actions"><button class="secondary" data-action="config-close" type="button">Annulla</button><button class="primary" data-action="config-save" type="button"><ha-icon icon="mdi:content-save-outline"></ha-icon> Salva configurazione</button></div></div>
       </section></div>`;
   }
   _openConfigDialog() {
     this._configDraft={...this._entityMap};
+    this._configLabelDraft={...this._entityLabels};
     const savedRooms=(Array.isArray(this._rooms)?this._rooms:[]).map(r=>({...r,entities:[...(r.entities||[])],entity_labels:{...(r.entity_labels||{})}}));
     this._roomsDraft=savedRooms.length
       ? savedRooms
@@ -184,6 +176,11 @@
         this._syncConfiguredKeyToRoom(key,oldEntity,resolved);
       });
     });
+    layer.querySelectorAll("[data-config-label]").forEach(input=>{
+      const sync=()=>{ this._configLabelDraft[input.dataset.configLabel]=input.value; };
+      input.addEventListener("input",sync);
+      input.addEventListener("change",sync);
+    });
   }
   async _saveConfigDialog() {
     const layer=this.shadowRoot.querySelector("#configLayer");
@@ -194,12 +191,16 @@
       this._configDraft[key]=resolved;
       this._syncConfiguredKeyToRoom(key,oldEntity,resolved);
     });
+    layer?.querySelectorAll("[data-config-label]").forEach(input=>{
+      this._configLabelDraft[input.dataset.configLabel]=input.value.trim();
+    });
     const saveButtons=[...(layer?.querySelectorAll('[data-action="config-save"]')||[])];
     saveButtons.forEach(save=>{ save.disabled=true; save.innerHTML='<ha-icon icon="mdi:loading" class="spin"></ha-icon> Salvataggio…'; });
     try {
-      const result=await this._hass.callWS({type:"casa_dashboard_community/config/save",entities:this._configDraft,rooms:this._roomsDraft});
+      const result=await this._hass.callWS({type:"casa_dashboard_community/config/save",entities:this._configDraft,rooms:this._roomsDraft,labels:this._configLabelDraft});
       this._rooms=Array.isArray(result?.rooms)?result.rooms:this._roomsDraft;
       this._entityMap=result?.entities || {...this._configDraft};
+      this._entityLabels=result?.labels || {...this._configLabelDraft};
       this._entityConfigLoaded=true;
       this._configDialogOpen=false;
       this._renderConfigLayer();
@@ -365,4 +366,6 @@
     const st=this._state(entity,""); const val=String(value).toLowerCase();
     if((entity.includes("wleak")||entity.includes("water_leak")) && this._on(entity)) return "state-bad";
     if(entity.includes("tank_status") && this._on(entity)) return "state-bad";
-    if(entity==="alarm_
+    if(entity==="alarm_control_panel.home_alarm") return st==="triggered"?"state-bad":st==="disarmed"?"state-warn":"state-good";
+    if(entity.startsWith("binary_sensor.") && this._on(entity)) return entity.includes("motion")||entity.includes("occupancy")||entity.includes("occupazione")?"state-active":"state-warn";
+    if(["aperta","aperto","sbloccata","rilevata","rilevato","pieno","allarme"].some(x=>val.includes(x))) return val.includes

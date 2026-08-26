@@ -1,5 +1,24 @@
 # Changelog
 
+## 3.1.0 - 2026-08-26
+
+- Special thanks to **Mario Pagano** for feedback and suggestions that helped improve the v3.1.0 Overview and configurator experience.
+
+- Added custom **display names for global Overview mappings**, using the same concept already available for Casa V2 room entities.
+- Overview naming priority is now: custom display name → Home Assistant friendly name → Community fallback name.
+
+### Adaptive Community Overview
+
+- Redesigned V2 Overview cards so partially configured installations remain visually complete and balanced.
+- Fixed low contrast / nearly invisible Overview cards when Home Assistant uses a light theme.
+- Overview grids now adapt automatically to the number of available metrics.
+- Added visual icons and stronger card hierarchy for Solar, Battery, Grid, Weather and Wallbox/EV metrics.
+- Normalized power display: W values are automatically converted to kW and power values are limited to two decimals.
+- Improved formatting for battery percentage, temperature, energy and generic numeric sensors.
+- Binary EV/Wallbox states are displayed as readable Active/Inactive labels.
+- Replaced the misleading “entity configuration incomplete” notice.
+- The dashboard now explicitly explains that the 173 mappings are optional and users only need to configure the functions they use.
+
 ## 3.0.1 - 2026-08-26
 
 ### Home Assistant compatibility hotfix

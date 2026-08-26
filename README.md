@@ -2,7 +2,7 @@
 
 🇬🇧 **English** | [🇮🇹 Italiano](README.it.md)
 
-[![Release](https://img.shields.io/badge/release-v3.0.1-blue)](https://github.com/fabiovit/casa-dashboard/releases)
+[![Release](https://img.shields.io/badge/release-v3.1.0-blue)](https://github.com/fabiovit/casa-dashboard/releases)
 [![HACS](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz/)
 [![Validate](https://img.shields.io/github/actions/workflow/status/fabiovit/casa-dashboard/hacs.yml?branch=main&label=Validate)](https://github.com/fabiovit/casa-dashboard/actions/workflows/hacs.yml)
 [![Hassfest](https://img.shields.io/github/actions/workflow/status/fabiovit/casa-dashboard/hassfest.yml?branch=main&label=Hassfest)](https://github.com/fabiovit/casa-dashboard/actions/workflows/hassfest.yml)
@@ -12,7 +12,7 @@
 
 Casa Dashboard Community is a complete app-like dashboard for **Home Assistant**, designed to adapt to different homes without relying on traditional Lovelace cards.
 
-**v3.0.1** is a consolidation release: the project has been cleaned up, versioning is now consistent across backend and frontend, and the mature features introduced in the 2.x generation are retained in a cleaner package.
+**v3.1.0** is a consolidation release: the project has been cleaned up, versioning is now consistent across backend and frontend, and the mature features introduced in the 2.x generation are retained in a cleaner package.
 
 **Created by Fabio Vittori** · [☕ Buy me a coffee](https://ko-fi.com/fabvittori)
 
@@ -58,6 +58,8 @@ Entities can be searched by:
 - custom display name.
 
 The configurator keeps the **173 Community mappings** used by global and specialized functions.
+
+Global mappings can also have a **custom display name** for the Overview. If left empty, Casa Dashboard uses the Home Assistant friendly name and then the Community fallback name.
 
 Large installations are supported with dedicated scrolling for Rooms and the entity mapping list.
 

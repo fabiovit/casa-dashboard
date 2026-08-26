@@ -13,7 +13,7 @@ from homeassistant.helpers import config_validation as cv
 from .const import DOMAIN, PANEL_ICON, PANEL_PATH, PANEL_TITLE, STATIC_URL
 from .websocket_api import async_register_websocket_commands
 
-VERSION = "3.0.1"
+VERSION = "3.1.0"
 ENTITY_CONFIG_FILENAME = "casa-dashboard-community-entities.json"
 
 CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)

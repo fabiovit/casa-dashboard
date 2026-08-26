@@ -1,4 +1,28 @@
-arm=this._state("alarm_control_panel.home_alarm","—");
+etric.label];
+      return req ? {...metric,show:metric.show!==false&&this._anyConfigured(req)} : metric;
+    });
+    return this._hero(m.title,m.subtitle,{...s,title:s.text,text:""},visible,room);
+  }
+
+  _esterno(){
+    const open=this._on("input_boolean.pedestrian_gate");
+    return `<div class="page ${this._uiTheme==="v2"?"overview-v2-page":""}">${this._zoneHero("esterno",[
+      {label:"Cancellino",value:open?"Aperto / apertura…":"Chiuso",small:"Accesso esterno"},
+      {label:"Stato",value:open?"Attivo":"Pronto",small:"Comando pedonale"}
+    ])}${this._section("Accesso esterno")}<div class="grid">${this._control("input_boolean.pedestrian_gate","Cancellino","mdi:gate",open?"Apertura in corso / aperto":"Premi per aprire","toggle",12)}</div></div>`;
+  }
+
+  _scale(){
+    return `<div class="page">${this._zoneHero("scale",[
+      {label:"Luce",value:this._on("light.stairs")?"Accesa":"Spenta",small:"Illuminazione scale"},
+      {label:"Portoncino",value:this._on("input_boolean.main_gate")?"Apertura…":"Pronto",small:"Comando accesso"}
+    ])}${this._section("Controlli rapidi")}<div class="grid">${this._control("input_boolean.main_gate","Portoncino","mdi:gate",this._on("input_boolean.main_gate")?"Apertura in corso":"Premi per aprire","toggle",6)}${this._control("light.stairs","Luce scale","mdi:ceiling-light",this._on("light.stairs")?"Accesa":"Spenta","toggle",6)}</div></div>`;
+  }
+
+  _ingresso(){
+    const door=this._on("binary_sensor.entry_door");
+    const unlocked=this._on("input_boolean.entry_door_unlock");
+    const alarm=this._state("alarm_control_panel.home_alarm","—");
     const motion=this._on("binary_sensor.entry_motion");
     const occupied=this._on("binary_sensor.entry_occupancy");
     const alerts=[];
@@ -159,11 +183,4 @@ arm=this._state("alarm_control_panel.home_alarm","—");
       {label:"Robot",value:v,small:`Batteria ${this._fmt("sensor.robot_vacuum_battery",0,"%")}`}
     ])}${this._section("Comfort e clima")}<div class="grid">${this._climateBlock("climate.bedroom","sensor.bedroom_temperature","sensor.bedroom_humidity","CLIMATIZZATORE CAMERA","03:00–04:00 · 07:00–09:00 anticipata · 09:00–22:00")}
       ${this._control("input_boolean.bedroom_climate_manual","Modalità manuale clima","mdi:hand-back-right-outline",manual?"Automazioni clima sospese":"Gestione automatica attiva","toggle",12)}
-      ${this._anyConfigured(["climate.bedroom","input_boolean.bedroom_climate_manual","sensor.bedroom_temperature","sensor.bedroom_humidity","binary_sensor.bedroom_door_window"])?`<div class="metric span-12 ${manual?'state-warn':windowOpen?'state-warn':this._climateActive("climate.bedroom")?'state-active':'state-good'}"><div class="metric-icon"><div class="label">AUTO CLIMA CAMERA</div><ha-icon icon="mdi:thermostat-auto"></ha-icon></div><div><div class="value" style="font-size:19px">${auto}</div><div class="foot">03:00–04:00: ON ≥26°C oppure ≥24,5°C con UR ≥65%, ventola quiet · 07:00–09:00: ON ≥27°C oppure ≥26°C con UR ≥65% · 09:00–22:00: ON ≥26°C oppure ≥24,5°C con UR ≥65% · OFF ≤24°C · finestra aperta 2 min → OFF</div></div></div>`:""}
-    </div>${this._section("Luci e dispositivi")}<div class="grid">
-      ${this._control("light.bedroom_main","Luce camera","mdi:ceiling-light",this._on("light.bedroom_main")?"Accesa":"Spenta","toggle",3)}
-      ${this._control("light.bedroom_lamp_1","Lampada 1","mdi:lamp",this._on("light.bedroom_lamp_1")?"Accesa":"Spenta","toggle",3)}
-      ${this._control("light.bedroom_lamp_2","Lampada 2","mdi:lamp",this._on("light.bedroom_lamp_2")?"Accesa":"Spenta","toggle",3)}
-      ${this._control("light.bedroom_led","LED camera","mdi:led-strip-variant",this._on("light.bedroom_led")?"Accesi":"Spenti","toggle",3)}
-      ${this._control("switch.bedroom_tv","Presa TV camera","mdi:television",this._on("switch.bedroom_tv")?"Accesa":"Spenta","toggle",6)}
-      ${this
+      ${this._anyConfigured(["climate.bedroom","input_boolean.bedroom_climate_manual","sensor.bedroom_temperature","sensor.bedroom_humidity","binary_sensor.bedroom_door_window"])?`<div class="metric span-12 ${manual?'state-warn':windowOpen?'state-warn':this._climateActive("climate.bedroom")?'state-active':'state-good'}"><div class="metric-icon"><div class="label">AUTO CLIMA CAMERA</div><ha-icon icon="mdi:thermostat-auto"></ha-icon></div><div><div class="value" style="font-si

@@ -1,11 +1,4 @@
-255,255,255,.025);color:inherit;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
-
-      .tatiana-card{display:grid;grid-template-columns:minmax(320px,.9fr) minmax(300px,1.1fr);gap:22px;align-items:center;min-height:250px;padding:20px;border-radius:24px;border:1px solid rgba(255,255,255,.07);background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(86,206,255,.035))}
-      .tatiana-visual{min-height:205px;border-radius:18px;display:grid;place-items:center;overflow:hidden;background:linear-gradient(180deg,#17232d,#0f171e)}.tatiana-visual img{width:100%;height:205px;object-fit:contain}.tatiana-robot{position:relative;width:150px;height:150px;border-radius:50%;background:linear-gradient(180deg,#e7ebef,#b7c0c8);box-shadow:0 15px 30px rgba(0,0,0,.22)}.tatiana-top{position:absolute;left:42px;top:18px;width:66px;height:35px;border-radius:18px;background:#3c4650}.tatiana-ring{position:absolute;left:18px;top:18px;width:114px;height:114px;border:6px solid #6c7d8c;border-radius:50%}.tatiana-eye{position:absolute;left:69px;top:66px;width:12px;height:12px;border-radius:50%;background:#3bbcff;box-shadow:0 0 14px rgba(59,188,255,.6)}
-      .tatiana-info span{display:block;font-size:9px;letter-spacing:.18em;color:#8da6bd}.tatiana-info strong{display:block;font-size:32px;margin-top:7px}.tatiana-info small{display:block;color:var(--secondary-text-color);margin-top:4px}.tatiana-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:18px}.tatiana-actions button{height:46px;border-radius:13px;border:1px solid rgba(90,188,255,.28);background:rgba(90,188,255,.05);color:#78cfff;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px}
-
-      .app-shell.theme-light .bedroom-hero-card,.app-shell.theme-light .bedroom-thermostat-panel,.app-shell.theme-light .tatiana-card{background:linear-gradient(145deg,#fff,#f3f6ff);border-color:rgba(15,23,42,.09)}.app-shell.theme-light .bedroom-scene,.app-shell.theme-light .tatiana-visual{background:linear-gradient(180deg,#eef3f7,#dce5ec)}.app-shell.theme-light .bedroom-thermo-ring:before{background:#fff}.app-shell.theme-light .bedroom-thermo-top div,.app-shell.theme-light .bedroom-thermo-state{background:#f8fbfe;border-color:rgba(15,23,42,.08)}.app-shell.theme-light .bedroom-meta span,.app-shell.theme-light .bedroom-thermo-top span,.app-shell.theme-light .bedroom-thermo-state span,.app-shell.theme-light .tatiana-info span{color:#587292}
-      @media(max-width:900px){.bedroom-hero{grid-template-columns:1fr!important}.bedroom-hero-card,.bedroom-thermostat-panel,.tatiana-card{grid-template-columns:1fr}.tatiana-actions{grid-template-columns:1fr 1fr 1fr}}
+columns:1fr 1fr 1fr}}
       @media(max-width:620px){.bedroom-hero-card{padding:14px}.bedroom-thermo-ring{width:210px;height:210px}.bedroom-thermo-top{grid-template-columns:1fr}.tatiana-actions{grid-template-columns:1fr}.tatiana-visual img{height:170px}}
 
 
@@ -81,4 +74,41 @@
       .air-info>div:first-child span{display:block;font-size:9px;letter-spacing:.17em;color:#8da6bd}.air-info>div:first-child strong{display:block;font-size:32px;margin-top:7px}.air-info>div:first-child small{display:block;color:var(--secondary-text-color);margin-top:4px}.air-controls{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
 
       .dehum-console.alert{border-color:rgba(255,91,91,.34)}.dehum-body{position:relative;width:150px;height:185px;border-radius:24px;background:linear-gradient(180deg,#e2e5e7,#9ea7ae)}.dehum-display{position:absolute;left:36px;right:36px;top:22px;height:50px;border-radius:10px;background:#142028;color:#70d0ff;display:grid;place-items:center}.dehum-display strong{font-size:24px}.dehum-display small{font-size:8px}.dehum-grille{position:absolute;left:24px;right:24px;top:88px;height:35px;background:repeating-linear-gradient(0deg,#69757e 0 4px,#4d585f 4px 8px)}.dehum-tank{position:absolute;left:18px;right:18px;bottom:13px;height:42px;border:2px solid #73818b;border-radius:8px;overflow:hidden}.dehum-tank div{position:absolute;left:0;right:0;bottom:0;height:20%;background:#5ecfff}.dehum-tank.full div{height:90%;background:#ff6b6b}
-      .dehum-top{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.dehum-top>div{padding:13px;border-radius:15px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02)}.dehum-top span{display:block;font-size:8px;letter-spacing:.15em;color:#8da6bd}.dehum-top strong{display:block;font-size:20px;margin-top:6px}.dehum-top strong.good{color:#59d99d}.dehum-top strong.bad{color:#ff7
+      .dehum-top{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.dehum-top>div{padding:13px;border-radius:15px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02)}.dehum-top span{display:block;font-size:8px;letter-spacing:.15em;color:#8da6bd}.dehum-top strong{display:block;font-size:20px;margin-top:6px}.dehum-top strong.good{color:#59d99d}.dehum-top strong.bad{color:#ff7575}.dehum-controls{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}.dehum-target{display:grid;grid-template-columns:66px 1fr 66px;gap:10px;align-items:center;margin-top:12px}.dehum-target button,.dehum-target>div{height:52px;border-radius:14px;border:1px solid rgba(82,188,255,.23);background:rgba(82,188,255,.04);color:inherit}.dehum-target button{font-weight:900;font-size:18px}.dehum-target>div{display:grid;place-content:center;text-align:center}.dehum-target span{font-size:8px;letter-spacing:.14em;color:#8da6bd}.dehum-target strong{font-size:20px;margin-top:2px}
+
+      .app-shell.theme-light .garage-hero-card,.app-shell.theme-light .garage-door-card,.app-shell.theme-light .daze-visual,.app-shell.theme-light .daze-data-card,.app-shell.theme-light .air-console,.app-shell.theme-light .dehum-console{background:linear-gradient(180deg,#fff,#f5f9fd);border-color:rgba(15,23,42,.09)}
+      .app-shell.theme-light .garage-scene,.app-shell.theme-light .air-visual,.app-shell.theme-light .dehum-visual,.app-shell.theme-light .daze-visual{background:linear-gradient(180deg,#edf4f8,#dce7ee)}.app-shell.theme-light .garage-meta span,.app-shell.theme-light .garage-door-copy span,.app-shell.theme-light .daze-data-card span,.app-shell.theme-light .air-info span,.app-shell.theme-light .dehum-top span,.app-shell.theme-light .dehum-target span{color:#587292}
+
+      @media(max-width:1050px){.daze-console{grid-template-columns:1fr}.daze-data{grid-template-columns:repeat(3,1fr)}}
+      @media(max-width:900px){.garage-hero{grid-template-columns:1fr!important}.garage-hero-card,.garage-access-grid,.air-console,.dehum-console{grid-template-columns:1fr}.garage-controls{grid-template-columns:1fr 1fr}.daze-diagnostics{grid-template-columns:1fr 1fr 1fr}}
+      @media(max-width:620px){.garage-hero-card{padding:14px}.garage-controls,.daze-data,.air-controls,.dehum-top,.dehum-controls,.daze-diagnostics{grid-template-columns:1fr}.garage-door-card{grid-template-columns:1fr}.garage-door-mini{margin:auto}.daze-visual{min-height:240px}.daze-car{transform:scale(.82);transform-origin:left bottom}.daze-wallbox{transform:scale(.82);transform-origin:right bottom}.dehum-target{grid-template-columns:58px 1fr 58px}}
+
+
+      
+/* ===== v4.3.54 Panoramica - nuova casa theme-aware ===== */
+      .overview-house-v2{
+        position:relative!important;
+        min-height:290px!important;
+        overflow:hidden!important;
+        border-radius:20px!important;
+        background:
+          radial-gradient(circle at 78% 20%,rgba(95,205,255,.07),transparent 28%),
+          linear-gradient(180deg,#142833 0%,#102029 64%,#182126 64%,#12191d 100%)!important;
+        border:1px solid rgba(255,255,255,.06)!important;
+      }
+
+      .house-v2-sky{
+        position:absolute;inset:0 0 36% 0;
+        background:linear-gradient(180deg,rgba(36,72,91,.28),rgba(18,39,49,.08));
+      }
+      .house-v2-ground{
+        position:absolute;left:0;right:0;bottom:0;height:36%;
+        background:linear-gradient(180deg,#1f2a2f,#172025);
+      }
+      .house-v2-building{
+        position:absolute;
+        left:50%;bottom:38px;
+        width:250px;height:165px;
+        transform:translateX(-50%);
+      }
+   

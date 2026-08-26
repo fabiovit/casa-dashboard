@@ -1,4 +1,11 @@
-._coverControl("cover.bedroom_blind","Tenda camera",true,6)}
+ze:19px">${auto}</div><div class="foot">03:00–04:00: ON ≥26°C oppure ≥24,5°C con UR ≥65%, ventola quiet · 07:00–09:00: ON ≥27°C oppure ≥26°C con UR ≥65% · 09:00–22:00: ON ≥26°C oppure ≥24,5°C con UR ≥65% · OFF ≤24°C · finestra aperta 2 min → OFF</div></div></div>`:""}
+    </div>${this._section("Luci e dispositivi")}<div class="grid">
+      ${this._control("light.bedroom_main","Luce camera","mdi:ceiling-light",this._on("light.bedroom_main")?"Accesa":"Spenta","toggle",3)}
+      ${this._control("light.bedroom_lamp_1","Lampada 1","mdi:lamp",this._on("light.bedroom_lamp_1")?"Accesa":"Spenta","toggle",3)}
+      ${this._control("light.bedroom_lamp_2","Lampada 2","mdi:lamp",this._on("light.bedroom_lamp_2")?"Accesa":"Spenta","toggle",3)}
+      ${this._control("light.bedroom_led","LED camera","mdi:led-strip-variant",this._on("light.bedroom_led")?"Accesi":"Spenti","toggle",3)}
+      ${this._control("switch.bedroom_tv","Presa TV camera","mdi:television",this._on("switch.bedroom_tv")?"Accesa":"Spenta","toggle",6)}
+      ${this._coverControl("cover.bedroom_blind","Tenda camera",true,6)}
     </div>${this._section("Ambiente camera")}<div class="grid">
       ${this._metric("mdi:thermometer","Temperatura Sensore",this._fmt("sensor.bedroom_temperature",1,"°C"),"Camera",4,"sensor.bedroom_temperature")}
       ${this._metric("mdi:water-percent","Umidità Sensore",this._fmt("sensor.bedroom_humidity",0,"%"),"Camera",4,"sensor.bedroom_humidity")}
@@ -177,6 +184,4 @@
       ${this._metric("mdi:thermometer","Temperatura esterna",this._fmt("sensor.weather_outdoor_temperature",1,"°C"),`Percepita ${this._fmt("sensor.weather_feels_like_temperature",1,"°C")} · Umidità ${this._fmt("sensor.weather_outdoor_humidity",0,"%")}`,3,"sensor.weather_outdoor_temperature")}
       ${this._metric("mdi:weather-windy","Vento attuale",this._fmt("sensor.weather_wind_speed",1,"km/h"),`Raffica ${this._fmt("sensor.weather_wind_gust",1,"km/h")} · ${wind>=18?"Forte":wind>=10?"Da monitorare":"Tranquillo"}`,3,"sensor.weather_wind_speed",windLevel==="bad"?"state-bad":windLevel==="warn"?"state-warn":"state-good")}
       ${this._metric("mdi:weather-rainy","Pioggia",rain?"Rilevata":"Assente",`Rate ${this._fmt("sensor.weather_rain_rate",1,"mm/h")} · Oggi ${this._fmt("sensor.weather_rain_daily",1,"mm")}`,3,"sensor.weather_rain_rate",rain?"state-bad":rainRate>0?"state-warn":"state-good")}
-      ${this._metric("mdi:white-balance-sunny","Sole e UV",this._luxLabel("sensor.weather_solar_lux"),`${this._fmtLuxCompact("sensor.weather_solar_lux")} · ${this._fmtLuxExact("sensor.weather_solar_lux")} · ${this._radLabel("sensor.weather_solar_radiation")} ${this._fmt("sensor.weather_solar_radiation",0,"W/m²")} · UV ${this._fmt("sensor.weather_uv_index",1)}`,3,"sensor.weather_solar_lux",this._luxTone("sensor.weather_solar_lux"))}
-    </div>${hasWeather?this._section("Atmosfera esterna","Temperatura, umidità e comfort percepito"):""}<div class="grid">
-      ${this._metric("mdi:thermometer","Temperatura",this._fmt("sensor.weather_outdoor_temperature",1,
+      ${this._metric("mdi:white-balance-sunny","Sole e UV",this._luxLabel("sensor.weather_solar_lux"),`${this._fmtLuxCompact("sensor.weather_solar_lu

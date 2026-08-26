@@ -1,29 +1,4 @@
-{grid-template-columns:1fr 1fr}.overview-climate-grid,.overview-weather-grid{grid-template-columns:1fr 1fr}.personal-overview-house{min-height:180px}}
-
-      /* v2.0.0 - V2 overview summary only */
-      .ui-v2 .community-personal-overview.compact{grid-template-columns:minmax(380px,.85fr) minmax(520px,1.15fr)!important;min-height:285px!important}
-      .personal-overview-hero-card.compact{display:block!important;min-height:220px!important;padding:14px!important}
-      .personal-overview-hero-card.compact .personal-overview-house{min-height:220px}
-      .overview-key-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:12px 0 28px}
-      .overview-key-card{padding:15px 14px;border:1px solid rgba(255,255,255,.07);border-radius:18px;background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(65,178,235,.022))}
-      .overview-key-card span{display:block;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:#8da6bd;font-weight:900;line-height:1.35}
-      .overview-key-card strong{display:block;margin-top:8px;font-size:23px;line-height:1.1}
-      .overview-key-card small{display:block;margin-top:5px;color:var(--secondary-text-color);font-size:9px}
-      .overview-key-card.solar{background:linear-gradient(145deg,rgba(255,255,255,.02),rgba(255,190,65,.035))}
-      .overview-key-card.wallbox{background:linear-gradient(145deg,rgba(255,255,255,.02),rgba(61,200,255,.035))}
-      .overview-key-card.external{background:linear-gradient(145deg,rgba(255,255,255,.02),rgba(92,175,255,.025))}
-      @media(max-width:1100px){.overview-key-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-      @media(max-width:650px){.overview-key-grid{grid-template-columns:1fr 1fr}.ui-v2 .community-personal-overview.compact{grid-template-columns:1fr!important}}
-
-      /* v2.0.0 - Casa V2 room heroes aligned with personal Casa 4.3.54 */
-      .ui-v2 .original-room-hero{grid-template-columns:minmax(360px,.95fr) minmax(560px,1.35fr)!important;min-height:350px!important}
-      .original-room-hero-card{display:grid;grid-template-columns:minmax(340px,1.2fr) minmax(230px,.8fr);gap:18px;align-items:center;min-height:260px;padding:20px;border-radius:26px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(72,151,255,.045))}
-      .original-room-visual{min-width:0}.original-room-side{display:flex;flex-direction:column;gap:14px;padding:6px}.original-room-meta span{display:block;font-size:9px;letter-spacing:.2em;font-weight:850;color:#8da6bd}.original-room-meta strong{display:block;font-size:30px;letter-spacing:-.04em;margin-top:7px}.original-room-meta small{display:block;color:var(--secondary-text-color);margin-top:4px}.original-room-divider{height:1px;background:linear-gradient(90deg,rgba(84,180,255,.85),transparent)}
-      .community-original-scene{height:220px!important;border-radius:20px!important;overflow:hidden!important}
-      .living-scene,.office-scene,.laundry-scene,.hobby-scene,.generic-home-scene{position:relative;height:220px;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#17242d,#0d141a)}
-      .living-wall,.office-wall,.laundry-wall,.hobby-wall,.generic-room-wall{position:absolute;inset:0;background:linear-gradient(180deg,#27343d,#151c22)}
-      .living-tv{position:absolute;left:34px;top:36px;width:120px;height:66px;border:5px solid #566774;background:#102735}.living-sofa{position:absolute;left:50%;bottom:32px;width:180px;height:72px;transform:translateX(-50%);border-radius:20px 20px 10px 10px;background:#46545e}.living-sofa i{position:absolute;top:8px;width:72px;height:42px;border-radius:12px;background:#5a6973}.living-sofa i:first-child{left:12px}.living-sofa i:last-child{right:12px}.living-lamp{position:absolute;right:32px;top:30px;width:4px;height:110px;background:#7d8c96}.living-lamp:after{content:"";position:absolute;left:-20px;top:-2px;width:44px;height:24px;border-radius:50%;background:#d2b265}.living-rug{position:absolute;left:25%;right:25%;bottom:10px;height:18px;border-radius:50%;background:#263944}
-      .office-desk{position:absolute;left:32px;right:32px;bottom:42px;height:16px;background:#64727d}.office-monitor{position:absolute;left:50%;bottom:62px;width:116px;height:70px;transform:translateX(-50%);border:6px solid #596a76;background:#173246}.office-chair{position:absolute;left:50%;bottom:8px;width:64px;height:55px;transform:translateX(-50%);border-radius:16px 16px 8px 8px;background:#3f4c55}.office-lamp{position:absolute;right:28px;bottom:58px;width:5px;height:92px;background:#7b8993}
+px;transform:translateX(-50%);border:6px solid #596a76;background:#173246}.office-chair{position:absolute;left:50%;bottom:8px;width:64px;height:55px;transform:translateX(-50%);border-radius:16px 16px 8px 8px;background:#3f4c55}.office-lamp{position:absolute;right:28px;bottom:58px;width:5px;height:92px;background:#7b8993}
       .laundry-machine{position:absolute;left:45px;bottom:28px;width:112px;height:142px;border-radius:10px;background:#d0d5d9}.laundry-door{position:absolute;left:21px;top:45px;width:68px;height:68px;border-radius:50%;background:#172b38;border:9px solid #7d8c95}.laundry-shelf{position:absolute;right:34px;top:38px;width:130px;height:12px;background:#63717a;box-shadow:0 48px 0 #63717a}.laundry-basket{position:absolute;right:58px;bottom:26px;width:78px;height:70px;background:#465762;clip-path:polygon(8% 0,92% 0,100% 100%,0 100%)}
       .hobby-table{position:absolute;left:46px;right:46px;bottom:38px;height:18px;background:#755f48}.hobby-cabinet{position:absolute;right:34px;top:32px;width:92px;height:108px;background:#4b5359}.hobby-lamp{position:absolute;left:50%;top:0;width:4px;height:72px;background:#7b8993}.hobby-lamp:after{content:"";position:absolute;left:-25px;bottom:-8px;width:54px;height:28px;border-radius:50%;background:#d4ae62}
       .generic-window{position:absolute;left:34px;top:30px;width:120px;height:90px;border:6px solid #63737e;background:#1d4054}.generic-table{position:absolute;left:48px;right:48px;bottom:38px;height:16px;background:#687781}.generic-lamp{position:absolute;right:40px;top:22px;width:5px;height:95px;background:#7c8b95}
@@ -64,7 +39,7 @@
       .uv-airfryer-heat i{width:3px;height:13px;border-radius:999px;background:#ffb454;box-shadow:0 0 9px rgba(255,180,84,.45)}
 
 
-      /* v3.0.1 - balanced configurator scrolling */
+      /* v3.1.0 - balanced configurator scrolling */
       .config-dialog{
         width:min(1120px,calc(100vw - 28px)) !important;
         height:min(94vh,980px) !important;
@@ -164,6 +139,57 @@
           flex-basis:34dvh !important;
         }
       }
+
+      /* v3.1.0 - adaptive Community overview */
+      .alert.info{border-color:color-mix(in srgb,var(--primary-color) 22%,var(--divider-color));background:color-mix(in srgb,var(--primary-color) 5%,var(--card-background-color))}
+      .alert.info ha-icon{color:var(--primary-color)}
+      .alert.info .config-open-btn{border-color:color-mix(in srgb,var(--primary-color) 34%,var(--divider-color));background:color-mix(in srgb,var(--primary-color) 8%,var(--card-background-color))}
+      .alert.info .config-open-btn ha-icon{color:var(--primary-color)}
+
+      .overview-key-grid{
+        display:grid!important;
+        grid-template-columns:repeat(auto-fit,minmax(220px,1fr))!important;
+        gap:14px!important;
+        margin:14px 0 32px!important;
+      }
+      .overview-key-card{
+        min-height:108px;
+        padding:16px!important;
+        display:flex;
+        align-items:center;
+        gap:14px;
+        border:1px solid color-mix(in srgb,var(--primary-color) 13%,var(--divider-color))!important;
+        border-radius:19px!important;
+        background:linear-gradient(145deg,
+          color-mix(in srgb,var(--card-background-color) 96%,var(--primary-color) 4%),
+          color-mix(in srgb,var(--secondary-background-color) 94%,var(--primary-color) 6%))!important;
+        box-shadow:0 10px 28px color-mix(in srgb,#000 10%,transparent);
+        overflow:hidden;
+      }
+      .overview-key-card.solar{background:linear-gradient(145deg,color-mix(in srgb,var(--card-background-color) 94%,#f6b73c 6%),color-mix(in srgb,var(--secondary-background-color) 96%,#f6b73c 4%))!important}
+      .overview-key-card.wallbox{background:linear-gradient(145deg,color-mix(in srgb,var(--card-background-color) 94%,var(--primary-color) 6%),color-mix(in srgb,var(--secondary-background-color) 95%,var(--primary-color) 5%))!important}
+      .overview-key-card.external{background:linear-gradient(145deg,color-mix(in srgb,var(--card-background-color) 94%,#5eaefe 6%),color-mix(in srgb,var(--secondary-background-color) 96%,#5eaefe 4%))!important}
+      .overview-key-icon{
+        width:54px;height:54px;border-radius:16px;display:grid;place-items:center;flex:none;
+        color:var(--primary-color);
+        border:1px solid color-mix(in srgb,var(--primary-color) 25%,var(--divider-color));
+        background:color-mix(in srgb,var(--primary-color) 8%,var(--card-background-color));
+      }
+      .overview-key-card.solar .overview-key-icon{color:#d69614;border-color:color-mix(in srgb,#d69614 30%,var(--divider-color));background:color-mix(in srgb,#f6b73c 10%,var(--card-background-color))}
+      .overview-key-icon ha-icon{--mdc-icon-size:27px}
+      .overview-key-copy{min-width:0;flex:1}
+      .overview-key-card .overview-key-copy>span{
+        display:block!important;font-size:10px!important;letter-spacing:.1em!important;
+        color:var(--secondary-text-color)!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+      }
+      .overview-key-value{display:flex;align-items:baseline;gap:7px;margin-top:8px}
+      .overview-key-value strong{margin:0!important;font-size:26px!important;letter-spacing:-.035em;color:var(--primary-text-color)}
+      .overview-key-value b{font-size:12px;color:var(--secondary-text-color);font-weight:750}
+      .theme-light .overview-key-card{box-shadow:0 8px 24px rgba(25,55,80,.08)}
+      @media(max-width:650px){
+        .overview-key-grid{grid-template-columns:1fr!important}
+        .overview-key-card{min-height:94px}
+      }
     `;
   }
 
@@ -173,10 +199,12 @@
     this._entityConfigLoading=true;
     try {
       let entities=null;
+      let labels=null;
       if(this._hass?.callWS){
         try {
           const result=await this._hass.callWS({type:"casa_dashboard_community/config/get"});
           if(result?.entities && typeof result.entities==="object") entities=result.entities;
+          if(result?.labels && typeof result.labels==="object") labels=result.labels;
           if(Array.isArray(result?.rooms)) this._rooms=result.rooms;
         } catch(_wsErr) { /* fallback below */ }
       }
@@ -185,11 +213,14 @@
         if(res.ok){
           const json=await res.json();
           if(json?.entities && typeof json.entities==="object") entities=json.entities;
+          if(json?.labels && typeof json.labels==="object") labels=json.labels;
         }
       }
       this._entityMap=entities || {};
+      this._entityLabels=labels || {};
     } catch(_err) {
       this._entityMap={};
+      this._entityLabels={};
     } finally {
       this._entityConfigLoaded=true;
       this._entityConfigLoading=false;
@@ -202,16 +233,25 @@
     return typeof mapped==="string" && mapped.trim() ? mapped.trim() : null;
   }
   _configured(id) { const eid=this._eid(id); return !!eid && !!this._hass?.states?.[eid]; }
+  _overviewDisplayName(logicalKey, entityId=null) {
+    const custom=String(this._entityLabels?.[logicalKey]||"").trim();
+    if(custom) return custom;
+    const eid=entityId || this._eid(logicalKey);
+    const friendly=eid ? String(this._hass?.states?.[eid]?.attributes?.friendly_name||"").trim() : "";
+    if(friendly) return friendly;
+    return this._configLabel(logicalKey);
+  }
   _configuredCount() { return [...ENTITY_KEYS].filter(id=>this._eid(id)).length; }
   _configNotice() {
     const configured=this._configuredCount();
     const total=ENTITY_KEYS.size;
-    if(configured>=total) return "";
-    const title=configured===0?"Configurazione entità richiesta":"Configurazione entità incompleta";
+    const title=configured===0?"Configura le entità":"Entità configurate";
     const text=configured===0
-      ? "Associa le entità del tuo Home Assistant direttamente dalla dashboard. Le funzioni non configurate restano disabilitate e sicure."
-      : `${configured} di ${total} associazioni configurate. Puoi completarle o modificarle in qualsiasi momento.`;
-    return `<div class="alert warn config-alert"><ha-icon icon="mdi:cog-alert-outline"></ha-icon><div><strong>${title}</strong><span>${text}</span></div><button class="config-open-btn" data-action="entity-config" type="button"><ha-icon icon="mdi:tune-variant"></ha-icon> Configura</button></div>`;
+      ? `Sono disponibili ${total} associazioni opzionali. Configura solo le funzioni che utilizzi nel tuo Home Assistant.`
+      : `${configured} di ${total} associazioni disponibili configurate. Non è necessario compilarle tutte: configura solo quelle che utilizzi.`;
+    const tone=configured===0?"warn":"info";
+    const icon=configured===0?"mdi:cog-alert-outline":"mdi:check-circle-outline";
+    return `<div class="alert ${tone} config-alert"><ha-icon icon="${icon}"></ha-icon><div><strong>${title}</strong><span>${text}</span></div><button class="config-open-btn" data-action="entity-config" type="button"><ha-icon icon="mdi:tune-variant"></ha-icon> Configura</button></div>`;
   }
 
   _configLabel(key) {
@@ -344,4 +384,14 @@
   _mergeConfiguredEntitiesIntoRooms(rooms){
     const out=(Array.isArray(rooms)?rooms:[]).map(r=>({...r,entities:[...(r.entities||[])],entity_labels:{...(r.entity_labels||{})}}));
     const defaults=new Map(this._defaultRooms().map(r=>[r.id,r]));
-   
+    const configured=[...ENTITY_KEYS].map(key=>{
+      const entity=String(this._configDraft?.[key] ?? this._entityMap?.[key] ?? "").trim();
+      return {key,entity,room:this._legacyRoomForConfigKey(key)};
+    }).filter(x=>x.entity && x.room);
+
+    for(const item of configured){
+      const meta=defaults.get(item.room);
+      let room=out.find(r=>r.id===item.room)
+        || out.find(r=>r.type===item.room)
+        || out.find(r=>String(r.name||"").toLocaleLowerCase("it")===String(meta?.name||"").toLocaleLowerCase("it"));
+      if(!room && meta){ room={...meta,e

@@ -1,14 +1,4 @@
-("vento")||l.includes("raffica")||i.includes("weather-windy")||i.includes("tornado")) type="wind";
-    else if(l.includes("pioggia")||l.includes("rain")||i.includes("weather-rain")) type="rain";
-    else if(l==="vpd"||l.includes("vapour pressure")) type="vpd";
-    else if(l.includes("radiazione")||i.includes("solar-power")) type="radiation";
-    else if(l.includes("indice uv")||l.includes("sole e uv")||i.includes("sunny-alert")) type="uv";
-    else if(l.includes("pressione")||i.includes("gauge")) type="pressure";
-    else if(l.includes("direzione")||i.includes("compass")) type="compass";
-    else if(l.includes("fulmini")||l.includes("temporali")||i.includes("lightning")) type="lightning";
-    else if(l.includes("blocco")||i.includes("timer")) type="timer";
-    else if(l.includes("livello acqua")||l.includes("serbatoio")||i.includes("cup-water")) type="water";
-    return `<div class="sensor-visual-card ${type} span-${span} ${tone||''}" ${entity?`data-more="${entity}"`:""}>
+ ${tone||''}" ${entity?`data-more="${entity}"`:""}>
       <div class="sensor-visual ${type}">
         ${type==="wind"?`<div class="wind-lines"><i></i><i></i><i></i></div><div class="wind-vane"><span></span></div>`:
           type==="rain"?`<div class="rain-cloud"></div><div class="rain-drops"><i></i><i></i><i></i><i></i></div>`:
@@ -243,4 +233,13 @@
     if(this._uiTheme==="v2"){
       return `<div class="universal-device-card blinds ${open?'active':'inactive'} span-${span}">
         <div class="universal-device-scene"><div class="blind-visual ${open?'open':''}"><div class="blind-box"></div><div class="blind-slats">${Array.from({length:7},()=>'<i></i>').join("")}</div><div class="blind-cord"></div></div></div>
- 
+        <div class="universal-device-copy clickable" data-more="${entity}"><span>${this._esc(title)}</span><strong>${this._esc(stateText)}</strong><small>${pos!==null?`${subPrefix} ${pos}%`:"Serramento"}</small></div>
+        <button class="universal-device-action ${open?'active':''}" data-cover-toggle="${entity}" data-inverted="${inverted?1:0}" type="button"><ha-icon icon="mdi:blinds-horizontal"></ha-icon><span>${open?'CHIUDI':'APRI'}</span></button>
+      </div>`;
+    }
+    return `<div class="command-strip span-${span} ${open?'state-warn':'state-off'}"><div class="command-symbol ${open?'warn':''}"><ha-icon icon="mdi:blinds-horizontal"></ha-icon></div><div class="command-copy clickable" data-more="${entity}"><div class="command-title">${title}</div><div class="command-sub">${pos!==null?`${subPrefix} ${pos}% · `:""}${stateText}</div></div><button class="command-action ${open?'warn':''}" data-cover-toggle="${entity}" data-inverted="${inverted?1:0}" type="button"><span>${open?'CHIUDI':'APRI'}</span><i></i></button></div>`;
+  }
+  _alert(level,icon,title,text) { return `<div class="signal ${level}"><div class="signal-icon"><ha-icon icon="${icon}"></ha-icon></div><div><strong>${title}</strong><span>${text}</span></div></div>`; }
+  _logic(title,text,level=""){ return `<div class="logic-ribbon ${level}"><span>${title}</span><strong>${text}</strong></div>`; }
+  _compareCard(title, items, foot="", span=6, icon="mdi:chart-line") {
+    con

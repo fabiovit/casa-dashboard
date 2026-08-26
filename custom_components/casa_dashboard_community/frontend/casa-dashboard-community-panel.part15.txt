@@ -1,13 +1,4 @@
-       <div class="universal-device-copy clickable" data-more="${entity}"><span>${this._esc(title)}</span><strong>${this._esc(stateText)}</strong><small>${pos!==null?`${subPrefix} ${pos}%`:"Serramento"}</small></div>
-        <button class="universal-device-action ${open?'active':''}" data-cover-toggle="${entity}" data-inverted="${inverted?1:0}" type="button"><ha-icon icon="mdi:blinds-horizontal"></ha-icon><span>${open?'CHIUDI':'APRI'}</span></button>
-      </div>`;
-    }
-    return `<div class="command-strip span-${span} ${open?'state-warn':'state-off'}"><div class="command-symbol ${open?'warn':''}"><ha-icon icon="mdi:blinds-horizontal"></ha-icon></div><div class="command-copy clickable" data-more="${entity}"><div class="command-title">${title}</div><div class="command-sub">${pos!==null?`${subPrefix} ${pos}% · `:""}${stateText}</div></div><button class="command-action ${open?'warn':''}" data-cover-toggle="${entity}" data-inverted="${inverted?1:0}" type="button"><span>${open?'CHIUDI':'APRI'}</span><i></i></button></div>`;
-  }
-  _alert(level,icon,title,text) { return `<div class="signal ${level}"><div class="signal-icon"><ha-icon icon="${icon}"></ha-icon></div><div><strong>${title}</strong><span>${text}</span></div></div>`; }
-  _logic(title,text,level=""){ return `<div class="logic-ribbon ${level}"><span>${title}</span><strong>${text}</strong></div>`; }
-  _compareCard(title, items, foot="", span=6, icon="mdi:chart-line") {
-    const visible=items.filter(it=>String(it.value??"").trim() && String(it.value).trim()!=="—");
+st visible=items.filter(it=>String(it.value??"").trim() && String(it.value).trim()!=="—");
     if(!visible.length) return "";
     return `<div class="data-node compare-card span-${span}"><div class="data-node-top"><div class="data-label">${title}</div><ha-icon icon="${icon}"></ha-icon></div><div class="compare-grid">${visible.map(it=>`<div class="compare-cell"><div class="compare-label">${it.label}</div><div class="compare-value">${it.value}</div></div>`).join("")}</div>${foot&&foot.trim()!=="—"?`<div class="data-foot compare-foot">${foot}</div>`:""}</div>`;
   }
@@ -17,10 +8,70 @@
     const mapped=[...ENTITY_KEYS].map(k=>String(this._entityMap?.[k]||"").trim()).filter(Boolean);
     return [...new Set([...roomEntities,...mapped])].filter(e=>this._hass?.states?.[e]);
   }
+  _logicalKeysForEntity(entity){
+    return [...ENTITY_KEYS].filter(k=>String(this._entityMap?.[k]||"").trim()===entity);
+  }
+  _overviewLabelForEntity(entity){
+    const keys=this._logicalKeysForEntity(entity);
+    const keyWithLabel=keys.find(k=>String(this._entityLabels?.[k]||"").trim());
+    if(keyWithLabel) return this._overviewDisplayName(keyWithLabel,entity);
+    const friendly=String(this._hass?.states?.[entity]?.attributes?.friendly_name||"").trim();
+    if(friendly) return friendly;
+    return keys.length?this._configLabel(keys[0]):entity;
+  }
+
+  _overviewMetric(entity, kind="generic"){
+    const obj=this._hass?.states?.[entity];
+    if(!obj) return {value:"—",unit:"",sub:""};
+    const raw=this._state(entity,"—");
+    const unit=String(obj.attributes?.unit_of_measurement||"").trim();
+    const dc=String(obj.attributes?.device_class||"").toLowerCase();
+    const n=parseFloat(raw);
+    const finite=Number.isFinite(n);
+
+    if(kind==="power" || dc==="power" || /(^|\s)(w|kw)$/i.test(unit)){
+      if(!finite) return {value:raw,unit,sub:""};
+      const lower=unit.toLowerCase();
+      const kw=lower==="w" ? n/1000 : lower==="kw" ? n : (Math.abs(n)>=100 ? n/1000 : n);
+      return {value:new Intl.NumberFormat(this._language==="en"?"en-GB":"it-IT",{minimumFractionDigits:2,maximumFractionDigits:2}).format(kw),unit:"kW",sub:""};
+    }
+    if(dc==="energy" || /kwh|wh/i.test(unit)){
+      if(!finite) return {value:raw,unit,sub:""};
+      let value=n, outUnit=unit||"kWh";
+      if(unit.toLowerCase()==="wh"){ value=n/1000; outUnit="kWh"; }
+      return {value:new Intl.NumberFormat(this._language==="en"?"en-GB":"it-IT",{maximumFractionDigits:2}).format(value),unit:outUnit,sub:""};
+    }
+    if(dc==="battery" || unit==="%"){
+      return {value:finite?new Intl.NumberFormat(this._language==="en"?"en-GB":"it-IT",{maximumFractionDigits:0}).format(n):raw,unit:unit||"%",sub:""};
+    }
+    if(dc==="temperature" || /°c|°f/i.test(unit)){
+      return {value:finite?new Intl.NumberFormat(this._language==="en"?"en-GB":"it-IT",{minimumFractionDigits:1,maximumFractionDigits:1}).format(n):raw,unit,sub:""};
+    }
+    if(entity.startsWith("binary_sensor.")){
+      const on=raw==="on";
+      return {value:on?(this._language==="en"?"Active":"Attivo"):(this._language==="en"?"Inactive":"Inattivo"),unit:"",sub:""};
+    }
+    if(finite){
+      return {value:new Intl.NumberFormat(this._language==="en"?"en-GB":"it-IT",{maximumFractionDigits:2}).format(n),unit,sub:""};
+    }
+    return {value:raw,unit,sub:""};
+  }
+
+  _overviewMetricCard(entity, tone="generic", icon="mdi:chart-line", kind="generic"){
+    const friendly=this._hass?.states?.[entity]?.attributes?.friendly_name||entity;
+    const metric=this._overviewMetric(entity,kind);
+    return `<div class="overview-key-card ${tone}">
+      <div class="overview-key-icon"><ha-icon icon="${icon}"></ha-icon></div>
+      <div class="overview-key-copy">
+        <span>${this._esc(friendly)}</span>
+        <div class="overview-key-value"><strong>${this._esc(metric.value)}</strong>${metric.unit?`<b>${this._esc(metric.unit)}</b>`:""}</div>
+      </div>
+    </div>`;
+  }
 
   _overviewV2Personal(){
     const entities=this._configuredEntitiesForOverview();
-    const friendly=e=>this._hass?.states?.[e]?.attributes?.friendly_name||e;
+    const friendly=e=>this._overviewLabelForEntity(e);
     const byDomain=d=>entities.filter(e=>e.startsWith(d+"."));
     const lights=byDomain("light");
     const climates=byDomain("climate");
@@ -88,30 +139,40 @@
       ? `${this._section("Stati attivi","Solo ciò che in questo momento sta cambiando")}<div class="overview-active-strip">${activeItems.map(i=>`<div class="overview-active-chip ${i.tone}"><ha-icon icon="${i.icon}"></ha-icon><span>${this._esc(i.name)}</span></div>`).join("")}</div>`
       : "";
 
-    const tempCards=tempSensors.slice(0,6).map(e=>`
-      <div class="overview-key-card temp"><span>${this._esc(friendly(e))}</span><strong>${this._state(e)}</strong><small>${this._attr(e,"unit_of_measurement","")||""}</small></div>
-    `).join("");
+    const tempCards=tempSensors.slice(0,6).map(e=>
+      this._overviewMetricCard(e,"temp","mdi:thermometer","temperature")
+    ).join("");
     const tempSection=tempCards
       ? `${this._section("Temperature","Le principali temperature della casa")}<div class="overview-key-grid">${tempCards}</div>`
       : "";
 
-    const extCards=externalSensors.slice(0,5).map(e=>`
-      <div class="overview-key-card external"><span>${this._esc(friendly(e))}</span><strong>${this._state(e)}</strong><small>${this._attr(e,"unit_of_measurement","")||""}</small></div>
-    `).join("");
+    const extCards=externalSensors.slice(0,5).map(e=>{
+      const name=(e+" "+friendly(e)).toLowerCase();
+      const icon=/rain|pioggia/.test(name)?"mdi:weather-rainy":/wind|vento/.test(name)?"mdi:weather-windy":/uv/.test(name)?"mdi:weather-sunny-alert":/lux|radiation|radiazione/.test(name)?"mdi:white-balance-sunny":"mdi:weather-partly-cloudy";
+      return this._overviewMetricCard(e,"external",icon,"generic");
+    }).join("");
     const extSection=extCards
       ? `${this._section("Esterno","Meteo e condizioni principali")}<div class="overview-key-grid">${extCards}</div>`
       : "";
 
-    const solarCards=solarSensors.slice(0,6).map(e=>`
-      <div class="overview-key-card solar"><span>${this._esc(friendly(e))}</span><strong>${this._state(e)}</strong><small>${this._attr(e,"unit_of_measurement","")||""}</small></div>
-    `).join("");
+    const solarCards=solarSensors.slice(0,6).map(e=>{
+      const name=(e+" "+friendly(e)).toLowerCase();
+      const isBattery=/battery|batteria|soc/.test(name);
+      const isGrid=/grid|rete|pcc/.test(name);
+      const icon=isBattery?"mdi:battery-high":isGrid?"mdi:transmission-tower":"mdi:solar-power";
+      const kind=/power|potenza|grid|pv/.test(name)?"power":"generic";
+      return this._overviewMetricCard(e,"solar",icon,kind);
+    }).join("");
     const solarSection=solarCards
       ? `${this._section("Fotovoltaico & batteria","Produzione, accumulo e rete")}<div class="overview-key-grid">${solarCards}</div>`
       : "";
 
-    const wallboxCards=wallboxSensors.slice(0,5).map(e=>`
-      <div class="overview-key-card wallbox"><span>${this._esc(friendly(e))}</span><strong>${this._state(e)}</strong><small>${this._attr(e,"unit_of_measurement","")||""}</small></div>
-    `).join("");
+    const wallboxCards=wallboxSensors.slice(0,5).map(e=>{
+      const name=(e+" "+friendly(e)).toLowerCase();
+      const icon=/charging|ricarica|power/.test(name)?"mdi:ev-station":/current|corrente/.test(name)?"mdi:current-ac":"mdi:car-electric";
+      const kind=/power|potenza/.test(name)?"power":"generic";
+      return this._overviewMetricCard(e,"wallbox",icon,kind);
+    }).join("");
     const wallboxSection=wallboxCards
       ? `${this._section("Wallbox & EV","Stato e ricarica")}<div class="overview-key-grid">${wallboxCards}</div>`
       : "";
@@ -252,28 +313,4 @@
     };
     const roomReq=requirements[room]||{};
     const visible=metrics.map(metric=>{
-      const req=roomReq[metric.label];
-      return req ? {...metric,show:metric.show!==false&&this._anyConfigured(req)} : metric;
-    });
-    return this._hero(m.title,m.subtitle,{...s,title:s.text,text:""},visible,room);
-  }
-
-  _esterno(){
-    const open=this._on("input_boolean.pedestrian_gate");
-    return `<div class="page ${this._uiTheme==="v2"?"overview-v2-page":""}">${this._zoneHero("esterno",[
-      {label:"Cancellino",value:open?"Aperto / apertura…":"Chiuso",small:"Accesso esterno"},
-      {label:"Stato",value:open?"Attivo":"Pronto",small:"Comando pedonale"}
-    ])}${this._section("Accesso esterno")}<div class="grid">${this._control("input_boolean.pedestrian_gate","Cancellino","mdi:gate",open?"Apertura in corso / aperto":"Premi per aprire","toggle",12)}</div></div>`;
-  }
-
-  _scale(){
-    return `<div class="page">${this._zoneHero("scale",[
-      {label:"Luce",value:this._on("light.stairs")?"Accesa":"Spenta",small:"Illuminazione scale"},
-      {label:"Portoncino",value:this._on("input_boolean.main_gate")?"Apertura…":"Pronto",small:"Comando accesso"}
-    ])}${this._section("Controlli rapidi")}<div class="grid">${this._control("input_boolean.main_gate","Portoncino","mdi:gate",this._on("input_boolean.main_gate")?"Apertura in corso":"Premi per aprire","toggle",6)}${this._control("light.stairs","Luce scale","mdi:ceiling-light",this._on("light.stairs")?"Accesa":"Spenta","toggle",6)}</div></div>`;
-  }
-
-  _ingresso(){
-    const door=this._on("binary_sensor.entry_door");
-    const unlocked=this._on("input_boolean.entry_door_unlock");
-    const al
+      const req=roomReq[m

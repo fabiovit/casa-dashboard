@@ -1,28 +1,4 @@
-tion ha-icon{--mdc-icon-size:23px}
-
-      .uv-wicket,.uv-gate,.uv-garage,.uv-irrigation,.uv-mower,.uv-washer,.uv-thermostat,.uv-vacuum,.uv-catfood,.uv-humidifier{position:absolute;inset:0}
-
-      /* cancellino */
-      .uv-wall{position:absolute;bottom:20px;width:34px;height:76px;background:#667075}.uv-wall.left{left:0}.uv-wall.right{right:0}
-      .uv-post{position:absolute;bottom:18px;width:12px;height:94px;background:#7f898e}.uv-post.left{left:30px}.uv-post.right{right:30px}
-      .uv-wicket-leaf{position:absolute;left:42px;right:42px;bottom:27px;height:70px;border:4px solid #67747b;display:flex;justify-content:space-around;transform-origin:left center;background:rgba(41,50,55,.28)}
-      .uv-wicket-leaf.open{transform:perspective(350px) rotateY(-48deg)}.uv-wicket-leaf i{width:4px;background:#7b878d}
-
-      /* cancello */
-      .uv-gate-pillar{position:absolute;bottom:14px;width:16px;height:98px;background:#747f86}.uv-gate-pillar.left{left:16px}.uv-gate-pillar.right{right:16px}
-      .uv-gate-leaf{position:absolute;left:32px;right:32px;bottom:24px;height:74px;border:5px solid #647178;display:flex;justify-content:space-around;background:#343d42;transform-origin:left center}
-      .uv-gate-leaf.open{transform:perspective(400px) rotateY(-40deg)}.uv-gate-leaf i{width:4px;background:#707d84}
-
-      /* basculante */
-      .uv-garage-frame{position:absolute;left:20px;right:20px;top:16px;bottom:16px;border:8px solid #737f86;background:#20272b}
-      .uv-garage-door{position:absolute;inset:0;background:#4f5a61;display:flex;flex-direction:column;justify-content:space-evenly;transform-origin:top center}
-      .uv-garage-door.open{transform:perspective(450px) rotateX(65deg)}.uv-garage-door i{height:3px;background:#6e7a81}
-
-      /* irrigazione */
-      .uv-grass{position:absolute;left:0;right:0;bottom:0;height:45px;background:#314b32}
-      .uv-sprinkler{position:absolute;left:50%;bottom:28px;width:14px;height:30px;transform:translateX(-50%);background:#727d83;border-radius:5px}
-      .uv-water{position:absolute;left:50%;bottom:54px;width:120px;height:58px;transform:translateX(-50%)}
-      .uv-water i{position:absolute;left:58px;bottom:0;width:3px;height:56px;background:#66c8ff;transform-origin:bottom;opacity:.25}
+x;height:56px;background:#66c8ff;transform-origin:bottom;opacity:.25}
       .uv-water.active i{opacity:.85}.uv-water i:nth-child(1){transform:rotate(-55deg)}.uv-water i:nth-child(2){transform:rotate(-30deg)}.uv-water i:nth-child(4){transform:rotate(30deg)}.uv-water i:nth-child(5){transform:rotate(55deg)}
 
       /* mower */
@@ -120,4 +96,11 @@ tion ha-icon{--mdc-icon-size:23px}
       .bedroom-thermostat-panel{display:grid;grid-template-columns:320px 1fr;gap:28px;align-items:center;padding:24px;border-radius:28px;border:1px solid rgba(255,255,255,.07);background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(105,125,255,.04))}
       .bedroom-thermo-ring{width:245px;height:245px;margin:auto;border-radius:50%;display:grid;place-items:center;background:conic-gradient(from 220deg,#27343e 0 56%,#384750 56% 78%,#27343e 78%);position:relative}.bedroom-thermo-ring:before{content:"";position:absolute;inset:15px;border-radius:50%;background:var(--card-background-color)}.bedroom-thermo-ring.active{background:conic-gradient(from 220deg,#6ec7ff 0 58%,#698cff 58% 78%,#27343e 78%)}
       .bedroom-thermo-center{position:relative;z-index:2;text-align:center}.bedroom-thermo-center span{display:block;font-size:9px;letter-spacing:.18em;color:#8da6bd}.bedroom-thermo-center strong{display:block;font-size:48px;letter-spacing:-.06em;margin-top:7px}.bedroom-thermo-center small{display:block;color:var(--secondary-text-color);margin-top:4px}
-      .bedroom-thermo-info{display:flex;flex-direction:column;gap:16px}.bedroom-thermo-top{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.bedroom-thermo-top div,.bedroom-thermo-state{padding:14px;border-radius:16px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.025)}.bedroom-thermo-top span,.bedroom-thermo-state span{display:block;font-size:8px;letter-spacing:.16em;color:#8da6bd}.bedroom-thermo-top strong{display:block;font-size:22px;margin-top:7px}.bedroom-thermo-state{display:flex;align-items:center;gap:12px}.bedroom-thermo-state ha-icon{--mdc-icon-size:28px;color:#8298ad}.bedroom-thermo-state.active ha-icon{color:#76c9ff}.bedroom-thermo-state strong{display:block;font-size:18px;margin-top:4px}.bedroom-thermo-state small{display:block;color:var(--secondary-text-color);margin-top:2px}.bedroom-thermo-details{height:52px;border-radius:15px;border:1px solid rgba(255,255,255,.08);background:rgba(
+      .bedroom-thermo-info{display:flex;flex-direction:column;gap:16px}.bedroom-thermo-top{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.bedroom-thermo-top div,.bedroom-thermo-state{padding:14px;border-radius:16px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.025)}.bedroom-thermo-top span,.bedroom-thermo-state span{display:block;font-size:8px;letter-spacing:.16em;color:#8da6bd}.bedroom-thermo-top strong{display:block;font-size:22px;margin-top:7px}.bedroom-thermo-state{display:flex;align-items:center;gap:12px}.bedroom-thermo-state ha-icon{--mdc-icon-size:28px;color:#8298ad}.bedroom-thermo-state.active ha-icon{color:#76c9ff}.bedroom-thermo-state strong{display:block;font-size:18px;margin-top:4px}.bedroom-thermo-state small{display:block;color:var(--secondary-text-color);margin-top:2px}.bedroom-thermo-details{height:52px;border-radius:15px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.025);color:inherit;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+
+      .tatiana-card{display:grid;grid-template-columns:minmax(320px,.9fr) minmax(300px,1.1fr);gap:22px;align-items:center;min-height:250px;padding:20px;border-radius:24px;border:1px solid rgba(255,255,255,.07);background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(86,206,255,.035))}
+      .tatiana-visual{min-height:205px;border-radius:18px;display:grid;place-items:center;overflow:hidden;background:linear-gradient(180deg,#17232d,#0f171e)}.tatiana-visual img{width:100%;height:205px;object-fit:contain}.tatiana-robot{position:relative;width:150px;height:150px;border-radius:50%;background:linear-gradient(180deg,#e7ebef,#b7c0c8);box-shadow:0 15px 30px rgba(0,0,0,.22)}.tatiana-top{position:absolute;left:42px;top:18px;width:66px;height:35px;border-radius:18px;background:#3c4650}.tatiana-ring{position:absolute;left:18px;top:18px;width:114px;height:114px;border:6px solid #6c7d8c;border-radius:50%}.tatiana-eye{position:absolute;left:69px;top:66px;width:12px;height:12px;border-radius:50%;background:#3bbcff;box-shadow:0 0 14px rgba(59,188,255,.6)}
+      .tatiana-info span{display:block;font-size:9px;letter-spacing:.18em;color:#8da6bd}.tatiana-info strong{display:block;font-size:32px;margin-top:7px}.tatiana-info small{display:block;color:var(--secondary-text-color);margin-top:4px}.tatiana-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:18px}.tatiana-actions button{height:46px;border-radius:13px;border:1px solid rgba(90,188,255,.28);background:rgba(90,188,255,.05);color:#78cfff;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px}
+
+      .app-shell.theme-light .bedroom-hero-card,.app-shell.theme-light .bedroom-thermostat-panel,.app-shell.theme-light .tatiana-card{background:linear-gradient(145deg,#fff,#f3f6ff);border-color:rgba(15,23,42,.09)}.app-shell.theme-light .bedroom-scene,.app-shell.theme-light .tatiana-visual{background:linear-gradient(180deg,#eef3f7,#dce5ec)}.app-shell.theme-light .bedroom-thermo-ring:before{background:#fff}.app-shell.theme-light .bedroom-thermo-top div,.app-shell.theme-light .bedroom-thermo-state{background:#f8fbfe;border-color:rgba(15,23,42,.08)}.app-shell.theme-light .bedroom-meta span,.app-shell.theme-light .bedroom-thermo-top span,.app-shell.theme-light .bedroom-thermo-state span,.app-shell.theme-light .tatiana-info span{color:#587292}
+      @media(max-width:900px){.bedroom-hero{grid-template-columns:1fr!important}.bedroom-hero-card,.bedroom-thermostat-panel,.tatiana-card{grid-template-columns:1fr}.tatiana-actions{grid-template-
