@@ -12,7 +12,7 @@
 
 Casa Dashboard Community è una dashboard app-like completa per **Home Assistant**, pensata per adattarsi ad abitazioni diverse senza dipendere dalle classiche card Lovelace.
 
-La **v3.5.1** è una release di consolidamento: il progetto è stato ripulito, il versioning è ora coerente tra backend e frontend e tutte le funzioni mature introdotte nella serie 2.x restano disponibili in un pacchetto più ordinato.
+La **v3.5.1** introduce il configuratore Casa V2 a pagine, una personalizzazione visuale molto più completa, il caricamento diretto delle foto di stanze e oggetti e il nuovo Visual Energia Avanzato, mantenendo disponibile Casa V1 Classic.
 
 **Realizzato da Fabio Vittori** · [☕ Offrimi un caffè](https://ko-fi.com/fabvittori)
 
@@ -38,15 +38,15 @@ Altri esempi:
 
 ## ☀️ Visual Energia Avanzato
 
-Casa V2 permette ora di scegliere la sezione Fotovoltaico in modalità **Compatta** oppure **Avanzata**.
+Casa V2 può mostrare la sezione Fotovoltaico in modalità **Compatta** oppure **Avanzata**.
 
 La modalità Avanzata mostra produzione live, eventuali PV1/PV2, SOC e flusso batteria, oltre ai nodi Casa / Inverter / Batteria / Rete.
 
-Le convenzioni del segno di Rete e Batteria sono configurabili, così il visual può adattarsi a integrazioni inverter differenti.
+Le convenzioni del segno di Rete e Batteria sono configurabili, così il visual può adattarsi a integrazioni inverter differenti. I sensori mancanti vengono nascosti automaticamente senza lasciare spazi vuoti.
 
 ## 🧭 Configuratore a pagine
 
-Il configuratore Casa V2 è ora suddiviso in pagine dedicate:
+Il configuratore Casa V2 è suddiviso in pagine dedicate:
 
 - Panoramica
 - Stanze
@@ -55,13 +55,22 @@ Il configuratore Casa V2 è ora suddiviso in pagine dedicate:
 - Meteo & Sicurezza
 - Avanzate
 
-La configurazione normale rimane semplice, mentre l'elenco completo delle 173 associazioni viene spostato nella pagina avanzata.
+La configurazione normale rimane semplice, mentre l'elenco completo delle **173 associazioni Community opzionali** è disponibile nella pagina Avanzate.
 
 ## 🎨 Personalizzazione visuale completa
 
-Casa V2 permette ora di personalizzare le macro-label della Panoramica, il nome dell'auto e il nome della Wallbox.
+Casa V2 permette di personalizzare:
 
-Ogni stanza può inoltre utilizzare una foto personalizzata. È possibile indicare un percorso Home Assistant `/local/...` (ad esempio `/local/casa/cucina.jpg`) oppure un URL immagine. Se il campo resta vuoto, viene mantenuto il normale visual Casa V2.
+- macro-label della Panoramica;
+- nome Auto e Wallbox;
+- nomi visualizzati delle entità globali;
+- nomi, tipi e icone delle stanze;
+- foto delle stanze;
+- foto dei singoli oggetti/entità.
+
+Le foto possono essere caricate direttamente dal configuratore. Casa Dashboard le ridimensiona e comprime automaticamente e, normalmente, le salva in `/config/www/casa_dashboard_community/uploads/`, utilizzando il riferimento `/local/casa_dashboard_community/uploads/`.
+
+Se non viene impostata una foto personalizzata, rimangono attivi il visual grafico Casa V2 e il riconoscimento intelligente del dispositivo.
 
 ## 🏠 Stanze dinamiche
 
@@ -84,11 +93,9 @@ Le entità possono essere cercate tramite:
 - `entity_id`;
 - nome visualizzato personalizzato.
 
-Il configuratore mantiene le **173 associazioni Community** usate dalle funzioni globali e specialistiche.
+Le 173 associazioni Community sono **opzionali**. È sufficiente configurare soltanto le funzioni e i dispositivi realmente presenti nel proprio Home Assistant.
 
-Anche le associazioni globali possono avere un **nome visualizzato personalizzato** per la Panoramica. Se lasciato vuoto, Casa Dashboard usa il friendly name di Home Assistant e poi il nome Community.
-
-Le installazioni grandi sono gestite con scroll separati e bilanciati per Stanze e associazioni entità.
+Anche le associazioni globali possono avere un nome visualizzato personalizzato per la Panoramica. Se lasciato vuoto, Casa Dashboard usa il friendly name di Home Assistant e poi il nome Community.
 
 ## 🧠 Riconoscimento intelligente
 
@@ -123,16 +130,11 @@ Supporto nativo:
 - 🇮🇹 Italiano
 - 🇬🇧 English
 
-Il selettore è disponibile direttamente nella dashboard e la lingua scelta viene memorizzata localmente.
-
-I nomi personalizzati delle stanze e delle entità Home Assistant vengono mantenuti.
-
-
-Anche le singole entità V2 possono avere una foto personalizzata. Usa **Carica** nel configuratore della stanza per luci, prese, elettrodomestici, sensori e altri oggetti. Le foto vengono ridimensionate e salvate sotto `/local/casa_dashboard_community/uploads/`; senza foto resta il visual automatico V2.
+Il selettore è disponibile direttamente nella dashboard e la lingua scelta viene memorizzata localmente. I nomi personalizzati delle stanze e delle entità Home Assistant vengono mantenuti.
 
 ## 📱 Responsive
 
-Casa V1 e Casa V2 sono progettate per desktop e smartphone.
+Casa V1 e Casa V2 sono progettate per desktop, tablet e smartphone.
 
 ## 📦 Installazione HACS
 
@@ -144,15 +146,19 @@ Casa V1 e Casa V2 sono progettate per desktop e smartphone.
 6. Cerca **Casa Dashboard Community**.
 7. Apri il nuovo pannello laterale e premi **Configura**.
 
+> Dopo l'aggiornamento alla v3.5.1 effettua un **riavvio completo di Home Assistant**, perché sono cambiati il backend dell'integrazione e lo schema WebSocket del configuratore.
+
 ## 📦 Installazione manuale
 
 Copia `custom_components/casa_dashboard_community` in `/config/custom_components/`, riavvia Home Assistant e aggiungi l'integrazione da **Impostazioni → Dispositivi e servizi**.
 
 ## ℹ️ Note
 
-Casa Dashboard Community è un template avanzato. Dispositivi, sensori, automazioni, fotovoltaico, EV e Wallbox sono opzionali.
+Casa Dashboard Community è un template avanzato. Dispositivi, sensori, automazioni, fotovoltaico, EV e Wallbox sono opzionali. Le funzioni non configurate vengono nascoste automaticamente.
 
-Le funzioni non configurate vengono nascoste automaticamente.
+## 🙏 Credits
+
+Un ringraziamento speciale a **Mario Pagano** per i feedback e i suggerimenti che hanno contribuito a migliorare il configuratore, la personalizzazione della Panoramica e la flessibilità grafica di Casa Dashboard Community.
 
 ## ☕ Supporto
 
