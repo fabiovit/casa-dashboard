@@ -1,4 +1,9 @@
->`);
+mperature")?this._fmt("sensor.bedroom_temperature",1,"°C"):"—";
+    const outsideTemp=this._configured("sensor.weather_outdoor_temperature")?this._fmt("sensor.weather_outdoor_temperature",1,"°C"):"—";
+
+    const spotStats=[];
+    if(alarmConfigured || openingsConfigured) spotStats.push(`<div class="spot-stat"><span class="k">Sicurezza</span><strong>${alarmConfigured?(alarm==='triggered'?'Allarme':alarm==='disarmed'?'Disinserito':'Protetta'):(open?'Da controllare':'Nessuna apertura')}</strong><small>${openingsConfigured?(open?`${open} aperture aperte`:'Nessuna apertura critica'):'Allarme configurato'}</small></div>`);
+    if(comfortConfigured) spotStats.push(`<div class="spot-stat"><span class="k">Comfort</span><strong>${comfortTemp!=="—"?comfortTemp:bedroomTemp}</strong><small>${comfortTemp!=="—"&&bedroomTemp!=="—"?`Cucina · Camera ${bedroomTemp}`:comfortTemp!=="—"?'Cucina':'Camera'}</small></div>`);
     if(weatherConfigured) spotStats.push(`<div class="spot-stat"><span class="k">Esterno</span><strong>${outsideTemp}</strong><small>${this._configured("binary_sensor.weather_rain")?(rain?'Pioggia in corso':'Meteo tranquillo'):'Meteo configurato'}</small></div>`);
     if(garageConfigured) spotStats.push(`<div class="spot-stat"><span class="k">Garage</span><strong>${this._configured("binary_sensor.garage_door_contact")?(garage?'Aperto':'Chiuso'):(ev?'EV in carica':'Wallbox')}</strong><small>${mobilityConfigured?(ev?'EV in carica':'Wallbox pronta'):'Accesso garage'}</small></div>`);
 
@@ -232,11 +237,4 @@
       ${this._control("light.hallway_main","Luce disimpegno","mdi:ceiling-light",this._on("light.hallway_main")?"Accesa":"Spenta","toggle",3)}
       ${this._metric("mdi:weather-sunny","Luminosità",this._luxLabel("sensor.hallway_illuminance"),`${this._fmtLuxExact("sensor.hallway_illuminance")} · Sensore luce`,3,"sensor.hallway_illuminance",this._luxTone("sensor.hallway_illuminance"))}
       ${this._metric("mdi:motion-sensor","Movimento",motion?"Rilevato":"Assente","Disimpegno",3,"binary_sensor.hallway_motion")}
-      ${this._metric("mdi:account-group","Occupazione",occupied?"Occupato":"Libero","Disimpegno",3,"binary_sensor.hallway_occupancy")}
-    </div></div>`;
-  }
-
-  _bagno(){
-    const windowOpen=this._on("binary_sensor.bathroom_window"), vibration=this._on("binary_sensor.bathroom_window_vibration"), anta=this._on("binary_sensor.bathroom_cabinet_door"), leak=this._on("binary_sensor.bathroom_water_leak"), motion=this._on("binary_sensor.bathroom_motion"), occupied=this._on("binary_sensor.bathroom_occupancy");
-    return `<div class="page">${this._zoneHero("bagno",[
-      {label:"Temperatura",value:this._fmt("sensor.bathro
+      ${this._m

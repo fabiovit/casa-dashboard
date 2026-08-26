@@ -1,27 +1,4 @@
--data-card,.app-shell.theme-light .air-console,.app-shell.theme-light .dehum-console{background:linear-gradient(180deg,#fff,#f5f9fd);border-color:rgba(15,23,42,.09)}
-      .app-shell.theme-light .garage-scene,.app-shell.theme-light .air-visual,.app-shell.theme-light .dehum-visual,.app-shell.theme-light .daze-visual{background:linear-gradient(180deg,#edf4f8,#dce7ee)}.app-shell.theme-light .garage-meta span,.app-shell.theme-light .garage-door-copy span,.app-shell.theme-light .daze-data-card span,.app-shell.theme-light .air-info span,.app-shell.theme-light .dehum-top span,.app-shell.theme-light .dehum-target span{color:#587292}
-
-      @media(max-width:1050px){.daze-console{grid-template-columns:1fr}.daze-data{grid-template-columns:repeat(3,1fr)}}
-      @media(max-width:900px){.garage-hero{grid-template-columns:1fr!important}.garage-hero-card,.garage-access-grid,.air-console,.dehum-console{grid-template-columns:1fr}.garage-controls{grid-template-columns:1fr 1fr}.daze-diagnostics{grid-template-columns:1fr 1fr 1fr}}
-      @media(max-width:620px){.garage-hero-card{padding:14px}.garage-controls,.daze-data,.air-controls,.dehum-top,.dehum-controls,.daze-diagnostics{grid-template-columns:1fr}.garage-door-card{grid-template-columns:1fr}.garage-door-mini{margin:auto}.daze-visual{min-height:240px}.daze-car{transform:scale(.82);transform-origin:left bottom}.daze-wallbox{transform:scale(.82);transform-origin:right bottom}.dehum-target{grid-template-columns:58px 1fr 58px}}
-
-
-      
-/* ===== v4.3.54 Panoramica - nuova casa theme-aware ===== */
-      .overview-house-v2{
-        position:relative!important;
-        min-height:290px!important;
-        overflow:hidden!important;
-        border-radius:20px!important;
-        background:
-          radial-gradient(circle at 78% 20%,rgba(95,205,255,.07),transparent 28%),
-          linear-gradient(180deg,#142833 0%,#102029 64%,#182126 64%,#12191d 100%)!important;
-        border:1px solid rgba(255,255,255,.06)!important;
-      }
-
-      .house-v2-sky{
-        position:absolute;inset:0 0 36% 0;
-        background:linear-gradient(180deg,rgba(36,72,91,.28),rgba(18,39,49,.08));
+ear-gradient(180deg,rgba(36,72,91,.28),rgba(18,39,49,.08));
       }
       .house-v2-ground{
         position:absolute;left:0;right:0;bottom:0;height:36%;
@@ -288,4 +265,8 @@
       .community-v2-hero-card{display:grid;grid-template-columns:minmax(330px,1.2fr) minmax(220px,.8fr);gap:18px;align-items:center;min-height:285px;padding:19px;border-radius:26px;border:1px solid rgba(255,255,255,.075);background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(65,170,235,.045))}
       .community-v2-hero-visual{min-width:0}.community-v2-hero-side{display:flex;flex-direction:column;gap:12px;padding:4px 2px}.community-v2-meta span{display:block;font-size:9px;letter-spacing:.19em;font-weight:900;color:#8da6bd}.community-v2-meta strong{display:block;margin-top:5px;font-size:27px;letter-spacing:-.04em}.community-v2-meta small{display:block;margin-top:4px;color:var(--secondary-text-color);font-size:10px;line-height:1.35}.community-v2-divider{height:1px;background:linear-gradient(90deg,rgba(70,190,255,.72),transparent)}
       .community-v2-house{height:235px;position:relative;overflow:hidden;border-radius:20px;background:linear-gradient(180deg,#12202a,#0d151b)}.community-v2-house .house-v2-building{transform:scale(.88);transform-origin:center bottom}
-      .community-stairs-scene{height:220px;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#17232b,#0c1217);display:grid;place-items:center}.css-stairs{position:relative;width:86%;height:86%}.css-stairs-wall{position:absolute;inset:0;background:linear-gradient(135deg,#222e36,#131a20);clip-path:polygon(0 0,100% 0,100% 100%,38% 100%)}.css-stairs-flight{position:absolute;left:8%;bottom:10%;width:62%;height:66%;display:flex;flex-direction:column-reverse;gap:4px;transform:skewY(-18deg)}.css-stairs-flight i{height:13px;background:linear-gradient(90deg,#53636f,#29353e);border-top:1px solid #738592}.css-stairs-rail{position:absolute;left:19%;top:12%;width:5px;height:68%;background:#7f929e;transform:rotate(27deg);transform-origin:bottom}.css-stairs-door{position:absolute;right:9%;bottom:8%;width:68px;height:118px;border:5px solid #5f707d;background:#222c34}.css-st
+      .community-stairs-scene{height:220px;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#17232b,#0c1217);display:grid;place-items:center}.css-stairs{position:relative;width:86%;height:86%}.css-stairs-wall{position:absolute;inset:0;background:linear-gradient(135deg,#222e36,#131a20);clip-path:polygon(0 0,100% 0,100% 100%,38% 100%)}.css-stairs-flight{position:absolute;left:8%;bottom:10%;width:62%;height:66%;display:flex;flex-direction:column-reverse;gap:4px;transform:skewY(-18deg)}.css-stairs-flight i{height:13px;background:linear-gradient(90deg,#53636f,#29353e);border-top:1px solid #738592}.css-stairs-rail{position:absolute;left:19%;top:12%;width:5px;height:68%;background:#7f929e;transform:rotate(27deg);transform-origin:bottom}.css-stairs-door{position:absolute;right:9%;bottom:8%;width:68px;height:118px;border:5px solid #5f707d;background:#222c34}.css-stairs-door i{position:absolute;right:8px;top:52%;width:6px;height:6px;border-radius:50%;background:#d6dce1}
+      .community-kitchen-scene{height:220px;border-radius:20px;position:relative;overflow:hidden;background:linear-gradient(180deg,#17242d,#0e151b)}.community-kitchen-scene .kitchen-wall{position:absolute;inset:0;background:linear-gradient(180deg,#26343d,#171e24)}.community-kitchen-scene .kitchen-window{position:absolute;left:24px;top:22px;width:120px;height:92px;border:5px solid #61717d;background:#1f4055}.community-kitchen-scene .kitchen-sky{position:absolute;inset:0;background:linear-gradient(180deg,#385f76,#203b4c)}.community-kitchen-scene .kitchen-cabinets{position:absolute;right:24px;top:24px;display:flex;gap:6px}.community-kitchen-scene .kitchen-cabinets i{width:54px;height:72px;border:2px solid #697b88;background:#34434d}.community-kitchen-scene .kitchen-counter{position:absolute;left:20px;right:20px;bottom:24px;height:70px;background:#29343c;border-top:8px solid #707c84;display:flex}.community-kitchen-scene .kitchen-counter div{flex:1;border-right:2px solid #43515b}.community-kitchen-scene .kitchen-pendant{position:absolute;left:50%;top:0;width:3px;height:55px;background:#8b969e}.community-kitchen-scene .kitchen-pendant span{position:absolute;left:-24px;bottom:-17px;width:50px;height:26px;border-radius:50% 50% 10px 10px;background:#596671}.community-kitchen-scene .kitchen-pendant.on i{position:absolute;left:-40px;bottom:-45px;width:82px;height:82px;border-radius:50%;background:radial-gradient(circle,rgba(255,210,105,.22),transparent 68%)}
+      .community-generic-scene{height:220px;border-radius:20px;display:grid;place-items:center;background:linear-gradient(145deg,#17242d,#0d141a);color:#55c8ff}.community-generic-scene ha-icon{--mdc-icon-size:72px}
+      .overview-v2-page .spotlight{background:linear-gradient(145deg,color-mix(in srgb,var(--card-background-color) 88%,#0a1b29 12%),color-mix(in srgb,var(--card-background-color) 96%,#132a3c 4%));border-radius:28px}.overview-v2-page .premium-room{border-radius:24px}.overview-v2-page .panel-title{font-size:18px}
+      @media(max-width:980px){.ui-v2 .community-v2-hero{grid-template-columns:1fr!important}.community-v2-hero-card{grid-template-columns:1fr}.community-v2-hero-side{display:grid;grid-template-columns:repeat(3,1fr)}}@media(max-width:620px){.community-v2-hero-card{pa

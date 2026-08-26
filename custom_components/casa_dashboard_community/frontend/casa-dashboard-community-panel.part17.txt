@@ -1,4 +1,11 @@
-om_temperature",1,"°C"),small:"Sensore"},
+etric("mdi:account-group","Occupazione",occupied?"Occupato":"Libero","Disimpegno",3,"binary_sensor.hallway_occupancy")}
+    </div></div>`;
+  }
+
+  _bagno(){
+    const windowOpen=this._on("binary_sensor.bathroom_window"), vibration=this._on("binary_sensor.bathroom_window_vibration"), anta=this._on("binary_sensor.bathroom_cabinet_door"), leak=this._on("binary_sensor.bathroom_water_leak"), motion=this._on("binary_sensor.bathroom_motion"), occupied=this._on("binary_sensor.bathroom_occupancy");
+    return `<div class="page">${this._zoneHero("bagno",[
+      {label:"Temperatura",value:this._fmt("sensor.bathroom_temperature",1,"°C"),small:"Sensore"},
       {label:"Umidità",value:this._fmt("sensor.bathroom_humidity",0,"%"),small:"Sensore"},
       {label:"Finestra",value:windowOpen?"Aperta":"Chiusa",small:"Sicurezza"},
       {label:"Acqua",value:leak?"PERDITA":"OK",small:"Sensore perdita"}
@@ -192,9 +199,4 @@ om_temperature",1,"°C"),small:"Sensore"},
               </div>
             </div>
           </div>
-          <div class="solar-panel solar-flow-card">
-            <div class="solar-flow-grid">
-              <div class="solar-node house">
-                <div class="solar-node-orb"><ha-icon icon="mdi:home-import-outline"></ha-icon></div>
-                <div class="solar-node-label">Casa</div>
-                <strong>${loadPow
+          <div class="s

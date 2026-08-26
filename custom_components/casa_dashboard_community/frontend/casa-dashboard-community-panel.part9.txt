@@ -1,34 +1,4 @@
-      .ui-v2 .scene-icon ha-icon{--mdc-icon-size:25px}
-
-      /* v2.0.0 - per-room custom display names */
-      .room-entity-chip-wrap{display:flex;flex-direction:column;gap:5px;min-width:185px;max-width:100%}
-      .room-entity-alias{display:grid;grid-template-columns:auto minmax(0,1fr);gap:7px;align-items:center;padding:0 2px}
-      .room-entity-alias>span{font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:var(--secondary-text-color);font-weight:800}
-      .room-entity-alias input{min-width:0!important;padding:6px 8px!important;font-size:10px!important;border-radius:8px!important}
-      .room-entity-chips{align-items:flex-start}
-
-      /* v2.0.0 - dedicated Air Fryer visual */
-      .uv-airfryer{width:132px;height:132px;display:grid;place-items:center;position:relative}
-      .uv-airfryer-body{position:relative;width:88px;height:112px;border-radius:22px 22px 18px 18px;background:linear-gradient(155deg,#56636c,#222b31 55%,#151b20);border:2px solid #667781;box-shadow:0 18px 28px rgba(0,0,0,.28)}
-      .uv-airfryer-top{position:absolute;left:14px;right:14px;top:9px;height:20px;border-radius:10px;background:#1a2227;display:flex;align-items:center;justify-content:center;gap:9px}
-      .uv-airfryer-top i{width:7px;height:7px;border-radius:50%;border:1px solid #7e919d}
-      .uv-airfryer-display{position:absolute;left:23px;right:23px;top:34px;height:20px;border-radius:6px;background:#0d171d;display:grid;place-items:center;color:#7994a4;font-size:7px;letter-spacing:.12em}
-      .uv-airfryer.active .uv-airfryer-display{color:#57e7ae;box-shadow:0 0 15px rgba(87,231,174,.16) inset}
-      .uv-airfryer-basket{position:absolute;left:13px;right:13px;bottom:17px;height:42px;border-radius:7px 7px 13px 13px;background:#202a30;border:1px solid #596973}
-      .uv-airfryer-window{position:absolute;left:10px;right:10px;top:8px;height:20px;border-radius:5px;background:linear-gradient(180deg,#182832,#0c151a)}
-      .uv-airfryer-handle{position:absolute;left:50%;bottom:-17px;width:36px;height:20px;transform:translateX(-50%);border-radius:0 0 9px 9px;background:#333f46}
-      .uv-airfryer-heat{position:absolute;left:50%;bottom:7px;transform:translateX(-50%);display:flex;gap:5px;opacity:0}
-      .uv-airfryer.active .uv-airfryer-heat{opacity:1}
-      .uv-airfryer-heat i{width:3px;height:13px;border-radius:999px;background:#ffb454;box-shadow:0 0 9px rgba(255,180,84,.45)}
-
-
-      /* v3.5.1 - balanced configurator scrolling */
-      .config-dialog{
-        width:min(1120px,calc(100vw - 28px)) !important;
-        height:min(94vh,980px) !important;
-        max-height:min(94vh,980px) !important;
-        display:flex !important;
-        flex-direction:column !important;
+rection:column !important;
         overflow:hidden !important;
       }
       .config-dialog-head,
@@ -123,7 +93,7 @@
         }
       }
 
-      /* v3.5.1 - adaptive Community overview */
+      /* v3.5.3 - adaptive Community overview */
       .alert.info{border-color:color-mix(in srgb,var(--primary-color) 22%,var(--divider-color));background:color-mix(in srgb,var(--primary-color) 5%,var(--card-background-color))}
       .alert.info ha-icon{color:var(--primary-color)}
       .alert.info .config-open-btn{border-color:color-mix(in srgb,var(--primary-color) 34%,var(--divider-color));background:color-mix(in srgb,var(--primary-color) 8%,var(--card-background-color))}
@@ -174,7 +144,7 @@
         .overview-key-card{min-height:94px}
       }
 
-      /* v3.5.1 - full visual customization */
+      /* v3.5.3 - full visual customization */
       .overview-config-panel{
         flex:0 0 auto;margin:14px 16px 10px;padding:14px 16px;border-radius:18px;
         border:1px solid color-mix(in srgb,var(--primary-color) 20%,var(--divider-color));
@@ -199,7 +169,7 @@
       @media(max-width:980px){.overview-config-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.room-image-field{grid-column:auto}}
       @media(max-width:620px){.overview-config-grid{grid-template-columns:1fr}.custom-room-photo{height:185px}}
 
-      /* v3.5.1 - direct photo upload for rooms and individual objects */
+      /* v3.5.3 - direct photo upload for rooms and individual objects */
       .photo-config-line{display:flex;align-items:center;gap:6px;min-width:0}
       .photo-config-line>input{min-width:0;flex:1}
       .photo-upload-btn,.photo-clear-btn{height:37px;display:inline-flex;align-items:center;justify-content:center;gap:5px;flex:none;border:1px solid color-mix(in srgb,var(--primary-color) 28%,var(--divider-color));border-radius:9px;background:color-mix(in srgb,var(--primary-color) 7%,var(--card-background-color));color:var(--primary-text-color);font-size:10px;font-weight:850;padding:0 9px;cursor:pointer}
@@ -218,7 +188,7 @@
       .has-custom-photo .custom-object-photo:after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)}
       @media(max-width:620px){.light-visual-card>.custom-object-photo,.device-visual-card>.custom-object-photo,.universal-device-card>.custom-object-photo,.sensor-visual-card>.custom-object-photo,.environment-card>.custom-object-photo{width:105px;height:96px}}
 
-      /* v3.5.1 - paged configurator */
+      /* v3.5.3 - paged configurator */
       .config-dialog-tabs{
         width:min(1180px,calc(100vw - 28px))!important;
         height:min(94vh,980px)!important;
@@ -295,7 +265,7 @@
         .room-main-fields>input:last-child{grid-column:auto}
       }
 
-      /* v3.5.1 - Advanced Energy View */
+      /* v3.5.3 - Advanced Energy View */
       .energy-view-config{margin:0 0 18px;padding:16px;border:1px solid color-mix(in srgb,#ffb45c 22%,var(--divider-color));border-radius:18px;background:linear-gradient(145deg,color-mix(in srgb,var(--card-background-color) 97%,#ffb45c 3%),color-mix(in srgb,var(--secondary-background-color) 96%,#ffb45c 4%))}
       .energy-view-config-head{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:13px}
       .energy-view-config-head strong{display:block;font-size:14px}.energy-view-config-head span{display:block;margin-top:3px;color:var(--secondary-text-color);font-size:10px}.energy-view-config-head ha-icon{color:#ffb45c;--mdc-icon-size:26px}
@@ -327,4 +297,14 @@
       .community-advanced-energy .solar-battery-hero{grid-column:span 7;display:grid;grid-template-columns:240px 1fr;gap:24px;padding:28px 30px;align-items:center;min-height:340px}
       .community-advanced-energy .solar-battery-shell{position:relative;width:150px;height:250px;border-radius:30px;border:6px solid color-mix(in srgb,var(--primary-text-color) 76%,transparent);margin:0 auto;background:color-mix(in srgb,var(--card-background-color) 94%,#000 6%)}
       .community-advanced-energy .solar-battery-shell:before{content:"";position:absolute;top:-20px;left:50%;transform:translateX(-50%);width:62px;height:18px;border-radius:8px 8px 2px 2px;background:color-mix(in srgb,var(--primary-text-color) 78%,transparent)}
-      .community-advanced-energy .solar-battery-fill{position:absolute;left:14px;right:14px;bottom:14px;border-radius:18px;ba
+      .community-advanced-energy .solar-battery-fill{position:absolute;left:14px;right:14px;bottom:14px;border-radius:18px;background:linear-gradient(180deg,#67ffb6,#45d48c);box-shadow:0 0 34px rgba(103,255,182,.22)}
+      .community-advanced-energy .solar-battery-fill.bad{background:linear-gradient(180deg,#ff8c8c,#ff5f67);box-shadow:0 0 30px rgba(255,95,103,.20)}
+      .community-advanced-energy .solar-battery-soc{position:absolute;inset:0;z-index:3;display:grid;place-items:center;text-align:center}.community-advanced-energy .solar-battery-soc>div{padding:10px 14px;border-radius:16px;background:rgba(7,14,25,.68);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(8px)}
+      .community-advanced-energy .solar-battery-soc span{font-size:10px;letter-spacing:.18em;font-weight:850;color:#87a0bb}.community-advanced-energy .solar-battery-soc strong{display:block;font-size:52px;letter-spacing:-.06em;color:#fff;margin-top:6px}
+      .community-advanced-energy .solar-battery-copy .eyebrow{font-size:11px;letter-spacing:.22em;font-weight:900;text-transform:uppercase;color:#67b8ff}.community-advanced-energy .solar-battery-copy .eyebrow.good{color:#55e6ad}.community-advanced-energy .solar-battery-copy .eyebrow.bad{color:#ff6f6f}
+      .community-advanced-energy .solar-battery-copy .power{font-size:64px;line-height:.95;font-weight:880;letter-spacing:-.065em;margin-top:10px}.community-advanced-energy .solar-battery-copy .power.good{color:#55e6ad}.community-advanced-energy .solar-battery-copy .power.bad{color:#ff6f6f}
+      .community-advanced-energy .solar-battery-copy .desc{margin-top:10px;font-size:14px;color:var(--secondary-text-color)}
+      .community-advanced-energy .solar-energy-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}.community-advanced-energy .solar-energy-pill{padding:9px 12px;border-radius:999px;border:1px solid var(--divider-color);background:color-mix(in srgb,var(--card-background-color) 94%,var(--primary-color) 6%)}.community-advanced-energy .solar-energy-pill strong{font-size:12px;margin-left:6px}
+
+      .community-advanced-energy .solar-flow-card{grid-column:span 12;padding:24px 28px 26px}.community-advanced-energy .solar-flow-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;align-items:flex-start}.community-advanced-energy .solar-flow-grid.energy-nodes-3{grid-template-columns:repeat(3,minmax(0,1fr))}.community-advanced-energy .solar-flow-grid.energy-nodes-2{grid-template-columns:repeat(2,minmax(0,1fr))}.community-advanced-energy .solar-flow-grid.energy-nodes-1{grid-template-columns:1fr}
+      .community-advanced-energy .solar-node{text-align:center;padding-top:4px}.community-advanced-energy .solar-node-orb{width:84px;height:84px;margin:0 auto;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,color-mix(in srgb,var(--primary-color) 20%,transparent),color-mix(in srgb,var(--primary-color) 3%,transparent) 62%,transparent 64%);border:1px solid color-mix(in srgb,var(--primary-color) 20%,transparent);box-shadow:0 0 30px color-mix(in srgb,var(--primary-color) 10%,transp

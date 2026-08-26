@@ -1,4 +1,24 @@
-,label,value,foot="",span=3,entity="",tone=""){
+>`}
+      <div class="light-visual-copy clickable" data-more="${entity}">
+        <span>${this._esc(title)}</span><strong>${on?"Accesa":"Spenta"}</strong><small>${this._esc(sub || (isLed?"Illuminazione LED":"Illuminazione"))}</small>
+      </div>
+      <button class="light-visual-toggle ${on?'active':''}" data-toggle="${entity}" type="button"><ha-icon icon="${icon}"></ha-icon><span>${on?'ON':'OFF'}</span></button>
+    </div>`;
+  }
+
+  _deviceVisual(entity,title,type="fan",sub="",span=4){
+    const on=this._on(entity);
+    const customPhoto=this._customObjectVisual(entity,"device");
+    return `<div class="device-visual-card ${type} ${on?'on':'off'} span-${span} ${customPhoto?'has-custom-photo':''}">
+      ${customPhoto || `<div class="device-visual ${type}">
+        ${type==="fan"?`<div class="fan-hub"></div><div class="fan-blade b1"></div><div class="fan-blade b2"></div><div class="fan-blade b3"></div><div class="fan-blade b4"></div>`:`<div class="generic-sensor"><ha-icon icon="mdi:power-plug"></ha-icon></div>`}
+      </div>`}
+      <div class="device-visual-copy clickable" data-more="${entity}"><span>${this._esc(title)}</span><strong>${on?"Attivo":"Spento"}</strong><small>${this._esc(sub || (type==="fan"?"Ventilazione":"Dispositivo"))}</small></div>
+      <button class="device-visual-toggle ${on?'active':''}" data-toggle="${entity}" type="button"><ha-icon icon="${type==="fan"?"mdi:fan":"mdi:power"}"></ha-icon><span>${on?'ON':'OFF'}</span></button>
+    </div>`;
+  }
+
+  _sensorVisual(icon,label,value,foot="",span=3,entity="",tone=""){
     const l=String(label||"").toLowerCase(), i=String(icon||"").toLowerCase(); let type="generic";
     if(l.includes("vento")||l.includes("raffica")||i.includes("weather-windy")||i.includes("tornado")) type="wind";
     else if(l.includes("pioggia")||l.includes("rain")||i.includes("weather-rain")) type="rain";
@@ -258,20 +278,4 @@
   }
   _alert(level,icon,title,text) { return `<div class="signal ${level}"><div class="signal-icon"><ha-icon icon="${icon}"></ha-icon></div><div><strong>${title}</strong><span>${text}</span></div></div>`; }
   _logic(title,text,level=""){ return `<div class="logic-ribbon ${level}"><span>${title}</span><strong>${text}</strong></div>`; }
-  _compareCard(title, items, foot="", span=6, icon="mdi:chart-line") {
-    const visible=items.filter(it=>String(it.value??"").trim() && String(it.value).trim()!=="—");
-    if(!visible.length) return "";
-    return `<div class="data-node compare-card span-${span}"><div class="data-node-top"><div class="data-label">${title}</div><ha-icon icon="${icon}"></ha-icon></div><div class="compare-grid">${visible.map(it=>`<div class="compare-cell"><div class="compare-label">${it.label}</div><div class="compare-value">${it.value}</div></div>`).join("")}</div>${foot&&foot.trim()!=="—"?`<div class="data-foot compare-foot">${foot}</div>`:""}</div>`;
-  }
-
-  _configuredEntitiesForOverview(){
-    const roomEntities=(this._effectiveRooms()||[]).flatMap(r=>Array.isArray(r.entities)?r.entities:[]);
-    const mapped=[...ENTITY_KEYS].map(k=>String(this._entityMap?.[k]||"").trim()).filter(Boolean);
-    return [...new Set([...roomEntities,...mapped])].filter(e=>this._hass?.states?.[e]);
-  }
-  _logicalKeysForEntity(entity){
-    return [...ENTITY_KEYS].filter(k=>String(this._entityMap?.[k]||"").trim()===entity);
-  }
-  _overviewLabelForEntity(entity){
-    const keys=this._logicalKeysForEntity(entity);
-    const keyWithLabel=keys.find(k=>String(this._entityLabels?.[k]
+  _compareCard(title, items, foot="", span=6, ico

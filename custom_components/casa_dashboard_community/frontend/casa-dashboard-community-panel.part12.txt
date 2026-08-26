@@ -1,6 +1,10 @@
-er="/local/... oppure carica foto"><button class="photo-upload-btn" type="button" data-upload-room-image="${r.id}"><ha-icon icon="mdi:image-plus"></ha-icon> Carica</button>${r.image?`<button class="photo-clear-btn" type="button" data-clear-room-image="${r.id}" title="Rimuovi foto"><ha-icon icon="mdi:image-remove-outline"></ha-icon></button>`:""}</div>${r.image?`<div class="photo-preview room-photo-preview"><img src="${this._esc(r.image)}" alt=""></div>`:""}</label>
+().map(([v,l])=>`<option value="${v}" ${r.type===v?"selected":""}>${l}</option>`).join("")}</select>
+          <input data-room-icon="${r.id}" value="${this._esc(r.icon||this._roomIcon(r.type))}" placeholder="mdi:icona">
+        </div>
+        <div class="room-image-field"><span>FOTO STANZA</span><div class="photo-config-line"><input data-room-image="${r.id}" value="${this._esc(r.image||"")}" placeholder="/local/... oppure carica foto"><label class="photo-upload-btn native-photo-picker"><ha-icon icon="mdi:image-plus"></ha-icon><span>Carica</span><input type="file" data-room-photo-file="${r.id}" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.jpg,.jpeg,.png,.webp,.heic,.heif"></label>${r.image?`<button class="photo-clear-btn" type="button" data-clear-room-image="${r.id}" title="Rimuovi foto"><ha-icon icon="mdi:image-remove-outline"></ha-icon></button>`:""}</div>${r.image?`<div class="photo-preview room-photo-preview"><img src="${this._esc(r.image)}" alt=""></div>`:""}</div>
         <div class="room-row-actions"><button data-action="room-up" data-room="${r.id}" type="button" title="Sposta su"><ha-icon icon="mdi:chevron-up"></ha-icon></button><button data-action="room-down" data-room="${r.id}" type="button" title="Sposta giù"><ha-icon icon="mdi:chevron-down"></ha-icon></button><button data-action="room-remove" data-room="${r.id}" type="button" title="Elimina"><ha-icon icon="mdi:trash-can-outline"></ha-icon></button></div>
       </div>`).join("")||`<div class="room-empty"><ha-icon icon="mdi:home-plus-outline"></ha-icon><strong>Nessuna stanza creata</strong><span>Premi “Aggiungi stanza” per iniziare.</span></div>`}</div>
+      <div class="room-add-footer"><button class="room-add" data-action="room-add" type="button"><ha-icon icon="mdi:plus"></ha-icon><span>Aggiungi stanza</span></button></div>
     </div>`;
   }
   _renderConfigDevicesPage(){
@@ -68,8 +72,7 @@ er="/local/... oppure carica foto"><button class="photo-upload-btn" type="button
         <nav class="config-tabs" aria-label="Sezioni configuratore">${tabs}</nav>
         <div class="config-page-host">${this._renderConfigCurrentPage()}</div>
         <datalist id="haEntityList">${datalist}</datalist>
-        <div class="config-dialog-foot"><div class="config-hint"><ha-icon icon="mdi:shield-check-outline"></ha-icon> Le modifiche vengono salvate nel file Community separato.</div><div class="config-actions"><button class="secondary" data-action="config-close" type="button">Annulla</button><button class="primary" data-action="config-save" type="button"><ha-icon icon="mdi:content-save-outline"></ha-icon> Salva configurazione</button></div></div>
-        <input id="dashboardImageUpload" type="file" accept="image/jpeg,image/png,image/webp" hidden>
+        <div class="config-dialog-foot"><div class="config-hint"><ha-icon icon="mdi:shield-check-outline"></ha-icon><span>${this._esc(this._imageUploadNotice||"Le modifiche vengono salvate nel file Community separato.")}</span></div><div class="config-actions"><button class="secondary" data-action="config-close" type="button">Annulla</button><button class="primary" data-action="config-save" type="button"><ha-icon icon="mdi:content-save-outline"></ha-icon> Salva configurazione</button></div></div>
       </section></div>`;
   }
 
@@ -82,7 +85,9 @@ er="/local/... oppure carica foto"><button class="photo-upload-btn" type="button
       ? savedRooms
       : this._mergeConfiguredEntitiesIntoRooms([]);
     this._configFilter="";
+    this._imageUploadNotice="";
     this._configTab="overview";
+    this._configScrollByTab={};
     this._configDialogOpen=true;
     this._renderConfigLayer();
   }
@@ -90,9 +95,27 @@ er="/local/... oppure carica foto"><button class="photo-upload-btn" type="button
   _renderConfigLayer() {
     let layer=this.shadowRoot.querySelector("#configLayer");
     if(!layer){ layer=document.createElement("div"); layer.id="configLayer"; this.shadowRoot.appendChild(layer); }
+
+    // Preserve the vertical position of the current configurator page before
+    // replacing its markup. This prevents add/edit/upload actions from
+    // jumping the user back to the top.
+    const previousPage=layer.querySelector(".config-page");
+    if(previousPage && this._configTab){
+      this._configScrollByTab=this._configScrollByTab||{};
+      this._configScrollByTab[this._configTab]=previousPage.scrollTop||0;
+    }
+
     layer.innerHTML=this._renderConfigDialog();
     this._applyLanguage(layer);
     if(!this._configDialogOpen) return;
+
+    requestAnimationFrame(()=>{
+      const page=layer.querySelector(".config-page");
+      if(page){
+        const saved=this._configScrollByTab?.[this._configTab];
+        if(Number.isFinite(saved)) page.scrollTop=saved;
+      }
+    });
 
     const syncRooms=()=>{
       for(const r of this._roomsDraft){
@@ -117,6 +140,11 @@ er="/local/... oppure carica foto"><button class="photo-upload-btn" type="button
     layer.querySelectorAll("[data-config-tab]").forEach(button=>{
       button.addEventListener("click",()=>{
         syncRooms(); syncVisibleMappingFields();
+        const page=layer.querySelector(".config-page");
+        if(page && this._configTab){
+          this._configScrollByTab=this._configScrollByTab||{};
+          this._configScrollByTab[this._configTab]=page.scrollTop||0;
+        }
         this._configTab=button.dataset.configTab||"overview";
         this._configFilter="";
         this._renderConfigLayer();
@@ -169,6 +197,11 @@ er="/local/... oppure carica foto"><button class="photo-upload-btn" type="button
     const search=layer.querySelector("#configSearch");
     search?.addEventListener("input",ev=>{
       syncRooms(); syncVisibleMappingFields();
+      const page=layer.querySelector(".config-page");
+      if(page && this._configTab){
+        this._configScrollByTab=this._configScrollByTab||{};
+        this._configScrollByTab[this._configTab]=page.scrollTop||0;
+      }
       this._configFilter=ev.target.value;
       this._renderConfigLayer();
       requestAnimationFrame(()=>{
@@ -198,9 +231,48 @@ er="/local/... oppure carica foto"><button class="photo-upload-btn" type="button
       input.addEventListener("input",sync); input.addEventListener("change",sync);
     });
 
+    const handleNativePhoto=async(input,roomId,entity="")=>{
+      const file=input.files?.[0];
+      if(!file) return;
+
+      this._imageUploadNotice=`Elaborazione foto: ${file.name||"immagine"}…`;
+      const setImage=(url)=>{
+        if(entity){
+          this._setRoomEntityImage(roomId,entity,url);
+        }else{
+          const room=this._roomsDraft.find(r=>r.id===roomId);
+          if(room) room.image=url;
+        }
+      };
+
+      try{
+        const uploaded=await this._uploadDashboardImage(file,(inline)=>{
+          // Immediate result: persist in draft and show preview now.
+          setImage(inline);
+          this._imageUploadNotice="Foto acquisita. Ottimizzazione del salvataggio in corso…";
+          this._renderConfigLayer();
+        });
+
+        if(uploaded?.url) setImage(uploaded.url);
+        this._imageUploadNotice=uploaded?.mode==="file"
+          ? "Foto caricata e verificata."
+          : "Foto acquisita e pronta per il salvataggio.";
+        this._renderConfigLayer();
+      }catch(err){
+        this._imageUploadNotice=`Errore foto: ${err?.message||String(err)}`;
+        this._renderConfigLayer();
+        alert(this._imageUploadNotice);
+      }
+    };
+
+    layer.querySelectorAll("[data-room-photo-file]").forEach(input=>{
+      input.addEventListener("change",()=>handleNativePhoto(input,input.dataset.roomPhotoFile));
+    });
+    layer.querySelectorAll("[data-entity-photo-file-room]").forEach(input=>{
+      input.addEventListener("change",()=>handleNativePhoto(input,input.dataset.entityPhotoFileRoom,input.dataset.entityPhotoFile));
+    });
+
     layer.addEventListener("click",async ev=>{
-      const uploadRoom=ev.target.closest?.("[data-upload-room-image]");
-      const uploadEntity=ev.target.closest?.("[data-upload-entity-room]");
       const clearRoom=ev.target.closest?.("[data-clear-room-image]");
       const clearEntity=ev.target.closest?.("[data-clear-entity-image-room]");
       if(clearRoom){
@@ -212,31 +284,6 @@ er="/local/... oppure carica foto"><button class="photo-upload-btn" type="button
         ev.preventDefault();
         this._setRoomEntityImage(clearEntity.dataset.clearEntityImageRoom,clearEntity.dataset.clearEntityImage,"");
         this._renderConfigLayer(); return;
-      }
-      if(uploadRoom || uploadEntity){
-        ev.preventDefault();
-        const picker=layer.querySelector("#dashboardImageUpload"); if(!picker)return;
-        picker.value="";
-        picker.onchange=async()=>{
-          const file=picker.files?.[0]; if(!file)return;
-          const button=uploadRoom||uploadEntity, original=button.innerHTML;
-          button.disabled=true; button.innerHTML='<ha-icon icon="mdi:loading" class="spin"></ha-icon> Carico…';
-          try{
-            const uploaded=await this._uploadDashboardImage(file);
-            const url=uploaded?.url||"";
-            if(!url) throw new Error("Impossibile acquisire la foto.");
-            if(uploadRoom){
-              const room=this._roomsDraft.find(r=>r.id===uploadRoom.dataset.uploadRoomImage);
-              if(room)room.image=url;
-            }else{
-              this._setRoomEntityImage(uploadEntity.dataset.uploadEntityRoom,uploadEntity.dataset.uploadEntity,url);
-            }
-            this._renderConfigLayer();
-          }catch(err){
-            button.disabled=false; button.innerHTML=original; alert(err?.message||String(err));
-          }
-        };
-        picker.click(); return;
       }
       const add=ev.target.closest?.("[data-room-entity-add]");
       if(add){
@@ -353,46 +400,4 @@ er="/local/... oppure carica foto"><button class="photo-upload-btn" type="button
     return `${((a*v)/1000).toFixed(digits)} kW`;
   }
   _esc(v) { return String(v ?? "").replace(/[&<>'"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c])); }
-  _icon(icon, cls="") { return `<div class="iconbox ${cls}"><ha-icon icon="${icon}"></ha-icon></div>`; }
-  _setOptimistic(id,state){ this._optimistic.set(id,{state,at:Date.now()}); this._renderPage(false); }
-  _syncOptimistic(){
-    const now=Date.now();
-    for(const [id,p] of this._optimistic){
-      const eid=this._eid(id); const actual=eid?this._hass?.states?.[eid]?.state:null;
-      if(actual===p.state || now-p.at>3500) this._optimistic.delete(id);
-    }
-  }
-  _stateFingerprint(){
-    if(!this._hass?.states || !this._entityConfigLoaded) return "";
-    const rows=[];
-    const seen=new Set();
-    for(const logical of ENTITY_KEYS){
-      const eid=this._eid(logical);
-      if(!eid || seen.has(eid)) continue;
-      seen.add(eid);
-      const st=this._hass.states[eid];
-      if(!st){ rows.push(`${eid}|missing`); continue; }
-      let attrs="";
-      try { attrs=JSON.stringify(st.attributes || {}); } catch(_err) {}
-      rows.push(`${eid}|${st.state}|${attrs}`);
-    }
-    return rows.join("\n");
-  }
-
-  _scheduleRender(){
-    if(this._pointerBusy){ this._renderPending=true; return; }
-    if(this._renderTimer) return;
-    this._renderTimer=setTimeout(()=>{
-      this._renderTimer=null;
-      if(this._pointerBusy){ this._renderPending=true; return; }
-      this._renderPage(false);
-    },70);
-  }
-  _countOn(list) { return list.filter(id=>this._on(id)).length; }
-  _openCount() { return OPENINGS.filter(id=>this._on(id)).length; }
-  _climateActive(id) { const st=this._state(id,"off"); const act=this._attr(id,"hvac_action",""); return st!=="off" || ["heating","cooling","drying","fan"].includes(act); }
-  _coverOpen(id, invertedPosition=false) {
-    const p=this._optimistic.get(id); if(p && ["open","closed"].includes(p.state)) return p.state==="open";
-    return invertedPosition ? Number(this._attr(id,"current_position",0))>5 : this._state(id)==="open";
-  }
-  _i
+  _icon(icon, cls="") { return `<div class="iconbox ${cls}"><ha-icon ico

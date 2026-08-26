@@ -1,5 +1,37 @@
 # Changelog
 
+## 3.5.3 - 2026-08-26
+
+### Image Upload Flow Fix
+
+- Preserved configurator scroll position after edits, entity changes, photo actions and rerenders.
+- Added per-tab scroll memory so returning to a configurator section restores the previous position.
+- Restored the **Add room** controls in the paged Rooms configurator (top and bottom of the room list).
+- Fixed the post-selection image flow appearing to do nothing after choosing a file.
+- Images are now compressed to a small inline preview first and immediately stored in the configuration draft.
+- Preview appears immediately before backend file upload completes.
+- Backend `/local/...` upload now runs only as an optimization; failure no longer discards the selected image.
+- Added visible upload states: processing, acquired, verified, fallback-ready and error.
+- Added 7-second backend upload timeout and 3.5-second URL verification timeout to prevent silent hangs.
+- Inline fallback target reduced to ~260 KB to keep configuration saves reliable.
+- Preserved all v3.5.2 image format, compression and Advanced Energy features.
+
+## 3.5.2 - 2026-08-26
+
+### Robust Image Upload Hotfix
+
+- Replaced the programmatic hidden file picker with native per-button file inputs for reliable operation in Home Assistant WebView/Desktop environments.
+- Reduced normal image upload payloads to a safe target of about 700 KB.
+- Images are progressively resized/compressed as JPEG up to 1200 px on the longest side.
+- Added a smaller ~420 KB inline fallback to avoid oversized Community configuration payloads.
+- Added post-upload verification: `/local/...` images are accepted only if they are actually reachable.
+- Added backend verification that the file was physically written correctly.
+- Original photos up to 20 MB are accepted because compression happens before upload.
+- Added HEIC/HEIF selection with a clear compatibility message when the browser cannot decode the format.
+- Added clearer upload-success feedback in the configurator.
+- JPG/JPEG, PNG and WebP remain the recommended formats.
+- Preserved all v3.5.1 Advanced Energy View and configurator functionality.
+
 ## 3.5.1 - 2026-08-26
 
 ### Image Upload Reliability Fix

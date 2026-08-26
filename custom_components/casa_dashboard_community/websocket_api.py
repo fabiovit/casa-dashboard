@@ -242,20 +242,28 @@ def _save_uploaded_image(hass: HomeAssistant, data_url: str) -> dict[str, str]:
     extension = mime_map.get(header.lower())
     if not extension:
         raise ValueError("Unsupported image format")
-    if len(encoded) > 8_000_000:
-        raise ValueError("Image is too large")
+    if len(encoded) > 1_600_000:
+        raise ValueError("Image payload is too large")
     try:
         content = base64.b64decode(encoded, validate=True)
     except (binascii.Error, ValueError) as err:
         raise ValueError("Invalid image data") from err
-    if not content or len(content) > 5_500_000:
+    if not content or len(content) > 1_200_000:
         raise ValueError("Image is too large")
     directory = Path(hass.config.path("www", "casa_dashboard_community", "uploads"))
     directory.mkdir(parents=True, exist_ok=True)
     filename = f"{uuid.uuid4().hex}{extension}"
     target = directory / filename
-    target.write_bytes(content)
-    return {"url": f"/local/casa_dashboard_community/uploads/{filename}"}
+    try:
+        target.write_bytes(content)
+    except OSError as err:
+        raise ValueError(f"Unable to save image: {err}") from err
+    if not target.exists() or target.stat().st_size != len(content):
+        raise ValueError("Image file could not be verified after saving")
+    return {
+        "url": f"/local/casa_dashboard_community/uploads/{filename}",
+        "size": str(len(content)),
+    }
 
 
 @websocket_api.websocket_command(

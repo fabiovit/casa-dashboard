@@ -1,14 +1,4 @@
-ckground:linear-gradient(180deg,#67ffb6,#45d48c);box-shadow:0 0 34px rgba(103,255,182,.22)}
-      .community-advanced-energy .solar-battery-fill.bad{background:linear-gradient(180deg,#ff8c8c,#ff5f67);box-shadow:0 0 30px rgba(255,95,103,.20)}
-      .community-advanced-energy .solar-battery-soc{position:absolute;inset:0;z-index:3;display:grid;place-items:center;text-align:center}.community-advanced-energy .solar-battery-soc>div{padding:10px 14px;border-radius:16px;background:rgba(7,14,25,.68);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(8px)}
-      .community-advanced-energy .solar-battery-soc span{font-size:10px;letter-spacing:.18em;font-weight:850;color:#87a0bb}.community-advanced-energy .solar-battery-soc strong{display:block;font-size:52px;letter-spacing:-.06em;color:#fff;margin-top:6px}
-      .community-advanced-energy .solar-battery-copy .eyebrow{font-size:11px;letter-spacing:.22em;font-weight:900;text-transform:uppercase;color:#67b8ff}.community-advanced-energy .solar-battery-copy .eyebrow.good{color:#55e6ad}.community-advanced-energy .solar-battery-copy .eyebrow.bad{color:#ff6f6f}
-      .community-advanced-energy .solar-battery-copy .power{font-size:64px;line-height:.95;font-weight:880;letter-spacing:-.065em;margin-top:10px}.community-advanced-energy .solar-battery-copy .power.good{color:#55e6ad}.community-advanced-energy .solar-battery-copy .power.bad{color:#ff6f6f}
-      .community-advanced-energy .solar-battery-copy .desc{margin-top:10px;font-size:14px;color:var(--secondary-text-color)}
-      .community-advanced-energy .solar-energy-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}.community-advanced-energy .solar-energy-pill{padding:9px 12px;border-radius:999px;border:1px solid var(--divider-color);background:color-mix(in srgb,var(--card-background-color) 94%,var(--primary-color) 6%)}.community-advanced-energy .solar-energy-pill strong{font-size:12px;margin-left:6px}
-
-      .community-advanced-energy .solar-flow-card{grid-column:span 12;padding:24px 28px 26px}.community-advanced-energy .solar-flow-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;align-items:flex-start}.community-advanced-energy .solar-flow-grid.energy-nodes-3{grid-template-columns:repeat(3,minmax(0,1fr))}.community-advanced-energy .solar-flow-grid.energy-nodes-2{grid-template-columns:repeat(2,minmax(0,1fr))}.community-advanced-energy .solar-flow-grid.energy-nodes-1{grid-template-columns:1fr}
-      .community-advanced-energy .solar-node{text-align:center;padding-top:4px}.community-advanced-energy .solar-node-orb{width:84px;height:84px;margin:0 auto;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,color-mix(in srgb,var(--primary-color) 20%,transparent),color-mix(in srgb,var(--primary-color) 3%,transparent) 62%,transparent 64%);border:1px solid color-mix(in srgb,var(--primary-color) 20%,transparent);box-shadow:0 0 30px color-mix(in srgb,var(--primary-color) 10%,transparent)}
+arent)}
       .community-advanced-energy .solar-node-orb ha-icon{--mdc-icon-size:34px;color:#67b8ff}.community-advanced-energy .solar-node.house .solar-node-orb ha-icon,.community-advanced-energy .solar-node.battery .solar-node-orb ha-icon{color:#55e6ad}.community-advanced-energy .solar-node.network .solar-node-orb ha-icon{color:#ffb45c}
       .community-advanced-energy .solar-node strong{display:block;font-size:32px;line-height:1;letter-spacing:-.05em;margin-top:15px}.community-advanced-energy .solar-node strong.good{color:#55e6ad}.community-advanced-energy .solar-node strong.bad{color:#ff6f6f}.community-advanced-energy .solar-node small{display:block;color:var(--secondary-text-color);margin-top:6px;line-height:1.4;font-size:10px}
       .community-advanced-energy .solar-node-chip{display:inline-flex;margin-top:11px;padding:7px 11px;border-radius:999px;background:color-mix(in srgb,var(--card-background-color) 94%,var(--primary-color) 6%);border:1px solid var(--divider-color);font-size:10px;font-weight:800}.community-advanced-energy .solar-node-chip.good{color:#55e6ad;background:rgba(76,175,80,.10)}.community-advanced-energy .solar-node-chip.warn{color:#ffb45c;background:rgba(255,180,92,.10)}.community-advanced-energy .solar-node-chip.bad{color:#ff6f6f;background:rgba(255,111,111,.10)}.community-advanced-energy .solar-node-chip.active{color:#67b8ff}
@@ -31,12 +21,30 @@ ckground:linear-gradient(180deg,#67ffb6,#45d48c);box-shadow:0 0 34px rgba(103,25
         .community-advanced-energy .solar-prod-copy strong{font-size:46px}
       }
 
-      /* v3.5.1 - reliable image persistence + preview */
+      /* v3.5.3 - reliable image persistence + preview */
       .photo-preview{margin-top:8px;overflow:hidden;border-radius:11px;border:1px solid var(--divider-color);background:var(--secondary-background-color)}
       .photo-preview img{display:block;width:100%;height:100%;object-fit:cover}
       .room-photo-preview{width:min(260px,100%);height:116px}
       .object-photo-preview{width:118px;height:82px}
       .room-entity-photo .object-photo-preview{margin-top:7px}
+
+      .native-photo-picker{position:relative;overflow:hidden;cursor:pointer}
+      .native-photo-picker>input[type="file"]{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:100px}
+      .native-photo-picker.loading{opacity:.65;pointer-events:none}
+
+      .config-hint span{display:inline-flex;align-items:center;min-height:20px}
+      .config-hint span:not(:empty){font-weight:750}
+
+      .config-page-intro-actions{align-items:center}
+      .config-page-intro-actions>div{min-width:0;flex:1}
+      .room-add-primary{margin-left:auto;display:inline-flex;align-items:center;gap:6px;flex:none;cursor:pointer}
+      .room-add-primary ha-icon,.room-add-footer .room-add ha-icon{--mdc-icon-size:18px}
+      .room-add-footer{display:flex;justify-content:center;padding:16px 0 2px}
+      .room-add-footer .room-add{display:inline-flex;align-items:center;gap:7px;cursor:pointer;padding:10px 15px}
+      @media(max-width:650px){
+        .config-page-intro-actions{display:grid;grid-template-columns:auto 1fr}
+        .config-page-intro-actions .room-add-primary{grid-column:1/-1;width:100%;justify-content:center;margin:4px 0 0}
+      }
     `;
   }
 
@@ -146,7 +154,7 @@ ckground:linear-gradient(180deg,#67ffb6,#45d48c);box-shadow:0 0 34px rgba(103,25
             <div class="photo-config-line">
               <input data-room-entity-image-room="${room.id}" data-room-entity-image-entity="${this._esc(e)}"
                 value="${this._esc(this._roomEntityImage(e,room))}" placeholder="/local/... oppure carica foto">
-              <button class="photo-upload-btn" type="button" data-upload-entity-room="${room.id}" data-upload-entity="${this._esc(e)}"><ha-icon icon="mdi:image-plus"></ha-icon> Carica</button>
+              <label class="photo-upload-btn native-photo-picker"><ha-icon icon="mdi:image-plus"></ha-icon><span>Carica</span><input type="file" data-entity-photo-file-room="${room.id}" data-entity-photo-file="${this._esc(e)}" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.jpg,.jpeg,.png,.webp,.heic,.heif"></label>
               ${this._roomEntityImage(e,room)?`<button class="photo-clear-btn" type="button" data-clear-entity-image-room="${room.id}" data-clear-entity-image="${this._esc(e)}" title="Rimuovi foto"><ha-icon icon="mdi:image-remove-outline"></ha-icon></button>`:""}
             </div>
             ${this._roomEntityImage(e,room)?`<div class="photo-preview object-photo-preview"><img src="${this._esc(this._roomEntityImage(e,room))}" alt=""></div>`:""}
@@ -249,46 +257,102 @@ ckground:linear-gradient(180deg,#67ffb6,#45d48c);box-shadow:0 0 34px rgba(103,25
     const src=this._activeRoomEntityImage(entity);
     return src ? `<div class="custom-object-photo ${cls}"><img src="${this._esc(src)}" alt="" loading="lazy"></div>` : "";
   }
-  async _resizeImageForUpload(file,maxSide=1400,quality=.84){
-    if(!file || !String(file.type||"").startsWith("image/")) throw new Error("Seleziona un file immagine.");
-    if(file.size>12*1024*1024) throw new Error("La foto originale è troppo grande (max 12 MB).");
+  _dataUrlBytes(dataUrl){
+    const encoded=String(dataUrl||"").split(",")[1]||"";
+    return Math.ceil(encoded.length*3/4);
+  }
+  async _readImageFile(file){
+    if(!file) throw new Error("Seleziona un file immagine.");
+    const type=String(file.type||"").toLowerCase();
+    const name=String(file.name||"").toLowerCase();
+    const imageLike=type.startsWith("image/") || /\.(jpe?g|png|webp|heic|heif)$/i.test(name);
+    if(!imageLike) throw new Error("Formato non supportato. Usa JPG, PNG o WebP.");
+    if(file.size>20*1024*1024) throw new Error("La foto originale è troppo grande (max 20 MB).");
     const source=await new Promise((resolve,reject)=>{
       const reader=new FileReader();
       reader.onload=()=>resolve(reader.result);
       reader.onerror=()=>reject(new Error("Impossibile leggere la foto."));
       reader.readAsDataURL(file);
     });
-    const img=await new Promise((resolve,reject)=>{
-      const el=new Image();
-      el.onload=()=>resolve(el);
-      el.onerror=()=>reject(new Error("Formato immagine non valido."));
-      el.src=source;
-    });
-    const longest=Math.max(img.naturalWidth||img.width,img.naturalHeight||img.height);
-    const scale=Math.min(1,maxSide/Math.max(1,longest));
-    const width=Math.max(1,Math.round((img.naturalWidth||img.width)*scale));
-    const height=Math.max(1,Math.round((img.naturalHeight||img.height)*scale));
-    const canvas=document.createElement("canvas");
-    canvas.width=width; canvas.height=height;
-    const ctx=canvas.getContext("2d");
-    if(!ctx) throw new Error("Il browser non può elaborare la foto.");
-    ctx.drawImage(img,0,0,width,height);
-    return canvas.toDataURL("image/jpeg",quality);
-  }
-  async _uploadDashboardImage(file){
-    // Preferred path: store the compressed file under /config/www and save only /local/ URL.
-    const image=await this._resizeImageForUpload(file,1400,.84);
     try{
-      const result=await this._hass.callWS({type:"casa_dashboard_community/config/upload_image",image});
-      if(result?.url) return {url:result.url,mode:"file"};
-    }catch(err){
-      console.warn("[Casa Dashboard Community] file upload unavailable, using inline image fallback",err);
+      return await new Promise((resolve,reject)=>{
+        const el=new Image();
+        el.onload=()=>resolve(el);
+        el.onerror=()=>reject(new Error("decode"));
+        el.src=source;
+      });
+    }catch(_err){
+      if(type.includes("heic") || type.includes("heif") || /\.(heic|heif)$/i.test(name)){
+        throw new Error("Questa foto è HEIC/HEIF e il browser non riesce a convertirla. Esportala come JPG e riprova.");
+      }
+      throw new Error("Il browser non riesce a decodificare questa immagine. Usa JPG, PNG o WebP.");
     }
-    // Fallback: save a smaller compressed Data URL directly in the Community JSON.
-    // This also works when Home Assistant still has an older websocket registration in memory.
-    const inline=await this._resizeImageForUpload(file,900,.76);
-    if(!inline || inline.length>1_350_000) throw new Error("La foto compressa è ancora troppo grande. Prova un'immagine più piccola.");
-    return {url:inline,mode:"inline"};
+  }
+  async _compressImageForUpload(file,{maxSide=1200,targetBytes=700000,minSide=640}={}){
+    const img=await this._readImageFile(file);
+    const naturalW=img.naturalWidth||img.width;
+    const naturalH=img.naturalHeight||img.height;
+    if(!naturalW || !naturalH) throw new Error("Dimensioni immagine non valide.");
+    let side=Math.min(maxSide,Math.max(naturalW,naturalH));
+    let quality=.82;
+    let best="";
+    for(let attempt=0;attempt<9;attempt++){
+      const scale=Math.min(1,side/Math.max(naturalW,naturalH));
+      const width=Math.max(1,Math.round(naturalW*scale));
+      const height=Math.max(1,Math.round(naturalH*scale));
+      const canvas=document.createElement("canvas");
+      canvas.width=width; canvas.height=height;
+      const ctx=canvas.getContext("2d");
+      if(!ctx) throw new Error("Il browser non può elaborare la foto.");
+      ctx.fillStyle="#ffffff";
+      ctx.fillRect(0,0,width,height);
+      ctx.drawImage(img,0,0,width,height);
+      const encoded=canvas.toDataURL("image/jpeg",quality);
+      best=encoded;
+      if(this._dataUrlBytes(encoded)<=targetBytes) return encoded;
+      if(quality>.58) quality-=.08;
+      else side=Math.max(minSide,Math.round(side*.84));
+    }
+    if(best && this._dataUrlBytes(best)<=targetBytes*1.15) return best;
+    throw new Error(`Non riesco a comprimere la foto sotto ${Math.round(targetBytes/1000)} KB. Prova una foto più piccola.`);
+  }
+  async _verifyDashboardImageUrl(url){
+    if(!url || !String(url).startsWith("/local/")) return false;
+    try{
+      const joiner=url.includes("?")?"&":"?";
+      const response=await fetch(`${url}${joiner}cdc=${Date.now()}`,{method:"GET",cache:"no-store"});
+      return !!response?.ok;
+    }catch(_err){
+      return false;
+    }
+  }
+  async _uploadDashboardImage(file,onInlineReady=null){
+    // First create a small inline image and expose it immediately to the UI.
+    // This guarantees an instant preview even if backend file upload is slow/unavailable.
+    const inline=await this._compressImageForUpload(file,{maxSide:820,targetBytes:260000,minSide:480});
+    if(!inline || this._dataUrlBytes(inline)>300000){
+      throw new Error("La foto compressa è ancora troppo grande. Prova una foto più piccola.");
+    }
+    if(typeof onInlineReady==="function") onInlineReady(inline);
+
+    // Then try to store a slightly larger copy as a normal /local file.
+    // If anything goes wrong or takes too long, keep the already-working inline image.
+    try{
+      const image=await this._compressImageForUpload(file,{maxSide:1200,targetBytes:650000,minSide:640});
+      const uploadPromise=this._hass.callWS({type:"casa_dashboard_community/config/upload_image",image});
+      const timeoutPromise=new Promise((_,reject)=>setTimeout(()=>reject(new Error("Timeout upload foto")),7000));
+      const result=await Promise.race([uploadPromise,timeoutPromise]);
+      if(result?.url){
+        const verified=await Promise.race([
+          this._verifyDashboardImageUrl(result.url),
+          new Promise(resolve=>setTimeout(()=>resolve(false),3500))
+        ]);
+        if(verified) return {url:result.url,mode:"file",inline};
+      }
+    }catch(err){
+      console.warn("[Casa Dashboard Community] backend image upload unavailable; inline image kept",err);
+    }
+    return {url:inline,mode:"inline",inline};
   }
 
   _legacyRoomForConfigKey(key){
@@ -394,14 +458,4 @@ ckground:linear-gradient(180deg,#67ffb6,#45d48c);box-shadow:0 0 34px rgba(103,25
     this._roomsDraft.push({id,name:"Nuova stanza",type:"generico",icon:"mdi:home-outline",image:"",entities:[],entity_labels:{},entity_images:{}});
     this._configTab="rooms";
     this._renderConfigLayer();
-    requestAnimationFrame(()=>{
-      const list=this.shadowRoot?.querySelector(".room-list");
-      if(list) list.scrollTop=list.scrollHeight;
-      const input=this.shadowRoot?.querySelector(`[data-room-name="${id}"]`);
-      input?.focus(); input?.select();
-    });
-  }
-  _removeRoomDraft(id){ this._roomsDraft=this._roomsDraft.filter(r=>r.id!==id); this._renderConfigLayer(); }
-  _dynamicRoomConfigured(room){
-    if(!room) return false;
-    if(Array.isArray(room.entities) && room.entities.some(e=>this._hass?.states?
+    requestAnimationFrame

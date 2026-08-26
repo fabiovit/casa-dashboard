@@ -1,4 +1,20 @@
-||"").trim());
+n="mdi:chart-line") {
+    const visible=items.filter(it=>String(it.value??"").trim() && String(it.value).trim()!=="—");
+    if(!visible.length) return "";
+    return `<div class="data-node compare-card span-${span}"><div class="data-node-top"><div class="data-label">${title}</div><ha-icon icon="${icon}"></ha-icon></div><div class="compare-grid">${visible.map(it=>`<div class="compare-cell"><div class="compare-label">${it.label}</div><div class="compare-value">${it.value}</div></div>`).join("")}</div>${foot&&foot.trim()!=="—"?`<div class="data-foot compare-foot">${foot}</div>`:""}</div>`;
+  }
+
+  _configuredEntitiesForOverview(){
+    const roomEntities=(this._effectiveRooms()||[]).flatMap(r=>Array.isArray(r.entities)?r.entities:[]);
+    const mapped=[...ENTITY_KEYS].map(k=>String(this._entityMap?.[k]||"").trim()).filter(Boolean);
+    return [...new Set([...roomEntities,...mapped])].filter(e=>this._hass?.states?.[e]);
+  }
+  _logicalKeysForEntity(entity){
+    return [...ENTITY_KEYS].filter(k=>String(this._entityMap?.[k]||"").trim()===entity);
+  }
+  _overviewLabelForEntity(entity){
+    const keys=this._logicalKeysForEntity(entity);
+    const keyWithLabel=keys.find(k=>String(this._entityLabels?.[k]||"").trim());
     if(keyWithLabel) return this._overviewDisplayName(keyWithLabel,entity);
     const friendly=String(this._hass?.states?.[entity]?.attributes?.friendly_name||"").trim();
     if(friendly) return friendly;
@@ -380,9 +396,4 @@
     const rain=this._configured("binary_sensor.weather_rain")&&this._on("binary_sensor.weather_rain");
     const garage=this._configured("binary_sensor.garage_door_contact")&&this._on("binary_sensor.garage_door_contact");
     const comfortTemp=this._configured("sensor.kitchen_temperature")?this._fmt("sensor.kitchen_temperature",1,"°C"):"—";
-    const bedroomTemp=this._configured("sensor.bedroom_temperature")?this._fmt("sensor.bedroom_temperature",1,"°C"):"—";
-    const outsideTemp=this._configured("sensor.weather_outdoor_temperature")?this._fmt("sensor.weather_outdoor_temperature",1,"°C"):"—";
-
-    const spotStats=[];
-    if(alarmConfigured || openingsConfigured) spotStats.push(`<div class="spot-stat"><span class="k">Sicurezza</span><strong>${alarmConfigured?(alarm==='triggered'?'Allarme':alarm==='disarmed'?'Disinserito':'Protetta'):(open?'Da controllare':'Nessuna apertura')}</strong><small>${openingsConfigured?(open?`${open} aperture aperte`:'Nessuna apertura critica'):'Allarme configurato'}</small></div>`);
-    if(comfortConfigured) spotStats.push(`<div class="spot-stat"><span class="k">Comfort</span><strong>${comfortTemp!=="—"?comfortTemp:bedroomTemp}</strong><small>${comfortTemp!=="—"&&bedroomTemp!=="—"?`Cucina · Camera ${bedroomTemp}`:comfortTemp!=="—"?'Cucina':'Camera'}</small></div
+    const bedroomTemp=this._configured("sensor.bedroom_te

@@ -1,4 +1,46 @@
-mageUrl(id){ const p=this._attr(id,"entity_picture",""); return p ? this._esc(p) : ""; }
+n="${icon}"></ha-icon></div>`; }
+  _setOptimistic(id,state){ this._optimistic.set(id,{state,at:Date.now()}); this._renderPage(false); }
+  _syncOptimistic(){
+    const now=Date.now();
+    for(const [id,p] of this._optimistic){
+      const eid=this._eid(id); const actual=eid?this._hass?.states?.[eid]?.state:null;
+      if(actual===p.state || now-p.at>3500) this._optimistic.delete(id);
+    }
+  }
+  _stateFingerprint(){
+    if(!this._hass?.states || !this._entityConfigLoaded) return "";
+    const rows=[];
+    const seen=new Set();
+    for(const logical of ENTITY_KEYS){
+      const eid=this._eid(logical);
+      if(!eid || seen.has(eid)) continue;
+      seen.add(eid);
+      const st=this._hass.states[eid];
+      if(!st){ rows.push(`${eid}|missing`); continue; }
+      let attrs="";
+      try { attrs=JSON.stringify(st.attributes || {}); } catch(_err) {}
+      rows.push(`${eid}|${st.state}|${attrs}`);
+    }
+    return rows.join("\n");
+  }
+
+  _scheduleRender(){
+    if(this._pointerBusy){ this._renderPending=true; return; }
+    if(this._renderTimer) return;
+    this._renderTimer=setTimeout(()=>{
+      this._renderTimer=null;
+      if(this._pointerBusy){ this._renderPending=true; return; }
+      this._renderPage(false);
+    },70);
+  }
+  _countOn(list) { return list.filter(id=>this._on(id)).length; }
+  _openCount() { return OPENINGS.filter(id=>this._on(id)).length; }
+  _climateActive(id) { const st=this._state(id,"off"); const act=this._attr(id,"hvac_action",""); return st!=="off" || ["heating","cooling","drying","fan"].includes(act); }
+  _coverOpen(id, invertedPosition=false) {
+    const p=this._optimistic.get(id); if(p && ["open","closed"].includes(p.state)) return p.state==="open";
+    return invertedPosition ? Number(this._attr(id,"current_position",0))>5 : this._state(id)==="open";
+  }
+  _imageUrl(id){ const p=this._attr(id,"entity_picture",""); return p ? this._esc(p) : ""; }
   _firstId(ids=[]){ return ids.find(id=>this._s(id)) || ids[0] || ""; }
   _firstState(ids=[], fallback="—"){ const id=this._firstId(ids); return id ? this._state(id,fallback) : fallback; }
   _firstNum(ids=[], fallback=null){ const id=this._firstId(ids); return id ? this._num(id,fallback) : fallback; }
@@ -169,7 +211,7 @@ mageUrl(id){ const p=this._attr(id,"entity_picture",""); return p ? this._esc(p)
       "Pagina non disponibile":"Page unavailable","Dashboard pronta":"Dashboard ready","Versione":"Version","Piattaforma":"Platform",
       "Dettagli e personalizzazione di Casa Dashboard Community.":"Casa Dashboard Community details and customization.",
       "Dashboard app-like, adattiva e configurabile per Home Assistant.":"An app-like, adaptive and configurable dashboard for Home Assistant.",
-      "In uso":"Active","Grafica originale di Casa Dashboard Community v3.5.1.":"Original Casa Dashboard Community interface.",
+      "In uso":"Active","Grafica originale di Casa Dashboard Community v3.5.3.":"Original Casa Dashboard Community interface.",
       "Nuova grafica derivata da Casa Dashboard v4.3.54, con visual dedicati per luci, sensori, clima, dispositivi e aperture.":"New dynamic interface with dedicated visuals for lights, sensors, climate, devices and openings.",
       "La scelta viene salvata sul browser/dispositivo e non modifica entità o automazioni.":"Your choice is saved on this browser/device and does not change entities or automations.",
       "SUPPORTA IL PROGETTO":"SUPPORT THE PROJECT","Casa Dashboard Community è gratuita":"Casa Dashboard Community is free","Se ti piace, puoi supportarne lo sviluppo.":"If you like it, you can support its development.",
@@ -249,12 +291,12 @@ mageUrl(id){ const p=this._attr(id,"entity_picture",""); return p ? this._esc(p)
   _info(){
     const selected=this._uiTheme;
     return `<div class="page">${this._hero("Informazioni","Dettagli e personalizzazione di Casa Dashboard Community.",{level:"good",text:"Dashboard pronta"},[
-      {label:"Versione",value:"3.5.1",small:"Casa Dashboard Community"},
+      {label:"Versione",value:"3.5.3",small:"Casa Dashboard Community"},
       {label:"Piattaforma",value:"Home Assistant",small:"Custom integration"}
     ])}<div class="info-card"><div class="info-icon"><ha-icon icon="mdi:home-heart"></ha-icon></div><h2>Casa Dashboard Community</h2>
     <p>Dashboard app-like, adattiva e configurabile per Home Assistant.</p>
     <div class="style-picker">
-      <button class="style-option ${selected==="v1"?"active":""}" data-ui-theme="v1" type="button">${selected==="v1"?'<span class="selected">In uso</span>':""}<div class="style-head"><ha-icon icon="mdi:home-variant-outline"></ha-icon><strong>Casa V1</strong></div><p>Grafica originale di Casa Dashboard Community v3.5.1.</p></button>
+      <button class="style-option ${selected==="v1"?"active":""}" data-ui-theme="v1" type="button">${selected==="v1"?'<span class="selected">In uso</span>':""}<div class="style-head"><ha-icon icon="mdi:home-variant-outline"></ha-icon><strong>Casa V1</strong></div><p>Grafica originale di Casa Dashboard Community v3.5.3.</p></button>
       <button class="style-option ${selected==="v2"?"active":""}" data-ui-theme="v2" type="button">${selected==="v2"?'<span class="selected">In uso</span>':""}<div class="style-head"><ha-icon icon="mdi:vector-square"></ha-icon><strong>Casa V2</strong></div><p>Nuova grafica derivata da Casa Dashboard v4.3.54, con visual dedicati per luci, sensori, clima, dispositivi e aperture.</p></button>
     </div>
     <div class="style-note">La scelta viene salvata sul browser/dispositivo e non modifica entità o automazioni.</div>
@@ -276,24 +318,4 @@ mageUrl(id){ const p=this._attr(id,"entity_picture",""); return p ? this._esc(p)
           `<div class="lamp-shade"></div><div class="lamp-stem"></div><div class="lamp-base"></div>`:
           `<div class="ceiling-wire"></div><div class="ceiling-cap"></div><div class="ceiling-glow"></div>`
         }
-      </div>`}
-      <div class="light-visual-copy clickable" data-more="${entity}">
-        <span>${this._esc(title)}</span><strong>${on?"Accesa":"Spenta"}</strong><small>${this._esc(sub || (isLed?"Illuminazione LED":"Illuminazione"))}</small>
-      </div>
-      <button class="light-visual-toggle ${on?'active':''}" data-toggle="${entity}" type="button"><ha-icon icon="${icon}"></ha-icon><span>${on?'ON':'OFF'}</span></button>
-    </div>`;
-  }
-
-  _deviceVisual(entity,title,type="fan",sub="",span=4){
-    const on=this._on(entity);
-    const customPhoto=this._customObjectVisual(entity,"device");
-    return `<div class="device-visual-card ${type} ${on?'on':'off'} span-${span} ${customPhoto?'has-custom-photo':''}">
-      ${customPhoto || `<div class="device-visual ${type}">
-        ${type==="fan"?`<div class="fan-hub"></div><div class="fan-blade b1"></div><div class="fan-blade b2"></div><div class="fan-blade b3"></div><div class="fan-blade b4"></div>`:`<div class="generic-sensor"><ha-icon icon="mdi:power-plug"></ha-icon></div>`}
-      </div>`}
-      <div class="device-visual-copy clickable" data-more="${entity}"><span>${this._esc(title)}</span><strong>${on?"Attivo":"Spento"}</strong><small>${this._esc(sub || (type==="fan"?"Ventilazione":"Dispositivo"))}</small></div>
-      <button class="device-visual-toggle ${on?'active':''}" data-toggle="${entity}" type="button"><ha-icon icon="${type==="fan"?"mdi:fan":"mdi:power"}"></ha-icon><span>${on?'ON':'OFF'}</span></button>
-    </div>`;
-  }
-
-  _sensorVisual(icon
+      </div

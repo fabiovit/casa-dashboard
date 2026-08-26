@@ -1,4 +1,14 @@
-.[e])) return true;
+(()=>{
+      const list=this.shadowRoot?.querySelector(".room-list");
+      if(list) list.scrollTop=list.scrollHeight;
+      const input=this.shadowRoot?.querySelector(`[data-room-name="${id}"]`);
+      input?.focus(); input?.select();
+    });
+  }
+  _removeRoomDraft(id){ this._roomsDraft=this._roomsDraft.filter(r=>r.id!==id); this._renderConfigLayer(); }
+  _dynamicRoomConfigured(room){
+    if(!room) return false;
+    if(Array.isArray(room.entities) && room.entities.some(e=>this._hass?.states?.[e])) return true;
     if(!room.id.startsWith("room-")) return this._roomConfigured(room.id);
     return true;
   }
@@ -400,12 +410,13 @@
   }
   _renderConfigRoomsPage(){
     return `<div class="config-page">
-      <div class="config-page-intro"><ha-icon icon="mdi:floor-plan"></ha-icon><div><strong>Struttura della casa</strong><span>Crea, rinomina e riordina gli ambienti. Qui gestisci solo la struttura e la foto principale della stanza.</span></div></div>
+      <div class="config-page-intro config-page-intro-actions">
+        <ha-icon icon="mdi:floor-plan"></ha-icon>
+        <div><strong>Struttura della casa</strong><span>Crea, rinomina e riordina gli ambienti. Qui gestisci solo la struttura e la foto principale della stanza.</span></div>
+        <button class="room-add room-add-primary" data-action="room-add" type="button"><ha-icon icon="mdi:plus"></ha-icon><span>Aggiungi stanza</span></button>
+      </div>
       <div class="room-list room-list-page">${this._roomsDraft.map((r,i)=>`<div class="room-edit-row room-edit-row-page" data-room-id="${r.id}">
         <span class="room-order">${i+1}</span>
         <div class="room-main-fields">
           <input data-room-name="${r.id}" value="${this._esc(r.name||"")}" placeholder="Nome stanza">
-          <select data-room-type="${r.id}">${this._roomTypes().map(([v,l])=>`<option value="${v}" ${r.type===v?"selected":""}>${l}</option>`).join("")}</select>
-          <input data-room-icon="${r.id}" value="${this._esc(r.icon||this._roomIcon(r.type))}" placeholder="mdi:icona">
-        </div>
-        <label class="room-image-field"><span>FOTO STANZA</span><div class="photo-config-line"><input data-room-image="${r.id}" value="${this._esc(r.image||"")}" placehold
+          <select data-room-type="${r.id}">${this._roomTypes

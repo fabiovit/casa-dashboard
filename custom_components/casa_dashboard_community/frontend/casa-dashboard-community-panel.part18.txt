@@ -1,4 +1,9 @@
-er!==null?`${loadPower.toFixed(2)} kW`:'—'}</strong>
+olar-panel solar-flow-card">
+            <div class="solar-flow-grid">
+              <div class="solar-node house">
+                <div class="solar-node-orb"><ha-icon icon="mdi:home-import-outline"></ha-icon></div>
+                <div class="solar-node-label">Casa</div>
+                <strong>${loadPower!==null?`${loadPower.toFixed(2)} kW`:'—'}</strong>
                 <small>Consumo istantaneo della casa</small>
                 <div class="solar-node-chip active">Consumo casa</div>
               </div>
