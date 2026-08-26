@@ -1,5 +1,15 @@
 # Changelog
 
+## 3.0.1 - 2026-08-26
+
+### Home Assistant compatibility hotfix
+
+- Fixed first configuration failure on Home Assistant versions where `frontend.async_panel_exists` is unavailable.
+- Panel existence is now checked through Home Assistant's registered `frontend_panels` mapping.
+- Applied the same compatibility logic during integration unload/reload.
+- Prevents `AttributeError: module 'homeassistant.components.frontend' has no attribute 'async_panel_exists'`.
+- No dashboard configuration or user data is changed.
+
 ## 3.0.0 - 2026-08-26
 
 ### Major cleanup and consolidation

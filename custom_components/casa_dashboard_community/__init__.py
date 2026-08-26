@@ -13,7 +13,7 @@ from homeassistant.helpers import config_validation as cv
 from .const import DOMAIN, PANEL_ICON, PANEL_PATH, PANEL_TITLE, STATIC_URL
 from .websocket_api import async_register_websocket_commands
 
-VERSION = "3.0.0"
+VERSION = "3.0.1"
 ENTITY_CONFIG_FILENAME = "casa-dashboard-community-entities.json"
 
 CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
@@ -89,7 +89,10 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         ])
         data["static_registered"] = True
 
-    if frontend.async_panel_exists(hass, PANEL_PATH):
+    # Home Assistant compatibility: async_panel_exists is not available
+    # in every supported frontend version. The registered panels mapping is
+    # stable and avoids failing the first config-entry setup.
+    if hass.data.get("frontend_panels", {}).get(PANEL_PATH):
         frontend.async_remove_panel(hass, PANEL_PATH)
 
     kwargs = {
@@ -112,7 +115,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    if frontend.async_panel_exists(hass, PANEL_PATH):
+    if hass.data.get("frontend_panels", {}).get(PANEL_PATH):
         frontend.async_remove_panel(hass, PANEL_PATH)
     hass.data.setdefault(DOMAIN, {}).pop("entry_id", None)
     return True

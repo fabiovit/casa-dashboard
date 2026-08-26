@@ -64,7 +64,7 @@
       .uv-airfryer-heat i{width:3px;height:13px;border-radius:999px;background:#ffb454;box-shadow:0 0 9px rgba(255,180,84,.45)}
 
 
-      /* v3.0.0 - balanced configurator scrolling */
+      /* v3.0.1 - balanced configurator scrolling */
       .config-dialog{
         width:min(1120px,calc(100vw - 28px)) !important;
         height:min(94vh,980px) !important;

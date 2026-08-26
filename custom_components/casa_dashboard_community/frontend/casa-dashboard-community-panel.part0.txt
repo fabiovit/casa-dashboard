@@ -297,7 +297,7 @@ class CasaDashboardPanel extends HTMLElement {
             <div class="app-identity">
               <div class="app-icon"><ha-icon icon="mdi:home-assistant"></ha-icon></div>
               <div class="brand">
-                <div class="brand-line"><div class="brand-title">Casa</div><span class="version-badge">3.0.0 Community</span></div>
+                <div class="brand-line"><div class="brand-title">Casa</div><span class="version-badge">3.0.1 Community</span></div>
                 <div class="brand-subtitle">Home Assistant · Community Dashboard</div>
               </div>
             </div>
@@ -306,7 +306,7 @@ class CasaDashboardPanel extends HTMLElement {
           <div class="nav-scroller"><nav class="nav" id="nav"></nav></div>
         </header>
         <main id="content"><div class="loading">Caricamento Casa Dashboard…</div></main>
-        <footer><span>Casa Dashboard Community · v3.0.0 · Realizzato da Fabio Vittori</span><a class="coffee-link" href="https://ko-fi.com/fabvittori" target="_blank" rel="noopener noreferrer">☕ Offrimi un caffè</a></footer>
+        <footer><span>Casa Dashboard Community · v3.0.1 · Realizzato da Fabio Vittori</span><a class="coffee-link" href="https://ko-fi.com/fabvittori" target="_blank" rel="noopener noreferrer">☕ Offrimi un caffè</a></footer>
       </div>
     `;
     this.shadowRoot.addEventListener("click", (ev) => this._handleClick(ev));
