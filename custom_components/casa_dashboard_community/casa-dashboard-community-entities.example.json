@@ -177,5 +177,6 @@
     "vacuum.robot_vacuum": "",
     "water_heater.domestic_hot_water": ""
   },
-  "rooms": []
+  "rooms": [],
+  "overview": {}
 }

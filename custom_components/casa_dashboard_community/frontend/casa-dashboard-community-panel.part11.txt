@@ -1,87 +1,4 @@
-ntities:[],entity_labels:{}}; out.push(room); }
-      if(room){
-        room.entities=Array.isArray(room.entities)?room.entities:[];
-        if(!room.entities.includes(item.entity)) room.entities.push(item.entity);
-      }
-    }
-    return out;
-  }
-  _syncConfiguredKeyToRoom(key,oldEntity,newEntity){
-    // Legacy 173 mappings are used only to bootstrap the room list once.
-    // After rooms have been saved, room membership is controlled exclusively
-    // from the Rooms manager and must never be recreated automatically.
-    if(Array.isArray(this._rooms) && this._rooms.length) return;
-    const roomId=this._legacyRoomForConfigKey(key);
-    if(!roomId) return;
-    const defaults=new Map(this._defaultRooms().map(r=>[r.id,r]));
-    let room=this._roomsDraft.find(r=>r.id===roomId) || this._roomsDraft.find(r=>r.type===roomId);
-    if(!room && newEntity){
-      const meta=defaults.get(roomId);
-      if(meta){ room={...meta,entities:[],entity_labels:{}}; this._roomsDraft.push(room); }
-    }
-    if(!room) return;
-    room.entities=Array.isArray(room.entities)?room.entities:[];
-    if(oldEntity && oldEntity!==newEntity){
-      const stillUsed=[...ENTITY_KEYS].some(k=>
-        k!==key &&
-        this._legacyRoomForConfigKey(k)===roomId &&
-        String(this._configDraft[k]||"").trim()===oldEntity
-      );
-      if(!stillUsed) room.entities=room.entities.filter(e=>e!==oldEntity);
-    }
-    if(newEntity && !room.entities.includes(newEntity)) room.entities.push(newEntity);
-  }
-
-  _defaultRooms(){
-    return [
-      {id:"esterno",name:"Esterno",type:"esterno",icon:"mdi:tree-outline"},
-      {id:"scale",name:"Scale",type:"scale",icon:"mdi:stairs"},
-      {id:"ingresso",name:"Ingresso",type:"ingresso",icon:"mdi:door"},
-      {id:"cucina",name:"Cucina",type:"cucina",icon:"mdi:chef-hat"},
-      {id:"disimpegno",name:"Disimpegno",type:"disimpegno",icon:"mdi:walk"},
-      {id:"bagno",name:"Bagno",type:"bagno",icon:"mdi:shower"},
-      {id:"camera",name:"Camera",type:"camera",icon:"mdi:bed-king-outline"},
-      {id:"balcone",name:"Balcone",type:"balcone",icon:"mdi:balcony"},
-      {id:"garage",name:"Garage",type:"garage",icon:"mdi:garage-variant"}
-    ];
-  }
-  _roomTypes(){
-    return [
-      ["generico","Ambiente generico","mdi:home-outline"],["soggiorno","Soggiorno","mdi:sofa-outline"],
-      ["cucina","Cucina","mdi:chef-hat"],["camera","Camera","mdi:bed-king-outline"],
-      ["bagno","Bagno","mdi:shower"],["studio","Studio","mdi:desk"],
-      ["lavanderia","Lavanderia","mdi:washing-machine"],["taverna","Taverna / Sala hobby","mdi:glass-mug-variant"],
-      ["disimpegno","Corridoio / Disimpegno","mdi:walk"],["ingresso","Ingresso","mdi:door"],
-      ["scale","Scale","mdi:stairs"],["balcone","Balcone / Terrazzo","mdi:balcony"],
-      ["esterno","Giardino / Esterno","mdi:tree-outline"],["garage","Garage","mdi:garage-variant"]
-    ];
-  }
-  _effectiveRooms(){
-    if(Array.isArray(this._rooms) && this._rooms.length) return this._rooms;
-    return this._uiTheme==="v1"?this._defaultRooms():[];
-  }
-  _roomById(id){ return this._effectiveRooms().find(r=>r.id===id)||null; }
-  _roomIcon(type){ return this._roomTypes().find(x=>x[0]===type)?.[2]||"mdi:home-outline"; }
-  _slugRoom(name){
-    const base=String(name||"stanza").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")||"stanza";
-    let id=`room-${base}`, n=2; const used=new Set(this._roomsDraft.map(r=>r.id));
-    while(used.has(id)) id=`room-${base}-${n++}`; return id;
-  }
-  _addRoomDraft(){
-    const id=this._slugRoom("Nuova stanza");
-    this._roomsDraft.push({id,name:"Nuova stanza",type:"generico",icon:"mdi:home-outline",entities:[],entity_labels:{}});
-    this._renderConfigLayer();
-    requestAnimationFrame(()=>{
-      const list=this.shadowRoot?.querySelector(".room-list");
-      if(list) list.scrollTop=list.scrollHeight;
-      const input=this.shadowRoot?.querySelector(`[data-room-name="${id}"]`);
-      input?.focus(); input?.select();
-    });
-  }
-  _removeRoomDraft(id){ this._roomsDraft=this._roomsDraft.filter(r=>r.id!==id); this._renderConfigLayer(); }
-  _dynamicRoomConfigured(room){
-    if(!room) return false;
-    if(Array.isArray(room.entities) && room.entities.some(e=>this._hass?.states?.[e])) return true;
+.[e])) return true;
     if(!room.id.startsWith("room-")) return this._roomConfigured(room.id);
     return true;
   }
@@ -329,7 +246,8 @@ ntities:[],entity_labels:{}}; out.push(room); }
         : `${roomLabel} · comfort, luci e dispositivi`,
       {level:activeCount?"warn":"good",title:activeCount?`${activeCount} stati attivi`:"Tutto tranquillo",text:""},
       metrics,
-      room.type||"generico"
+      room.type||"generico",
+      room
     );
 
     const controlCards=[
@@ -374,4 +292,120 @@ ntities:[],entity_labels:{}}; out.push(room); }
     return `<div class="page">
       ${hero}
       ${hasControls?this._section(this._uiTheme==="v1"?"Luci, tende ed elettrodomestici":"Luci, tende e dispositivi"):""}
-      <div 
+      <div class="grid">${controlCards}${coverCards}${climateCards}</div>
+      ${sensorCards?this._section("Sensori","Stato dell'ambiente"):""}
+      <div class="grid">${sensorCards}</div>
+    </div>`;
+  }
+
+  _configGroup(key) {
+    const name=key.split(".")[1] || key;
+    if(name.includes("solar_")) return "Energia solare";
+    if(name.includes("wallbox") || name.includes("ev_") || name.includes("grid_current")) return "Wallbox & EV";
+    if(name.includes("weather_")) return "Meteo";
+    if(name.includes("garage_")) return "Garage";
+    if(name.includes("bedroom")) return "Camera";
+    if(name.includes("kitchen")) return "Cucina";
+    if(name.includes("bathroom")) return "Bagno";
+    if(name.includes("balcony")) return "Balcone";
+    if(name.includes("entry_")) return "Ingresso";
+    if(name.includes("hallway")) return "Disimpegno";
+    if(name.includes("stairs")) return "Scale";
+    return "Casa & Generale";
+  }
+  _entityOptions() {
+    if(!this._hass?.states) return [];
+    return Object.entries(this._hass.states).map(([id,state])=>{
+      const name=String(state?.attributes?.friendly_name || "").trim();
+      return {id,name,label:name ? `${name} — ${id}` : id};
+    }).sort((a,b)=>(a.name || a.id).localeCompare(b.name || b.id, "it", {sensitivity:"base"}));
+  }
+  _entityIdFromFriendlyName(value) {
+    const raw=String(value || "").trim();
+    if(!raw || raw.includes(".")) return raw;
+    const normalized=raw.toLocaleLowerCase("it");
+    const matches=this._entityOptions().filter(item=>item.name && item.name.toLocaleLowerCase("it")===normalized);
+    return matches.length===1 ? matches[0].id : raw;
+  }
+  _configTabs(){
+    return [
+      ["overview","Panoramica","mdi:view-dashboard-outline"],
+      ["rooms","Stanze","mdi:floor-plan"],
+      ["devices","Dispositivi","mdi:devices"],
+      ["energy","Energia & Mobilità","mdi:solar-power-variant"],
+      ["weather","Meteo & Sicurezza","mdi:shield-home-outline"],
+      ["advanced","Avanzate","mdi:tune-vertical-variant"]
+    ];
+  }
+  _configTabKeys(tab){
+    const all=[...ENTITY_KEYS];
+    if(tab==="energy") return all.filter(key=>{
+      const name=(key.split(".")[1]||"").toLowerCase();
+      return name.includes("solar_") || name.includes("wallbox") || name.includes("ev_") || name.includes("grid_current");
+    });
+    if(tab==="weather") return all.filter(key=>{
+      const name=(key.split(".")[1]||"").toLowerCase();
+      return name.includes("weather_") || name.includes("alarm") || name.includes("water_leak") || name.includes("smoke") || name.includes("door") || name.includes("window") || name.includes("opening");
+    });
+    if(tab==="advanced") return all;
+    return [];
+  }
+  _renderConfigMappingList(keys){
+    const filter=(this._configFilter||"").trim().toLowerCase();
+    const filtered=keys.filter(key=>{
+      if(!filter) return true;
+      const custom=String(this._configLabelDraft?.[key] ?? this._entityLabels?.[key] ?? "").toLowerCase();
+      return key.toLowerCase().includes(filter) || this._configLabel(key).toLowerCase().includes(filter) || this._configGroup(key).toLowerCase().includes(filter) || custom.includes(filter);
+    });
+    const groups=new Map();
+    for(const key of filtered){
+      const g=this._configGroup(key);
+      if(!groups.has(g)) groups.set(g,[]);
+      groups.get(g).push(key);
+    }
+    return [...groups.entries()].map(([group,groupKeys])=>`
+      <div class="config-group">
+        <div class="config-group-title">${group}<span>${groupKeys.length}</span></div>
+        ${groupKeys.map(key=>{
+          const value=this._configDraft[key] ?? this._entityMap[key] ?? "";
+          const domain=key.split(".")[0];
+          const displayName=this._configLabelDraft[key] ?? this._entityLabels[key] ?? "";
+          return `<div class="config-row">
+            <div class="config-row-copy"><strong>${this._configLabel(key)}</strong><code>${key}</code></div>
+            <div class="config-global-fields">
+              <div class="config-field"><input data-config-key="${key}" list="haEntityList" placeholder="${domain}.…" value="${this._esc(value)}"><button type="button" data-action="config-clear" data-config-clear="${key}" aria-label="Svuota"><ha-icon icon="mdi:close-circle-outline"></ha-icon></button></div>
+              <label class="config-display-name"><span>NOME VISUALIZZATO</span><input data-config-label="${key}" placeholder="${this._esc(this._configLabel(key))}" value="${this._esc(displayName)}"></label>
+            </div>
+          </div>`;
+        }).join("")}
+      </div>`).join("") || `<div class="config-empty">Nessuna associazione corrisponde alla ricerca.</div>`;
+  }
+  _renderConfigOverviewPage(){
+    return `<div class="config-page config-page-overview">
+      <div class="config-page-intro"><ha-icon icon="mdi:view-dashboard-outline"></ha-icon><div><strong>Personalizza la Panoramica</strong><span>Rinomina le sezioni principali e l'identità di Auto e Wallbox. Lascia vuoto per usare i nomi predefiniti.</span></div></div>
+      <div class="overview-config-grid overview-config-grid-page">
+        ${[
+          ["overview_title","Titolo","Panoramica"],
+          ["active_label","Stati attivi","Stati attivi"],
+          ["temperature_label","Temperature","Temperature"],
+          ["outdoor_label","Esterno / Meteo","Esterno"],
+          ["solar_label","Fotovoltaico / Batteria","Fotovoltaico & batteria"],
+          ["mobility_label","Mobilità","Wallbox & EV"],
+          ["vehicle_name","Nome auto","Auto elettrica"],
+          ["wallbox_name","Nome wallbox","Wallbox"]
+        ].map(([key,label,placeholder])=>`<label><span>${label}</span><input data-overview-key="${key}" value="${this._esc(this._overviewDraft[key]||"")}" placeholder="${this._esc(placeholder)}"></label>`).join("")}
+      </div>
+      <div class="config-page-note"><ha-icon icon="mdi:information-outline"></ha-icon><span>Queste etichette incidono solo sulla grafica della Panoramica Casa V2 e non modificano i nomi delle entità in Home Assistant.</span></div>
+    </div>`;
+  }
+  _renderConfigRoomsPage(){
+    return `<div class="config-page">
+      <div class="config-page-intro"><ha-icon icon="mdi:floor-plan"></ha-icon><div><strong>Struttura della casa</strong><span>Crea, rinomina e riordina gli ambienti. Qui gestisci solo la struttura e la foto principale della stanza.</span></div></div>
+      <div class="room-list room-list-page">${this._roomsDraft.map((r,i)=>`<div class="room-edit-row room-edit-row-page" data-room-id="${r.id}">
+        <span class="room-order">${i+1}</span>
+        <div class="room-main-fields">
+          <input data-room-name="${r.id}" value="${this._esc(r.name||"")}" placeholder="Nome stanza">
+          <select data-room-type="${r.id}">${this._roomTypes().map(([v,l])=>`<option value="${v}" ${r.type===v?"selected":""}>${l}</option>`).join("")}</select>
+          <input data-room-icon="${r.id}" value="${this._esc(r.icon||this._roomIcon(r.type))}" placeholder="mdi:icona">
+        </div>
+        <label class="room-image-field"><span>FOTO STANZA</span><div class="photo-config-line"><input data-room-image="${r.id}" value="${this._esc(r.image||"")}" placehold

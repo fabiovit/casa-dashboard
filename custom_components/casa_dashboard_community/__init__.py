@@ -13,7 +13,7 @@ from homeassistant.helpers import config_validation as cv
 from .const import DOMAIN, PANEL_ICON, PANEL_PATH, PANEL_TITLE, STATIC_URL
 from .websocket_api import async_register_websocket_commands
 
-VERSION = "3.1.0"
+VERSION = "3.5.1"
 ENTITY_CONFIG_FILENAME = "casa-dashboard-community-entities.json"
 
 CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
@@ -79,6 +79,12 @@ async def async_setup(hass: HomeAssistant, config: dict) -> bool:
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     data = hass.data.setdefault(DOMAIN, {})
+
+    # Config-entry installs may reach async_setup_entry directly. Ensure the
+    # websocket commands are registered here as well.
+    if not data.get("websocket_registered"):
+        async_register_websocket_commands(hass)
+        data["websocket_registered"] = True
 
     await hass.async_add_executor_job(_ensure_entity_config, hass)
 

@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
+import base64
+import binascii
 import json
+import uuid
 from pathlib import Path
 from typing import Any
 
@@ -16,6 +19,7 @@ from .const import DOMAIN
 ENTITY_CONFIG_FILENAME = "casa-dashboard-community-entities.json"
 WS_GET = f"{DOMAIN}/config/get"
 WS_SAVE = f"{DOMAIN}/config/save"
+WS_UPLOAD_IMAGE = f"{DOMAIN}/config/upload_image"
 
 
 def _paths(hass: HomeAssistant) -> tuple[Path, Path]:
@@ -60,10 +64,21 @@ def _read_config(hass: HomeAssistant) -> dict[str, Any]:
     rooms = current.get("rooms", [])
     if not isinstance(rooms, list):
         rooms = []
+
+    overview = current.get("overview", {})
+    if not isinstance(overview, dict):
+        overview = {}
+    clean_overview = {
+        str(key).strip(): str(value).strip()
+        for key, value in overview.items()
+        if str(key).strip() and isinstance(value, str) and value.strip()
+    }
+
     return {
         "entities": merged,
         "labels": clean_labels,
         "rooms": rooms,
+        "overview": clean_overview,
         "configured": sum(1 for value in merged.values() if value.strip()),
         "total": len(merged),
     }
@@ -74,6 +89,7 @@ def _save_config(
     supplied: dict[str, Any],
     supplied_rooms: list[Any] | None = None,
     supplied_labels: dict[str, Any] | None = None,
+    supplied_overview: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     target, template_path = _paths(hass)
     template = _read_json(template_path)
@@ -124,10 +140,18 @@ def _save_config(
             labels = room.get("entity_labels", {})
             if not isinstance(labels, dict):
                 labels = {}
+            images = room.get("entity_images", {})
+            if not isinstance(images, dict):
+                images = {}
             clean_entities = [str(x).strip() for x in entities if str(x).strip()] if isinstance(entities, list) else []
             clean_labels = {
                 str(k).strip(): str(v).strip()
                 for k, v in labels.items()
+                if str(k).strip() in clean_entities and str(v).strip()
+            }
+            clean_entity_images = {
+                str(k).strip(): str(v).strip()
+                for k, v in images.items()
                 if str(k).strip() in clean_entities and str(v).strip()
             }
             clean_rooms.append({
@@ -135,10 +159,22 @@ def _save_config(
                 "name": name,
                 "type": str(room.get("type", "generico")).strip() or "generico",
                 "icon": str(room.get("icon", "mdi:home-outline")).strip() or "mdi:home-outline",
+                "image": str(room.get("image", "")).strip(),
                 "entities": clean_entities,
                 "entity_labels": clean_labels,
+                "entity_images": clean_entity_images,
             })
         output["rooms"] = clean_rooms
+
+    if supplied_overview is not None:
+        output["overview"] = {
+            str(key).strip(): str(value).strip()
+            for key, value in supplied_overview.items()
+            if str(key).strip() and isinstance(value, str) and value.strip()
+        }
+    elif not isinstance(output.get("overview"), dict):
+        output["overview"] = {}
+
     for meta_key in ("_description", "_author", "_support"):
         if meta_key not in output and meta_key in template:
             output[meta_key] = template[meta_key]
@@ -152,6 +188,7 @@ def _save_config(
         "entities": {key: current_entities.get(key, "") for key in valid},
         "labels": {key: current_labels.get(key, "") for key in valid if current_labels.get(key, "")},
         "rooms": output.get("rooms", []),
+        "overview": output.get("overview", {}),
         "configured": sum(
             1 for key in valid if isinstance(current_entities.get(key), str) and current_entities[key].strip()
         ),
@@ -174,6 +211,7 @@ async def websocket_get_config(hass: HomeAssistant, connection, msg: dict[str, A
         vol.Required("entities"): dict,
         vol.Optional("rooms", default=[]): list,
         vol.Optional("labels", default={}): dict,
+        vol.Optional("overview", default={}): dict,
     }
 )
 @websocket_api.require_admin
@@ -186,7 +224,55 @@ async def websocket_save_config(hass: HomeAssistant, connection, msg: dict[str, 
         msg["entities"],
         msg.get("rooms", []),
         msg.get("labels", {}),
+        msg.get("overview", {}),
     )
+    connection.send_result(msg["id"], result)
+
+
+def _save_uploaded_image(hass: HomeAssistant, data_url: str) -> dict[str, str]:
+    """Decode and store a dashboard image under /config/www."""
+    if not isinstance(data_url, str) or "," not in data_url:
+        raise ValueError("Invalid image payload")
+    header, encoded = data_url.split(",", 1)
+    mime_map = {
+        "data:image/jpeg;base64": ".jpg",
+        "data:image/png;base64": ".png",
+        "data:image/webp;base64": ".webp",
+    }
+    extension = mime_map.get(header.lower())
+    if not extension:
+        raise ValueError("Unsupported image format")
+    if len(encoded) > 8_000_000:
+        raise ValueError("Image is too large")
+    try:
+        content = base64.b64decode(encoded, validate=True)
+    except (binascii.Error, ValueError) as err:
+        raise ValueError("Invalid image data") from err
+    if not content or len(content) > 5_500_000:
+        raise ValueError("Image is too large")
+    directory = Path(hass.config.path("www", "casa_dashboard_community", "uploads"))
+    directory.mkdir(parents=True, exist_ok=True)
+    filename = f"{uuid.uuid4().hex}{extension}"
+    target = directory / filename
+    target.write_bytes(content)
+    return {"url": f"/local/casa_dashboard_community/uploads/{filename}"}
+
+
+@websocket_api.websocket_command(
+    {
+        vol.Required("type"): WS_UPLOAD_IMAGE,
+        vol.Required("image"): str,
+    }
+)
+@websocket_api.require_admin
+@websocket_api.async_response
+async def websocket_upload_image(hass: HomeAssistant, connection, msg: dict[str, Any]) -> None:
+    """Upload a resized custom room/device image."""
+    try:
+        result = await hass.async_add_executor_job(_save_uploaded_image, hass, msg["image"])
+    except ValueError as err:
+        connection.send_error(msg["id"], "invalid_image", str(err))
+        return
     connection.send_result(msg["id"], result)
 
 
@@ -195,3 +281,4 @@ def async_register_websocket_commands(hass: HomeAssistant) -> None:
     """Register Community WebSocket commands."""
     websocket_api.async_register_command(hass, websocket_get_config)
     websocket_api.async_register_command(hass, websocket_save_config)
+    websocket_api.async_register_command(hass, websocket_upload_image)

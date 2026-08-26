@@ -2,7 +2,7 @@
 
 [🇬🇧 English](README.md) | 🇮🇹 **Italiano**
 
-[![Release](https://img.shields.io/badge/release-v3.1.0-blue)](https://github.com/fabiovit/casa-dashboard/releases)
+[![Release](https://img.shields.io/badge/release-v3.5.1-blue)](https://github.com/fabiovit/casa-dashboard/releases)
 [![HACS](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz/)
 [![Validate](https://img.shields.io/github/actions/workflow/status/fabiovit/casa-dashboard/hacs.yml?branch=main&label=Validate)](https://github.com/fabiovit/casa-dashboard/actions/workflows/hacs.yml)
 [![Hassfest](https://img.shields.io/github/actions/workflow/status/fabiovit/casa-dashboard/hassfest.yml?branch=main&label=Hassfest)](https://github.com/fabiovit/casa-dashboard/actions/workflows/hassfest.yml)
@@ -12,7 +12,7 @@
 
 Casa Dashboard Community è una dashboard app-like completa per **Home Assistant**, pensata per adattarsi ad abitazioni diverse senza dipendere dalle classiche card Lovelace.
 
-La **v3.1.0** è una release di consolidamento: il progetto è stato ripulito, il versioning è ora coerente tra backend e frontend e tutte le funzioni mature introdotte nella serie 2.x restano disponibili in un pacchetto più ordinato.
+La **v3.5.1** è una release di consolidamento: il progetto è stato ripulito, il versioning è ora coerente tra backend e frontend e tutte le funzioni mature introdotte nella serie 2.x restano disponibili in un pacchetto più ordinato.
 
 **Realizzato da Fabio Vittori** · [☕ Offrimi un caffè](https://ko-fi.com/fabvittori)
 
@@ -35,6 +35,33 @@ Altri esempi:
 ![Casa Dashboard Community - Casa V2 Ingresso](images/casa-v2-ingresso.png)
 
 ![Casa Dashboard Community - Casa V2 Garage](images/casa-v2-garage.png)
+
+## ☀️ Visual Energia Avanzato
+
+Casa V2 permette ora di scegliere la sezione Fotovoltaico in modalità **Compatta** oppure **Avanzata**.
+
+La modalità Avanzata mostra produzione live, eventuali PV1/PV2, SOC e flusso batteria, oltre ai nodi Casa / Inverter / Batteria / Rete.
+
+Le convenzioni del segno di Rete e Batteria sono configurabili, così il visual può adattarsi a integrazioni inverter differenti.
+
+## 🧭 Configuratore a pagine
+
+Il configuratore Casa V2 è ora suddiviso in pagine dedicate:
+
+- Panoramica
+- Stanze
+- Dispositivi
+- Energia & Mobilità
+- Meteo & Sicurezza
+- Avanzate
+
+La configurazione normale rimane semplice, mentre l'elenco completo delle 173 associazioni viene spostato nella pagina avanzata.
+
+## 🎨 Personalizzazione visuale completa
+
+Casa V2 permette ora di personalizzare le macro-label della Panoramica, il nome dell'auto e il nome della Wallbox.
+
+Ogni stanza può inoltre utilizzare una foto personalizzata. È possibile indicare un percorso Home Assistant `/local/...` (ad esempio `/local/casa/cucina.jpg`) oppure un URL immagine. Se il campo resta vuoto, viene mantenuto il normale visual Casa V2.
 
 ## 🏠 Stanze dinamiche
 
@@ -99,6 +126,9 @@ Supporto nativo:
 Il selettore è disponibile direttamente nella dashboard e la lingua scelta viene memorizzata localmente.
 
 I nomi personalizzati delle stanze e delle entità Home Assistant vengono mantenuti.
+
+
+Anche le singole entità V2 possono avere una foto personalizzata. Usa **Carica** nel configuratore della stanza per luci, prese, elettrodomestici, sensori e altri oggetti. Le foto vengono ridimensionate e salvate sotto `/local/casa_dashboard_community/uploads/`; senza foto resta il visual automatico V2.
 
 ## 📱 Responsive
 

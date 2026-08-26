@@ -1,195 +1,42 @@
-px;transform:translateX(-50%);border:6px solid #596a76;background:#173246}.office-chair{position:absolute;left:50%;bottom:8px;width:64px;height:55px;transform:translateX(-50%);border-radius:16px 16px 8px 8px;background:#3f4c55}.office-lamp{position:absolute;right:28px;bottom:58px;width:5px;height:92px;background:#7b8993}
-      .laundry-machine{position:absolute;left:45px;bottom:28px;width:112px;height:142px;border-radius:10px;background:#d0d5d9}.laundry-door{position:absolute;left:21px;top:45px;width:68px;height:68px;border-radius:50%;background:#172b38;border:9px solid #7d8c95}.laundry-shelf{position:absolute;right:34px;top:38px;width:130px;height:12px;background:#63717a;box-shadow:0 48px 0 #63717a}.laundry-basket{position:absolute;right:58px;bottom:26px;width:78px;height:70px;background:#465762;clip-path:polygon(8% 0,92% 0,100% 100%,0 100%)}
-      .hobby-table{position:absolute;left:46px;right:46px;bottom:38px;height:18px;background:#755f48}.hobby-cabinet{position:absolute;right:34px;top:32px;width:92px;height:108px;background:#4b5359}.hobby-lamp{position:absolute;left:50%;top:0;width:4px;height:72px;background:#7b8993}.hobby-lamp:after{content:"";position:absolute;left:-25px;bottom:-8px;width:54px;height:28px;border-radius:50%;background:#d4ae62}
-      .generic-window{position:absolute;left:34px;top:30px;width:120px;height:90px;border:6px solid #63737e;background:#1d4054}.generic-table{position:absolute;left:48px;right:48px;bottom:38px;height:16px;background:#687781}.generic-lamp{position:absolute;right:40px;top:22px;width:5px;height:95px;background:#7c8b95}
-      .stairs-hero-scene{position:relative;height:220px;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#17232b,#0c1217)}.stairs-wall{position:absolute;inset:0;background:linear-gradient(135deg,#222e36,#131a20);clip-path:polygon(0 0,100% 0,100% 100%,38% 100%)}.stairs-flight{position:absolute;left:8%;bottom:10%;width:62%;height:66%;display:flex;flex-direction:column-reverse;gap:4px;transform:skewY(-18deg)}.stairs-flight i{height:13px;background:linear-gradient(90deg,#53636f,#29353e);border-top:1px solid #738592}.stairs-rail{position:absolute;left:19%;top:12%;width:5px;height:68%;background:#7f929e;transform:rotate(27deg);transform-origin:bottom}.stairs-door{position:absolute;right:9%;bottom:8%;width:68px;height:118px;border:5px solid #5f707d;background:#222c34}
-      @media(max-width:980px){.ui-v2 .original-room-hero{grid-template-columns:1fr!important}.original-room-hero-card{grid-template-columns:1fr}.original-room-side{display:grid;grid-template-columns:repeat(3,1fr)}}@media(max-width:620px){.original-room-hero-card{padding:14px}.original-room-side{grid-template-columns:1fr}.community-original-scene{height:185px!important}}
+ckground:linear-gradient(180deg,#67ffb6,#45d48c);box-shadow:0 0 34px rgba(103,255,182,.22)}
+      .community-advanced-energy .solar-battery-fill.bad{background:linear-gradient(180deg,#ff8c8c,#ff5f67);box-shadow:0 0 30px rgba(255,95,103,.20)}
+      .community-advanced-energy .solar-battery-soc{position:absolute;inset:0;z-index:3;display:grid;place-items:center;text-align:center}.community-advanced-energy .solar-battery-soc>div{padding:10px 14px;border-radius:16px;background:rgba(7,14,25,.68);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(8px)}
+      .community-advanced-energy .solar-battery-soc span{font-size:10px;letter-spacing:.18em;font-weight:850;color:#87a0bb}.community-advanced-energy .solar-battery-soc strong{display:block;font-size:52px;letter-spacing:-.06em;color:#fff;margin-top:6px}
+      .community-advanced-energy .solar-battery-copy .eyebrow{font-size:11px;letter-spacing:.22em;font-weight:900;text-transform:uppercase;color:#67b8ff}.community-advanced-energy .solar-battery-copy .eyebrow.good{color:#55e6ad}.community-advanced-energy .solar-battery-copy .eyebrow.bad{color:#ff6f6f}
+      .community-advanced-energy .solar-battery-copy .power{font-size:64px;line-height:.95;font-weight:880;letter-spacing:-.065em;margin-top:10px}.community-advanced-energy .solar-battery-copy .power.good{color:#55e6ad}.community-advanced-energy .solar-battery-copy .power.bad{color:#ff6f6f}
+      .community-advanced-energy .solar-battery-copy .desc{margin-top:10px;font-size:14px;color:var(--secondary-text-color)}
+      .community-advanced-energy .solar-energy-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}.community-advanced-energy .solar-energy-pill{padding:9px 12px;border-radius:999px;border:1px solid var(--divider-color);background:color-mix(in srgb,var(--card-background-color) 94%,var(--primary-color) 6%)}.community-advanced-energy .solar-energy-pill strong{font-size:12px;margin-left:6px}
 
-      /* v2.0.0 - restore and emphasize original Casa V1 iconography */
-      .ui-v1 .command-symbol ha-icon{--mdc-icon-size:23px!important}
-      .ui-v1 .command-symbol{color:#8ba5bd}
-      .ui-v1 .command-strip.state-on .command-symbol,.ui-v1 .command-symbol.active{color:#55e6ad}
-      .ui-v1 .scene-mark ha-icon{--mdc-icon-size:24px}
+      .community-advanced-energy .solar-flow-card{grid-column:span 12;padding:24px 28px 26px}.community-advanced-energy .solar-flow-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;align-items:flex-start}.community-advanced-energy .solar-flow-grid.energy-nodes-3{grid-template-columns:repeat(3,minmax(0,1fr))}.community-advanced-energy .solar-flow-grid.energy-nodes-2{grid-template-columns:repeat(2,minmax(0,1fr))}.community-advanced-energy .solar-flow-grid.energy-nodes-1{grid-template-columns:1fr}
+      .community-advanced-energy .solar-node{text-align:center;padding-top:4px}.community-advanced-energy .solar-node-orb{width:84px;height:84px;margin:0 auto;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,color-mix(in srgb,var(--primary-color) 20%,transparent),color-mix(in srgb,var(--primary-color) 3%,transparent) 62%,transparent 64%);border:1px solid color-mix(in srgb,var(--primary-color) 20%,transparent);box-shadow:0 0 30px color-mix(in srgb,var(--primary-color) 10%,transparent)}
+      .community-advanced-energy .solar-node-orb ha-icon{--mdc-icon-size:34px;color:#67b8ff}.community-advanced-energy .solar-node.house .solar-node-orb ha-icon,.community-advanced-energy .solar-node.battery .solar-node-orb ha-icon{color:#55e6ad}.community-advanced-energy .solar-node.network .solar-node-orb ha-icon{color:#ffb45c}
+      .community-advanced-energy .solar-node strong{display:block;font-size:32px;line-height:1;letter-spacing:-.05em;margin-top:15px}.community-advanced-energy .solar-node strong.good{color:#55e6ad}.community-advanced-energy .solar-node strong.bad{color:#ff6f6f}.community-advanced-energy .solar-node small{display:block;color:var(--secondary-text-color);margin-top:6px;line-height:1.4;font-size:10px}
+      .community-advanced-energy .solar-node-chip{display:inline-flex;margin-top:11px;padding:7px 11px;border-radius:999px;background:color-mix(in srgb,var(--card-background-color) 94%,var(--primary-color) 6%);border:1px solid var(--divider-color);font-size:10px;font-weight:800}.community-advanced-energy .solar-node-chip.good{color:#55e6ad;background:rgba(76,175,80,.10)}.community-advanced-energy .solar-node-chip.warn{color:#ffb45c;background:rgba(255,180,92,.10)}.community-advanced-energy .solar-node-chip.bad{color:#ff6f6f;background:rgba(255,111,111,.10)}.community-advanced-energy .solar-node-chip.active{color:#67b8ff}
+      .theme-light .community-advanced-energy .solar-panel{box-shadow:0 14px 34px rgba(35,60,90,.08)}
 
-      /* v2.0.0 - original iconography in Casa V2 */
-      .ui-v2 .light-visual-toggle ha-icon,
-      .ui-v2 .universal-device-action ha-icon,
-      .ui-v2 .generic-sensor ha-icon{--mdc-icon-size:22px}
-      .ui-v2 .scene-icon ha-icon{--mdc-icon-size:25px}
-
-      /* v2.0.0 - per-room custom display names */
-      .room-entity-chip-wrap{display:flex;flex-direction:column;gap:5px;min-width:185px;max-width:100%}
-      .room-entity-alias{display:grid;grid-template-columns:auto minmax(0,1fr);gap:7px;align-items:center;padding:0 2px}
-      .room-entity-alias>span{font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:var(--secondary-text-color);font-weight:800}
-      .room-entity-alias input{min-width:0!important;padding:6px 8px!important;font-size:10px!important;border-radius:8px!important}
-      .room-entity-chips{align-items:flex-start}
-
-      /* v2.0.0 - dedicated Air Fryer visual */
-      .uv-airfryer{width:132px;height:132px;display:grid;place-items:center;position:relative}
-      .uv-airfryer-body{position:relative;width:88px;height:112px;border-radius:22px 22px 18px 18px;background:linear-gradient(155deg,#56636c,#222b31 55%,#151b20);border:2px solid #667781;box-shadow:0 18px 28px rgba(0,0,0,.28)}
-      .uv-airfryer-top{position:absolute;left:14px;right:14px;top:9px;height:20px;border-radius:10px;background:#1a2227;display:flex;align-items:center;justify-content:center;gap:9px}
-      .uv-airfryer-top i{width:7px;height:7px;border-radius:50%;border:1px solid #7e919d}
-      .uv-airfryer-display{position:absolute;left:23px;right:23px;top:34px;height:20px;border-radius:6px;background:#0d171d;display:grid;place-items:center;color:#7994a4;font-size:7px;letter-spacing:.12em}
-      .uv-airfryer.active .uv-airfryer-display{color:#57e7ae;box-shadow:0 0 15px rgba(87,231,174,.16) inset}
-      .uv-airfryer-basket{position:absolute;left:13px;right:13px;bottom:17px;height:42px;border-radius:7px 7px 13px 13px;background:#202a30;border:1px solid #596973}
-      .uv-airfryer-window{position:absolute;left:10px;right:10px;top:8px;height:20px;border-radius:5px;background:linear-gradient(180deg,#182832,#0c151a)}
-      .uv-airfryer-handle{position:absolute;left:50%;bottom:-17px;width:36px;height:20px;transform:translateX(-50%);border-radius:0 0 9px 9px;background:#333f46}
-      .uv-airfryer-heat{position:absolute;left:50%;bottom:7px;transform:translateX(-50%);display:flex;gap:5px;opacity:0}
-      .uv-airfryer.active .uv-airfryer-heat{opacity:1}
-      .uv-airfryer-heat i{width:3px;height:13px;border-radius:999px;background:#ffb454;box-shadow:0 0 9px rgba(255,180,84,.45)}
-
-
-      /* v3.1.0 - balanced configurator scrolling */
-      .config-dialog{
-        width:min(1120px,calc(100vw - 28px)) !important;
-        height:min(94vh,980px) !important;
-        max-height:min(94vh,980px) !important;
-        display:flex !important;
-        flex-direction:column !important;
-        overflow:hidden !important;
+      @media(max-width:1000px){
+        .community-advanced-energy .solar-prod-card,.community-advanced-energy .solar-battery-hero{grid-column:span 12}
+        .community-advanced-energy .solar-battery-hero{grid-template-columns:200px 1fr}
+        .energy-view-fields{grid-template-columns:repeat(2,minmax(0,1fr))}
       }
-      .config-dialog-head,
-      .config-toolbar,
-      .config-dialog-foot{
-        flex:0 0 auto !important;
+      @media(max-width:720px){
+        .energy-view-choice,.energy-view-fields{grid-template-columns:1fr}
+        .community-advanced-energy .solar-battery-hero{grid-template-columns:1fr;text-align:center;padding:24px 18px}
+        .community-advanced-energy .solar-battery-copy .power{font-size:52px}
+        .community-advanced-energy .solar-pv-line{grid-template-columns:1fr;gap:8px}
+        .community-advanced-energy .solar-flow-grid,.community-advanced-energy .solar-flow-grid.energy-nodes-3,.community-advanced-energy .solar-flow-grid.energy-nodes-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+      }
+      @media(max-width:480px){
+        .community-advanced-energy .solar-flow-grid,.community-advanced-energy .solar-flow-grid.energy-nodes-3,.community-advanced-energy .solar-flow-grid.energy-nodes-2{grid-template-columns:1fr}
+        .community-advanced-energy .solar-prod-copy strong{font-size:46px}
       }
 
-      /* Rooms remain comfortably usable without consuming the whole modal. */
-      .room-manager{
-        flex:0 0 auto !important;
-        display:flex !important;
-        flex-direction:column !important;
-        max-height:min(38vh,410px) !important;
-        margin:0 16px 12px !important;
-        padding:14px 16px !important;
-        overflow:hidden !important;
-      }
-      .room-manager-head,
-      .room-friendly-hint{
-        flex:0 0 auto !important;
-      }
-      .room-list{
-        flex:1 1 auto !important;
-        min-height:125px !important;
-        max-height:min(27vh,285px) !important;
-        overflow-y:auto !important;
-        overflow-x:hidden !important;
-        padding-right:8px !important;
-        overscroll-behavior:contain;
-        -webkit-overflow-scrolling:touch;
-        scrollbar-gutter:stable;
-      }
-
-      /* The 173 mappings always keep a useful area of their own. */
-      .config-toolbar{
-        padding-top:12px !important;
-        padding-bottom:12px !important;
-      }
-      .config-scroll{
-        flex:1 1 320px !important;
-        min-height:220px !important;
-        max-height:none !important;
-        overflow-y:auto !important;
-        overflow-x:hidden !important;
-        overscroll-behavior:contain;
-        -webkit-overflow-scrolling:touch;
-        scrollbar-gutter:stable;
-        padding-bottom:26px !important;
-      }
-      .config-dialog-foot{
-        position:relative !important;
-        z-index:20;
-        background:color-mix(in srgb,var(--card-background-color) 98%,transparent) !important;
-      }
-
-      @media (max-height:800px) and (min-width:761px){
-        .config-dialog{
-          height:96vh !important;
-          max-height:96vh !important;
-        }
-        .room-manager{
-          max-height:32vh !important;
-        }
-        .room-list{
-          min-height:105px !important;
-          max-height:22vh !important;
-        }
-        .config-scroll{
-          min-height:190px !important;
-        }
-      }
-
-      @media (max-width:760px){
-        .config-dialog{
-          width:100vw !important;
-          height:100dvh !important;
-          max-height:100dvh !important;
-          border-radius:0 !important;
-        }
-        .room-manager{
-          margin:0 8px 10px !important;
-          max-height:38dvh !important;
-        }
-        .room-list{
-          min-height:120px !important;
-          max-height:27dvh !important;
-        }
-        .config-scroll{
-          min-height:30dvh !important;
-          flex-basis:34dvh !important;
-        }
-      }
-
-      /* v3.1.0 - adaptive Community overview */
-      .alert.info{border-color:color-mix(in srgb,var(--primary-color) 22%,var(--divider-color));background:color-mix(in srgb,var(--primary-color) 5%,var(--card-background-color))}
-      .alert.info ha-icon{color:var(--primary-color)}
-      .alert.info .config-open-btn{border-color:color-mix(in srgb,var(--primary-color) 34%,var(--divider-color));background:color-mix(in srgb,var(--primary-color) 8%,var(--card-background-color))}
-      .alert.info .config-open-btn ha-icon{color:var(--primary-color)}
-
-      .overview-key-grid{
-        display:grid!important;
-        grid-template-columns:repeat(auto-fit,minmax(220px,1fr))!important;
-        gap:14px!important;
-        margin:14px 0 32px!important;
-      }
-      .overview-key-card{
-        min-height:108px;
-        padding:16px!important;
-        display:flex;
-        align-items:center;
-        gap:14px;
-        border:1px solid color-mix(in srgb,var(--primary-color) 13%,var(--divider-color))!important;
-        border-radius:19px!important;
-        background:linear-gradient(145deg,
-          color-mix(in srgb,var(--card-background-color) 96%,var(--primary-color) 4%),
-          color-mix(in srgb,var(--secondary-background-color) 94%,var(--primary-color) 6%))!important;
-        box-shadow:0 10px 28px color-mix(in srgb,#000 10%,transparent);
-        overflow:hidden;
-      }
-      .overview-key-card.solar{background:linear-gradient(145deg,color-mix(in srgb,var(--card-background-color) 94%,#f6b73c 6%),color-mix(in srgb,var(--secondary-background-color) 96%,#f6b73c 4%))!important}
-      .overview-key-card.wallbox{background:linear-gradient(145deg,color-mix(in srgb,var(--card-background-color) 94%,var(--primary-color) 6%),color-mix(in srgb,var(--secondary-background-color) 95%,var(--primary-color) 5%))!important}
-      .overview-key-card.external{background:linear-gradient(145deg,color-mix(in srgb,var(--card-background-color) 94%,#5eaefe 6%),color-mix(in srgb,var(--secondary-background-color) 96%,#5eaefe 4%))!important}
-      .overview-key-icon{
-        width:54px;height:54px;border-radius:16px;display:grid;place-items:center;flex:none;
-        color:var(--primary-color);
-        border:1px solid color-mix(in srgb,var(--primary-color) 25%,var(--divider-color));
-        background:color-mix(in srgb,var(--primary-color) 8%,var(--card-background-color));
-      }
-      .overview-key-card.solar .overview-key-icon{color:#d69614;border-color:color-mix(in srgb,#d69614 30%,var(--divider-color));background:color-mix(in srgb,#f6b73c 10%,var(--card-background-color))}
-      .overview-key-icon ha-icon{--mdc-icon-size:27px}
-      .overview-key-copy{min-width:0;flex:1}
-      .overview-key-card .overview-key-copy>span{
-        display:block!important;font-size:10px!important;letter-spacing:.1em!important;
-        color:var(--secondary-text-color)!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-      }
-      .overview-key-value{display:flex;align-items:baseline;gap:7px;margin-top:8px}
-      .overview-key-value strong{margin:0!important;font-size:26px!important;letter-spacing:-.035em;color:var(--primary-text-color)}
-      .overview-key-value b{font-size:12px;color:var(--secondary-text-color);font-weight:750}
-      .theme-light .overview-key-card{box-shadow:0 8px 24px rgba(25,55,80,.08)}
-      @media(max-width:650px){
-        .overview-key-grid{grid-template-columns:1fr!important}
-        .overview-key-card{min-height:94px}
-      }
+      /* v3.5.1 - reliable image persistence + preview */
+      .photo-preview{margin-top:8px;overflow:hidden;border-radius:11px;border:1px solid var(--divider-color);background:var(--secondary-background-color)}
+      .photo-preview img{display:block;width:100%;height:100%;object-fit:cover}
+      .room-photo-preview{width:min(260px,100%);height:116px}
+      .object-photo-preview{width:118px;height:82px}
+      .room-entity-photo .object-photo-preview{margin-top:7px}
     `;
   }
 
@@ -200,11 +47,13 @@ px;transform:translateX(-50%);border:6px solid #596a76;background:#173246}.offic
     try {
       let entities=null;
       let labels=null;
+      let overview=null;
       if(this._hass?.callWS){
         try {
           const result=await this._hass.callWS({type:"casa_dashboard_community/config/get"});
           if(result?.entities && typeof result.entities==="object") entities=result.entities;
           if(result?.labels && typeof result.labels==="object") labels=result.labels;
+          if(result?.overview && typeof result.overview==="object") overview=result.overview;
           if(Array.isArray(result?.rooms)) this._rooms=result.rooms;
         } catch(_wsErr) { /* fallback below */ }
       }
@@ -214,13 +63,16 @@ px;transform:translateX(-50%);border:6px solid #596a76;background:#173246}.offic
           const json=await res.json();
           if(json?.entities && typeof json.entities==="object") entities=json.entities;
           if(json?.labels && typeof json.labels==="object") labels=json.labels;
+          if(json?.overview && typeof json.overview==="object") overview=json.overview;
         }
       }
       this._entityMap=entities || {};
       this._entityLabels=labels || {};
+      this._overviewConfig=overview || {};
     } catch(_err) {
       this._entityMap={};
       this._entityLabels={};
+      this._overviewConfig={};
     } finally {
       this._entityConfigLoaded=true;
       this._entityConfigLoading=false;
@@ -289,6 +141,16 @@ px;transform:translateX(-50%);border:6px solid #596a76;background:#173246}.offic
               value="${this._esc(this._roomEntityCustomLabel(e,room))}"
               placeholder="${this._esc(this._hass?.states?.[e]?.attributes?.friendly_name||e)}">
           </label>
+          <div class="room-entity-photo">
+            <span>Foto oggetto</span>
+            <div class="photo-config-line">
+              <input data-room-entity-image-room="${room.id}" data-room-entity-image-entity="${this._esc(e)}"
+                value="${this._esc(this._roomEntityImage(e,room))}" placeholder="/local/... oppure carica foto">
+              <button class="photo-upload-btn" type="button" data-upload-entity-room="${room.id}" data-upload-entity="${this._esc(e)}"><ha-icon icon="mdi:image-plus"></ha-icon> Carica</button>
+              ${this._roomEntityImage(e,room)?`<button class="photo-clear-btn" type="button" data-clear-entity-image-room="${room.id}" data-clear-entity-image="${this._esc(e)}" title="Rimuovi foto"><ha-icon icon="mdi:image-remove-outline"></ha-icon></button>`:""}
+            </div>
+            ${this._roomEntityImage(e,room)?`<div class="photo-preview object-photo-preview"><img src="${this._esc(this._roomEntityImage(e,room))}" alt=""></div>`:""}
+          </div>
         </div>`).join("")}
       </div>
       <div class="room-entity-search-wrap">
@@ -365,6 +227,70 @@ px;transform:translateX(-50%);border:6px solid #596a76;background:#173246}.offic
     else delete room.entity_labels[entity];
   }
 
+  _roomEntityImage(entity,room=null){
+    return room?.entity_images && typeof room.entity_images==="object"
+      ? String(room.entity_images[entity]||"").trim()
+      : "";
+  }
+  _setRoomEntityImage(roomId,entity,value){
+    const room=this._roomsDraft.find(r=>r.id===roomId);
+    if(!room) return;
+    room.entity_images=(room.entity_images && typeof room.entity_images==="object") ? {...room.entity_images} : {};
+    const clean=String(value||"").trim();
+    if(clean) room.entity_images[entity]=clean;
+    else delete room.entity_images[entity];
+  }
+  _activeRoomEntityImage(entity){
+    if(this._uiTheme!=="v2") return "";
+    const room=this._roomById(this._active);
+    return this._roomEntityImage(entity,room);
+  }
+  _customObjectVisual(entity,cls="device"){
+    const src=this._activeRoomEntityImage(entity);
+    return src ? `<div class="custom-object-photo ${cls}"><img src="${this._esc(src)}" alt="" loading="lazy"></div>` : "";
+  }
+  async _resizeImageForUpload(file,maxSide=1400,quality=.84){
+    if(!file || !String(file.type||"").startsWith("image/")) throw new Error("Seleziona un file immagine.");
+    if(file.size>12*1024*1024) throw new Error("La foto originale è troppo grande (max 12 MB).");
+    const source=await new Promise((resolve,reject)=>{
+      const reader=new FileReader();
+      reader.onload=()=>resolve(reader.result);
+      reader.onerror=()=>reject(new Error("Impossibile leggere la foto."));
+      reader.readAsDataURL(file);
+    });
+    const img=await new Promise((resolve,reject)=>{
+      const el=new Image();
+      el.onload=()=>resolve(el);
+      el.onerror=()=>reject(new Error("Formato immagine non valido."));
+      el.src=source;
+    });
+    const longest=Math.max(img.naturalWidth||img.width,img.naturalHeight||img.height);
+    const scale=Math.min(1,maxSide/Math.max(1,longest));
+    const width=Math.max(1,Math.round((img.naturalWidth||img.width)*scale));
+    const height=Math.max(1,Math.round((img.naturalHeight||img.height)*scale));
+    const canvas=document.createElement("canvas");
+    canvas.width=width; canvas.height=height;
+    const ctx=canvas.getContext("2d");
+    if(!ctx) throw new Error("Il browser non può elaborare la foto.");
+    ctx.drawImage(img,0,0,width,height);
+    return canvas.toDataURL("image/jpeg",quality);
+  }
+  async _uploadDashboardImage(file){
+    // Preferred path: store the compressed file under /config/www and save only /local/ URL.
+    const image=await this._resizeImageForUpload(file,1400,.84);
+    try{
+      const result=await this._hass.callWS({type:"casa_dashboard_community/config/upload_image",image});
+      if(result?.url) return {url:result.url,mode:"file"};
+    }catch(err){
+      console.warn("[Casa Dashboard Community] file upload unavailable, using inline image fallback",err);
+    }
+    // Fallback: save a smaller compressed Data URL directly in the Community JSON.
+    // This also works when Home Assistant still has an older websocket registration in memory.
+    const inline=await this._resizeImageForUpload(file,900,.76);
+    if(!inline || inline.length>1_350_000) throw new Error("La foto compressa è ancora troppo grande. Prova un'immagine più piccola.");
+    return {url:inline,mode:"inline"};
+  }
+
   _legacyRoomForConfigKey(key){
     const full=String(key||"").toLowerCase();
     const name=full.split(".")[1]||"";
@@ -382,7 +308,7 @@ px;transform:translateX(-50%);border:6px solid #596a76;background:#173246}.offic
     return byGroup[group]||"";
   }
   _mergeConfiguredEntitiesIntoRooms(rooms){
-    const out=(Array.isArray(rooms)?rooms:[]).map(r=>({...r,entities:[...(r.entities||[])],entity_labels:{...(r.entity_labels||{})}}));
+    const out=(Array.isArray(rooms)?rooms:[]).map(r=>({...r,entities:[...(r.entities||[])],entity_labels:{...(r.entity_labels||{})},entity_images:{...(r.entity_images||{})}}));
     const defaults=new Map(this._defaultRooms().map(r=>[r.id,r]));
     const configured=[...ENTITY_KEYS].map(key=>{
       const entity=String(this._configDraft?.[key] ?? this._entityMap?.[key] ?? "").trim();
@@ -394,4 +320,88 @@ px;transform:translateX(-50%);border:6px solid #596a76;background:#173246}.offic
       let room=out.find(r=>r.id===item.room)
         || out.find(r=>r.type===item.room)
         || out.find(r=>String(r.name||"").toLocaleLowerCase("it")===String(meta?.name||"").toLocaleLowerCase("it"));
-      if(!room && meta){ room={...meta,e
+      if(!room && meta){ room={...meta,entities:[],entity_labels:{},entity_images:{}}; out.push(room); }
+      if(room){
+        room.entities=Array.isArray(room.entities)?room.entities:[];
+        if(!room.entities.includes(item.entity)) room.entities.push(item.entity);
+      }
+    }
+    return out;
+  }
+  _syncConfiguredKeyToRoom(key,oldEntity,newEntity){
+    // Legacy 173 mappings are used only to bootstrap the room list once.
+    // After rooms have been saved, room membership is controlled exclusively
+    // from the Rooms manager and must never be recreated automatically.
+    if(Array.isArray(this._rooms) && this._rooms.length) return;
+    const roomId=this._legacyRoomForConfigKey(key);
+    if(!roomId) return;
+    const defaults=new Map(this._defaultRooms().map(r=>[r.id,r]));
+    let room=this._roomsDraft.find(r=>r.id===roomId) || this._roomsDraft.find(r=>r.type===roomId);
+    if(!room && newEntity){
+      const meta=defaults.get(roomId);
+      if(meta){ room={...meta,entities:[],entity_labels:{},entity_images:{}}; this._roomsDraft.push(room); }
+    }
+    if(!room) return;
+    room.entities=Array.isArray(room.entities)?room.entities:[];
+    if(oldEntity && oldEntity!==newEntity){
+      const stillUsed=[...ENTITY_KEYS].some(k=>
+        k!==key &&
+        this._legacyRoomForConfigKey(k)===roomId &&
+        String(this._configDraft[k]||"").trim()===oldEntity
+      );
+      if(!stillUsed) room.entities=room.entities.filter(e=>e!==oldEntity);
+    }
+    if(newEntity && !room.entities.includes(newEntity)) room.entities.push(newEntity);
+  }
+
+  _defaultRooms(){
+    return [
+      {id:"esterno",name:"Esterno",type:"esterno",icon:"mdi:tree-outline",image:""},
+      {id:"scale",name:"Scale",type:"scale",icon:"mdi:stairs"},
+      {id:"ingresso",name:"Ingresso",type:"ingresso",icon:"mdi:door"},
+      {id:"cucina",name:"Cucina",type:"cucina",icon:"mdi:chef-hat"},
+      {id:"disimpegno",name:"Disimpegno",type:"disimpegno",icon:"mdi:walk"},
+      {id:"bagno",name:"Bagno",type:"bagno",icon:"mdi:shower"},
+      {id:"camera",name:"Camera",type:"camera",icon:"mdi:bed-king-outline"},
+      {id:"balcone",name:"Balcone",type:"balcone",icon:"mdi:balcony"},
+      {id:"garage",name:"Garage",type:"garage",icon:"mdi:garage-variant"}
+    ];
+  }
+  _roomTypes(){
+    return [
+      ["generico","Ambiente generico","mdi:home-outline"],["soggiorno","Soggiorno","mdi:sofa-outline"],
+      ["cucina","Cucina","mdi:chef-hat"],["camera","Camera","mdi:bed-king-outline"],
+      ["bagno","Bagno","mdi:shower"],["studio","Studio","mdi:desk"],
+      ["lavanderia","Lavanderia","mdi:washing-machine"],["taverna","Taverna / Sala hobby","mdi:glass-mug-variant"],
+      ["disimpegno","Corridoio / Disimpegno","mdi:walk"],["ingresso","Ingresso","mdi:door"],
+      ["scale","Scale","mdi:stairs"],["balcone","Balcone / Terrazzo","mdi:balcony"],
+      ["esterno","Giardino / Esterno","mdi:tree-outline"],["garage","Garage","mdi:garage-variant"]
+    ];
+  }
+  _effectiveRooms(){
+    if(Array.isArray(this._rooms) && this._rooms.length) return this._rooms;
+    return this._uiTheme==="v1"?this._defaultRooms():[];
+  }
+  _roomById(id){ return this._effectiveRooms().find(r=>r.id===id)||null; }
+  _roomIcon(type){ return this._roomTypes().find(x=>x[0]===type)?.[2]||"mdi:home-outline"; }
+  _slugRoom(name){
+    const base=String(name||"stanza").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")||"stanza";
+    let id=`room-${base}`, n=2; const used=new Set(this._roomsDraft.map(r=>r.id));
+    while(used.has(id)) id=`room-${base}-${n++}`; return id;
+  }
+  _addRoomDraft(){
+    const id=this._slugRoom("Nuova stanza");
+    this._roomsDraft.push({id,name:"Nuova stanza",type:"generico",icon:"mdi:home-outline",image:"",entities:[],entity_labels:{},entity_images:{}});
+    this._configTab="rooms";
+    this._renderConfigLayer();
+    requestAnimationFrame(()=>{
+      const list=this.shadowRoot?.querySelector(".room-list");
+      if(list) list.scrollTop=list.scrollHeight;
+      const input=this.shadowRoot?.querySelector(`[data-room-name="${id}"]`);
+      input?.focus(); input?.select();
+    });
+  }
+  _removeRoomDraft(id){ this._roomsDraft=this._roomsDraft.filter(r=>r.id!==id); this._renderConfigLayer(); }
+  _dynamicRoomConfigured(room){
+    if(!room) return false;
+    if(Array.isArray(room.entities) && room.entities.some(e=>this._hass?.states?

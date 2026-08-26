@@ -1,5 +1,80 @@
 # Changelog
 
+## 3.5.1 - 2026-08-26
+
+### Image Upload Reliability Fix
+
+- Fixed room and per-object photos not being retained in some installations.
+- Added a resilient image storage fallback when the dedicated upload WebSocket command is not yet available.
+- Preferred storage remains `/config/www/casa_dashboard_community/uploads/` with a `/local/...` URL.
+- Fallback images are resized/compressed and stored directly in the Community configuration as a Data URL.
+- Added immediate image previews for room photos and individual object photos.
+- Added WebSocket command registration safety in `async_setup_entry`.
+- Fixed Overview radio/select persistence during configuration save.
+- Preserved all v3.5.0 Advanced Energy View features.
+
+## 3.5.0 - 2026-08-26
+
+### Advanced Energy View
+
+- Added Compact / Advanced Solar display selection in Casa V2.
+- Added advanced live-production card inspired by the current personal Casa Dashboard energy design.
+- Added optional PV1 and PV2 production bars with voltage/current details when configured.
+- Added battery SOC visual with charge/discharge power and optional daily energy details.
+- Added adaptive Home / Inverter / Battery / Grid energy nodes.
+- Added configurable labels for production, PV1, PV2, Home, Inverter, Battery and Grid.
+- Added configurable positive-sign convention for Grid import/export.
+- Added configurable positive-sign convention for Battery charge/discharge.
+- Advanced layout automatically removes unavailable PV strings, battery or grid data without leaving empty blocks.
+- Preserved Compact mode for users who prefer the simpler Overview.
+- Fixed configurator event wiring so room/object image upload remains available independently of the search field.
+- Preserved all v3.4.0 paged-configurator functionality.
+
+## 3.4.0 - 2026-08-26
+
+### Configurator Redesign
+
+- Rebuilt the Casa V2 configurator as a paged/tabbed interface.
+- Added dedicated pages for Overview, Rooms, Devices, Energy & Mobility, Weather & Security and Advanced mappings.
+- Separated room structure management from per-room entity/device management.
+- Moved the full 173 Community mappings into the Advanced page.
+- Energy and Weather/Security pages now expose only relevant mappings.
+- Kept Save/Cancel controls fixed and available from every page.
+- Preserved direct image upload for rooms and individual objects.
+- Preserved custom Overview labels, vehicle/Wallbox naming and all existing v3.3.0 functionality.
+- Improved mobile configurator navigation and reduced visual clutter.
+
+## 3.3.0 - 2026-08-26
+
+### Direct Photo Upload & Object Images
+
+- Added direct room-photo upload from the Casa V2 configurator.
+- Added custom photos for individual V2 objects/entities: lights, switches, appliances, sensors and other devices.
+- Photos are resized/compressed in the browser before upload.
+- Uploaded files are stored safely in `/config/www/casa_dashboard_community/uploads/`.
+- The configuration stores only the `/local/...` image path.
+- Per-object images are stored per room.
+- Custom photos override generated visuals only when explicitly configured.
+- Automatic Casa V2 visuals and smart recognition remain the fallback.
+- Supported uploads: JPEG, PNG and WebP.
+- Preserved all v3.2.0 macro-label, Auto/Wallbox naming and room-photo features.
+
+## 3.2.0 - 2026-08-26
+
+### Full Visual Customization
+
+- Added customizable macro labels for the Casa V2 Overview.
+- Added customizable Overview title.
+- Added independent custom names for the electric vehicle and Wallbox.
+- Mobility section automatically uses the configured Auto / Wallbox names when no custom macro label is set.
+- Added per-room custom image support in Casa V2.
+- Room images accept Home Assistant `/local/...` paths, absolute paths or HTTP/HTTPS image URLs.
+- Custom room image fallback order: custom photo → Casa V2 generated room visual.
+- Room image settings are stored persistently in the Community configuration.
+- Overview customization is stored persistently and survives restarts/upgrades.
+- Preserved custom entity display names and all v3.1.0 adaptive Overview improvements.
+- Based visually on the current Casa Dashboard personal design while keeping Community entities and configuration completely independent.
+
 ## 3.1.0 - 2026-08-26
 
 - Special thanks to **Mario Pagano** for feedback and suggestions that helped improve the v3.1.0 Overview and configurator experience.

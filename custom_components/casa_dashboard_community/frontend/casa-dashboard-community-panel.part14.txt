@@ -1,5 +1,18 @@
- ${tone||''}" ${entity?`data-more="${entity}"`:""}>
-      <div class="sensor-visual ${type}">
+,label,value,foot="",span=3,entity="",tone=""){
+    const l=String(label||"").toLowerCase(), i=String(icon||"").toLowerCase(); let type="generic";
+    if(l.includes("vento")||l.includes("raffica")||i.includes("weather-windy")||i.includes("tornado")) type="wind";
+    else if(l.includes("pioggia")||l.includes("rain")||i.includes("weather-rain")) type="rain";
+    else if(l==="vpd"||l.includes("vapour pressure")) type="vpd";
+    else if(l.includes("radiazione")||i.includes("solar-power")) type="radiation";
+    else if(l.includes("indice uv")||l.includes("sole e uv")||i.includes("sunny-alert")) type="uv";
+    else if(l.includes("pressione")||i.includes("gauge")) type="pressure";
+    else if(l.includes("direzione")||i.includes("compass")) type="compass";
+    else if(l.includes("fulmini")||l.includes("temporali")||i.includes("lightning")) type="lightning";
+    else if(l.includes("blocco")||i.includes("timer")) type="timer";
+    else if(l.includes("livello acqua")||l.includes("serbatoio")||i.includes("cup-water")) type="water";
+    const customPhoto=entity?this._customObjectVisual(entity,"sensor"):"";
+    return `<div class="sensor-visual-card ${type} span-${span} ${tone||''} ${customPhoto?'has-custom-photo':''}" ${entity?`data-more="${entity}"`:""}>
+      ${customPhoto || `<div class="sensor-visual ${type}">
         ${type==="wind"?`<div class="wind-lines"><i></i><i></i><i></i></div><div class="wind-vane"><span></span></div>`:
           type==="rain"?`<div class="rain-cloud"></div><div class="rain-drops"><i></i><i></i><i></i><i></i></div>`:
           type==="vpd"?`<div class="vpd-leaf"></div><div class="vpd-air"><i></i><i></i><i></i></div>`:
@@ -11,7 +24,7 @@
           type==="timer"?`<div class="timer-ring"><i></i><span></span></div>`:
           type==="water"?`<div class="water-tank"><div></div></div>`:
           `<div class="generic-sensor"><ha-icon icon="${icon}"></ha-icon></div>`}
-      </div>
+      </div>`}
       <div class="sensor-visual-copy"><span>${this._esc(label)}</span><strong>${this._esc(value)}</strong>${foot?`<small>${this._esc(foot)}</small>`:""}</div><div class="sensor-visual-icon"><ha-icon icon="${icon}"></ha-icon></div>
     </div>`;
   }
@@ -22,10 +35,11 @@
     if(type==="temperature"){ value=valid?`${n.toFixed(1)} °C`:"—"; icon="mdi:thermometer"; tone=valid?(n>=28?"hot":n<=18?"cold":"normal"):"normal"; }
     else if(type==="humidity"){ value=valid?`${Math.round(n)} %`:"—"; icon="mdi:water-percent"; tone=valid?(n>=65?"humid":n<=35?"dry":"normal"):"normal"; }
     else if(type==="lux"){ value=this._fmtLuxExact(entity); icon="mdi:white-balance-sunny"; const l=valid?n:0; tone=l>=20000?"bright":l>=3500?"good":"low"; }
-    return `<button class="environment-card ${scene} ${tone} span-${span}" data-more="${entity}">
-      <div class="environment-visual ${scene}">
+    const customPhoto=this._customObjectVisual(entity,"environment");
+    return `<button class="environment-card ${scene} ${tone} span-${span} ${customPhoto?'has-custom-photo':''}" data-more="${entity}">
+      ${customPhoto || `<div class="environment-visual ${scene}">
         ${scene==="temperature"?`<div class="thermometer"><div class="thermo-tube"><i style="height:${valid?Math.max(12,Math.min(90,(n+5)/45*100)):30}%"></i></div><div class="thermo-bulb"></div></div>`:scene==="humidity"?`<div class="humidity-drop"><div class="humidity-fill" style="height:${valid?Math.max(8,Math.min(100,n)):35}%"></div></div>`:`<div class="sun-meter"><div class="sun-core"></div>${Array.from({length:8},(_,i)=>`<i class="r${i+1}"></i>`).join("")}</div>`}
-      </div>
+      </div>`}
       <div class="environment-copy"><span>${this._esc(label)}</span><strong>${this._esc(value)}</strong><small>${this._esc(subtitle)}</small></div><div class="environment-state"><ha-icon icon="${icon}"></ha-icon></div>
     </button>`;
   }
@@ -99,7 +113,8 @@
       actionAttr=`data-toggle="${entity}"`;
       actionText=actionText||(on?"ON":"OFF");
     }
-    return `<div class="universal-device-card ${type} ${visualActive?'active':'inactive'} span-${span}"><div class="universal-device-scene">${visual}</div><div class="universal-device-copy clickable" data-more="${entity}"><span>${this._esc(title)}</span><strong>${this._esc(status)}</strong><small>${this._esc(subtitle)}</small></div><button class="universal-device-action ${actionClass}" ${actionAttr} type="button"><ha-icon icon="${icon}"></ha-icon>${actionText?`<span>${this._esc(actionText)}</span>`:""}</button></div>`;
+    const customPhoto=this._customObjectVisual(entity,"universal");
+    return `<div class="universal-device-card ${type} ${visualActive?'active':'inactive'} span-${span} ${customPhoto?'has-custom-photo':''}">${customPhoto || `<div class="universal-device-scene">${visual}</div>`}<div class="universal-device-copy clickable" data-more="${entity}"><span>${this._esc(title)}</span><strong>${this._esc(status)}</strong><small>${this._esc(subtitle)}</small></div><button class="universal-device-action ${actionClass}" ${actionAttr} type="button"><ha-icon icon="${icon}"></ha-icon>${actionText?`<span>${this._esc(actionText)}</span>`:""}</button></div>`;
   }
 
   _v2HeroScene(sceneKey){
@@ -166,7 +181,7 @@
     }
   }
 
-  _hero(title, subtitle, status, metrics=[], sceneKey="") {
+  _hero(title, subtitle, status, metrics=[], sceneKey="", roomConfig=null) {
     const level=status.level||"good";
     const heroIcon=level==='bad'?'mdi:alert-decagram':level==='warn'?'mdi:shield-alert-outline':level==='blue'?'mdi:home-lightning-bolt-outline':'mdi:home-heart';
     const visibleMetrics=metrics.filter(m=>m.show!==false && String(m.value??"").trim() && String(m.value).trim()!=="—");
@@ -180,7 +195,9 @@
           <div class="scene-status ${level}"><span class="pulse"></span><strong>${this._esc(status.title||status.text)}</strong>${status.title&&status.text?`<span>${this._esc(status.text)}</span>`:""}</div>
         </div>
         <div class="original-room-hero-card">
-          <div class="original-room-visual">${this._v2HeroScene(sceneKey)}</div>
+          <div class="original-room-visual">${this._roomImageUrl(roomConfig)
+            ? `<div class="custom-room-photo"><img src="${this._esc(this._roomImageUrl(roomConfig))}" alt="${this._esc(title)}" loading="lazy"></div>`
+            : this._v2HeroScene(sceneKey)}</div>
           <div class="original-room-side">
             ${side.length?side.map((m,i)=>`<div class="original-room-meta"><span>${m.label}</span><strong>${m.value}</strong>${m.small?`<small>${m.small}</small>`:""}</div>${i<side.length-1?'<div class="original-room-divider"></div>':''}`).join(""):`<div class="original-room-meta"><span>AMBIENTE</span><strong>Pronto</strong><small>Nessun dato sintetico disponibile</small></div>`}
           </div>
@@ -242,4 +259,19 @@
   _alert(level,icon,title,text) { return `<div class="signal ${level}"><div class="signal-icon"><ha-icon icon="${icon}"></ha-icon></div><div><strong>${title}</strong><span>${text}</span></div></div>`; }
   _logic(title,text,level=""){ return `<div class="logic-ribbon ${level}"><span>${title}</span><strong>${text}</strong></div>`; }
   _compareCard(title, items, foot="", span=6, icon="mdi:chart-line") {
-    con
+    const visible=items.filter(it=>String(it.value??"").trim() && String(it.value).trim()!=="—");
+    if(!visible.length) return "";
+    return `<div class="data-node compare-card span-${span}"><div class="data-node-top"><div class="data-label">${title}</div><ha-icon icon="${icon}"></ha-icon></div><div class="compare-grid">${visible.map(it=>`<div class="compare-cell"><div class="compare-label">${it.label}</div><div class="compare-value">${it.value}</div></div>`).join("")}</div>${foot&&foot.trim()!=="—"?`<div class="data-foot compare-foot">${foot}</div>`:""}</div>`;
+  }
+
+  _configuredEntitiesForOverview(){
+    const roomEntities=(this._effectiveRooms()||[]).flatMap(r=>Array.isArray(r.entities)?r.entities:[]);
+    const mapped=[...ENTITY_KEYS].map(k=>String(this._entityMap?.[k]||"").trim()).filter(Boolean);
+    return [...new Set([...roomEntities,...mapped])].filter(e=>this._hass?.states?.[e]);
+  }
+  _logicalKeysForEntity(entity){
+    return [...ENTITY_KEYS].filter(k=>String(this._entityMap?.[k]||"").trim()===entity);
+  }
+  _overviewLabelForEntity(entity){
+    const keys=this._logicalKeysForEntity(entity);
+    const keyWithLabel=keys.find(k=>String(this._entityLabels?.[k]
