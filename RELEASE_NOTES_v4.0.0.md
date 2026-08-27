@@ -27,3 +27,8 @@ Casa Dashboard Community 4.0 promotes the current Dynamic generation to a stable
 Highlights include dynamic rooms, reusable Solar / EV + Wallbox / Weather / Alarm modules, advanced solar visualization, dedicated EV and Wallbox presentation, room-specific visuals, light/dark themes and IT/EN support.
 
 **Realizzato da Fabio Vittori**
+
+### Documentation
+
+- README IT/EN refreshed with real v4.0 screenshots in dark and light themes.
+- Added real examples for Overview, Entrance, Kitchen, Balcony, Garage/EV/Wallbox and Configurator.

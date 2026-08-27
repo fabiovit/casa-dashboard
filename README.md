@@ -16,25 +16,49 @@ Casa Dashboard Community is a complete app-like dashboard for **Home Assistant**
 
 **Created by Fabio Vittori** · [☕ Buy me a coffee](https://ko-fi.com/fabvittori)
 
-## ✨ Casa V1 + Casa V2
+## 🖼️ Casa Dashboard Community 4.0
 
-### Casa V1 — Classic
+Version 4.0 introduces a refined visual experience across **dark and light themes**, while keeping the same dynamic room architecture.
 
-The original Community experience remains available.
+### Overview
 
-![Casa Dashboard Community - Casa V1 Classic](images/casa-v1-classic.png)
+![Casa Dashboard Community 4.0 - Overview dark theme](images/casa-v4-overview-dark.png)
 
-### Casa V2 — Dynamic
+![Casa Dashboard Community 4.0 - Overview light theme](images/casa-v4-overview-light.png)
 
-The configurable generation of Casa Dashboard. Rooms are created around your home rather than around the original author's house.
+### Entrance
 
-![Casa Dashboard Community - Casa V2 Overview](images/casa-v2-overview.png)
+![Casa Dashboard Community 4.0 - Entrance dark theme](images/casa-v4-ingresso-dark.png)
 
-Additional examples:
+![Casa Dashboard Community 4.0 - Entrance light theme](images/casa-v4-ingresso-light.png)
 
-![Casa Dashboard Community - Casa V2 Entrance](images/casa-v2-ingresso.png)
+### Kitchen
 
-![Casa Dashboard Community - Casa V2 Garage](images/casa-v2-garage.png)
+![Casa Dashboard Community 4.0 - Kitchen dark theme](images/casa-v4-cucina-dark.png)
+
+![Casa Dashboard Community 4.0 - Kitchen light theme](images/casa-v4-cucina-light.png)
+
+### Balcony
+
+![Casa Dashboard Community 4.0 - Balcony dark theme](images/casa-v4-balcone-dark.png)
+
+![Casa Dashboard Community 4.0 - Balcony light theme](images/casa-v4-balcone-light.png)
+
+### Garage, EV and Wallbox
+
+![Casa Dashboard Community 4.0 - Garage dark theme](images/casa-v4-garage-dark.png)
+
+![Casa Dashboard Community 4.0 - Garage light theme](images/casa-v4-garage-light.png)
+
+### Configurator
+
+![Casa Dashboard Community 4.0 - Overview configurator](images/casa-v4-config-overview.png)
+
+![Casa Dashboard Community 4.0 - Rooms configurator](images/casa-v4-config-rooms.png)
+
+![Casa Dashboard Community 4.0 - Energy and Mobility configurator](images/casa-v4-config-energy.png)
+
+
 
 ## 🛡️ Security & Access
 
