@@ -1,5 +1,431 @@
 # Changelog
 
+## 4.0.0 - 2026-08-27
+
+### Major Community Release
+
+- Promoted the current stable Community generation to **4.0.0**.
+- Preserved the dynamic room architecture and paged configurator.
+- Preserved shared reusable room modules for **Solar Energy**, **EV + Wallbox**, **Weather** and **Alarm**.
+- Preserved the advanced Solar view with PV1/PV2, battery, house load and grid flow.
+- Preserved improved Weather presentation shared between Overview and rooms.
+- Preserved the advanced **EV + Wallbox** room console and separate real EV vehicle data.
+- Preserved room-specific visuals, custom entity icons/photos, blinds/awnings, climate layout and alarm panel.
+- Preserved light/dark themes, responsive layout and IT/EN interface.
+- Performed a conservative source cleanup without changing runtime behavior.
+- Kept the stable 19-part frontend loader architecture.
+- Versioning aligned across frontend loader, integration backend and manifest.
+
+## 3.9.7 - 2026-08-27
+
+### EV Vehicle in Mobility Rooms
+
+- Rooms using the **EV + Wallbox** shared module now also show the configured electric vehicle card.
+- Vehicle data remains independent from Wallbox data and uses only real `sensor.vehicle_*` mappings.
+- If no vehicle mappings are configured, only the Wallbox console is rendered.
+- Added battery, range, remaining charge time, charging power, session energy and odometer metrics when available.
+- No additional room module is required: vehicle data follows the existing EV + Wallbox module.
+- Preserved all previous fixes and the stable 19-part frontend loader.
+
+## 3.9.6 - 2026-08-27
+
+### Auto elettrica separata da EV + Wallbox
+
+- Aggiunto il gruppo **Auto elettrica** in Energia & Mobilità.
+- I mapping veicolo esistenti sono ora visibili nel configuratore.
+- La card Auto in Panoramica compare solo con almeno un vero mapping `sensor.vehicle_*`.
+- Rimossi i fallback a potenza ed energia sessione della Wallbox.
+- EV + Wallbox resta indipendente.
+
+## 3.9.5 - 2026-08-27
+
+### Generic EV + Wallbox Naming
+
+- Renamed the Community mobility module from **BYD + DAZE** to **EV + Wallbox**.
+- Kept the subtitle **Ricarica domestica**.
+- Removed personal-brand references from status and diagnostic labels.
+- **STATO DAZE** is now **STATO WALLBOX**.
+- EVSE subtitle is now generic: **Veicolo elettrico**.
+- Diagnostic label **Ventola DAZE** is now **Ventola wallbox**.
+- Preserved the advanced mobility visual introduced in v3.9.4.
+- Preserved Weather, Solar and shared-module persistence fixes.
+- Preserved stable 19-part frontend loader.
+
+## 3.9.4 - 2026-08-27
+
+### BYD + DAZE Room Module Visual Parity
+
+- Reworked the **Wallbox & EV** room module to match the personal Casa Dashboard BYD + DAZE console.
+- Added dedicated car + wallbox visual with live charging LED and charging/rest status.
+- Added primary cards for Charging Power, Meter Load, Session Energy, Charging Limit, DAZE Status and EVSE Status.
+- Meter load is derived from configured Grid Current L1 × Wallbox Voltage L1.
+- Charging limit power is derived from configured Max Charging Current × Wallbox Voltage L1.
+- Added DAZE diagnostic cards for board temperature, case temperature and fan status when configured.
+- Uses only the global Wallbox & EV mappings already configured in Community.
+- Preserved v3.9.3 Weather parity, v3.9.2 Solar parity and v3.9.1 module persistence.
+- Preserved stable 19-part frontend loader.
+
+## 3.9.3 - 2026-08-27
+
+### Weather Room Module Visual Parity
+
+- The **Meteo** room module now reuses the same weather data/presentation as Overview.
+- Removed the generic technical metric grid from room Weather modules.
+- Added a richer weather presentation with dedicated icon blocks, stronger hierarchy and responsive layout.
+- Outdoor temperature, humidity, wind, rain, solar radiation/lux, UV and pressure remain driven by the globally configured Weather mappings.
+- Weather visual improvements are shared by Overview and room modules to avoid duplicate renderers.
+- Preserved v3.9.2 Solar renderer parity and v3.9.1 module persistence fixes.
+- Preserved stable 19-part frontend loader.
+
+## 3.9.2 - 2026-08-27
+
+### Solar Room Module Visual Parity
+
+- The **Energia solare** room module now reuses the exact same advanced solar renderer used in Overview.
+- Room and Overview now share identical PV production, PV1/PV2, battery, house load and grid visuals.
+- Battery charge/discharge direction, grid import/export signs and custom energy labels are now identical everywhere.
+- Daily charge, discharge and loss pills are reused from the Overview renderer.
+- Removed the generic metric-grid presentation for Solar inside rooms.
+- Wallbox & EV, Weather and Alarm remain reusable shared modules.
+- Preserved v3.9.1 module persistence fixes and all previous features.
+- Preserved stable 19-part frontend loader.
+
+## 3.9.1 - 2026-08-27
+
+### Shared Room Module Persistence Fix
+
+- Fixed room module selections not reliably surviving Save / configurator reopen.
+- Module checkboxes now update the room draft immediately on change.
+- `syncRooms()` now explicitly captures all selected room modules before tab switches and save.
+- Final Save still performs a defensive module synchronization.
+- Added room-module loading to the JSON fallback path.
+- Added explicit visual selected state for persisted modules.
+- Backend module sanitization and persistence verified.
+- Preserved all v3.9.0 reusable modules and previous fixes.
+- Preserved stable 19-part frontend loader.
+
+## 3.9.0 - 2026-08-27
+
+### Reusable Room Modules
+
+- Added reusable room modules for **Energia solare**, **Wallbox & EV**, **Meteo** and **Allarme**.
+- Modules reuse the global mappings already configured in Energy & Mobility / Weather & Security.
+- Rooms store only the selected module IDs: entity mappings are not duplicated.
+- Changing a global mapping automatically updates every room using the corresponding module.
+- Added module selectors directly to each room in the Rooms configurator page.
+- Preserved v3.8.1 awning visuals, v3.8.0 smart auto-mapping and previous fixes.
+- Preserved stable 19-part frontend loader.
+
+## 3.8.1 - 2026-08-27
+
+### Awning / Tenda Visual Parity
+
+- Added dedicated awning cards matching the personal Casa Dashboard.
+- Tenda / awning cover entities now use cassette, fabric and articulated-arm graphics instead of generic blind/shutter cards.
+- Retracted state is shown as **Raccolta**.
+- Fully extended state is shown as **Estesa**.
+- Intermediate positions display the actual percentage.
+- Added **Gestisci tenda** button opening Home Assistant more-info controls.
+- Works in Kitchen and generic dynamic rooms.
+- Preserved v3.8.0 smart auto-mapping and all previous fixes.
+- Preserved stable 19-part frontend loader.
+
+## 3.8.0 - 2026-08-27
+
+### Smart Auto Mapping
+
+- Added **Abbina automaticamente** to mapping pages.
+- Existing manual mappings are never overwritten.
+- Empty mappings are matched against entities already assigned to rooms first.
+- If no safe room match exists, the complete Home Assistant entity registry is considered.
+- Matching considers room name/type, entity domain, `device_class`, unit, friendly name and `entity_id`.
+- Added dedicated scoring for temperature, humidity, illuminance, movement/presence, openings, climate, lights, alarm, EV/Wallbox, solar/inverter/battery and weather entities.
+- Low-confidence matches are deliberately skipped instead of guessed.
+- The configurator reports how many associations were proposed before saving.
+- Preserved v3.7.9 fan visuals, v3.7.8 Overview and v3.7.7 icon persistence.
+- Preserved stable 19-part frontend loader.
+
+## 3.7.9 - 2026-08-27
+
+### Fan / Extractor Visual Parity
+
+- Added the large physical four-blade fan visual used by the personal Casa Dashboard.
+- Fan-domain entities now automatically use the dedicated fan visual.
+- Switch entities named Aspiratore / Ventilatore / Ventola also use the dedicated visual.
+- Selecting the custom icon **Ventola** (`mdi:fan`) forces the same dedicated visual even for a switch entity.
+- OFF state now displays **Spento**, matching the personal dashboard.
+- ON state displays **Attivo** and animates the rotor.
+- Preserved all v3.7.8 Overview improvements and v3.7.7 custom-icon persistence fixes.
+- Preserved stable 19-part frontend loader.
+
+## 3.7.8 - 2026-08-27
+
+### Overview Climate & Weather Parity
+
+- Reworked Casa V2 Overview climate section to follow the personal Casa Dashboard.
+- Added one compact climate card per indoor room with temperature and optional humidity.
+- Added the Outdoor climate card to the same Climate House row when available.
+- Humidity entities can no longer be misclassified as temperatures.
+- Added dedicated Weather overview with Outdoor temperature, Wind, Rain, Solar radiation and UV when available.
+- Weather secondary data can show outdoor humidity, lux and pressure where available.
+- Removed duplicated generic room sensor cards from the Overview climate area.
+- Preserved custom icon persistence fixes from v3.7.7.
+- Preserved stable 19-part frontend loader.
+
+## 3.7.7 - 2026-08-27
+
+### Custom Icon Save Path Fix
+
+- Fixed the real icon persistence bug in `_saveConfigDialog()`.
+- The Save Configuration action now reads every per-device icon selector immediately before sending the WebSocket payload.
+- Previously, icon changes could exist only in the live configurator UI and never reach the saved room payload.
+- Added post-save room normalization so returned `entity_icons` remain in frontend state immediately.
+- Backend `entity_icons` read/write support remains verified.
+- Preserved all v3.7.6 and v3.7.4 features.
+- Preserved the stable 19-part frontend loader.
+
+## 3.7.6 - 2026-08-27
+
+### Custom Icon Persistence — Definitive Fix
+
+- Fixed the configurator draft clone dropping `entity_icons` when reopening configuration.
+- Added `entity_icons` to the room copy created by `_openConfigDialog()`.
+- Added defensive icon synchronization before tab changes and save.
+- Audited room clone paths so labels, images and icons travel together.
+- Backend `entity_icons` persistence remains enabled and verified.
+- Custom icons now survive Save, configurator reopen and dashboard reload.
+- Preserved all v3.7.5 / v3.7.4 features.
+- Preserved the stable 19-part frontend loader.
+
+## 3.7.5 - 2026-08-27
+
+### Per-device Icon Persistence Fix
+
+- Fixed custom device icons reverting to Automatic after saving/reloading the configurator.
+- Preserved `entity_icons` through every room normalization and cloning path.
+- Ensured `entity_icons` are restored from the backend configuration.
+- Ensured per-device icon changes refresh the room draft state before save.
+- Added defensive frontend normalization for labels, images and icons.
+- Confirmed backend persistence of `entity_icons`.
+- Preserved all v3.7.4 Disimpegno and appliance visual improvements.
+- Preserved the stable 19-part frontend loader.
+
+## 3.7.4 - 2026-08-27
+
+### Dynamic Hallway / Disimpegno
+
+- Added a dedicated Casa V2 renderer for Disimpegno / Corridoio rooms.
+- Separated Lights from Devices & Appliances.
+- Added a dedicated Control & Sensors section.
+- Added semantic appliance visuals for dryer, washing machine, dishwasher, refrigerator, dehumidifier, purifier, vacuum, plugs and siren.
+- Dryer now uses a proper `mdi:tumble-dryer` visual instead of the generic device icon.
+- Hallway hero now focuses on movement and occupancy.
+- Motion / occupancy visuals remain live-updating.
+- Preserved all v3.7.3 FIXED climate and Overview corrections.
+- Preserved the stable 19-part frontend loader.
+
+## 3.7.3 - 2026-08-27
+
+### Ambient Sensor Priority + Stability Fix
+
+- Kitchen Comfort & Climate prioritizes a real room temperature sensor over `climate.current_temperature`.
+- Room humidity sensor also has priority over climate-provided humidity.
+- Improved automatic recognition of ambient temperature/humidity sensors.
+- Kept the proven Community climate panel CSS from v3.7.2.
+- Removed the direct personal-dashboard CSS import that could destabilize the frontend.
+- Preserved all v3.7.2 Overview room-priority and Kitchen runtime fixes.
+- Preserved the stable 19-part frontend loader.
+
+## 3.7.2 - 2026-08-27
+
+### Kitchen Runtime & Overview Room-Priority Fix
+
+- Restored the missing Kitchen Comfort & Climate renderer that prevented the Kitchen page from opening.
+- Added full runtime dependency validation for the Kitchen renderer.
+- Room assignment now has priority over legacy 173-entity mappings when classifying Overview data.
+- Indoor room sensors can no longer appear in External / Weather only because of an old weather mapping.
+- Kitchen temperature and humidity remain associated with the Kitchen and no longer leak into External.
+- Outdoor-room entities are explicitly recognized as External.
+- Solar classification now ignores accidental legacy-key matches for indoor room devices.
+- Temperature classification now uses the real entity/name semantics for technical exclusions.
+- Preserved all v3.7.1 filtering and v3.7.0 Community improvements.
+- Preserved the stable 19-part frontend loader.
+
+## 3.7.1 - 2026-08-27
+
+### Overview Entity Classification Fix
+
+- Fixed room appliances incorrectly appearing in the Overview Mobility / Wallbox section.
+- Mobility now accepts only genuine EV / Wallbox / charging semantics.
+- Added explicit protection against Kitchen appliance entities being classified as mobility devices.
+- Tightened Overview Temperature filtering to exclude Wallbox / inverter / board / case temperatures.
+- Tightened External / Weather classification.
+- Tightened Solar / Battery / Grid classification.
+- Room assignment no longer causes unrelated entities to leak into Overview categories.
+- Preserved all v3.7.0 Community feedback improvements.
+- Preserved the stable 19-part frontend loader.
+
+## 3.7.0 - 2026-08-27
+
+### Community Feedback Update
+
+Based on community feedback from Mario Pagano:
+
+- Added custom house photo to Casa V2 Overview.
+- Added custom vehicle photo to the new EV overview.
+- Added a broad per-device icon selector in the room configurator.
+- Preserved semantic Open / Closed states for contact sensors.
+- Moved the Configure action to the top bar and Information page; removed the large Overview configuration banner.
+- Removed room icons from room hero titles while preserving icons in the top navigation.
+- Improved room hero/photo responsiveness on smartphones to avoid clipped photos and room names.
+- Fixed Overview metric cards to use configured custom display names, including Wallbox/EV fields.
+- Added richer vehicle mappings: battery level, range, remaining charging time, odometer, charging power and session energy.
+- Added a dedicated Auto EV Overview card with charge state, range, remaining time, energy and optional vehicle photo.
+- Added persistent per-entity icon overrides to room configuration.
+- Preserved the stable 19-part frontend loader.
+
+## 3.6.9 - 2026-08-27
+
+### Kitchen Semantic Appliance Icons
+
+- Added dedicated semantic icon recognition for Kitchen appliances and powered devices.
+- Added specific visuals for refrigerator, dishwasher, microwave, oven, coffee machine, Mac mini, monitor, camera, USB outlets, handheld vacuum, Home Assistant, hubs, empty outlets and siren.
+- Existing dedicated visuals for hood, Bimby/Thermomix, Airfryer and TV are preserved.
+- Generic Kitchen devices now use the appliance visual style instead of generic control cards.
+- Increased appliance rendering limit to 12 additional devices.
+- Preserved Kitchen section structure and climate panel from v3.6.8.
+- Preserved stable 19-part frontend loader.
+
+## 3.6.8 - 2026-08-27
+
+### Kitchen Climate Panel Visual Parity
+
+- Replaced the generic Kitchen climate card with a dedicated large Comfort & Climate panel.
+- Added ambient-temperature ring.
+- Added Setpoint, Humidity and Fan summary cards.
+- Added dedicated Climate Status row.
+- Added large **Open climate panel** action.
+- Layout now closely follows Casa Dashboard v5.4.0.
+- Preserved Kitchen section order introduced in v3.6.7.
+- Preserved stable 19-part frontend loader.
+
+## 3.6.7 - 2026-08-27
+
+### Kitchen Section Structure & Blind Support
+
+- Added a dedicated **Tenda** section for every `cover.*` assigned to the Kitchen.
+- Added blind visual, current position and Open / Close control.
+- Reorganized the Kitchen in a fixed semantic order:
+  1. Lights
+  2. Comfort & Climate
+  3. Blind
+  4. Appliances
+  5. Heating & DHW
+  6. Environment
+  7. Sensors
+- Lights are no longer mixed with appliances.
+- Climate is no longer mixed with heating.
+- Appliances are rendered in their own dedicated section.
+- Preserved all live-state, sensor-ordering and Security & Access fixes.
+- Preserved the stable 19-part frontend loader.
+
+## 3.6.6 - 2026-08-27
+
+### Kitchen Lights & Climate Fix
+
+- Kitchen now renders every `light.*` assigned to the room, not only the first light.
+- LED strips and LED lights are therefore preserved automatically.
+- Added semantic LED / strip icon recognition.
+- Separated room air-conditioning from heating climate entities.
+- Added a dedicated **Clima cucina** section with full climate controls.
+- Heating & DHW now appears only for an explicitly recognized heating / thermostat entity.
+- Prevented a single air conditioner from being incorrectly reused as the home-heating device.
+- Preserved the dedicated Kitchen renderer and stable 19-part loader.
+
+## 3.6.5 - 2026-08-27
+
+### Kitchen Runtime Fix
+
+- Fixed Casa V2 Kitchen page failing to open.
+- Replaced an invalid `_roomEntityLabel()` call with the existing Community `_roomEntityCustomLabel()` helper.
+- Added the missing Kitchen appliance visual helper required by the dedicated Kitchen renderer.
+- Added a runtime dependency audit for the Kitchen renderer to ensure all referenced methods are present.
+- Preserved the dedicated Kitchen layout introduced in v3.6.4.
+- Preserved the stable 19-part frontend loader.
+
+## 3.6.4 - 2026-08-27
+
+### Dynamic Kitchen Layout
+
+- Added a dedicated Casa V2 dynamic Kitchen renderer inspired by Casa Dashboard v5.4.0.
+- Added Kitchen hero with live environment and activity summary.
+- Kitchen devices are now grouped into a compact appliance section.
+- Added semantic recognition for hood, cooking robot/Thermomix, air fryer and TV.
+- Added dedicated Heating & DHW section when climate / water-heater entities are available.
+- Added dedicated Kitchen Environment section for temperature, humidity, climate temperature and illuminance.
+- Added dedicated Kitchen Sensors section for doors/windows, vibration and motion.
+- Preserved semantic sensor visuals and live updates.
+- Preserved stable 19-part frontend loader.
+
+## 3.6.3 - 2026-08-27
+
+### Sensor Ordering
+
+- Added semantic sensor ordering inside Casa V2 dynamic rooms.
+- Sensors are now displayed in this order:
+  1. Doors
+  2. Windows
+  3. Illuminance
+  4. Temperature
+  5. Motion / Occupancy
+  6. Other sensors
+- Ordering is based on both Home Assistant `device_class` and entity/display names for better compatibility.
+- Entities within the same category are sorted alphabetically.
+- Preserved all Security & Access, live refresh and visual parity fixes from v3.6.2.
+
+## 3.6.2 - 2026-08-27
+
+### Entrance Visual Parity Fix
+
+- Added Entrance fallback to the globally configured door-lock mapping when the lock is not explicitly assigned to the room.
+- Added Entrance fallback to the globally configured alarm mapping.
+- Fixed missing CSS for door/opening visual cards.
+- Fixed missing CSS for environment sensor visual cards.
+- Security & Access now expands correctly when only one security device is available.
+- Adjusted Security & Access proportions to more closely match Casa Dashboard v5.4.0.
+- Preserved live room-state refresh fix from v3.6.1.
+- Preserved the stable 19-part frontend loader.
+
+## 3.6.1 - 2026-08-27
+
+### Live Room State & Visual Parity Fix
+
+- Fixed Casa V2 room entities not always triggering a visual refresh when their state changed.
+- State fingerprint now includes every entity assigned directly to dynamic rooms, not only the 173 global mappings.
+- Motion, occupancy and vibration entities now use the same visual activity cards as the original Casa Dashboard.
+- Door/window/opening entities use semantic open/closed visuals instead of raw `on` / `off`.
+- Temperature, humidity and illuminance sensors use dedicated environment visuals.
+- Added support for lock-like `input_boolean` entities in Security & Access, in addition to native `lock.*`.
+- Prevented lock-like entities from being duplicated in the generic device section.
+- Preserved the stable 19-part frontend loader and all v3.6.0 SAFE behavior.
+
+## 3.6.0 - 2026-08-27
+
+### Security & Access
+
+- Added native `lock.*` recognition to Casa V2 dynamic rooms.
+- Added native `alarm_control_panel.*` recognition to Casa V2 dynamic rooms.
+- Added adaptive Security & Access section inspired by the original Casa Dashboard.
+- Added Lock / Unlock controls.
+- Added alarm Home / Away / Off quick controls.
+- Added security information to the room hero when available.
+- Added contextual warning when a configured door is closed but the lock remains unlocked.
+- Security blocks disappear automatically when not configured.
+- Sensor section now includes the room name.
+- Improved feedback during slower configuration saves.
+- Preserved the proven 19-part frontend loader from v3.5.3.
+- Preserved image upload, room creation, scroll memory and Advanced Energy View.
+
 ## 3.5.3 - 2026-08-26
 
 ### Image Upload Flow Fix

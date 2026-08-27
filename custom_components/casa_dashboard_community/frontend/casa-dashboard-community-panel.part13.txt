@@ -1,4 +1,506 @@
-n="${icon}"></ha-icon></div>`; }
+ative-photo-picker"><ha-icon icon="mdi:image-plus"></ha-icon><span>Carica</span><input type="file" data-room-photo-file="${r.id}" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.jpg,.jpeg,.png,.webp,.heic,.heif"></label>${r.image?`<button class="photo-clear-btn" type="button" data-clear-room-image="${r.id}" title="Rimuovi foto"><ha-icon icon="mdi:image-remove-outline"></ha-icon></button>`:""}</div>${r.image?`<div class="photo-preview room-photo-preview"><img src="${this._esc(r.image)}" alt=""></div>`:""}</div>
+        <div class="room-shared-modules">
+          <span>MODULI CONDIVISI</span>
+          <div class="room-shared-modules-grid">${this._roomModuleDefinitions().map(mod=>`<label class="room-shared-module ${this._roomHasModule(r,mod.id)?"active":""}"><input type="checkbox" data-room-module-room="${r.id}" data-room-module-id="${mod.id}" ${this._roomHasModule(r,mod.id)?"checked":""}><ha-icon icon="${mod.icon}"></ha-icon><b>${mod.label}</b></label>`).join("")}</div>
+          <small>Richiama la configurazione globale senza duplicare le entità.</small>
+        </div>
+        <div class="room-row-actions"><button data-action="room-up" data-room="${r.id}" type="button" title="Sposta su"><ha-icon icon="mdi:chevron-up"></ha-icon></button><button data-action="room-down" data-room="${r.id}" type="button" title="Sposta giù"><ha-icon icon="mdi:chevron-down"></ha-icon></button><button data-action="room-remove" data-room="${r.id}" type="button" title="Elimina"><ha-icon icon="mdi:trash-can-outline"></ha-icon></button></div>
+      </div>`).join("")||`<div class="room-empty"><ha-icon icon="mdi:home-plus-outline"></ha-icon><strong>Nessuna stanza creata</strong><span>Premi “Aggiungi stanza” per iniziare.</span></div>`}</div>
+      <div class="room-add-footer"><button class="room-add" data-action="room-add" type="button"><ha-icon icon="mdi:plus"></ha-icon><span>Aggiungi stanza</span></button></div>
+    </div>`;
+  }
+  _renderConfigDevicesPage(){
+    return `<div class="config-page">
+      <div class="config-page-intro"><ha-icon icon="mdi:devices"></ha-icon><div><strong>Dispositivi delle stanze</strong><span>Associa entità alle stanze, rinominale e assegna una foto reale ai singoli oggetti.</span></div></div>
+      <div class="device-room-list">
+        ${this._roomsDraft.map(r=>`<section class="device-room-card">
+          <div class="device-room-card-head"><div><ha-icon icon="${this._esc(r.icon||this._roomIcon(r.type))}"></ha-icon><strong>${this._esc(r.name||"Stanza")}</strong></div><span>${(r.entities||[]).length} entità</span></div>
+          ${this._roomEntityPicker(r)}
+        </section>`).join("") || `<div class="room-empty"><ha-icon icon="mdi:floor-plan"></ha-icon><strong>Prima crea almeno una stanza</strong><span>Vai nella pagina “Stanze” e costruisci la struttura della casa.</span></div>`}
+      </div>
+    </div>`;
+  }
+  _renderConfigMappingsPage(tab){
+    const keys=this._configTabKeys(tab);
+    const title=tab==="energy"?"Energia & Mobilità":tab==="weather"?"Meteo & Sicurezza":"Associazioni avanzate";
+    const icon=tab==="energy"?"mdi:solar-power-variant":tab==="weather"?"mdi:shield-home-outline":"mdi:tune-vertical-variant";
+    const desc=tab==="energy"
+      ?"Fotovoltaico, batteria, rete, EV + Wallbox e Auto elettrica."
+      : tab==="weather"
+      ?"Meteo, allarme e principali sensori di sicurezza."
+      :"Tutte le associazioni Community disponibili. Usa questa pagina quando vuoi accedere ai mapping tecnici completi.";
+    const energyOptions=tab==="energy"?`<section class="energy-view-config">
+      <div class="energy-view-config-head"><div><strong>Visual Fotovoltaico</strong><span>Scegli quanto dettaglio mostrare nella Panoramica. La modalità avanzata si adatta automaticamente ai sensori configurati.</span></div><ha-icon icon="mdi:solar-panel-large"></ha-icon></div>
+      <div class="energy-view-choice">
+        <label class="${(this._overviewDraft.energy_view||"compact")==="compact"?"selected":""}"><input type="radio" name="energy_view" data-overview-key="energy_view" value="compact" ${(this._overviewDraft.energy_view||"compact")==="compact"?"checked":""}><ha-icon icon="mdi:view-grid-outline"></ha-icon><div><strong>Compatta</strong><span>Card essenziali come nella Panoramica attuale.</span></div></label>
+        <label class="${this._overviewDraft.energy_view==="advanced"?"selected":""}"><input type="radio" name="energy_view" data-overview-key="energy_view" value="advanced" ${this._overviewDraft.energy_view==="advanced"?"checked":""}><ha-icon icon="mdi:chart-timeline-variant-shimmer"></ha-icon><div><strong>Avanzata</strong><span>Produzione, PV1/PV2, batteria e flusso Casa/Inverter/Rete.</span></div></label>
+      </div>
+      <div class="energy-view-fields">
+        <label><span>LABEL PRODUZIONE</span><input data-overview-key="energy_production_label" value="${this._esc(this._overviewDraft.energy_production_label||"")}" placeholder="Produzione live"></label>
+        <label><span>LABEL PV1</span><input data-overview-key="energy_pv1_label" value="${this._esc(this._overviewDraft.energy_pv1_label||"")}" placeholder="Falda 1 / Est"></label>
+        <label><span>LABEL PV2</span><input data-overview-key="energy_pv2_label" value="${this._esc(this._overviewDraft.energy_pv2_label||"")}" placeholder="Falda 2 / Ovest"></label>
+        <label><span>LABEL CASA</span><input data-overview-key="energy_house_label" value="${this._esc(this._overviewDraft.energy_house_label||"")}" placeholder="Casa"></label>
+        <label><span>LABEL INVERTER</span><input data-overview-key="energy_inverter_label" value="${this._esc(this._overviewDraft.energy_inverter_label||"")}" placeholder="Inverter"></label>
+        <label><span>LABEL BATTERIA</span><input data-overview-key="energy_battery_label" value="${this._esc(this._overviewDraft.energy_battery_label||"")}" placeholder="Batteria"></label>
+        <label><span>LABEL RETE</span><input data-overview-key="energy_grid_label" value="${this._esc(this._overviewDraft.energy_grid_label||"")}" placeholder="Rete"></label>
+        <label><span>SEGNO RETE POSITIVO</span><select data-overview-key="grid_positive"><option value="import" ${(this._overviewDraft.grid_positive||"import")==="import"?"selected":""}>Prelievo</option><option value="export" ${this._overviewDraft.grid_positive==="export"?"selected":""}>Export</option></select></label>
+        <label><span>SEGNO BATTERIA POSITIVO</span><select data-overview-key="battery_positive"><option value="charge" ${(this._overviewDraft.battery_positive||"charge")==="charge"?"selected":""}>Carica</option><option value="discharge" ${this._overviewDraft.battery_positive==="discharge"?"selected":""}>Scarica</option></select></label>
+      </div>
+      <div class="config-page-note"><ha-icon icon="mdi:information-outline"></ha-icon><span>PV1/PV2, batteria e rete vengono mostrati solo se le relative associazioni sono configurate. Non è necessario avere tutti i sensori.</span></div>
+    </section>`:"";
+    return `<div class="config-page">
+      <div class="config-page-intro"><ha-icon icon="${icon}"></ha-icon><div><strong>${title}</strong><span>${desc}</span></div></div>
+      ${energyOptions}
+      <div class="auto-map-toolbar">
+        <button class="auto-map-btn" data-action="auto-map-empty" type="button"><ha-icon icon="mdi:auto-fix"></ha-icon><span>Abbina automaticamente</span></button>
+        <small>Compila solo i campi vuoti usando prima le entità già assegnate alle stanze. Le scelte manuali non vengono sovrascritte.</small>
+      </div>
+      ${this._autoMapNotice?`<div class="auto-map-notice">${this._esc(this._autoMapNotice)}</div>`:""}
+      <div class="config-toolbar config-toolbar-page"><label class="config-search"><ha-icon icon="mdi:magnify"></ha-icon><input id="configSearch" type="search" placeholder="Cerca funzione, chiave o nome entità…" value="${this._esc(this._configFilter||"")}"></label><div class="config-progress"><strong>${[...ENTITY_KEYS].filter(k=>(this._configDraft[k]||"").trim()).length}</strong><span>/ ${ENTITY_KEYS.size}</span></div></div>
+      <div class="config-scroll config-scroll-page">${this._renderConfigMappingList(keys)}</div>
+    </div>`;
+  }
+  _renderConfigCurrentPage(){
+    if(this._configTab==="overview") return this._renderConfigOverviewPage();
+    if(this._configTab==="rooms") return this._renderConfigRoomsPage();
+    if(this._configTab==="devices") return this._renderConfigDevicesPage();
+    if(this._configTab==="energy") return this._renderConfigMappingsPage("energy");
+    if(this._configTab==="weather") return this._renderConfigMappingsPage("weather");
+    return this._renderConfigMappingsPage("advanced");
+  }
+
+  _renderConfigDialog() {
+    if(!this._configDialogOpen) return "";
+    const datalist=this._entityOptions().map(e=>`<option value="${this._esc(e.id)}" label="${this._esc(e.label)}">${this._esc(e.label)}</option>`).join("");
+    const tabs=this._configTabs().map(([id,label,icon])=>`<button class="config-tab ${this._configTab===id?'active':''}" type="button" data-config-tab="${id}"><ha-icon icon="${icon}"></ha-icon><span>${label}</span></button>`).join("");
+    return `<div class="config-overlay" data-action="config-overlay-close">
+      <section class="config-dialog config-dialog-tabs" role="dialog" aria-modal="true" aria-label="Configura Casa Dashboard Community">
+        <div class="config-dialog-head"><div><div class="config-kicker">CASA DASHBOARD COMMUNITY</div><h2>Configura la dashboard</h2><p>Organizza la configurazione per sezioni. Puoi passare liberamente da una pagina all'altra e salvare tutto insieme.</p></div><button class="config-close" data-action="config-close" type="button" aria-label="Chiudi"><ha-icon icon="mdi:close"></ha-icon></button></div>
+        <nav class="config-tabs" aria-label="Sezioni configuratore">${tabs}</nav>
+        <div class="config-page-host">${this._renderConfigCurrentPage()}</div>
+        <datalist id="haEntityList">${datalist}</datalist>
+        <div class="config-dialog-foot"><div class="config-hint"><ha-icon icon="mdi:shield-check-outline"></ha-icon><span>${this._esc(this._imageUploadNotice||"Le modifiche vengono salvate nel file Community separato.")}</span></div><div class="config-actions"><button class="secondary" data-action="config-close" type="button">Annulla</button><button class="primary" data-action="config-save" type="button"><ha-icon icon="mdi:content-save-outline"></ha-icon> Salva configurazione</button></div></div>
+      </section></div>`;
+  }
+
+  _openConfigDialog() {
+    this._configDraft={...this._entityMap};
+    this._configLabelDraft={...this._entityLabels};
+    this._overviewDraft={...this._overviewConfig};
+    const savedRooms=(Array.isArray(this._rooms)?this._rooms:[]).map(r=>({
+      ...r,
+      entities:[...(r.entities||[])],
+      modules:[...(r.modules||[])],
+      entity_labels:{...(r.entity_labels||{})},
+      entity_images:{...(r.entity_images||{})},
+      entity_icons:{...(r.entity_icons||{})}
+    }));
+    this._roomsDraft=savedRooms.length
+      ? savedRooms
+      : this._mergeConfiguredEntitiesIntoRooms([]);
+    this._configFilter="";
+    this._imageUploadNotice="";
+    this._autoMapNotice="";
+    this._autoMapChanges=[];
+    this._configTab="overview";
+    this._configScrollByTab={};
+    this._configDialogOpen=true;
+    this._renderConfigLayer();
+  }
+  _closeConfigDialog() { this._configDialogOpen=false; this._renderConfigLayer(); }
+  _renderConfigLayer() {
+    let layer=this.shadowRoot.querySelector("#configLayer");
+    if(!layer){ layer=document.createElement("div"); layer.id="configLayer"; this.shadowRoot.appendChild(layer); }
+
+    // Preserve the vertical position of the current configurator page before
+    // replacing its markup. This prevents add/edit/upload actions from
+    // jumping the user back to the top.
+    const previousPage=layer.querySelector(".config-page");
+    if(previousPage && this._configTab){
+      this._configScrollByTab=this._configScrollByTab||{};
+      this._configScrollByTab[this._configTab]=previousPage.scrollTop||0;
+    }
+
+    layer.innerHTML=this._renderConfigDialog();
+    this._applyLanguage(layer);
+    if(!this._configDialogOpen) return;
+
+    requestAnimationFrame(()=>{
+      const page=layer.querySelector(".config-page");
+      if(page){
+        const saved=this._configScrollByTab?.[this._configTab];
+        if(Number.isFinite(saved)) page.scrollTop=saved;
+      }
+    });
+
+    const syncRooms=()=>{
+      for(const r of this._roomsDraft){
+        const n=layer.querySelector(`[data-room-name="${r.id}"]`); if(n) r.name=n.value.trim()||"Stanza";
+        const t=layer.querySelector(`[data-room-type="${r.id}"]`); if(t){ r.type=t.value; if(!r.icon) r.icon=this._roomIcon(r.type); }
+        const ic=layer.querySelector(`[data-room-icon="${r.id}"]`); if(ic) r.icon=ic.value.trim()||this._roomIcon(r.type);
+        const im=layer.querySelector(`[data-room-image="${r.id}"]`); if(im) r.image=im.value.trim();
+
+        // Modules are part of the room itself. Capture every visible checkbox
+        // before any rerender/tab switch/save.
+        const moduleInputs=[...layer.querySelectorAll(`[data-room-module-room="${r.id}"]`)];
+        if(moduleInputs.length){
+          r.modules=moduleInputs.filter(input=>input.checked).map(input=>input.dataset.roomModuleId);
+        }else if(!Array.isArray(r.modules)){
+          r.modules=[];
+        }
+      }
+      this._roomsDraft=[...this._roomsDraft];
+    };
+    const syncVisibleMappingFields=()=>{
+      layer.querySelectorAll("[data-config-key]").forEach(input=>{ this._configDraft[input.dataset.configKey]=input.value; });
+      layer.querySelectorAll("[data-config-label]").forEach(input=>{ this._configLabelDraft[input.dataset.configLabel]=input.value; });
+      layer.querySelectorAll("[data-overview-key]").forEach(input=>{
+        if((input.type==="radio" || input.type==="checkbox") && !input.checked) return;
+        this._overviewDraft[input.dataset.overviewKey]=input.value;
+      });
+      layer.querySelectorAll("[data-room-entity-image-room]").forEach(input=>{
+        this._setRoomEntityImage(input.dataset.roomEntityImageRoom,input.dataset.roomEntityImageEntity,input.value);
+      });
+      layer.querySelectorAll("[data-room-entity-icon-room]").forEach(input=>{
+        this._setRoomEntityIcon(input.dataset.roomEntityIconRoom,input.dataset.roomEntityIconEntity,input.value);
+      });
+      layer.querySelectorAll("[data-room-module-room]").forEach(input=>{
+        this._setRoomModule(input.dataset.roomModuleRoom,input.dataset.roomModuleId,input.checked);
+      });
+    };
+
+    layer.querySelectorAll("[data-config-tab]").forEach(button=>{
+      button.addEventListener("click",()=>{
+        syncRooms(); syncVisibleMappingFields();
+        const page=layer.querySelector(".config-page");
+        if(page && this._configTab){
+          this._configScrollByTab=this._configScrollByTab||{};
+          this._configScrollByTab[this._configTab]=page.scrollTop||0;
+        }
+        this._configTab=button.dataset.configTab||"overview";
+        this._configFilter="";
+        this._renderConfigLayer();
+      });
+    });
+
+    layer.querySelectorAll("[data-room-name],[data-room-type],[data-room-icon],[data-room-image]").forEach(el=>el.addEventListener("change",syncRooms));
+
+    layer.querySelectorAll("[data-room-module-room]").forEach(input=>{
+      input.addEventListener("change",()=>{
+        this._setRoomModule(input.dataset.roomModuleRoom,input.dataset.roomModuleId,input.checked);
+        const label=input.closest(".room-shared-module");
+        label?.classList.toggle("active",input.checked);
+      });
+    });
+
+    layer.querySelectorAll("[data-overview-key]").forEach(input=>{
+      const sync=()=>{
+        if((input.type==="radio" || input.type==="checkbox") && !input.checked) return;
+        this._overviewDraft[input.dataset.overviewKey]=input.value;
+        if(input.type==="radio") this._renderConfigLayer();
+      };
+      input.addEventListener("input",sync);
+      input.addEventListener("change",sync);
+    });
+
+    layer.querySelectorAll("[data-room-entity-image-room]").forEach(input=>{
+      const roomId=input.dataset.roomEntityImageRoom, entity=input.dataset.roomEntityImageEntity;
+      const sync=()=>this._setRoomEntityImage(roomId,entity,input.value);
+      input.addEventListener("input",sync); input.addEventListener("change",sync);
+    });
+
+    layer.querySelectorAll("[data-room-entity-label-room]").forEach(input=>{
+      const roomId=input.dataset.roomEntityLabelRoom, entity=input.dataset.roomEntityLabelEntity;
+      input.addEventListener("input",()=>this._setRoomEntityLabel(roomId,entity,input.value));
+      input.addEventListener("change",()=>this._setRoomEntityLabel(roomId,entity,input.value));
+    });
+    layer.querySelectorAll("[data-room-entity-icon-room]").forEach(input=>{
+      const roomId=input.dataset.roomEntityIconRoom, entity=input.dataset.roomEntityIconEntity;
+      input.addEventListener("change",()=>this._setRoomEntityIcon(roomId,entity,input.value));
+    });
+
+    layer.querySelectorAll("[data-room-entity-search]").forEach(input=>{
+      const roomId=input.dataset.roomEntitySearch;
+      const show=()=>this._renderRoomEntitySuggestions(roomId,input.value);
+      input.addEventListener("focus",show); input.addEventListener("input",show); input.addEventListener("click",show);
+      input.addEventListener("keydown",ev=>{
+        if(ev.key==="Enter"){
+          ev.preventDefault();
+          const room=this._roomsDraft.find(r=>r.id===roomId); if(!room)return;
+          const suggestions=this._roomEntitySuggestions(input.value,room.entities||[]);
+          const resolved=suggestions[0]?.id || this._resolveRoomEntityToken(input.value);
+          if(this._hass?.states?.[resolved] && !(room.entities||[]).includes(resolved)){
+            room.entities=[...(room.entities||[]),resolved]; this._renderConfigLayer();
+          }
+        }else if(ev.key==="Escape"){
+          const box=layer.querySelector(`[data-room-entity-suggestions="${roomId}"]`); if(box)box.hidden=true;
+        }
+      });
+    });
+
+    const search=layer.querySelector("#configSearch");
+    search?.addEventListener("input",ev=>{
+      syncRooms(); syncVisibleMappingFields();
+      const page=layer.querySelector(".config-page");
+      if(page && this._configTab){
+        this._configScrollByTab=this._configScrollByTab||{};
+        this._configScrollByTab[this._configTab]=page.scrollTop||0;
+      }
+      this._configFilter=ev.target.value;
+      this._renderConfigLayer();
+      requestAnimationFrame(()=>{
+        const next=this.shadowRoot.querySelector("#configSearch");
+        next?.focus(); next?.setSelectionRange(next.value.length,next.value.length);
+      });
+    });
+
+    layer.querySelectorAll("[data-config-key]").forEach(input=>{
+      input.addEventListener("input",ev=>{
+        const key=ev.target.dataset.configKey;
+        const oldEntity=String(this._configDraft[key]||"").trim();
+        this._configDraft[key]=ev.target.value;
+        this._syncConfiguredKeyToRoom(key,oldEntity,ev.target.value);
+      });
+      input.addEventListener("change",ev=>{
+        const key=ev.target.dataset.configKey;
+        const oldEntity=String(this._configDraft[key]||"").trim();
+        const resolved=this._entityIdFromFriendlyName(ev.target.value);
+        ev.target.value=resolved; this._configDraft[key]=resolved;
+        this._syncConfiguredKeyToRoom(key,oldEntity,resolved);
+      });
+    });
+
+    layer.querySelectorAll("[data-config-label]").forEach(input=>{
+      const sync=()=>{this._configLabelDraft[input.dataset.configLabel]=input.value;};
+      input.addEventListener("input",sync); input.addEventListener("change",sync);
+    });
+
+    const handleNativePhoto=async(input,roomId,entity="")=>{
+      const file=input.files?.[0];
+      if(!file) return;
+
+      this._imageUploadNotice=`Elaborazione foto: ${file.name||"immagine"}…`;
+      const setImage=(url)=>{
+        if(entity){
+          this._setRoomEntityImage(roomId,entity,url);
+        }else{
+          const room=this._roomsDraft.find(r=>r.id===roomId);
+          if(room) room.image=url;
+        }
+      };
+
+      try{
+        const uploaded=await this._uploadDashboardImage(file,(inline)=>{
+          // Immediate result: persist in draft and show preview now.
+          setImage(inline);
+          this._imageUploadNotice="Foto acquisita. Ottimizzazione del salvataggio in corso…";
+          this._renderConfigLayer();
+        });
+
+        if(uploaded?.url) setImage(uploaded.url);
+        this._imageUploadNotice=uploaded?.mode==="file"
+          ? "Foto caricata e verificata."
+          : "Foto acquisita e pronta per il salvataggio.";
+        this._renderConfigLayer();
+      }catch(err){
+        this._imageUploadNotice=`Errore foto: ${err?.message||String(err)}`;
+        this._renderConfigLayer();
+        alert(this._imageUploadNotice);
+      }
+    };
+
+    layer.querySelectorAll("[data-room-photo-file]").forEach(input=>{
+      input.addEventListener("change",()=>handleNativePhoto(input,input.dataset.roomPhotoFile));
+    });
+    layer.querySelectorAll("[data-overview-photo-file]").forEach(input=>{
+      input.addEventListener("change",async()=>{
+        const file=input.files?.[0]; if(!file) return;
+        const key=input.dataset.overviewPhotoFile;
+        this._imageUploadNotice=`Elaborazione foto: ${file.name||"immagine"}…`;
+        try{
+          const uploaded=await this._uploadDashboardImage(file,(inline)=>{
+            this._overviewDraft[key]=inline;
+            this._imageUploadNotice="Foto acquisita. Ottimizzazione del salvataggio in corso…";
+            this._renderConfigLayer();
+          });
+          if(uploaded?.url) this._overviewDraft[key]=uploaded.url;
+          this._imageUploadNotice=uploaded?.mode==="file"?"Foto caricata e verificata.":"Foto acquisita e pronta per il salvataggio.";
+          this._renderConfigLayer();
+        }catch(err){
+          this._imageUploadNotice=`Errore foto: ${err?.message||String(err)}`;
+          alert(this._imageUploadNotice);
+          this._renderConfigLayer();
+        }
+      });
+    });
+    layer.querySelectorAll("[data-entity-photo-file-room]").forEach(input=>{
+      input.addEventListener("change",()=>handleNativePhoto(input,input.dataset.entityPhotoFileRoom,input.dataset.entityPhotoFile));
+    });
+
+    layer.addEventListener("click",async ev=>{
+      const clearRoom=ev.target.closest?.("[data-clear-room-image]");
+      const clearEntity=ev.target.closest?.("[data-clear-entity-image-room]");
+      const clearOverview=ev.target.closest?.("[data-clear-overview-image]");
+      if(clearOverview){
+        const key=clearOverview.dataset.clearOverviewImage;
+        if(key) delete this._overviewDraft[key];
+        this._renderConfigLayer(); return;
+      }
+      if(clearRoom){
+        ev.preventDefault();
+        const room=this._roomsDraft.find(r=>r.id===clearRoom.dataset.clearRoomImage);
+        if(room){room.image="";this._renderConfigLayer();} return;
+      }
+      if(clearEntity){
+        ev.preventDefault();
+        this._setRoomEntityImage(clearEntity.dataset.clearEntityImageRoom,clearEntity.dataset.clearEntityImage,"");
+        this._renderConfigLayer(); return;
+      }
+      const add=ev.target.closest?.("[data-room-entity-add]");
+      if(add){
+        ev.preventDefault();
+        const room=this._roomsDraft.find(r=>r.id===add.dataset.roomEntityAdd), entity=add.dataset.entity;
+        if(room && entity && this._hass?.states?.[entity] && !(room.entities||[]).includes(entity)){
+          room.entities=[...(room.entities||[]),entity]; this._renderConfigLayer();
+        }
+        return;
+      }
+      const rem=ev.target.closest?.("[data-room-entity-remove]");
+      if(rem){
+        ev.preventDefault();
+        const room=this._roomsDraft.find(r=>r.id===rem.dataset.roomEntityRemove);
+        if(room){
+          room.entities=(room.entities||[]).filter(e=>e!==rem.dataset.entity);
+          if(room.entity_labels)delete room.entity_labels[rem.dataset.entity];
+          if(room.entity_images)delete room.entity_images[rem.dataset.entity];
+          this._renderConfigLayer();
+        }
+      }
+    });
+  }
+
+  async _saveConfigDialog() {
+    const layer=this.shadowRoot.querySelector("#configLayer");
+    for(const r of this._roomsDraft){
+      const n=layer?.querySelector(`[data-room-name="${r.id}"]`); if(n) r.name=n.value.trim()||"Stanza";
+      const t=layer?.querySelector(`[data-room-type="${r.id}"]`); if(t) r.type=t.value;
+      const ic=layer?.querySelector(`[data-room-icon="${r.id}"]`); if(ic) r.icon=ic.value.trim()||this._roomIcon(r.type);
+      const im=layer?.querySelector(`[data-room-image="${r.id}"]`); if(im) r.image=im.value.trim();
+    }
+    layer?.querySelectorAll("[data-overview-key]").forEach(input=>{
+      if((input.type==="radio" || input.type==="checkbox") && !input.checked) return;
+      this._overviewDraft[input.dataset.overviewKey]=String(input.value||"").trim();
+    });
+    layer?.querySelectorAll("[data-room-entity-image-room]").forEach(input=>{
+      this._setRoomEntityImage(input.dataset.roomEntityImageRoom,input.dataset.roomEntityImageEntity,input.value);
+    });
+    layer?.querySelectorAll("[data-room-entity-icon-room]").forEach(input=>{
+      this._setRoomEntityIcon(
+        input.dataset.roomEntityIconRoom,
+        input.dataset.roomEntityIconEntity,
+        input.value
+      );
+    });
+    layer?.querySelectorAll("[data-room-module-room]").forEach(input=>{
+      this._setRoomModule(input.dataset.roomModuleRoom,input.dataset.roomModuleId,input.checked);
+    });
+    layer?.querySelectorAll("[data-config-key]").forEach(input=>{
+      const key=input.dataset.configKey;
+      const oldEntity=String(this._configDraft[key]||"").trim();
+      const resolved=this._entityIdFromFriendlyName(input.value);
+      this._configDraft[key]=resolved;
+      this._syncConfiguredKeyToRoom(key,oldEntity,resolved);
+    });
+    layer?.querySelectorAll("[data-config-label]").forEach(input=>{
+      this._configLabelDraft[input.dataset.configLabel]=input.value.trim();
+    });
+    const saveButtons=[...(layer?.querySelectorAll('[data-action="config-save"]')||[])];
+    saveButtons.forEach(save=>{ save.disabled=true; save.innerHTML='<ha-icon icon="mdi:loading" class="spin"></ha-icon> Salvataggio…'; });
+    try {
+      const saveRequest=this._hass.callWS({type:"casa_dashboard_community/config/save",entities:this._configDraft,rooms:this._roomsDraft,labels:this._configLabelDraft,overview:this._overviewDraft});
+      const slowTimer=setTimeout(()=>saveButtons.forEach(save=>{ if(save.disabled) save.innerHTML='<ha-icon icon="mdi:loading" class="spin"></ha-icon> Salvataggio ancora in corso…'; }),1800);
+      const result=await saveRequest;
+      clearTimeout(slowTimer);
+      this._rooms=Array.isArray(result?.rooms)
+        ? result.rooms.map(room=>({
+            ...room,
+            entities:Array.isArray(room?.entities)?[...room.entities]:[],
+            modules:Array.isArray(room?.modules)?[...room.modules]:[],
+            entity_labels:(room?.entity_labels && typeof room.entity_labels==="object")?{...room.entity_labels}:{},
+            entity_images:(room?.entity_images && typeof room.entity_images==="object")?{...room.entity_images}:{},
+            entity_icons:(room?.entity_icons && typeof room.entity_icons==="object")?{...room.entity_icons}:{}
+          }))
+        : this._roomsDraft.map(room=>({
+            ...room,
+            entities:[...(room.entities||[])],
+            modules:[...(room.modules||[])],
+            entity_labels:{...(room.entity_labels||{})},
+            entity_images:{...(room.entity_images||{})},
+            entity_icons:{...(room.entity_icons||{})}
+          }));
+      this._entityMap=result?.entities || {...this._configDraft};
+      this._entityLabels=result?.labels || {...this._configLabelDraft};
+      this._overviewConfig=result?.overview || {...this._overviewDraft};
+      this._entityConfigLoaded=true;
+      this._configDialogOpen=false;
+      this._renderConfigLayer();
+      this._renderPage(false);
+    } catch(err) {
+      saveButtons.forEach(save=>{ save.disabled=false; save.innerHTML='<ha-icon icon="mdi:alert-circle-outline"></ha-icon> Riprova'; });
+      alert(`Impossibile salvare la configurazione: ${err?.message || err}`);
+    }
+  }
+
+  _state(id, fallback="—") {
+    const pending=this._optimistic.get(id);
+    if(pending && Date.now()-pending.at < 3500) return pending.state;
+    const s=this._s(id)?.state;
+    return (!s || ["unknown","unavailable","none",""].includes(s)) ? fallback : s;
+  }
+  _on(id) { return this._state(id,"off") === "on"; }
+  _num(id, fallback=null) { const v=parseFloat(this._state(id,"")); return Number.isFinite(v)?v:fallback; }
+  _attr(id, key, fallback=null) { const v=this._s(id)?.attributes?.[key]; return v ?? fallback; }
+  _fmt(id, digits=1, unit=null) {
+    const n=this._num(id,null); if(n===null) return "—";
+    const u=unit ?? this._attr(id,"unit_of_measurement","");
+    return `${n.toFixed(digits)}${u ? ` ${u}` : ""}`;
+  }
+  _fmtLuxCompact(id, digits=1){
+    const n=this._num(id,null); if(n===null) return "—";
+    if(Math.abs(n) >= 1000) return `${(n/1000).toFixed(digits)} klx`;
+    return `${n.toFixed(0)} lx`;
+  }
+  _fmtLuxExact(id){
+    const n=this._num(id,null); if(n===null) return "—";
+    return `${new Intl.NumberFormat('it-IT',{maximumFractionDigits:0}).format(n)} lx`;
+  }
+  _luxLabel(id){
+    const n=this._num(id,null); if(n===null) return "—";
+    const outdoor=id==="sensor.weather_solar_lux";
+    if(outdoor) return n>=40000?"Luce forte":n>=20000?"Luce buona":"Luce bassa";
+    return n>=500?"Luce forte":n>=100?"Luce buona":"Luce bassa";
+  }
+  _luxTone(id){
+    const n=this._num(id,null); if(n===null) return "state-off";
+    const outdoor=id==="sensor.weather_solar_lux";
+    if(outdoor) return n>=40000?"state-good":n>=20000?"state-active":"state-off";
+    return n>=500?"state-good":n>=100?"state-active":"state-off";
+  }
+  _radLabel(id){
+    const n=this._num(id,null); if(n===null) return "—";
+    return n>=350?"Radiazione forte":n>=150?"Radiazione moderata":n>=30?"Radiazione bassa":"Radiazione minima";
+  }
+  _radTone(id){
+    const n=this._num(id,null); if(n===null) return "state-off";
+    return n>=350?"state-good":n>=150?"state-active":n>=30?"state-warn":"state-off";
+  }
+  _fmtAcPowerFromCurrent(currentId, voltageId, digits=2){
+    const a=this._num(currentId,null), v=this._num(voltageId,null);
+    if(a===null || v===null) return "—";
+    return `${((a*v)/1000).toFixed(digits)} kW`;
+  }
+  _esc(v) { return String(v ?? "").replace(/[&<>'"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c])); }
+  _icon(icon, cls="") { return `<div class="iconbox ${cls}"><ha-icon icon="${icon}"></ha-icon></div>`; }
   _setOptimistic(id,state){ this._optimistic.set(id,{state,at:Date.now()}); this._renderPage(false); }
   _syncOptimistic(){
     const now=Date.now();
@@ -11,16 +513,27 @@ n="${icon}"></ha-icon></div>`; }
     if(!this._hass?.states || !this._entityConfigLoaded) return "";
     const rows=[];
     const seen=new Set();
-    for(const logical of ENTITY_KEYS){
-      const eid=this._eid(logical);
-      if(!eid || seen.has(eid)) continue;
+    const track=(eid)=>{
+      if(!eid || seen.has(eid)) return;
       seen.add(eid);
       const st=this._hass.states[eid];
-      if(!st){ rows.push(`${eid}|missing`); continue; }
+      if(!st){ rows.push(`${eid}|missing`); return; }
       let attrs="";
       try { attrs=JSON.stringify(st.attributes || {}); } catch(_err) {}
       rows.push(`${eid}|${st.state}|${attrs}`);
+    };
+
+    // Global Community mappings.
+    for(const logical of ENTITY_KEYS) track(this._eid(logical));
+
+    // Casa V2 rooms may contain any HA entity, including entities that do not
+    // belong to the 173 legacy mappings. They must participate in the
+    // fingerprint or their visual state can remain stale until another entity
+    // causes a render.
+    for(const room of this._effectiveRooms()){
+      for(const eid of (Array.isArray(room?.entities)?room.entities:[])) track(eid);
     }
+
     return rows.join("\n");
   }
 
@@ -44,278 +557,4 @@ n="${icon}"></ha-icon></div>`; }
   _firstId(ids=[]){ return ids.find(id=>this._s(id)) || ids[0] || ""; }
   _firstState(ids=[], fallback="—"){ const id=this._firstId(ids); return id ? this._state(id,fallback) : fallback; }
   _firstNum(ids=[], fallback=null){ const id=this._firstId(ids); return id ? this._num(id,fallback) : fallback; }
-  _firstFmt(ids=[], digits=1, unit=null){ const id=this._firstId(ids); return id ? this._fmt(id,digits,unit) : "—"; }
-  _fmtPowerAuto(idOrIds, digits=2){
-    const ids = Array.isArray(idOrIds) ? idOrIds : [idOrIds];
-    const id = this._firstId(ids);
-    if(!id) return "—";
-    const n = this._num(id, null);
-    if(n===null) return "—";
-    const rawUnit = String(this._attr(id, "unit_of_measurement", "") || "").toLowerCase();
-    if(rawUnit === 'w' || (!rawUnit && Math.abs(n) >= 100)) return `${(n/1000).toFixed(digits)} kW`;
-    if(rawUnit === 'kw') return `${n.toFixed(digits)} kW`;
-    return `${n.toFixed(digits)} ${rawUnit || 'kW'}`;
-  }
-  _powerValueAuto(idOrIds){
-    const ids = Array.isArray(idOrIds) ? idOrIds : [idOrIds];
-    const id = this._firstId(ids);
-    if(!id) return null;
-    let n = this._num(id, null);
-    if(n===null) return null;
-    const rawUnit = String(this._attr(id, "unit_of_measurement", "") || "").toLowerCase();
-    if(rawUnit === 'w' || (!rawUnit && Math.abs(n) >= 100)) n = n / 1000;
-    return n;
-  }
-  _fmtSignedPowerAuto(idOrIds, digits=2){
-    const n = this._powerValueAuto(idOrIds);
-    if(n===null) return "—";
-    const sign = n > 0 ? '+' : n < 0 ? '−' : '±';
-    return `${sign}${Math.abs(n).toFixed(digits)} kW`;
-  }
-  _fmtAbsPowerAuto(idOrIds, digits=2){
-    const n = this._powerValueAuto(idOrIds);
-    if(n===null) return "—";
-    return `${Math.abs(n).toFixed(digits)} kW`;
-  }
-  _themeIsLight(){
-    const v = getComputedStyle(this).getPropertyValue('--primary-background-color').trim();
-    if(!v) return false;
-    let r=255,g=255,b=255;
-    if(v.startsWith('#')){
-      const h=v.slice(1);
-      if(h.length===3){ r=parseInt(h[0]+h[0],16); g=parseInt(h[1]+h[1],16); b=parseInt(h[2]+h[2],16); }
-      else if(h.length>=6){ r=parseInt(h.slice(0,2),16); g=parseInt(h.slice(2,4),16); b=parseInt(h.slice(4,6),16); }
-    } else {
-      const m=v.match(/rgba?\(([^)]+)\)/i);
-      if(m){ const p=m[1].split(',').map(s=>parseFloat(s.trim())); [r,g,b]=p; }
-    }
-    const luminance = (0.2126*r + 0.7152*g + 0.0722*b) / 255;
-    return luminance > 0.62;
-  }
-  _applyThemeMode(){
-    const shell = this.shadowRoot?.querySelector('.app-shell');
-    if(!shell) return;
-    const light = this._themeIsLight();
-    shell.classList.toggle('theme-light', light);
-    shell.classList.toggle('theme-dark', !light);
-  }
-  _windDir(id){ const deg=this._num(id,null); if(deg===null) return "—"; const dirs=['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSO','SO','OSO','O','ONO','NO','NNO']; return `${Math.round(deg)}° · ${dirs[Math.floor((deg+11.25)/22.5)%16]}`; }
-  _metricTone(entity,value=""){
-    const st=this._state(entity,""); const val=String(value).toLowerCase();
-    if((entity.includes("wleak")||entity.includes("water_leak")) && this._on(entity)) return "state-bad";
-    if(entity.includes("tank_status") && this._on(entity)) return "state-bad";
-    if(entity==="alarm_control_panel.home_alarm") return st==="triggered"?"state-bad":st==="disarmed"?"state-warn":"state-good";
-    if(entity.startsWith("binary_sensor.") && this._on(entity)) return entity.includes("motion")||entity.includes("occupancy")||entity.includes("occupazione")?"state-active":"state-warn";
-    if(["aperta","aperto","sbloccata","rilevata","rilevato","pieno","allarme"].some(x=>val.includes(x))) return val.includes("perdita")||val.includes("pieno")||val.includes("allarme")?"state-bad":"state-warn";
-    if(["accesa","acceso","attivo","attiva","occupato","in carica","cleaning"].some(x=>val.includes(x))) return "state-active";
-    if(["chiusa","chiuso","spenta","spento","libero","assente","ok","nessuna"].some(x=>val.includes(x))) return "state-good";
-    return "";
-  }
-  _controlTone(entity,on){
-    if(!on) return "state-off";
-    if(entity.startsWith("light.")) return "state-on light-tone";
-    if(entity.startsWith("climate.")) return "state-on blue-tone";
-    return "state-on";
-  }
-
-  _overall() {
-    const configured=this._configuredCount();
-    if(configured===0) return {level:"blue", icon:"mdi:tune-variant", title:"Configura la dashboard", text:"Associa le entità che vuoi utilizzare"};
-    const alarm=this._state("alarm_control_panel.home_alarm","unknown");
-    const leak=this._on("binary_sensor.bathroom_water_leak");
-    const tank=this._on("binary_sensor.garage_dehumidifier_tank_full") || ["full","pieno","water full","tank full"].includes(this._state("sensor.garage_dehumidifier_tank_status","").toLowerCase());
-    const open=this._openCount();
-    if(alarm==="triggered" || leak || tank) return {level:"bad", icon:"mdi:alert-octagon", title:"Attenzione richiesta", text: alarm==="triggered"?"Allarme in corso":leak?"Perdita acqua rilevata":"Serbatoio deumidificatore pieno"};
-    if(open>0) return {level:"warn", icon:"mdi:shield-alert-outline", title:"Casa da controllare", text:`${open} aperture aperte`};
-    if(alarm==="disarmed") return {level:"warn", icon:"mdi:shield-off-outline", title:"Casa tranquilla", text:"Allarme disinserito"};
-    return {level:"good", icon:"mdi:shield-check-outline", title:"Tutto sotto controllo", text:"Nessuna criticità rilevata"};
-  }
-
-  _anyConfigured(ids=[]) { return ids.some(id=>this._configured(id)); }
-
-  _roomConfigured(room) {
-    const groups={
-      esterno:["input_boolean.pedestrian_gate","switch.gate_command"],
-      scale:["light.stairs","input_boolean.main_gate"],
-      ingresso:["alarm_control_panel.home_alarm","binary_sensor.entry_door","binary_sensor.entry_motion","binary_sensor.entry_occupancy","input_boolean.entry_door_unlock","light.entry_main","sensor.entry_illuminance"],
-      disimpegno:["binary_sensor.hallway_motion","binary_sensor.hallway_occupancy","light.hallway_main","sensor.hallway_illuminance"],
-      bagno:[...ENTITY_KEYS].filter(id=>id.includes("bathroom_") || id==="fan.bathroom_extractor"),
-      cucina:[...ENTITY_KEYS].filter(id=>id.includes("kitchen_") || id.startsWith("sensor.heating_") || id==="climate.home_heating" || id==="calendar.heating_program" || id==="water_heater.domestic_hot_water" || id.startsWith("sensor.weather_indoor_")),
-      camera:[...ENTITY_KEYS].filter(id=>id.includes("bedroom_") || id.includes("robot_vacuum")),
-      balcone:[...ENTITY_KEYS].filter(id=>id.includes("balcony_") || id.startsWith("sensor.weather_") || id.startsWith("binary_sensor.weather_") || id.startsWith("sensor.solar_")),
-      garage:[...ENTITY_KEYS].filter(id=>id.includes("garage_") || id.includes("wallbox_") || id.includes("ev_") || id==="sensor.grid_current_l1" || id.startsWith("sensor.utility_room_"))
-    };
-    return this._anyConfigured(groups[room]||[]);
-  }
-
-  _roomStatus(room) {
-    const light=(ids)=>ids.some(id=>this._on(id));
-    const active=(ids)=>ids.some(id=>this._on(id));
-    switch(room){
-      case "esterno": return this._on("input_boolean.pedestrian_gate") ? {level:"warn",text:"Cancellino aperto"}:{level:"good",text:"Accesso chiuso"};
-      case "scale": return light(["light.stairs"]) ? {level:"blue",text:"Luce accesa"}:{level:"good",text:"Tutto ok"};
-      case "ingresso": {
-        if(this._state("alarm_control_panel.home_alarm")==="triggered") return {level:"bad",text:"Allarme in corso"};
-        if(this._on("binary_sensor.entry_door")) return {level:"warn",text:"Porta aperta"};
-        if(this._on("input_boolean.entry_door_unlock")) return {level:"warn",text:"Porta sbloccata"};
-        return {level:"good",text:"Ingresso sicuro"}; }
-      case "disimpegno": return active(["binary_sensor.hallway_motion","binary_sensor.hallway_occupancy"]) ? {level:"blue",text:"Presenza rilevata"}:{level:"good",text:"Libero"};
-      case "bagno": {
-        if(this._on("binary_sensor.bathroom_water_leak")) return {level:"bad",text:"Perdita acqua"};
-        if(this._on("binary_sensor.bathroom_window")) return {level:"warn",text:"Finestra aperta"};
-        return this._climateActive("fan.bathroom_extractor") ? {level:"blue",text:"Aspiratore attivo"}:{level:"good",text:"Tutto ok"}; }
-      case "cucina": {
-        if(this._on("binary_sensor.kitchen_door_window")) return {level:"warn",text:"Porta finestra aperta"};
-        if(this._climateActive("climate.kitchen")) return {level:"blue",text:"Clima attivo"};
-        return light(["light.kitchen_main","light.kitchen_led"]) ? {level:"blue",text:"Luci accese"}:{level:"good",text:"Tutto ok"}; }
-      case "camera": {
-        if(this._on("binary_sensor.bedroom_door_window")) return {level:"warn",text:"Porta finestra aperta"};
-        if(this._climateActive("climate.bedroom")) return {level:"blue",text:"Clima attivo"};
-        const v=this._state("vacuum.robot_vacuum",""); if(["cleaning","returning","paused"].includes(v)) return {level:"blue",text:"Robot aspirapolvere attivo"};
-        return {level:"good",text:"Tutto ok"}; }
-      case "balcone": {
-        if(this._on("binary_sensor.weather_rain") || (this._num("sensor.weather_rain_rate",0)>=0.1)) return {level:"warn",text:"Pioggia rilevata"};
-        if(this._num("sensor.weather_wind_gust",0)>=24) return {level:"warn",text:"Raffiche forti"};
-        if(this._on("switch.balcony_barbecue")) return {level:"blue",text:"Barbecue acceso"};
-        return {level:"good",text:"Meteo regolare"}; }
-      case "garage": {
-        if(this._on("binary_sensor.garage_door_contact")) return {level:"warn",text:"Basculante aperto"};
-        if(this._on("binary_sensor.ev_charging_at_home")) return {level:"blue",text:"EV in carica"};
-        if(this._on("binary_sensor.garage_dehumidifier_tank_full")) return {level:"bad",text:"Serbatoio pieno"};
-        return {level:"good",text:"Tutto ok"}; }
-    }
-    return {level:"good",text:"Tutto ok"};
-  }
-
-  _renderNav(force=false) {
-    const nav=this.shadowRoot.querySelector("#nav"); if(!nav) return;
-    const dynamic=this._effectiveRooms().filter(r=>this._dynamicRoomConfigured(r)).map(r=>[r.id,r.icon||this._roomIcon(r.type),r.name]);
-    const visibleNav=[["panoramica","mdi:home-analytics","Panoramica"],...dynamic,["info","mdi:information-outline","Informazioni"]];
-    const valid=new Set(visibleNav.map(x=>x[0])); if(!valid.has(this._active)) this._active="panoramica";
-    if(force || !nav.children.length || nav.children.length!==visibleNav.length || nav.dataset.signature!==JSON.stringify(visibleNav)){
-      nav.innerHTML=visibleNav.map(([id,icon,label])=>`<button class="nav-btn ${id===this._active?'active':''}" data-nav="${id}" type="button"><ha-icon icon="${icon}"></ha-icon><span>${this._esc(label)}</span></button>`).join("");
-      nav.dataset.signature=JSON.stringify(visibleNav);
-    } else nav.querySelectorAll("[data-nav]").forEach(b=>b.classList.toggle("active",b.dataset.nav===this._active));
-  }
-  _renderHeader() {
-    const host=this.shadowRoot.querySelector("#headerStatus"); if(!host||!this._hass) return;
-    const all=this._overall();
-    const temp=this._configured("sensor.weather_outdoor_temperature")?`<div class="header-pill"><ha-icon icon="mdi:thermometer"></ha-icon>${this._fmt("sensor.weather_outdoor_temperature",1,"°C")}</div>`:"";
-    host.innerHTML=`<div class="header-pill"><ha-icon icon="${all.icon}"></ha-icon>${this._esc(all.title)}</div>${temp}`;
-  }
-
-  _translations(){
-    return {
-      "Panoramica":"Overview","Informazioni":"Information","Configura le entità":"Configure entities","Configura":"Configure","Chiudi":"Close",
-      "Caricamento Casa Dashboard…":"Loading Casa Dashboard…","Realizzato da":"Created by","Offrimi un caffè":"Buy me a coffee",
-      "Pagina non disponibile":"Page unavailable","Dashboard pronta":"Dashboard ready","Versione":"Version","Piattaforma":"Platform",
-      "Dettagli e personalizzazione di Casa Dashboard Community.":"Casa Dashboard Community details and customization.",
-      "Dashboard app-like, adattiva e configurabile per Home Assistant.":"An app-like, adaptive and configurable dashboard for Home Assistant.",
-      "In uso":"Active","Grafica originale di Casa Dashboard Community v3.5.3.":"Original Casa Dashboard Community interface.",
-      "Nuova grafica derivata da Casa Dashboard v4.3.54, con visual dedicati per luci, sensori, clima, dispositivi e aperture.":"New dynamic interface with dedicated visuals for lights, sensors, climate, devices and openings.",
-      "La scelta viene salvata sul browser/dispositivo e non modifica entità o automazioni.":"Your choice is saved on this browser/device and does not change entities or automations.",
-      "SUPPORTA IL PROGETTO":"SUPPORT THE PROJECT","Casa Dashboard Community è gratuita":"Casa Dashboard Community is free","Se ti piace, puoi supportarne lo sviluppo.":"If you like it, you can support its development.",
-      "Stanze":"Rooms","Crea, rinomina e ordina gli ambienti della dashboard. In Casa V2 non esistono ambienti preimpostati: compariranno solo quelli creati qui.":"Create, rename and reorder dashboard rooms. Casa V2 has no preset rooms: only the rooms you create here will appear.",
-      "Aggiungi stanza":"Add room","Salva configurazione":"Save configuration","Nome stanza":"Room name","Sposta su":"Move up","Sposta giù":"Move down","Elimina":"Delete",
-      "Nessuna stanza creata":"No rooms created","Casa V2 partirà vuota. Premi “Aggiungi stanza” per costruire la tua casa.":"Casa V2 starts empty. Press “Add room” to build your home.",
-      "Al primo utilizzo le entità già configurate nelle 173 associazioni vengono importate nelle stanze. Dopo il primo salvataggio, le stanze vengono gestite solo da questa sezione e le entità rimosse non vengono reinserite automaticamente.":"On first use, entities already configured in the 173 mappings are imported into rooms. After the first save, rooms are managed only from this section and removed entities are not automatically added again.",
-      "Cerca stanza, funzione, chiave o nome entità…":"Search room, function, key or entity name…","Nessuna associazione corrisponde alla ricerca.":"No mappings match your search.",
-      "Le modifiche vengono salvate nel file Community separato.":"Changes are saved in the separate Community file.","Annulla":"Cancel","Svuota":"Clear","Salvataggio…":"Saving…","Riprova":"Retry","Nessuna entità trovata":"No entities found",
-      "Cerca per nome o entity_id…":"Search by name or entity_id…","Cerca le entità anche con il nome assegnato in Home Assistant oppure digita direttamente la entity_id. Puoi lasciare vuote le funzioni che non utilizzi.":"Search entities using the name assigned in Home Assistant or enter the entity_id directly. You can leave unused functions empty.",
-      "CASA & GENERALE":"HOME & GENERAL","Casa":"Home","Stanza":"Room","Ambiente generico":"Generic room","Ingresso":"Entrance","Cucina":"Kitchen","Bagno":"Bathroom","Camera":"Bedroom","Scale":"Stairs","Balcone / Terrazzo":"Balcony / Terrace","Garage":"Garage","Soggiorno":"Living room","Ufficio / Studio":"Office / Study","Lavanderia":"Laundry","Taverna":"Basement / Den","Cantina":"Cellar","Giardino":"Garden",
-      "Stati attivi":"Active states","Solo ciò che in questo momento sta cambiando":"Only what is changing right now","Clima casa":"Home climate","Sintesi interno ed esterno":"Indoor and outdoor summary","Meteo balcone":"Outdoor weather","Condizioni esterne in tempo reale":"Real-time outdoor conditions","Fotovoltaico":"Solar","BYD + DAZE":"EV + WALLBOX",
-      "Luci":"Lights","Luci accese":"Lights on","Aperture":"Openings","Presenze":"Presence","Vibrazioni":"Vibrations","Nessuna":"None","Nessuno":"None","Assente":"None","Rilevata":"Detected","Rilevato":"Detected","Attivo":"Active","Attiva":"Active","Spento":"Off","Spenta":"Off","Acceso":"On","Accesa":"On","Chiuso":"Closed","Chiusa":"Closed","Aperto":"Open","Aperta":"Open","Bloccata":"Locked","Non armato":"Disarmed","Pronta":"Ready","standby":"standby",
-      "Temperatura":"Temperature","Umidità":"Humidity","Esterno":"Outdoor","Vento":"Wind","Pioggia":"Rain","Radiazione":"Radiation","Indice UV":"UV index","Pressione":"Pressure","Batteria":"Battery","Scarica":"Discharging","Carica":"Charging","Produzione":"Production","Consumo":"Consumption","Prelievo":"Grid import","Immissione":"Grid export","Potenza":"Power","Energia sessione":"Session energy","Ultima sessione":"Last session","Limite ricarica":"Charge limit","Stato EVSE":"EVSE status","Stato DAZE":"DAZE status",
-      "Sicurezza e accesso":"Security and access","Accessi, ricarica e qualità aria":"Access, charging and air quality","Comfort, luci ed elettrodomestici":"Comfort, lights and appliances","Luci, tende e dispositivi":"Lights, blinds and devices","Ambiente":"Environment","Dispositivo":"Device","Gestisci clima":"Manage climate","Porta di casa":"Front door","Accesso principale":"Main entrance","Sistema pronto per l’inserimento":"System ready to arm","Apri pannello allarme":"Open alarm panel","Sicurezza e accesso":"Security and access","Sensori ingresso":"Entrance sensors",
-      "Qualità aria":"Air quality","Purificatore":"Air purifier","Deumidificatore":"Dehumidifier","Serbatoio":"Tank","PIENO":"FULL","Svuotare serbatoio":"Empty tank","Regolare":"Normal","Umidità rilevata":"Detected humidity","Blocco tasti":"Child lock","Livello acqua":"Water level","Retroilluminazione":"Backlight","Alimentazione":"Power","Display":"Display","Buzzer":"Buzzer",
-      "Luce forte":"Strong light","Luce buona":"Good light","Luce bassa":"Low light","Meteo tranquillo":"Calm weather","Pioggia rilevata":"Rain detected","Vento forte":"Strong wind","Vento moderato":"Moderate wind","Tramonto vicino":"Sunset approaching","Sole forte":"Strong sun","Luminoso":"Bright","Nessuna precipitazione":"No precipitation","Raffica":"Gust","Direzione vento":"Wind direction","Istantanea":"Instantaneous","Settimana":"Week","Mese":"Month","Anno":"Year","Evento":"Event","Cumulata":"Total","Cumulata giornaliera":"Daily total","Ultima ora":"Last hour","24 ore":"24 hours",
-      "ON":"ON","OFF":"OFF"
-    };
-  }
-  _tr(value){
-    if(this._language!=="en") return value;
-    let out=String(value??""); const map=this._translations();
-    if(map[out]!==undefined) return map[out];
-    const keys=Object.keys(map).sort((a,b)=>b.length-a.length);
-    for(const k of keys) if(out.includes(k)) out=out.split(k).join(map[k]);
-    return out;
-  }
-  _applyLanguage(root=this.shadowRoot){
-    if(!root) return;
-    root.querySelectorAll?.('[data-language]').forEach(b=>b.classList.toggle('active',b.dataset.language===this._language));
-    if(this._language!=="en") return;
-    const showText=globalThis.NodeFilter?.SHOW_TEXT ?? 4;
-    const walker=document.createTreeWalker(root,showText); const nodes=[]; while(walker.nextNode()) nodes.push(walker.currentNode);
-    for(const n of nodes){ const v=n.nodeValue; if(v&&v.trim()){ const t=this._tr(v); if(t!==v)n.nodeValue=t; } }
-    root.querySelectorAll?.('[placeholder],[title],[aria-label]').forEach(el=>{ for(const a of ['placeholder','title','aria-label']) if(el.hasAttribute(a)) el.setAttribute(a,this._tr(el.getAttribute(a))); });
-  }
-  _setLanguage(lang){
-    if(!["it","en"].includes(lang)) return;
-    this._language=lang;
-    try{ localStorage.setItem("casa_dashboard_community_language",lang); }catch(e){}
-    const configWasOpen=this._configDialogOpen;
-    this._renderShell();
-    this._renderPage(true);
-    if(configWasOpen) this._renderConfigLayer();
-    this._applyLanguage();
-    requestAnimationFrame(()=>this._applyLanguage());
-  }
-
-  _renderPage(forceNav=false) {
-    if(!this._hass || !this.shadowRoot) return;
-    this._renderNav(forceNav); this._renderHeader(); this._applyThemeMode();
-    const shell=this.shadowRoot.querySelector(".app-shell"); if(shell){ shell.classList.toggle("ui-v1",this._uiTheme==="v1"); shell.classList.toggle("ui-v2",this._uiTheme==="v2"); shell.dataset.page=this._active; }
-    const host=this.shadowRoot.querySelector("#content"); if(!host) return;
-    const dynamicRoom=this._roomById(this._active);
-    const fixedRenderer={panoramica:()=>this._overview(),info:()=>this._info()}[this._active];
-    // The Rooms manager is the single source of truth for BOTH Casa V1 and Casa V2.
-    // Themes only change presentation; room content/entities are identical.
-    const renderer=dynamicRoom
-      ? (()=>this._dynamicRoom(dynamicRoom))
-      : fixedRenderer;
-    host.innerHTML=renderer ? renderer() : `<div class="empty">Pagina non disponibile</div>`;
-    this._cleanEmptySections(host);
-    this._lastStateFingerprint=this._stateFingerprint();
-    this._applyLanguage();
-  }
-
-  _setUiTheme(theme){
-    if(!["v1","v2"].includes(theme)) return;
-    this._uiTheme=theme;
-    try { localStorage.setItem("casa_dashboard_community_style",theme); } catch(e) {}
-    const shell=this.shadowRoot?.querySelector(".app-shell");
-    if(shell){ shell.classList.toggle("ui-v1",theme==="v1"); shell.classList.toggle("ui-v2",theme==="v2"); }
-    this._renderPage(false);
-  }
-
-  _info(){
-    const selected=this._uiTheme;
-    return `<div class="page">${this._hero("Informazioni","Dettagli e personalizzazione di Casa Dashboard Community.",{level:"good",text:"Dashboard pronta"},[
-      {label:"Versione",value:"3.5.3",small:"Casa Dashboard Community"},
-      {label:"Piattaforma",value:"Home Assistant",small:"Custom integration"}
-    ])}<div class="info-card"><div class="info-icon"><ha-icon icon="mdi:home-heart"></ha-icon></div><h2>Casa Dashboard Community</h2>
-    <p>Dashboard app-like, adattiva e configurabile per Home Assistant.</p>
-    <div class="style-picker">
-      <button class="style-option ${selected==="v1"?"active":""}" data-ui-theme="v1" type="button">${selected==="v1"?'<span class="selected">In uso</span>':""}<div class="style-head"><ha-icon icon="mdi:home-variant-outline"></ha-icon><strong>Casa V1</strong></div><p>Grafica originale di Casa Dashboard Community v3.5.3.</p></button>
-      <button class="style-option ${selected==="v2"?"active":""}" data-ui-theme="v2" type="button">${selected==="v2"?'<span class="selected">In uso</span>':""}<div class="style-head"><ha-icon icon="mdi:vector-square"></ha-icon><strong>Casa V2</strong></div><p>Nuova grafica derivata da Casa Dashboard v4.3.54, con visual dedicati per luci, sensori, clima, dispositivi e aperture.</p></button>
-    </div>
-    <div class="style-note">La scelta viene salvata sul browser/dispositivo e non modifica entità o automazioni.</div>
-    <div class="community-support-box"><div><span>SUPPORTA IL PROGETTO</span><strong>Casa Dashboard Community è gratuita</strong><p>Se ti piace, puoi supportarne lo sviluppo.</p></div><a href="https://ko-fi.com/fabvittori" target="_blank" rel="noopener noreferrer">☕ Offrimi un caffè</a></div>
-    <p class="credit">Realizzato da Fabio Vittori</p></div></div>`;
-  }
-
-  _lightVisual(entity,title,icon="mdi:lightbulb",sub="",span=4){
-    const on=this._on(entity);
-    const isLed=/led|retroillumin/i.test(`${entity} ${title} ${icon}`);
-    const isLamp=/lampada|lamp\b|wall-sconce|outdoor-lamp/i.test(`${title} ${icon}`);
-    const scene=isLed?"led":isLamp?"lamp":"ceiling";
-    const customPhoto=this._customObjectVisual(entity,"light");
-    return `<div class="light-visual-card ${scene} ${on?'on':'off'} span-${span} ${customPhoto?'has-custom-photo':''}">
-      ${customPhoto || `<div class="light-fixture ${scene}">
-        ${scene==="led"?
-          `<div class="led-strip">${Array.from({length:8},()=>'<i></i>').join("")}</div>`:
-          scene==="lamp"?
-          `<div class="lamp-shade"></div><div class="lamp-stem"></div><div class="lamp-base"></div>`:
-          `<div class="ceiling-wire"></div><div class="ceiling-cap"></div><div class="ceiling-glow"></div>`
-        }
-      </div
+  _first

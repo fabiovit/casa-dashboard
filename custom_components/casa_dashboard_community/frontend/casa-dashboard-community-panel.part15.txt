@@ -1,4 +1,209 @@
-n="mdi:chart-line") {
+va":"Spenta";
+      visual=`<div class="uv-airfryer ${active?'active':''}">
+        <div class="uv-airfryer-body">
+          <div class="uv-airfryer-top"><i></i><i></i></div>
+          <div class="uv-airfryer-display">${active?'<b>ON</b>':'<b>OFF</b>'}</div>
+          <div class="uv-airfryer-basket"><div class="uv-airfryer-window"></div><div class="uv-airfryer-handle"></div></div>
+          <div class="uv-airfryer-heat"><i></i><i></i><i></i></div>
+        </div>
+      </div>`;
+    } else if(type==="wicket"){
+      icon=isOpen?"mdi:gate-open":"mdi:gate"; status=isOpen?"Aperto":"Chiuso";
+      visual=`<div class="uv-wicket"><div class="uv-wall left"></div><div class="uv-wall right"></div><div class="uv-post left"></div><div class="uv-post right"></div><div class="uv-wicket-leaf ${isOpen?'open':''}">${Array.from({length:5},()=>'<i></i>').join("")}</div></div>`;
+    } else if(type==="gate"){
+      icon=isOpen?"mdi:gate-open":"mdi:gate"; status=isOpen?"Aperto":"Chiuso";
+      visual=`<div class="uv-gate"><div class="uv-gate-pillar left"></div><div class="uv-gate-pillar right"></div><div class="uv-gate-leaf ${isOpen?'open':''}">${Array.from({length:8},()=>'<i></i>').join("")}</div></div>`;
+    } else if(type==="garage"){
+      icon=isOpen?"mdi:garage-open":"mdi:garage"; status=isOpen?"Aperta":"Chiusa";
+      visual=`<div class="uv-garage"><div class="uv-garage-frame"><div class="uv-garage-door ${isOpen?'open':''}">${Array.from({length:5},()=>'<i></i>').join("")}</div></div></div>`;
+    } else if(type==="irrigation"){
+      icon="mdi:sprinkler-variant"; status=active?"Irrigazione attiva":"Irrigazione ferma";
+      visual=`<div class="uv-irrigation"><div class="uv-grass"></div><div class="uv-sprinkler"></div><div class="uv-water ${active?'active':''}"><i></i><i></i><i></i><i></i><i></i></div></div>`;
+    } else if(type==="mower"){
+      icon="mdi:robot-mower";
+      const map={mowing:"Taglio in corso",docked:"Alla base",paused:"In pausa",returning:"Ritorno alla base",error:"Errore",unavailable:"Non disponibile",unknown:"Stato sconosciuto",idle:"In attesa","rain delayed":"Ritardo pioggia",rain_delayed:"Ritardo pioggia",rain_delay:"Ritardo pioggia"};
+      status=map[normalized]||String(state).replaceAll("_"," ");
+      visual=`<div class="uv-mower"><div class="uv-lawn"></div><div class="uv-mower-body ${active?'active':''}"><div class="uv-mower-top"></div><div class="uv-mower-eye"></div></div></div>`;
+    } else if(type==="washer"){
+      icon="mdi:washing-machine"; status=active?"Alimentata":"Disattivata";
+      visual=`<div class="uv-washer ${active?'active':''}"><div class="uv-washer-body"><div class="uv-washer-panel"><i></i><i></i><i></i></div><div class="uv-washer-door"><div></div></div></div></div>`;
+    } else if(type==="vacuum" || type==="mop"){
+      icon=type==="mop"?"mdi:robot-vacuum-variant":"mdi:robot-vacuum";
+      const map={docked:"Alla base",cleaning:"In pulizia",returning:"Rientro alla base",paused:"In pausa",idle:"In attesa",error:"Errore",unavailable:"Non disponibile",unknown:"Stato sconosciuto"};
+      status=map[normalized]||String(state).replaceAll("_"," ");
+      visual=`<div class="uv-vacuum ${type}"><div class="uv-vacuum-body ${active?'active':''}"><div class="uv-vacuum-top"></div><div class="uv-vacuum-eye"></div>${type==="mop"?'<div class="uv-mop-pad"></div>':""}</div></div>`;
+    } else if(type==="catfood"){
+      icon="mdi:cat"; status="Pronto";
+      visual=`<div class="uv-catfood"><div class="uv-cat"><div class="uv-cat-ear left"></div><div class="uv-cat-ear right"></div><div class="uv-cat-head"><i></i><i></i><b></b></div><div class="uv-cat-body"></div></div><div class="uv-bowl"><div class="uv-kibble">${Array.from({length:7},()=>'<i></i>').join("")}</div></div></div>`;
+    } else if(type==="humidifier"){
+      icon="mdi:air-humidifier"; status=active?"Attivo":"Disattivo";
+      visual=`<div class="uv-humidifier ${active?'active':''}"><div class="uv-hum-body"><div class="uv-hum-tank"></div><div class="uv-hum-display"></div><div class="uv-hum-mist"><i></i><i></i><i></i></div></div></div>`;
+    } else {
+      icon=options.icon||"mdi:devices"; status=active?"Attivo":"Disattivo";
+      visual=`<div class="generic-sensor"><ha-icon icon="${icon}"></ha-icon></div>`;
+    }
+
+    if(options.status) status=options.status;
+    if(options.icon) icon=options.icon;
+    const visualActive=options.visualActive===false?false:active;
+    let actionAttr="",actionText=options.actionText||"",actionClass=visualActive?"active":"";
+    if(options.kind==="service"){
+      actionAttr=`data-service-domain="${options.domain}" data-service="${options.service}" data-entity="${entity}"`;
+      actionText=actionText||"ESEGUI";
+      actionClass=options.tone==="warn"?"warn":actionClass;
+    } else if(options.kind==="more"){
+      actionAttr=`data-more="${entity}"`;
+      actionText=actionText||"DETTAGLI";
+    } else {
+      actionAttr=`data-toggle="${entity}"`;
+      actionText=actionText||(on?"ON":"OFF");
+    }
+    const customPhoto=this._customObjectVisual(entity,"universal");
+    return `<div class="universal-device-card ${type} ${visualActive?'active':'inactive'} span-${span} ${customPhoto?'has-custom-photo':''}">${customPhoto || `<div class="universal-device-scene">${visual}</div>`}<div class="universal-device-copy clickable" data-more="${entity}"><span>${this._esc(title)}</span><strong>${this._esc(status)}</strong><small>${this._esc(subtitle)}</small></div><button class="universal-device-action ${actionClass}" ${actionAttr} type="button"><ha-icon icon="${icon}"></ha-icon>${actionText?`<span>${this._esc(actionText)}</span>`:""}</button></div>`;
+  }
+
+  _v2HeroScene(sceneKey){
+    if(this._uiTheme!=="v2") return "";
+    if(sceneKey==="cucina") return `<div class="kitchen-scene community-original-scene">
+      <div class="kitchen-wall"></div>
+      <div class="kitchen-window"><div class="kitchen-sky"></div></div>
+      <div class="kitchen-cabinets"><i></i><i></i><i></i></div>
+      <div class="kitchen-counter"><div></div><div></div><div></div></div>
+      <div class="kitchen-pendant on"><span></span><i></i></div>
+    </div>`;
+    if(sceneKey==="bagno") return `<div class="bathroom-scene community-original-scene">
+      <div class="bathroom-window"><div class="bathroom-sky"></div><div class="bathroom-blind" style="height:24%"></div><div class="bathroom-blind-bar" style="top:24%"></div><div class="bathroom-sash"></div></div>
+      <div class="bathroom-basin"><div class="bathroom-mirror"></div><div class="bathroom-sink"></div><div class="bathroom-tap"></div><div class="bathroom-cabinet"><div class="cab left"></div><div class="cab right"></div></div></div>
+      <div class="bathroom-water"><ha-icon icon="mdi:water-check"></ha-icon></div>
+    </div>`;
+    if(sceneKey==="camera") return `<div class="bedroom-scene community-original-scene">
+      <div class="bedroom-bed"><div class="bed-head"></div><div class="bed-pillow left"></div><div class="bed-pillow right"></div><div class="bed-cover"></div></div>
+      <div class="bedroom-window"><div class="bedroom-sky"></div><div class="bedroom-blind" style="height:24%"></div><div class="bedroom-blind-bar" style="top:24%"></div></div>
+      <div class="bedroom-lamp"></div>
+    </div>`;
+    if(sceneKey==="garage") return `<div class="garage-scene community-original-scene">
+      <div class="garage-building"><div class="garage-roof"></div><div class="garage-frame"><div class="garage-door-visual">${Array.from({length:8},()=>'<i></i>').join("")}</div><div class="garage-car"><div class="car-body"></div><div class="car-window"></div><div class="car-wheel left"></div><div class="car-wheel right"></div></div></div></div>
+      <div class="garage-charge-dot"></div>
+    </div>`;
+    if(sceneKey==="balcone") return `<div class="balcony-scene balcony-scene-v2 community-original-scene">
+      <div class="balcony-v2-sky"></div><div class="balcony-v2-sun"></div>
+      <div class="balcony-v2-wall"><div class="balcony-v2-window left"></div><div class="balcony-v2-window right"></div></div>
+      <div class="balcony-v2-awning left"></div><div class="balcony-v2-awning right"></div>
+      <div class="balcony-v2-railing"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="balcony-v2-floor"></div>
+    </div>`;
+    if(sceneKey==="ingresso") return `<div class="entrance-door-scene community-original-scene">
+      <div class="entrance-wall-glow"></div><div class="entrance-door"><div class="entrance-door-inner"><div class="entrance-door-window"></div><div class="entrance-door-lines"></div><div class="entrance-door-handle"></div></div></div>
+    </div>`;
+    if(sceneKey==="scale") return `<div class="stairs-hero-scene community-original-scene">
+      <div class="stairs-wall"></div><div class="stairs-flight"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="stairs-rail"></div><div class="stairs-door"></div>
+    </div>`;
+    if(sceneKey==="disimpegno") return `<div class="hallway-scene community-original-scene">
+      <div class="hallway-wall left"></div><div class="hallway-wall right"></div><div class="hallway-floor"></div><div class="hallway-door left"></div><div class="hallway-door right"></div>
+      <div class="hallway-person"><i class="head"></i><i class="body"></i><i class="arm a"></i><i class="arm b"></i><i class="leg a"></i><i class="leg b"></i></div>
+    </div>`;
+    if(sceneKey==="esterno") return `<div class="gate-visual gate-visual-v2 community-original-scene">
+      <div class="gate-v2-sky"></div><div class="gate-v2-ground"></div><div class="gate-v2-wall left"></div><div class="gate-v2-wall right"></div><div class="gate-v2-pillar left"></div><div class="gate-v2-pillar right"></div><div class="gate-v2-leaf"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="gate-v2-handle"></div>
+    </div>`;
+    if(sceneKey==="soggiorno") return `<div class="living-scene community-original-scene"><div class="living-wall"></div><div class="living-tv"></div><div class="living-sofa"><i></i><i></i></div><div class="living-lamp"></div><div class="living-rug"></div></div>`;
+    if(sceneKey==="studio") return `<div class="office-scene community-original-scene"><div class="office-wall"></div><div class="office-desk"></div><div class="office-monitor"></div><div class="office-chair"></div><div class="office-lamp"></div></div>`;
+    if(sceneKey==="lavanderia") return `<div class="laundry-scene community-original-scene"><div class="laundry-wall"></div><div class="laundry-machine"><div class="laundry-door"></div></div><div class="laundry-shelf"></div><div class="laundry-basket"></div></div>`;
+    if(sceneKey==="taverna") return `<div class="hobby-scene community-original-scene"><div class="hobby-wall"></div><div class="hobby-table"></div><div class="hobby-cabinet"></div><div class="hobby-lamp"></div></div>`;
+    return `<div class="generic-home-scene community-original-scene"><div class="generic-room-wall"></div><div class="generic-window"></div><div class="generic-table"></div><div class="generic-lamp"></div></div>`;
+  }
+  _cleanEmptySections(host){
+    host.querySelectorAll(".grid").forEach(grid=>{
+      if(!grid.children.length){
+        const prev=grid.previousElementSibling;
+        if(prev?.classList?.contains("chapter")) prev.remove();
+        grid.remove();
+      }
+    });
+    const mosaic=host.querySelector(".room-mosaic");
+    if(mosaic && !mosaic.children.length){
+      const prev=mosaic.previousElementSibling;
+      if(prev?.classList?.contains("chapter")) prev.remove();
+      mosaic.remove();
+    }
+  }
+
+  _hero(title, subtitle, status, metrics=[], sceneKey="", roomConfig=null) {
+    const level=status.level||"good";
+    const heroIcon=level==='bad'?'mdi:alert-decagram':level==='warn'?'mdi:shield-alert-outline':level==='blue'?'mdi:home-lightning-bolt-outline':'mdi:home-heart';
+    const visibleMetrics=metrics.filter(m=>m.show!==false && String(m.value??"").trim() && String(m.value).trim()!=="—");
+    if(this._uiTheme==="v2" && sceneKey){
+      const side=visibleMetrics.slice(0,3);
+      return `<section class="scene-hero scene-${level} original-room-hero v2-room-${sceneKey}">
+        <div class="scene-copy">
+          <div class="scene-kicker">CASA · LIVE</div>
+          <div class="scene-title-row"><h1>${title}</h1></div>
+          <div class="scene-sub">${subtitle}</div>
+          <div class="scene-status ${level}"><span class="pulse"></span><strong>${this._esc(status.title||status.text)}</strong>${status.title&&status.text?`<span>${this._esc(status.text)}</span>`:""}</div>
+        </div>
+        <div class="original-room-hero-card">
+          <div class="original-room-visual">${this._roomImageUrl(roomConfig)
+            ? `<div class="custom-room-photo"><img src="${this._esc(this._roomImageUrl(roomConfig))}" alt="${this._esc(title)}" loading="lazy"></div>`
+            : this._v2HeroScene(sceneKey)}</div>
+          <div class="original-room-side">
+            ${side.length?side.map((m,i)=>`<div class="original-room-meta"><span>${m.label}</span><strong>${m.value}</strong>${m.small?`<small>${m.small}</small>`:""}</div>${i<side.length-1?'<div class="original-room-divider"></div>':''}`).join(""):`<div class="original-room-meta"><span>AMBIENTE</span><strong>Pronto</strong><small>Nessun dato sintetico disponibile</small></div>`}
+          </div>
+        </div>
+      </section>`;
+    }
+    return `<section class="scene-hero scene-${level}">
+      <div class="scene-copy"><div class="scene-kicker">CASA · LIVE</div><div class="scene-title-row"><h1>${title}</h1><div class="scene-mark ${level}"><ha-icon icon="${sceneKey?this._v1RoomIcon(sceneKey):heroIcon}"></ha-icon></div></div><div class="scene-sub">${subtitle}</div><div class="scene-status ${level}"><span class="pulse"></span><strong>${this._esc(status.title || status.text)}</strong>${status.title&&status.text?`<span>${this._esc(status.text)}</span>`:""}</div></div>
+      ${visibleMetrics.length?`<div class="scene-dashboard">${visibleMetrics.map((m,i)=>`<div class="scene-stat s${i}"><span>${m.label}</span><strong>${m.value}</strong>${m.small?`<small>${m.small}</small>`:""}</div>`).join("")}</div>`:""}
+    </section>`;
+  }
+
+  _section(title, sub="") { return `<div class="chapter"><div class="chapter-line"></div><div class="chapter-copy"><div class="chapter-title">${title}</div>${sub?`<div class="chapter-sub">${sub}</div>`:""}</div></div>`; }
+  _metric(icon,label,value,foot="",span=3,entity="",tone="") {
+    const configured=!entity || this._configured(entity);
+    if(entity && !configured) return "";
+    const cls=tone || (entity?this._metricTone(entity,value):"");
+    if(this._uiTheme==="v2" && entity){
+      const lowLabel=String(label||"").toLowerCase(), lowIcon=String(icon||"").toLowerCase();
+      const envType=lowIcon.includes("thermometer")||lowLabel.includes("temperatura")?"temperature":
+                    lowIcon.includes("water-percent")||lowLabel.includes("umid")?"humidity":
+                    lowLabel.includes("lux")||lowLabel.includes("illumin")?"lux":"";
+      if(envType) return this._environmentVisual(entity,label,envType,span,foot);
+      return this._sensorVisual(icon,label,value,foot,span,entity,cls);
+    }
+    const shown=value;
+    const plain=String(shown).replace(/<[^>]+>/g,'').trim();
+    const longClass=plain.length>26?'value-long':'';
+    return `<div class="data-node span-${span} ${entity&&configured?'clickable':''} ${cls} ${longClass}" ${entity&&configured?`data-more="${entity}"`:""}><div class="data-node-top"><span class="data-label">${label}</span><ha-icon icon="${icon}"></ha-icon></div><div class="data-value">${shown}</div>${foot?`<div class="data-foot">${foot}</div>`:""}<div class="data-glow"></div></div>`;
+  }
+  _control(entity,title,icon,sub="",mode="toggle",span=4) {
+    const configured=this._configured(entity);
+    if(!configured) return "";
+    if(this._uiTheme==="v2"){
+      const domain=String(entity).split(".")[0];
+      if(domain==="light") return this._lightVisual(entity,title,icon,sub,span);
+      if(domain==="fan") return this._deviceVisual(entity,title,"fan",sub,span);
+      if(domain==="humidifier") return this._universalDeviceVisual(entity,title,"humidifier",span,sub,{kind:"toggle",icon});
+      if(["switch","input_boolean"].includes(domain)) return this._universalDeviceVisual(entity,title,this._v2DeviceType(entity),span,sub,{kind:"toggle",icon});
+    }
+    const st=this._state(entity,"off");
+    const on=this._on(entity)||["open","cool","heat","heating","cooling"].includes(st);
+    const cls=this._controlTone(entity,on);
+    return `<div class="command-strip span-${span} ${cls}"><div class="command-symbol ${on?'active':''}"><ha-icon icon="${icon}"></ha-icon></div><div class="command-copy clickable" data-more="${entity}"><div class="command-title">${title}</div><div class="command-sub">${sub||this._esc(st)}</div></div>${mode==='toggle'?`<button class="command-action ${on?'active':''}" data-toggle="${entity}" type="button"><span>${on?'ON':'OFF'}</span><i></i></button>`:""}</div>`;
+  }
+  _coverControl(entity,title,inverted=false,span=6,subPrefix="Posizione"){
+    const configured=this._configured(entity); if(!configured) return "";
+    const open=this._coverOpen(entity,inverted),pos=this._attr(entity,"current_position",null);
+    const stateText=inverted?(open?"Aperta":"Chiusa"):(open?"Giù / aperta":"Su / chiusa");
+    if(this._uiTheme==="v2"){
+      return `<div class="universal-device-card blinds ${open?'active':'inactive'} span-${span}">
+        <div class="universal-device-scene"><div class="blind-visual ${open?'open':''}"><div class="blind-box"></div><div class="blind-slats">${Array.from({length:7},()=>'<i></i>').join("")}</div><div class="blind-cord"></div></div></div>
+        <div class="universal-device-copy clickable" data-more="${entity}"><span>${this._esc(title)}</span><strong>${this._esc(stateText)}</strong><small>${pos!==null?`${subPrefix} ${pos}%`:"Serramento"}</small></div>
+        <button class="universal-device-action ${open?'active':''}" data-cover-toggle="${entity}" data-inverted="${inverted?1:0}" type="button"><ha-icon icon="mdi:blinds-horizontal"></ha-icon><span>${open?'CHIUDI':'APRI'}</span></button>
+      </div>`;
+    }
+    return `<div class="command-strip span-${span} ${open?'state-warn':'state-off'}"><div class="command-symbol ${open?'warn':''}"><ha-icon icon="mdi:blinds-horizontal"></ha-icon></div><div class="command-copy clickable" data-more="${entity}"><div class="command-title">${title}</div><div class="command-sub">${pos!==null?`${subPrefix} ${pos}% · `:""}${stateText}</div></div><button class="command-action ${open?'warn':''}" data-cover-toggle="${entity}" data-inverted="${inverted?1:0}" type="button"><span>${open?'CHIUDI':'APRI'}</span><i></i></button></div>`;
+  }
+  _alert(level,icon,title,text) { return `<div class="signal ${level}"><div class="signal-icon"><ha-icon icon="${icon}"></ha-icon></div><div><strong>${title}</strong><span>${text}</span></div></div>`; }
+  _logic(title,text,level=""){ return `<div class="logic-ribbon ${level}"><span>${title}</span><strong>${text}</strong></div>`; }
+  _compareCard(title, items, foot="", span=6, icon="mdi:chart-line") {
     const visible=items.filter(it=>String(it.value??"").trim() && String(it.value).trim()!=="—");
     if(!visible.length) return "";
     return `<div class="data-node compare-card span-${span}"><div class="data-node-top"><div class="data-label">${title}</div><ha-icon icon="${icon}"></ha-icon></div><div class="compare-grid">${visible.map(it=>`<div class="compare-cell"><div class="compare-label">${it.label}</div><div class="compare-value">${it.value}</div></div>`).join("")}</div>${foot&&foot.trim()!=="—"?`<div class="data-foot compare-foot">${foot}</div>`:""}</div>`;
@@ -59,7 +264,7 @@ n="mdi:chart-line") {
   }
 
   _overviewMetricCard(entity, tone="generic", icon="mdi:chart-line", kind="generic"){
-    const friendly=this._hass?.states?.[entity]?.attributes?.friendly_name||entity;
+    const friendly=this._overviewLabelForEntity(entity);
     const metric=this._overviewMetric(entity,kind);
     return `<div class="overview-key-card ${tone}">
       <div class="overview-key-icon"><ha-icon icon="${icon}"></ha-icon></div>
@@ -241,159 +446,4 @@ n="mdi:chart-line") {
 
     const nodes=[
       load!==null?`<div class="solar-node house"><div class="solar-node-orb"><ha-icon icon="mdi:home-import-outline"></ha-icon></div><div class="solar-node-label">${this._esc(houseLabel)}</div><strong>${this._energyFmtKW(load,true)}</strong><small>${this._language==="en"?"Current home consumption":"Consumo istantaneo della casa"}</small><div class="solar-node-chip active">${this._language==="en"?"Home load":"Consumo casa"}</div></div>`:"",
-      pvTotal!==null?`<div class="solar-node inverter"><div class="solar-node-orb"><ha-icon icon="mdi:solar-power-variant"></ha-icon></div><div class="solar-node-label">${this._esc(inverterLabel)}</div><strong>${this._energyFmtKW(pvTotal,true)}</strong><small>${this._language==="en"?"Available solar production":"Produzione fotovoltaica disponibile"}</small><div class="solar-node-chip active">${this._language==="en"?"Solar":"Energia FV"}</div></div>`:"",
-      (soc!==null || battPower!==null)?`<div class="solar-node battery"><div class="solar-node-orb"><ha-icon icon="mdi:battery-high"></ha-icon></div><div class="solar-node-label">${this._esc(batteryLabel)}</div><strong class="${battTone}">${battPower!==null?this._energyFmtKW(battPower,true):socText}</strong><small>${soc!==null?`${socText} · `:""}${this._esc(battFlowLabel)}</small><div class="solar-node-chip ${battTone}">${battDirection==="charge"?(this._language==="en"?"Charge":"Carica"):battDirection==="discharge"?(this._language==="en"?"Discharge":"Scarica"):batteryLabel}</div></div>`:"",
-      grid!==null?`<div class="solar-node network"><div class="solar-node-orb"><ha-icon icon="${gridDirection==="export"?"mdi:transmission-tower-export":"mdi:transmission-tower-import"}"></ha-icon></div><div class="solar-node-label">${this._esc(gridNodeLabel)}</div><strong>${this._energyFmtKW(grid,true)}</strong><small>${this._esc(gridLabel)}</small><div class="solar-node-chip ${gridTone}">${gridDirection==="import"?(this._language==="en"?"Import":"Prelievo"):gridDirection==="export"?"Export":gridNodeLabel}</div></div>`:""
-    ].filter(Boolean).join("");
-
-    return `${this._section(sectionTitle,this._language==="en"?"Production, storage and grid":"Produzione, accumulo e rete")}
-      <div class="solar-showcase community-advanced-energy ${topCards.split('solar-panel').length<=2?'single-top':''}">
-        ${topCards}
-        ${nodes?`<div class="solar-panel solar-flow-card"><div class="solar-flow-grid energy-nodes-${[load,pvTotal,(soc!==null||battPower!==null)?1:null,grid].filter(v=>v!==null).length}">${nodes}</div></div>`:""}
-      </div>`;
-  }
-
-  _overviewV2Personal(){
-    const entities=this._configuredEntitiesForOverview();
-    const friendly=e=>this._overviewLabelForEntity(e);
-    const byDomain=d=>entities.filter(e=>e.startsWith(d+"."));
-    const lights=byDomain("light");
-    const climates=byDomain("climate");
-    const fans=[...byDomain("fan"),...byDomain("humidifier")];
-    const binaries=byDomain("binary_sensor");
-    const sensors=byDomain("sensor");
-
-    const activeLights=lights.filter(e=>this._on(e));
-    const activeClimates=climates.filter(e=>this._climateActive(e));
-    const activeFans=fans.filter(e=>this._on(e));
-    const openBinary=binaries.filter(e=>{
-      const dc=String(this._attr(e,"device_class","")).toLowerCase();
-      return ["door","window","garage_door","opening"].includes(dc) && this._on(e);
-    });
-    const motionBinary=binaries.filter(e=>{
-      const dc=String(this._attr(e,"device_class","")).toLowerCase();
-      return ["motion","occupancy","vibration"].includes(dc) && this._on(e);
-    });
-
-    const activeItems=[
-      ...activeLights.map(e=>({icon:"mdi:lightbulb-on-outline",name:friendly(e),tone:"blue"})),
-      ...openBinary.map(e=>({icon:"mdi:door-open",name:friendly(e),tone:"warn"})),
-      ...motionBinary.map(e=>({icon:"mdi:motion-sensor",name:friendly(e),tone:"blue"})),
-      ...activeClimates.map(e=>({icon:"mdi:air-conditioner",name:friendly(e),tone:"blue"})),
-      ...activeFans.map(e=>({icon:"mdi:fan",name:friendly(e),tone:"blue"}))
-    ];
-
-    const tempSensors=sensors.filter(e=>{
-      const dc=String(this._attr(e,"device_class","")).toLowerCase();
-      const unit=String(this._attr(e,"unit_of_measurement",""));
-      return dc==="temperature" || /°c/i.test(unit) || /temperatura|temperature/i.test(friendly(e));
-    });
-
-    const externalSensors=entities.filter(e=>
-      /weather_|meteo|outdoor|esterno|vento|pioggia|rain|uv|solar_lux|solar_radiation/i.test(e+" "+friendly(e))
-    );
-
-    const solarSensors=entities.filter(e=>
-      /solar_|fotovolta|pv|battery|batteria|inverter/i.test(e+" "+friendly(e))
-    );
-
-    const wallboxSensors=entities.filter(e=>
-      /wallbox|ev_|charging|ricarica|grid_current/i.test(e+" "+friendly(e))
-    );
-
-    const hero=`<section class="scene-hero community-personal-overview compact">
-      <div class="scene-copy">
-        <div class="scene-kicker">CASA · LIVE</div>
-        <div class="scene-title-row"><h1>${this._esc(this._overviewText("overview_title","Panoramica"))}</h1><div class="scene-icon"><ha-icon icon="mdi:home-analytics"></ha-icon></div></div>
-        <div class="scene-sub">Solo ciò che conta davvero, in un colpo d'occhio</div>
-        <div class="scene-status ${activeItems.length?"warn":"good"}"><span class="pulse"></span><strong>${activeItems.length?`${activeItems.length} stati attivi`:"Tutto tranquillo"}</strong></div>
-      </div>
-      <div class="personal-overview-hero-card compact">
-        <div class="personal-overview-house">
-          <div class="house-v2-sky"></div><div class="house-v2-ground"></div>
-          <div class="house-v2-building"><div class="house-v2-roof"></div><div class="house-v2-body">
-            <div class="house-v2-window left"><i></i></div><div class="house-v2-window right"><i></i></div>
-            <div class="house-v2-door"></div><div class="house-v2-garage"><i></i><i></i><i></i></div>
-          </div></div>
-        </div>
-      </div>
-    </section>`;
-
-    const activeSection=activeItems.length
-      ? `${this._section(this._overviewText("active_label","Stati attivi"),"Solo ciò che in questo momento sta cambiando")}<div class="overview-active-strip">${activeItems.map(i=>`<div class="overview-active-chip ${i.tone}"><ha-icon icon="${i.icon}"></ha-icon><span>${this._esc(i.name)}</span></div>`).join("")}</div>`
-      : "";
-
-    const tempCards=tempSensors.slice(0,6).map(e=>
-      this._overviewMetricCard(e,"temp","mdi:thermometer","temperature")
-    ).join("");
-    const tempSection=tempCards
-      ? `${this._section(this._overviewText("temperature_label","Temperature"),"Le principali temperature della casa")}<div class="overview-key-grid">${tempCards}</div>`
-      : "";
-
-    const extCards=externalSensors.slice(0,5).map(e=>{
-      const name=(e+" "+friendly(e)).toLowerCase();
-      const icon=/rain|pioggia/.test(name)?"mdi:weather-rainy":/wind|vento/.test(name)?"mdi:weather-windy":/uv/.test(name)?"mdi:weather-sunny-alert":/lux|radiation|radiazione/.test(name)?"mdi:white-balance-sunny":"mdi:weather-partly-cloudy";
-      return this._overviewMetricCard(e,"external",icon,"generic");
-    }).join("");
-    const extSection=extCards
-      ? `${this._section(this._overviewText("outdoor_label","Esterno"),"Meteo e condizioni principali")}<div class="overview-key-grid">${extCards}</div>`
-      : "";
-
-    const solarCards=solarSensors.slice(0,6).map(e=>{
-      const name=(e+" "+friendly(e)).toLowerCase();
-      const isBattery=/battery|batteria|soc/.test(name);
-      const isGrid=/grid|rete|pcc/.test(name);
-      const icon=isBattery?"mdi:battery-high":isGrid?"mdi:transmission-tower":"mdi:solar-power";
-      const kind=/power|potenza|grid|pv/.test(name)?"power":"generic";
-      return this._overviewMetricCard(e,"solar",icon,kind);
-    }).join("");
-    const energyView=this._energySetting("energy_view","compact");
-    const solarSection=energyView==="advanced"
-      ? this._advancedEnergySection()
-      : (solarCards
-        ? `${this._section(this._overviewText("solar_label","Fotovoltaico & batteria"),"Produzione, accumulo e rete")}<div class="overview-key-grid">${solarCards}</div>`
-        : "");
-
-    const wallboxCards=wallboxSensors.slice(0,5).map(e=>{
-      const name=(e+" "+friendly(e)).toLowerCase();
-      const icon=/charging|ricarica|power/.test(name)?"mdi:ev-station":/current|corrente/.test(name)?"mdi:current-ac":"mdi:car-electric";
-      const kind=/power|potenza/.test(name)?"power":"generic";
-      return this._overviewMetricCard(e,"wallbox",icon,kind);
-    }).join("");
-    const mobilityIdentity=this._overviewIdentity();
-    const mobilityDefault=`${mobilityIdentity.wallbox} & ${mobilityIdentity.vehicle}`;
-    const wallboxSection=wallboxCards
-      ? `${this._section(this._overviewText("mobility_label",mobilityDefault),`${mobilityIdentity.vehicle} · ${mobilityIdentity.wallbox}`)}<div class="overview-key-grid">${wallboxCards}</div>`
-      : "";
-
-    return `<div class="page overview-personal-v2 summary-only">${this._configNotice()}${hero}${activeSection}${tempSection}${extSection}${solarSection}${wallboxSection}</div>`;
-  }
-
-  _overview() {
-    if(this._uiTheme==="v2") return this._overviewV2Personal();
-    const all=this._overall(); const lights=this._countOn(LIGHTS); const open=this._openCount();
-    const lightsConfigured=LIGHTS.some(id=>this._configured(id));
-    const openingsConfigured=OPENINGS.some(id=>this._configured(id));
-    const climateConfigured=this._configured("climate.kitchen") || this._configured("climate.bedroom");
-    const mobilityConfigured=this._configured("binary_sensor.ev_charging_at_home") || this._configured("sensor.wallbox_charging_power") || this._configured("sensor.wallbox_evse_status");
-    const clima=(this._configured("climate.kitchen")&&this._climateActive("climate.kitchen")?1:0)+(this._configured("climate.bedroom")&&this._climateActive("climate.bedroom")?1:0);
-    const ev=this._configured("binary_sensor.ev_charging_at_home")&&this._on("binary_sensor.ev_charging_at_home");
-    const hero=this._hero("Casa", "Una regia elegante della casa: sicurezza, comfort, energia e ambienti leggibili in un colpo d'occhio.", all, [
-      {label:"Luci",value:`${lights} accese`,small:lights?"Scene e illuminazione attive":"Atmosfera riposata",show:lightsConfigured},
-      {label:"Aperture",value:open?`${open} aperte`:"Tutto chiuso",small:"Porte, finestre e garage",show:openingsConfigured},
-      {label:"Clima",value:clima?`${clima} attivi`:"Spento",small:"Cucina + camera",show:climateConfigured},
-      {label:"Mobilità",value:ev?`${this._fmtPowerAuto("sensor.wallbox_charging_power",2)}`:"EV a riposo",small:this._state("sensor.wallbox_evse_status","Wallbox"),show:mobilityConfigured}
-    ],"panoramica");
-    const roomCards=NAV.filter(([id])=>id!=="panoramica").map(([room])=>this._roomCard(room)).join("");
-    const alarmConfigured=this._configured("alarm_control_panel.home_alarm");
-    const leakConfigured=this._configured("binary_sensor.bathroom_water_leak");
-    const tankConfigured=this._configured("binary_sensor.garage_dehumidifier_tank_full") || this._configured("sensor.garage_dehumidifier_tank_status");
-    const weatherConfigured=this._configured("sensor.weather_outdoor_temperature") || this._configured("binary_sensor.weather_rain");
-    const garageConfigured=this._configured("binary_sensor.garage_door_contact") || mobilityConfigured;
-    const comfortConfigured=this._configured("sensor.kitchen_temperature") || this._configured("sensor.bedroom_temperature");
-    const treadmillConfigured=this._configured("switch.garage_treadmill");
-    const alarm=this._state("alarm_control_panel.home_alarm","—");
-    const rain=this._configured("binary_sensor.weather_rain")&&this._on("binary_sensor.weather_rain");
-    const garage=this._configured("binary_sensor.garage_door_contact")&&this._on("binary_sensor.garage_door_contact");
-    const comfortTemp=this._configured("sensor.kitchen_temperature")?this._fmt("sensor.kitchen_temperature",1,"°C"):"—";
-    const bedroomTemp=this._configured("sensor.bedroom_te
+      pvTotal!==null?`<div class="solar-node inverter"><div class="solar-node-orb"><ha-icon icon="mdi:solar-power-variant"></ha-icon></div><div class="solar-node-label">${this._esc(invert

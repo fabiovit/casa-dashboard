@@ -2,7 +2,7 @@
 
 🇬🇧 **English** | [🇮🇹 Italiano](README.it.md)
 
-[![Release](https://img.shields.io/badge/release-v3.5.3-blue)](https://github.com/fabiovit/casa-dashboard/releases)
+[![Release](https://img.shields.io/badge/release-v4.0.0-blue)](https://github.com/fabiovit/casa-dashboard/releases)
 [![HACS](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz/)
 [![Validate](https://img.shields.io/github/actions/workflow/status/fabiovit/casa-dashboard/hacs.yml?branch=main&label=Validate)](https://github.com/fabiovit/casa-dashboard/actions/workflows/hacs.yml)
 [![Hassfest](https://img.shields.io/github/actions/workflow/status/fabiovit/casa-dashboard/hassfest.yml?branch=main&label=Hassfest)](https://github.com/fabiovit/casa-dashboard/actions/workflows/hassfest.yml)
@@ -12,7 +12,7 @@
 
 Casa Dashboard Community is a complete app-like dashboard for **Home Assistant**, designed to adapt to different homes without relying on traditional Lovelace cards.
 
-**v3.5.3** is a consolidation release: the project has been cleaned up, versioning is now consistent across backend and frontend, and the mature features introduced in the 2.x generation are retained in a cleaner package.
+**v4.0.0** is a consolidation release: the project has been cleaned up, versioning is now consistent across backend and frontend, and the mature features introduced in the 2.x generation are retained in a cleaner package.
 
 **Created by Fabio Vittori** · [☕ Buy me a coffee](https://ko-fi.com/fabvittori)
 
@@ -35,6 +35,12 @@ Additional examples:
 ![Casa Dashboard Community - Casa V2 Entrance](images/casa-v2-ingresso.png)
 
 ![Casa Dashboard Community - Casa V2 Garage](images/casa-v2-garage.png)
+
+## 🛡️ Security & Access
+
+Casa V2 dynamic rooms can now recognize `lock.*` and `alarm_control_panel.*` entities.
+
+When configured in a room, Casa Dashboard automatically adds a dedicated **Security & Access** section with lock status, Lock / Unlock controls, alarm state and quick Home / Away / Off actions.
 
 ## ☀️ Advanced Energy View
 

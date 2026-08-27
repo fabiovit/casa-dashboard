@@ -1,403 +1,645 @@
-().map(([v,l])=>`<option value="${v}" ${r.type===v?"selected":""}>${l}</option>`).join("")}</select>
+n this._metric(this._v1OriginalIcon(e,room.type,name),name,this._state(e),this._attr(e,"unit_of_measurement",""),3,e);
+    }).join("");
+
+    return `<div class="page kitchen-dynamic-page">
+      ${hero}
+
+      ${lightsCards?this._section("Luci"):""}
+      <div class="grid">${lightsCards}</div>
+
+      ${roomClimate?this._section("Comfort e Clima","Pannello climatizzatore reale"):""}
+      <div class="grid">${roomClimate?this._dynamicKitchenClimatePanel(
+        roomClimate,
+        temp||climateTemp||null,
+        hum||null
+      ):""}</div>
+
+      ${blindCards?this._section("Tenda"):""}
+      <div class="grid">${blindCards}</div>
+
+      ${applianceCards?this._section("Elettrodomestici"):""}
+      <div class="grid">${applianceCards}</div>
+
+      ${heatCards.length?this._section("Riscaldamento e ACS"):""}
+      <div class="grid">${heatCards.join("")}</div>
+
+      ${environment?this._section("Ambiente"):""}
+      <div class="grid">${environment}</div>
+
+      ${sensorCards?this._section("Sensori"):""}
+      <div class="grid">${sensorCards}</div>
+    </div>`;
+  }
+
+
+  _hallwayApplianceKind(entity,label=""){
+    const hay=`${entity} ${label}`.toLowerCase();
+    if(/asciugatrice|dryer|tumble/.test(hay)) return ["dryer","mdi:tumble-dryer","Asciugatrice"];
+    if(/lavatrice|washing.*machine|washer/.test(hay)) return ["washer","mdi:washing-machine","Lavatrice"];
+    if(/lavastov|dishwasher/.test(hay)) return ["dishwasher","mdi:dishwasher","Lavastoviglie"];
+    if(/frigo|frigorif|refriger|freezer/.test(hay)) return ["fridge","mdi:fridge-outline","Frigorifero"];
+    if(/deumid|dehumid/.test(hay)) return ["dehumidifier","mdi:air-humidifier-off","Deumidificatore"];
+    if(/purific|air.?purifier/.test(hay)) return ["purifier","mdi:air-purifier","Purificatore"];
+    if(/aspirapolver|vacuum/.test(hay)) return ["vacuum","mdi:robot-vacuum","Aspirapolvere"];
+    if(/presa|plug|socket/.test(hay)) return ["plug","mdi:power-socket-eu","Presa"];
+    if(/sirena|siren/.test(hay)) return ["siren","mdi:alarm-light-outline","Sirena"];
+    return ["generic","mdi:power-plug-outline","Dispositivo"];
+  }
+
+  _hallwayApplianceVisual(entity,title,span=6){
+    const [kind,icon,sub]=this._hallwayApplianceKind(entity,title);
+    const on=this._on(entity);
+    return `<div class="hallway-appliance-card ${kind} ${on?'on':'off'} span-${span}">
+      <div class="hallway-appliance-visual">
+        <div class="hallway-appliance-icon ${kind} ${on?'on':'off'}">
+          <ha-icon icon="${icon}"></ha-icon>
+        </div>
+      </div>
+      <div class="hallway-appliance-copy clickable" data-more="${entity}">
+        <span>${this._esc(title)}</span>
+        <strong>${on?"Acceso":"Spento"}</strong>
+        <small>${this._esc(sub)}</small>
+      </div>
+      <button class="hallway-appliance-toggle ${on?'active':''}" data-toggle="${entity}" type="button">
+        <ha-icon icon="${on?'mdi:power':'mdi:power-standby'}"></ha-icon>
+        <span>${on?'ON':'OFF'}</span>
+      </button>
+    </div>`;
+  }
+
+  _dynamicHallway(room){
+    const ids=Array.isArray(room.entities)?room.entities.filter(e=>this._s(e)):[];
+    const byDomain=d=>ids.filter(e=>e.startsWith(`${d}.`));
+    const display=e=>this._roomEntityCustomLabel(e,room)||this._hass?.states?.[e]?.attributes?.friendly_name||e;
+
+    const lights=byDomain("light");
+    const switches=[...byDomain("switch"),...byDomain("fan"),...byDomain("humidifier"),...byDomain("input_boolean")];
+    const sensors=byDomain("sensor");
+    const binaries=byDomain("binary_sensor");
+
+    const motion=binaries.find(e=>{
+      const dc=String(this._attr(e,"device_class","")).toLowerCase();
+      return ["motion","occupancy","presence"].includes(dc);
+    })||null;
+    const occupancy=binaries.find(e=>{
+      const dc=String(this._attr(e,"device_class","")).toLowerCase();
+      return ["occupancy","presence"].includes(dc) && e!==motion;
+    })||null;
+
+    const motionOn=motion?this._on(motion):false;
+    const occupied=occupancy?this._on(occupancy):motionOn;
+    const lightOn=lights.filter(e=>this._on(e)).length;
+    const deviceOn=switches.filter(e=>this._on(e)).length;
+    const activeCount=lightOn+deviceOn+(motionOn?1:0);
+
+    const hero=`<section class="scene-hero hallway-dyn-hero">
+      <div class="scene-copy">
+        <div class="scene-kicker">CASA · LIVE</div>
+        <div class="scene-title-row"><h1>${this._esc(room.name||"Disimpegno")}</h1></div>
+        <div class="scene-sub">Passaggio e presenza</div>
+        <div class="scene-status ${activeCount?'warn':'good'}"><span></span>${motionOn?"Passaggio rilevato":activeCount?`${activeCount} stati attivi`:"Passaggio libero"}</div>
+      </div>
+      <div class="hallway-hero-showcase">
+        <div class="hallway-scene ${motionOn?'active':''}">
+          <div class="hallway-frame left"></div>
+          <div class="hallway-frame right"></div>
+          <div class="hallway-cone left"></div>
+          <div class="hallway-cone right"></div>
+          <div class="hallway-person ${motionOn?'active':''}"><ha-icon icon="mdi:walk"></ha-icon></div>
+        </div>
+        <div class="hallway-hero-meta">
+          <div><span>MOVIMENTO</span><strong>${motionOn?"Presente":"Assente"}</strong><small>${motion?display(motion):"Sensore passaggio"}</small></div>
+          <div class="hallway-meta-divider"></div>
+          <div><span>OCCUPAZIONE</span><strong>${occupied?"Occupato":"Libero"}</strong><small>Presenza nel passaggio</small></div>
+        </div>
+      </div>
+    </section>`;
+
+    const lightCards=lights.map(e=>{
+      const hay=`${e} ${display(e)}`.toLowerCase();
+      const icon=/led|strip|striscia/.test(hay)?"mdi:led-strip-variant":/lamp/.test(hay)?"mdi:lamp":"mdi:ceiling-light";
+      return this._lightVisual(e,display(e),icon,room.name,6);
+    }).join("");
+
+    const applianceCards=switches.map(e=>this._hallwayApplianceVisual(e,display(e),6)).join("");
+
+    const sensorCards=[
+      ...sensors.map(e=>{
+        const dc=String(this._attr(e,"device_class","")).toLowerCase();
+        const name=display(e);
+        const unit=this._attr(e,"unit_of_measurement","")||"";
+        if(dc==="temperature") return this._environmentVisual(e,name,"temperature",4,room.name);
+        if(dc==="humidity") return this._environmentVisual(e,name,"humidity",4,room.name);
+        if(dc==="illuminance" || /lux/i.test(String(unit))) return this._environmentVisual(e,name,"lux",4,room.name);
+        return this._metric(this._v1OriginalIcon(e,room.type,name),name,this._state(e),unit,4,e);
+      }),
+      ...binaries.map(e=>{
+        const dc=String(this._attr(e,"device_class","")).toLowerCase();
+        const name=display(e);
+        if(["motion","occupancy","presence","vibration"].includes(dc)){
+          const type=dc==="motion"?"motion":dc==="vibration"?"vibration":"occupancy";
+          return this._activityVisual(e,name,type,4,room.name);
+        }
+        if(["door","window","opening","garage_door"].includes(dc)){
+          const kind=dc==="window"?"window":dc==="garage_door"?"garage":"door";
+          return this._openingVisual(e,name,kind,4,room.name);
+        }
+        return this._metric(this._v1OriginalIcon(e,room.type,name),name,this._on(e)?"Attivo":"Inattivo","",4,e);
+      })
+    ].join("");
+
+    return `<div class="page hallway-dynamic-page">
+      ${hero}
+      ${lightCards?this._section("Luci"):""}
+      <div class="grid">${lightCards}</div>
+      ${applianceCards?this._section("Dispositivi ed elettrodomestici"):""}
+      <div class="grid">${applianceCards}</div>
+      ${sensorCards?this._section("Controllo e sensori"):""}
+      <div class="grid">${sensorCards}</div>
+      ${this._renderRoomModules(room)}
+    </div>`;
+  }
+
+
+  _isRoomFanDevice(entity,room=null,label=""){
+    const icon=this._roomEntityIcon(entity,room);
+    const hay=`${entity} ${label}`.toLowerCase();
+    return entity.startsWith("fan.")
+      || icon==="mdi:fan"
+      || /aspiratore|aspirator|extractor|ventola|ventilatore|\bfan\b/.test(hay);
+  }
+
+  _roomFanVisual(entity,title,span=6,subtitle="Ventilazione"){
+    const on=this._on(entity);
+    return `<div class="room-fan-card ${on?'on':'off'} span-${span}">
+      <div class="room-fan-scene">
+        <div class="room-fan-rotor ${on?'active':''}">
+          <div class="room-fan-hub"></div>
+          <i class="room-fan-blade b1"></i>
+          <i class="room-fan-blade b2"></i>
+          <i class="room-fan-blade b3"></i>
+          <i class="room-fan-blade b4"></i>
+        </div>
+      </div>
+
+      <div class="room-fan-copy clickable" data-more="${entity}">
+        <span>${this._esc(title)}</span>
+        <strong>${on?"Attivo":"Spento"}</strong>
+        <small>${this._esc(subtitle)}</small>
+      </div>
+
+      <button class="room-fan-toggle ${on?'active':''}" data-toggle="${entity}" type="button">
+        <ha-icon icon="mdi:fan"></ha-icon>
+        <span>${on?'ON':'OFF'}</span>
+      </button>
+    </div>`;
+  }
+
+
+  _isAwningCover(entity,room=null,label=""){
+    const hay=`${entity} ${label}`.toLowerCase();
+    const icon=this._roomEntityIcon(entity,room);
+    return entity.startsWith("cover.") && (
+      /tenda|awning|markise|sunshade|parasole/.test(hay)
+      || icon==="mdi:awning-outline"
+      || icon==="mdi:blinds-open"
+    );
+  }
+
+  _awningVisual(entity,title,span=6){
+    const posRaw=this._attr(entity,"current_position",null);
+    const pos=posRaw===null?null:Math.max(0,Math.min(100,Number(posRaw)||0));
+    const state=this._state(entity,"unknown");
+    const open=this._coverOpen(entity);
+    const status=pos!==null
+      ? (pos<=5?"Raccolta":pos>=95?"Estesa":`${Math.round(pos)}%`)
+      : (open?"Estesa":"Raccolta");
+    const visualPos=pos===null?(open?75:10):Math.max(10,Math.min(92,pos));
+
+    return `<div class="community-awning-card span-${span}">
+      <div class="community-awning-scene">
+        <div class="community-awning-box"></div>
+        <div class="community-awning-fabric" style="height:${visualPos}%"></div>
+        <div class="community-awning-arm left"></div>
+        <div class="community-awning-arm right"></div>
+      </div>
+      <div class="community-awning-info clickable" data-more="${entity}">
+        <span>${this._esc(title)}</span>
+        <strong>${status}</strong>
+        <small>${pos!==null?"Posizione attuale":this._esc(state)}</small>
+      </div>
+      <button class="community-awning-manage" data-more="${entity}" type="button">Gestisci tenda</button>
+    </div>`;
+  }
+
+  _dynamicRoom(room){
+    const entities=(room.entities||[]).filter(e=>this._hass?.states?.[e]);
+    const display=e=>this._roomEntityDisplay(e,room);
+    const byDomain=d=>entities.filter(e=>e.startsWith(d+"."));
+    const lights=byDomain("light");
+    const climates=byDomain("climate");
+    const covers=byDomain("cover");
+    const sensors=[...byDomain("sensor"),...byDomain("binary_sensor")];
+    const switches=[...byDomain("switch"),...byDomain("fan"),...byDomain("humidifier"),...byDomain("input_boolean")];
+    const locks=byDomain("lock");
+    const alarms=byDomain("alarm_control_panel");
+    const scripts=byDomain("script");
+    const buttons=byDomain("button");
+    const media=byDomain("media_player");
+
+    const temp=sensors.find(e=>{
+      const dc=String(this._attr(e,"device_class","")).toLowerCase();
+      const name=String(display(e));
+      return dc==="temperature" || /temperatura|temperature/i.test(name);
+    });
+    const hum=sensors.find(e=>{
+      const dc=String(this._attr(e,"device_class","")).toLowerCase();
+      const name=String(display(e));
+      return dc==="humidity" || /umidità|humidity/i.test(name);
+    });
+    const opening=sensors.find(e=>{
+      const dc=String(this._attr(e,"device_class","")).toLowerCase();
+      return ["door","window","opening","garage_door"].includes(dc);
+    });
+    const motion=sensors.find(e=>{
+      const dc=String(this._attr(e,"device_class","")).toLowerCase();
+      return ["motion","occupancy","vibration"].includes(dc);
+    });
+    const lockLikeBoolean=switches.find(e=>{
+      if(!e.startsWith("input_boolean.")) return false;
+      const hay=`${e} ${display(e)}`.toLowerCase();
+      return /serratura|sblocc|porta.*lock|door.*lock|unlock/.test(hay);
+    })||null;
+    const isEntryRoom=String(room.type||"").toLowerCase()==="ingresso"
+      || /ingresso|entrance|entry/i.test(String(room.name||""));
+    const mappedEntryLock=isEntryRoom && this._configured("input_boolean.entry_door_unlock")
+      ? this._eid("input_boolean.entry_door_unlock")
+      : null;
+    const mappedEntryAlarm=isEntryRoom && this._configured("alarm_control_panel.home_alarm")
+      ? this._eid("alarm_control_panel.home_alarm")
+      : null;
+    const roomLock=locks[0]||lockLikeBoolean||mappedEntryLock||null;
+    const roomAlarm=alarms[0]||mappedEntryAlarm||null;
+    const roomLockIsBoolean=!!roomLock && roomLock.startsWith("input_boolean.");
+    const rawLockState=roomLock?this._state(roomLock,"unknown"):"";
+    const lockState=roomLockIsBoolean
+      ? (this._on(roomLock)?"unlocked":"locked")
+      : rawLockState;
+    const alarmState=roomAlarm?this._state(roomAlarm,"unknown"):"";
+    const alarmLabel=state=>{
+      const map={
+        disarmed:"Non armato",
+        armed_home:"Armato · notte",
+        armed_away:"Armato · fuori casa",
+        armed_night:"Armato · notte",
+        armed_vacation:"Armato · vacanza",
+        arming:"Inserimento…",
+        pending:"In attesa…",
+        triggered:"ALLARME"
+      };
+      return map[state]||state||"—";
+    };
+
+    const lightOn=lights.filter(e=>this._on(e)).length;
+    const climateOn=climates.filter(e=>this._climateActive(e)).length;
+    const switchOn=switches.filter(e=>this._on(e)).length;
+    const openingOn=opening&&this._on(opening);
+    const motionOn=motion&&this._on(motion);
+    const securityActive=(roomAlarm && alarmState==="triggered")?1:0;
+    const activeCount=lightOn+climateOn+switchOn+(openingOn?1:0)+(motionOn?1:0)+securityActive;
+
+    const firstDevice=[...switches,...media,...scripts,...buttons][0]||null;
+    const metrics=[
+      opening?{
+        label:"Apertura",
+        value:this._on(opening)?"Aperta":"Chiusa",
+        small:display(opening),
+        show:true
+      }:null,
+      roomLock?{
+        label:"Porta",
+        value:lockState==="locked"?"Bloccata":lockState==="unlocked"?"Sbloccata":this._esc(lockState),
+        small:display(roomLock),
+        show:true
+      }:null,
+      roomAlarm?{
+        label:"Allarme",
+        value:alarmLabel(alarmState),
+        small:display(roomAlarm),
+        show:true
+      }:null,
+      temp?{
+        label:"Comfort",
+        value:`${this._state(temp)}${this._attr(temp,"unit_of_measurement","")||""}`,
+        small:hum?`Umidità ${this._state(hum)}${this._attr(hum,"unit_of_measurement","")||""}`:"",
+        show:true
+      }:null,
+      climates[0]?{
+        label:"Clima",
+        value:this._climateActive(climates[0])?"Attivo":"Spento",
+        small:display(climates[0]),
+        show:true
+      }:null,
+      lights.length?{
+        label:"Luci",
+        value:lightOn?`${lightOn} accese`:"Spente",
+        small:lights.length>1?`${lights.length} punti luce`:(display(lights[0])),
+        show:true
+      }:null,
+      firstDevice?{
+        label:"Dispositivo",
+        value:firstDevice.startsWith("script.")||firstDevice.startsWith("button.")?"Disponibile":(this._on(firstDevice)?"Acceso":this._state(firstDevice,"Pronto")),
+        small:display(firstDevice),
+        show:true
+      }:null
+    ].filter(Boolean).slice(0,3);
+
+    const roomLabel=this._roomTypes().find(x=>x[0]===room.type)?.[1]||"Ambiente";
+    const hero=this._hero(
+      room.name,
+      this._uiTheme==="v1"
+        ? `${roomLabel} · comfort, luci ed elettrodomestici`
+        : `${roomLabel} · comfort, luci e dispositivi`,
+      {level:activeCount?"warn":"good",title:activeCount?`${activeCount} stati attivi`:"Tutto tranquillo",text:""},
+      metrics,
+      room.type||"generico",
+      room
+    );
+
+    const securityAlert=(opening && roomLock && !this._on(opening) && lockState==="unlocked")
+      ? this._alert("warn","mdi:lock-open-alert-outline","Porta chiusa ma sbloccata","La serratura risulta aperta anche se il contatto porta è chiuso.")
+      : "";
+
+    const lockCard=roomLock?`<div class="community-security-card door-security">
+      <div class="security-door-visual">
+        <div class="security-door-frame"><div class="security-door-leaf"><i></i></div></div>
+        <span class="security-badge ${lockState==="locked"?"good":"warn"}">${lockState==="locked"?"BLOCCATA":lockState==="unlocked"?"SBLOCCATA":this._esc(lockState)}</span>
+      </div>
+      <div class="security-card-copy">
+        <span>${this._esc(display(roomLock))}</span>
+        <strong>${opening?`${this._on(opening)?"Aperta":"Chiusa"} · `:""}${lockState==="locked"?"bloccata":lockState==="unlocked"?"sbloccata":this._esc(lockState)}</strong>
+        <small>${opening?"Stato porta + serratura":"Serratura"}</small>
+        <div class="security-actions">
+          <button class="security-btn primary" data-lock-action="${lockState==="locked"?"unlock":"lock"}" data-lock-entity="${roomLock}" type="button">${lockState==="locked"?"Sblocca porta":"Blocca porta"}</button>
+          <button class="security-btn" data-more="${roomLock}" type="button">Dettagli</button>
+        </div>
+      </div>
+    </div>`:"";
+
+    const alarmCard=roomAlarm?`<div class="community-security-card alarm-security ${alarmState==="triggered"?"triggered":""}">
+      <div class="alarm-card-main">
+        <div class="alarm-title-row">
+          <div class="alarm-shield"><ha-icon icon="${alarmState==="triggered"?"mdi:alarm-light":"mdi:shield-home"}"></ha-icon></div>
+          <div><span>PANNELLO ALLARME</span><strong>${alarmLabel(alarmState)}</strong><small>${this._esc(display(roomAlarm))}</small></div>
+        </div>
+        <div class="alarm-quick-actions">
+          <button class="${["armed_home","armed_night"].includes(alarmState)?"active":""}" data-alarm-service="alarm_arm_home" data-alarm-entity="${roomAlarm}" type="button">NOTTE</button>
+          <button class="${alarmState==="armed_away"?"active":""}" data-alarm-service="alarm_arm_away" data-alarm-entity="${roomAlarm}" type="button">FUORI CASA</button>
+          <button class="${alarmState==="disarmed"?"active":""}" data-alarm-service="alarm_disarm" data-alarm-entity="${roomAlarm}" type="button">OFF</button>
+        </div>
+      </div>
+      <div class="alarm-keypad">
+        <span>ALLARME</span><strong>${alarmLabel(alarmState)}</strong>
+        <div class="keypad-grid">${["1","2","3","4","5","6","7","8","9"].map(n=>`<i>${n}</i>`).join("")}<i><ha-icon icon="mdi:lock-outline"></ha-icon></i><i>0</i><i><ha-icon icon="mdi:shield-check-outline"></ha-icon></i></div>
+      </div>
+    </div>`:"";
+
+    const genericSwitches=switches.filter(e=>e!==roomLock && e!==mappedEntryLock);
+    const controlCards=[
+      ...lights.map(e=>this._control(
+        e,
+        display(e),
+        this._v1OriginalIcon(e,room.type,display(e)),
+        this._on(e)?"Accesa":"Spenta",
+        "toggle",6
+      )),
+      ...genericSwitches.map(e=>this._isRoomFanDevice(e,room,display(e))
+        ? this._roomFanVisual(e,display(e),6,"Ventilazione")
+        : this._control(
+            e,
+            display(e),
+            this._v1OriginalIcon(e,room.type,display(e)),
+            this._on(e)?"Acceso":"Spento",
+            "toggle",6
+          )),
+      ...media.map(e=>`<div class="command-strip span-6"><div class="command-symbol"><ha-icon icon="${this._v1OriginalIcon(e,room.type,display(e))}"></ha-icon></div><div class="command-copy clickable" data-more="${e}"><div class="command-title">${this._esc(display(e))}</div><div class="command-sub">${this._esc(this._state(e,"—"))}</div></div></div>`),
+      ...scripts.map(e=>`<div class="command-strip span-6"><div class="command-symbol"><ha-icon icon="${this._v1OriginalIcon(e,room.type,display(e))}"></ha-icon></div><div class="command-copy"><div class="command-title">${this._esc(display(e))}</div><div class="command-sub">Azione</div></div><button class="command-action" data-script="${e}" type="button"><span>ESEGUI</span><i></i></button></div>`),
+      ...buttons.map(e=>`<div class="command-strip span-6"><div class="command-symbol"><ha-icon icon="${this._v1OriginalIcon(e,room.type,display(e))}"></ha-icon></div><div class="command-copy clickable" data-more="${e}"><div class="command-title">${this._esc(display(e))}</div><div class="command-sub">Comando</div></div></div>`)
+    ].join("");
+
+    const coverCards=covers.map(e=>{
+      const label=display(e);
+      if(this._isAwningCover(e,room,label)) return this._awningVisual(e,label,6);
+      return this._uiTheme==="v1"
+        ? `<div class="command-strip span-6"><div class="command-symbol"><ha-icon icon="${this._v1OriginalIcon(e,room.type,label)}"></ha-icon></div><div class="command-copy clickable" data-more="${e}"><div class="command-title">${this._esc(label)}</div><div class="command-sub">${this._esc(this._state(e,"—"))}</div></div><button class="command-action" data-cover-toggle="${e}" data-inverted="0" type="button"><span>GESTISCI</span><i></i></button></div>`
+        : this._coverControl(e,label,false,6);
+    }).join("");
+
+    const climateCards=climates.map(e=>this._climateBlock(
+      e,"","",
+      this._hass.states[e]?.attributes?.friendly_name||room.name,""
+    )).join("");
+
+    const sensorPriority=(e)=>{
+      const obj=this._hass.states[e];
+      const dc=String(obj?.attributes?.device_class||"").toLowerCase();
+      const unit=String(obj?.attributes?.unit_of_measurement||"").toLowerCase();
+      const hay=`${e} ${display(e)}`.toLowerCase();
+
+      // Desired visual order:
+      // 1. doors
+      // 2. windows
+      // 3. illuminance
+      // 4. temperature
+      // 5. motion / occupancy
+      // 6. everything else
+      if(dc==="door" || dc==="garage_door" || /porta|door/.test(hay)) return 10;
+      if(dc==="window" || /finestra|window/.test(hay)) return 20;
+      if(dc==="illuminance" || unit==="lx" || /lux|luminos|illumin/.test(hay)) return 30;
+      if(dc==="temperature" || /temperatura|temperature/.test(hay)) return 40;
+      if(["motion","occupancy","presence"].includes(dc) || /movimento|motion|occupazione|presence/.test(hay)) return 50;
+      return 100;
+    };
+
+    const sortedSensors=[...sensors].sort((a,b)=>{
+      const pa=sensorPriority(a), pb=sensorPriority(b);
+      if(pa!==pb) return pa-pb;
+      return display(a).localeCompare(display(b),this._language==="en"?"en":"it",{sensitivity:"base"});
+    });
+
+    const sensorCards=sortedSensors.map(e=>{
+      const obj=this._hass.states[e];
+      const name=display(e);
+      const dc=String(obj?.attributes?.device_class||"").toLowerCase();
+      const unit=obj?.attributes?.unit_of_measurement||"";
+
+      // Match the visual language of the original Casa Dashboard.
+      if(["motion"].includes(dc)) return this._activityVisual(e,name,"motion",4,room.name);
+      if(["occupancy","presence"].includes(dc)) return this._activityVisual(e,name,"occupancy",4,room.name);
+      if(["vibration"].includes(dc)) return this._activityVisual(e,name,"vibration",4,room.name);
+      if(["door","window","opening","garage_door"].includes(dc) && typeof this._openingVisual==="function"){
+        const kind=dc==="window"?"window":dc==="garage_door"?"garage":"door";
+        return this._openingVisual(e,name,kind,4,room.name);
+      }
+      if(dc==="temperature") return this._environmentVisual(e,name,"temperature",4,room.name);
+      if(dc==="humidity") return this._environmentVisual(e,name,"humidity",4,room.name);
+      if(dc==="illuminance" || /lux/i.test(String(unit))) return this._environmentVisual(e,name,"lux",4,room.name);
+
+      const icon=this._v1OriginalIcon(e,room.type,name);
+      const raw=this._state(e,"—");
+      const semantic=(dc==="door"||dc==="window"||dc==="opening")
+        ? (this._on(e)?"Aperta":"Chiusa")
+        : raw;
+      return this._metric(icon,name,semantic,unit,4,e);
+    }).join("");
+
+    const hasControls=!!(controlCards||coverCards||climateCards);
+    const hasSecurity=!!(lockCard||alarmCard);
+    return `<div class="page dynamic-room-page">
+      ${hero}
+      ${hasControls?this._section(this._uiTheme==="v1"?"Luci, tende ed elettrodomestici":"Luci, tende e dispositivi"):""}
+      <div class="grid">${controlCards}${coverCards}${climateCards}</div>
+      ${securityAlert?`<div class="community-security-alert">${securityAlert}</div>`:""}
+      ${hasSecurity?this._section("Sicurezza e accesso"):""}
+      ${hasSecurity?`<div class="community-security-grid ${lockCard&&alarmCard?"two":"single"}">${lockCard}${alarmCard}</div>`:""}
+      ${sensorCards?this._section(`Sensori ${this._esc(room.name)}`,"Stato dell'ambiente"):""}
+      <div class="grid">${sensorCards}</div>
+      ${this._renderRoomModules(room)}
+    </div>`;
+  }
+
+  _configGroup(key) {
+    const name=key.split(".")[1] || key;
+    if(name.includes("solar_")) return "Energia solare";
+    if(name.includes("vehicle_")) return "Auto elettrica";
+    if(name.includes("wallbox") || name.includes("ev_") || name.includes("grid_current")) return "EV + Wallbox";
+    if(name.includes("weather_")) return "Meteo";
+    if(name.includes("garage_")) return "Garage";
+    if(name.includes("bedroom")) return "Camera";
+    if(name.includes("kitchen")) return "Cucina";
+    if(name.includes("bathroom")) return "Bagno";
+    if(name.includes("balcony")) return "Balcone";
+    if(name.includes("entry_")) return "Ingresso";
+    if(name.includes("hallway")) return "Disimpegno";
+    if(name.includes("stairs")) return "Scale";
+    return "Casa & Generale";
+  }
+  _entityOptions() {
+    if(!this._hass?.states) return [];
+    return Object.entries(this._hass.states).map(([id,state])=>{
+      const name=String(state?.attributes?.friendly_name || "").trim();
+      return {id,name,label:name ? `${name} — ${id}` : id};
+    }).sort((a,b)=>(a.name || a.id).localeCompare(b.name || b.id, "it", {sensitivity:"base"}));
+  }
+  _entityIdFromFriendlyName(value) {
+    const raw=String(value || "").trim();
+    if(!raw || raw.includes(".")) return raw;
+    const normalized=raw.toLocaleLowerCase("it");
+    const matches=this._entityOptions().filter(item=>item.name && item.name.toLocaleLowerCase("it")===normalized);
+    return matches.length===1 ? matches[0].id : raw;
+  }
+  _configTabs(){
+    return [
+      ["overview","Panoramica","mdi:view-dashboard-outline"],
+      ["rooms","Stanze","mdi:floor-plan"],
+      ["devices","Dispositivi","mdi:devices"],
+      ["energy","Energia & Mobilità","mdi:solar-power-variant"],
+      ["weather","Meteo & Sicurezza","mdi:shield-home-outline"],
+      ["advanced","Avanzate","mdi:tune-vertical-variant"]
+    ];
+  }
+  _configTabKeys(tab){
+    const all=[...ENTITY_KEYS];
+    if(tab==="energy") return all.filter(key=>{
+      const name=(key.split(".")[1]||"").toLowerCase();
+      return name.includes("solar_") || name.includes("wallbox") || name.includes("ev_") || name.includes("vehicle_") || name.includes("grid_current");
+    });
+    if(tab==="weather") return all.filter(key=>{
+      const name=(key.split(".")[1]||"").toLowerCase();
+      return name.includes("weather_") || name.includes("alarm") || name.includes("water_leak") || name.includes("smoke") || name.includes("door") || name.includes("window") || name.includes("opening");
+    });
+    if(tab==="advanced") return all;
+    return [];
+  }
+  _renderConfigMappingList(keys){
+    const filter=(this._configFilter||"").trim().toLowerCase();
+    const filtered=keys.filter(key=>{
+      if(!filter) return true;
+      const custom=String(this._configLabelDraft?.[key] ?? this._entityLabels?.[key] ?? "").toLowerCase();
+      return key.toLowerCase().includes(filter) || this._configLabel(key).toLowerCase().includes(filter) || this._configGroup(key).toLowerCase().includes(filter) || custom.includes(filter);
+    });
+    const groups=new Map();
+    for(const key of filtered){
+      const g=this._configGroup(key);
+      if(!groups.has(g)) groups.set(g,[]);
+      groups.get(g).push(key);
+    }
+    return [...groups.entries()].map(([group,groupKeys])=>`
+      <div class="config-group">
+        <div class="config-group-title">${group}<span>${groupKeys.length}</span></div>
+        ${groupKeys.map(key=>{
+          const value=this._configDraft[key] ?? this._entityMap[key] ?? "";
+          const domain=key.split(".")[0];
+          const displayName=this._configLabelDraft[key] ?? this._entityLabels[key] ?? "";
+          return `<div class="config-row">
+            <div class="config-row-copy"><strong>${this._configLabel(key)}</strong><code>${key}</code></div>
+            <div class="config-global-fields">
+              <div class="config-field"><input data-config-key="${key}" list="haEntityList" placeholder="${domain}.…" value="${this._esc(value)}"><button type="button" data-action="config-clear" data-config-clear="${key}" aria-label="Svuota"><ha-icon icon="mdi:close-circle-outline"></ha-icon></button></div>
+              <label class="config-display-name"><span>NOME VISUALIZZATO</span><input data-config-label="${key}" placeholder="${this._esc(this._configLabel(key))}" value="${this._esc(displayName)}"></label>
+            </div>
+          </div>`;
+        }).join("")}
+      </div>`).join("") || `<div class="config-empty">Nessuna associazione corrisponde alla ricerca.</div>`;
+  }
+
+  _overviewImageConfig(key,label,description=""){
+    const value=String(this._overviewDraft?.[key]||"").trim();
+    return `<div class="overview-image-field">
+      <span>${this._esc(label)}</span>
+      <small>${this._esc(description)}</small>
+      <div class="photo-config-line">
+        <input data-overview-key="${key}" value="${this._esc(value)}" placeholder="/local/... oppure carica foto">
+        <label class="photo-upload-btn native-photo-picker"><ha-icon icon="mdi:image-plus"></ha-icon><span>Carica</span><input type="file" data-overview-photo-file="${key}" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.jpg,.jpeg,.png,.webp,.heic,.heif"></label>
+        ${value?`<button class="photo-clear-btn" type="button" data-clear-overview-image="${key}" title="Rimuovi foto"><ha-icon icon="mdi:image-remove-outline"></ha-icon></button>`:""}
+      </div>
+      ${value?`<div class="photo-preview overview-photo-preview"><img src="${this._esc(value)}" alt=""></div>`:""}
+    </div>`;
+  }
+
+  _renderConfigOverviewPage(){
+    return `<div class="config-page config-page-overview">
+      <div class="config-page-intro"><ha-icon icon="mdi:view-dashboard-outline"></ha-icon><div><strong>Personalizza la Panoramica</strong><span>Rinomina le sezioni principali e l'identità di Auto e Wallbox. Lascia vuoto per usare i nomi predefiniti.</span></div></div>
+      <div class="overview-config-grid overview-config-grid-page">
+        ${[
+          ["overview_title","Titolo","Panoramica"],
+          ["active_label","Stati attivi","Stati attivi"],
+          ["temperature_label","Temperature","Temperature"],
+          ["outdoor_label","Esterno / Meteo","Esterno"],
+          ["solar_label","Fotovoltaico / Batteria","Fotovoltaico & batteria"],
+          ["mobility_label","Mobilità","Wallbox & EV"],
+          ["vehicle_name","Nome auto","Auto elettrica"],
+          ["wallbox_name","Nome wallbox","Wallbox"]
+        ].map(([key,label,placeholder])=>`<label><span>${label}</span><input data-overview-key="${key}" value="${this._esc(this._overviewDraft[key]||"")}" placeholder="${this._esc(placeholder)}"></label>`).join("")}
+      </div>
+      <div class="overview-photo-config-grid">
+        ${this._overviewImageConfig("overview_image","Foto generale casa","Immagine mostrata nella Panoramica")}
+        ${this._overviewImageConfig("vehicle_image","Foto auto","Immagine mostrata nella sezione Auto EV")}
+      </div>
+      <div class="config-page-note"><ha-icon icon="mdi:information-outline"></ha-icon><span>Queste etichette incidono solo sulla grafica della Panoramica Casa V2 e non modificano i nomi delle entità in Home Assistant.</span></div>
+    </div>`;
+  }
+  _renderConfigRoomsPage(){
+    return `<div class="config-page">
+      <div class="config-page-intro config-page-intro-actions">
+        <ha-icon icon="mdi:floor-plan"></ha-icon>
+        <div><strong>Struttura della casa</strong><span>Crea, rinomina e riordina gli ambienti. Qui gestisci solo la struttura e la foto principale della stanza.</span></div>
+        <button class="room-add room-add-primary" data-action="room-add" type="button"><ha-icon icon="mdi:plus"></ha-icon><span>Aggiungi stanza</span></button>
+      </div>
+      <div class="room-list room-list-page">${this._roomsDraft.map((r,i)=>`<div class="room-edit-row room-edit-row-page" data-room-id="${r.id}">
+        <span class="room-order">${i+1}</span>
+        <div class="room-main-fields">
+          <input data-room-name="${r.id}" value="${this._esc(r.name||"")}" placeholder="Nome stanza">
+          <select data-room-type="${r.id}">${this._roomTypes().map(([v,l])=>`<option value="${v}" ${r.type===v?"selected":""}>${l}</option>`).join("")}</select>
           <input data-room-icon="${r.id}" value="${this._esc(r.icon||this._roomIcon(r.type))}" placeholder="mdi:icona">
         </div>
-        <div class="room-image-field"><span>FOTO STANZA</span><div class="photo-config-line"><input data-room-image="${r.id}" value="${this._esc(r.image||"")}" placeholder="/local/... oppure carica foto"><label class="photo-upload-btn native-photo-picker"><ha-icon icon="mdi:image-plus"></ha-icon><span>Carica</span><input type="file" data-room-photo-file="${r.id}" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.jpg,.jpeg,.png,.webp,.heic,.heif"></label>${r.image?`<button class="photo-clear-btn" type="button" data-clear-room-image="${r.id}" title="Rimuovi foto"><ha-icon icon="mdi:image-remove-outline"></ha-icon></button>`:""}</div>${r.image?`<div class="photo-preview room-photo-preview"><img src="${this._esc(r.image)}" alt=""></div>`:""}</div>
-        <div class="room-row-actions"><button data-action="room-up" data-room="${r.id}" type="button" title="Sposta su"><ha-icon icon="mdi:chevron-up"></ha-icon></button><button data-action="room-down" data-room="${r.id}" type="button" title="Sposta giù"><ha-icon icon="mdi:chevron-down"></ha-icon></button><button data-action="room-remove" data-room="${r.id}" type="button" title="Elimina"><ha-icon icon="mdi:trash-can-outline"></ha-icon></button></div>
-      </div>`).join("")||`<div class="room-empty"><ha-icon icon="mdi:home-plus-outline"></ha-icon><strong>Nessuna stanza creata</strong><span>Premi “Aggiungi stanza” per iniziare.</span></div>`}</div>
-      <div class="room-add-footer"><button class="room-add" data-action="room-add" type="button"><ha-icon icon="mdi:plus"></ha-icon><span>Aggiungi stanza</span></button></div>
-    </div>`;
-  }
-  _renderConfigDevicesPage(){
-    return `<div class="config-page">
-      <div class="config-page-intro"><ha-icon icon="mdi:devices"></ha-icon><div><strong>Dispositivi delle stanze</strong><span>Associa entità alle stanze, rinominale e assegna una foto reale ai singoli oggetti.</span></div></div>
-      <div class="device-room-list">
-        ${this._roomsDraft.map(r=>`<section class="device-room-card">
-          <div class="device-room-card-head"><div><ha-icon icon="${this._esc(r.icon||this._roomIcon(r.type))}"></ha-icon><strong>${this._esc(r.name||"Stanza")}</strong></div><span>${(r.entities||[]).length} entità</span></div>
-          ${this._roomEntityPicker(r)}
-        </section>`).join("") || `<div class="room-empty"><ha-icon icon="mdi:floor-plan"></ha-icon><strong>Prima crea almeno una stanza</strong><span>Vai nella pagina “Stanze” e costruisci la struttura della casa.</span></div>`}
-      </div>
-    </div>`;
-  }
-  _renderConfigMappingsPage(tab){
-    const keys=this._configTabKeys(tab);
-    const title=tab==="energy"?"Energia & Mobilità":tab==="weather"?"Meteo & Sicurezza":"Associazioni avanzate";
-    const icon=tab==="energy"?"mdi:solar-power-variant":tab==="weather"?"mdi:shield-home-outline":"mdi:tune-vertical-variant";
-    const desc=tab==="energy"
-      ?"Fotovoltaico, batteria, rete, EV e Wallbox."
-      : tab==="weather"
-      ?"Meteo, allarme e principali sensori di sicurezza."
-      :"Tutte le associazioni Community disponibili. Usa questa pagina quando vuoi accedere ai mapping tecnici completi.";
-    const energyOptions=tab==="energy"?`<section class="energy-view-config">
-      <div class="energy-view-config-head"><div><strong>Visual Fotovoltaico</strong><span>Scegli quanto dettaglio mostrare nella Panoramica. La modalità avanzata si adatta automaticamente ai sensori configurati.</span></div><ha-icon icon="mdi:solar-panel-large"></ha-icon></div>
-      <div class="energy-view-choice">
-        <label class="${(this._overviewDraft.energy_view||"compact")==="compact"?"selected":""}"><input type="radio" name="energy_view" data-overview-key="energy_view" value="compact" ${(this._overviewDraft.energy_view||"compact")==="compact"?"checked":""}><ha-icon icon="mdi:view-grid-outline"></ha-icon><div><strong>Compatta</strong><span>Card essenziali come nella Panoramica attuale.</span></div></label>
-        <label class="${this._overviewDraft.energy_view==="advanced"?"selected":""}"><input type="radio" name="energy_view" data-overview-key="energy_view" value="advanced" ${this._overviewDraft.energy_view==="advanced"?"checked":""}><ha-icon icon="mdi:chart-timeline-variant-shimmer"></ha-icon><div><strong>Avanzata</strong><span>Produzione, PV1/PV2, batteria e flusso Casa/Inverter/Rete.</span></div></label>
-      </div>
-      <div class="energy-view-fields">
-        <label><span>LABEL PRODUZIONE</span><input data-overview-key="energy_production_label" value="${this._esc(this._overviewDraft.energy_production_label||"")}" placeholder="Produzione live"></label>
-        <label><span>LABEL PV1</span><input data-overview-key="energy_pv1_label" value="${this._esc(this._overviewDraft.energy_pv1_label||"")}" placeholder="Falda 1 / Est"></label>
-        <label><span>LABEL PV2</span><input data-overview-key="energy_pv2_label" value="${this._esc(this._overviewDraft.energy_pv2_label||"")}" placeholder="Falda 2 / Ovest"></label>
-        <label><span>LABEL CASA</span><input data-overview-key="energy_house_label" value="${this._esc(this._overviewDraft.energy_house_label||"")}" placeholder="Casa"></label>
-        <label><span>LABEL INVERTER</span><input data-overview-key="energy_inverter_label" value="${this._esc(this._overviewDraft.energy_inverter_label||"")}" placeholder="Inverter"></label>
-        <label><span>LABEL BATTERIA</span><input data-overview-key="energy_battery_label" value="${this._esc(this._overviewDraft.energy_battery_label||"")}" placeholder="Batteria"></label>
-        <label><span>LABEL RETE</span><input data-overview-key="energy_grid_label" value="${this._esc(this._overviewDraft.energy_grid_label||"")}" placeholder="Rete"></label>
-        <label><span>SEGNO RETE POSITIVO</span><select data-overview-key="grid_positive"><option value="import" ${(this._overviewDraft.grid_positive||"import")==="import"?"selected":""}>Prelievo</option><option value="export" ${this._overviewDraft.grid_positive==="export"?"selected":""}>Export</option></select></label>
-        <label><span>SEGNO BATTERIA POSITIVO</span><select data-overview-key="battery_positive"><option value="charge" ${(this._overviewDraft.battery_positive||"charge")==="charge"?"selected":""}>Carica</option><option value="discharge" ${this._overviewDraft.battery_positive==="discharge"?"selected":""}>Scarica</option></select></label>
-      </div>
-      <div class="config-page-note"><ha-icon icon="mdi:information-outline"></ha-icon><span>PV1/PV2, batteria e rete vengono mostrati solo se le relative associazioni sono configurate. Non è necessario avere tutti i sensori.</span></div>
-    </section>`:"";
-    return `<div class="config-page">
-      <div class="config-page-intro"><ha-icon icon="${icon}"></ha-icon><div><strong>${title}</strong><span>${desc}</span></div></div>
-      ${energyOptions}
-      <div class="config-toolbar config-toolbar-page"><label class="config-search"><ha-icon icon="mdi:magnify"></ha-icon><input id="configSearch" type="search" placeholder="Cerca funzione, chiave o nome entità…" value="${this._esc(this._configFilter||"")}"></label><div class="config-progress"><strong>${[...ENTITY_KEYS].filter(k=>(this._configDraft[k]||"").trim()).length}</strong><span>/ ${ENTITY_KEYS.size}</span></div></div>
-      <div class="config-scroll config-scroll-page">${this._renderConfigMappingList(keys)}</div>
-    </div>`;
-  }
-  _renderConfigCurrentPage(){
-    if(this._configTab==="overview") return this._renderConfigOverviewPage();
-    if(this._configTab==="rooms") return this._renderConfigRoomsPage();
-    if(this._configTab==="devices") return this._renderConfigDevicesPage();
-    if(this._configTab==="energy") return this._renderConfigMappingsPage("energy");
-    if(this._configTab==="weather") return this._renderConfigMappingsPage("weather");
-    return this._renderConfigMappingsPage("advanced");
-  }
-
-  _renderConfigDialog() {
-    if(!this._configDialogOpen) return "";
-    const datalist=this._entityOptions().map(e=>`<option value="${this._esc(e.id)}" label="${this._esc(e.label)}">${this._esc(e.label)}</option>`).join("");
-    const tabs=this._configTabs().map(([id,label,icon])=>`<button class="config-tab ${this._configTab===id?'active':''}" type="button" data-config-tab="${id}"><ha-icon icon="${icon}"></ha-icon><span>${label}</span></button>`).join("");
-    return `<div class="config-overlay" data-action="config-overlay-close">
-      <section class="config-dialog config-dialog-tabs" role="dialog" aria-modal="true" aria-label="Configura Casa Dashboard Community">
-        <div class="config-dialog-head"><div><div class="config-kicker">CASA DASHBOARD COMMUNITY</div><h2>Configura la dashboard</h2><p>Organizza la configurazione per sezioni. Puoi passare liberamente da una pagina all'altra e salvare tutto insieme.</p></div><button class="config-close" data-action="config-close" type="button" aria-label="Chiudi"><ha-icon icon="mdi:close"></ha-icon></button></div>
-        <nav class="config-tabs" aria-label="Sezioni configuratore">${tabs}</nav>
-        <div class="config-page-host">${this._renderConfigCurrentPage()}</div>
-        <datalist id="haEntityList">${datalist}</datalist>
-        <div class="config-dialog-foot"><div class="config-hint"><ha-icon icon="mdi:shield-check-outline"></ha-icon><span>${this._esc(this._imageUploadNotice||"Le modifiche vengono salvate nel file Community separato.")}</span></div><div class="config-actions"><button class="secondary" data-action="config-close" type="button">Annulla</button><button class="primary" data-action="config-save" type="button"><ha-icon icon="mdi:content-save-outline"></ha-icon> Salva configurazione</button></div></div>
-      </section></div>`;
-  }
-
-  _openConfigDialog() {
-    this._configDraft={...this._entityMap};
-    this._configLabelDraft={...this._entityLabels};
-    this._overviewDraft={...this._overviewConfig};
-    const savedRooms=(Array.isArray(this._rooms)?this._rooms:[]).map(r=>({...r,entities:[...(r.entities||[])],entity_labels:{...(r.entity_labels||{})},entity_images:{...(r.entity_images||{})}}));
-    this._roomsDraft=savedRooms.length
-      ? savedRooms
-      : this._mergeConfiguredEntitiesIntoRooms([]);
-    this._configFilter="";
-    this._imageUploadNotice="";
-    this._configTab="overview";
-    this._configScrollByTab={};
-    this._configDialogOpen=true;
-    this._renderConfigLayer();
-  }
-  _closeConfigDialog() { this._configDialogOpen=false; this._renderConfigLayer(); }
-  _renderConfigLayer() {
-    let layer=this.shadowRoot.querySelector("#configLayer");
-    if(!layer){ layer=document.createElement("div"); layer.id="configLayer"; this.shadowRoot.appendChild(layer); }
-
-    // Preserve the vertical position of the current configurator page before
-    // replacing its markup. This prevents add/edit/upload actions from
-    // jumping the user back to the top.
-    const previousPage=layer.querySelector(".config-page");
-    if(previousPage && this._configTab){
-      this._configScrollByTab=this._configScrollByTab||{};
-      this._configScrollByTab[this._configTab]=previousPage.scrollTop||0;
-    }
-
-    layer.innerHTML=this._renderConfigDialog();
-    this._applyLanguage(layer);
-    if(!this._configDialogOpen) return;
-
-    requestAnimationFrame(()=>{
-      const page=layer.querySelector(".config-page");
-      if(page){
-        const saved=this._configScrollByTab?.[this._configTab];
-        if(Number.isFinite(saved)) page.scrollTop=saved;
-      }
-    });
-
-    const syncRooms=()=>{
-      for(const r of this._roomsDraft){
-        const n=layer.querySelector(`[data-room-name="${r.id}"]`); if(n) r.name=n.value.trim()||"Stanza";
-        const t=layer.querySelector(`[data-room-type="${r.id}"]`); if(t){ r.type=t.value; if(!r.icon) r.icon=this._roomIcon(r.type); }
-        const ic=layer.querySelector(`[data-room-icon="${r.id}"]`); if(ic) r.icon=ic.value.trim()||this._roomIcon(r.type);
-        const im=layer.querySelector(`[data-room-image="${r.id}"]`); if(im) r.image=im.value.trim();
-      }
-    };
-    const syncVisibleMappingFields=()=>{
-      layer.querySelectorAll("[data-config-key]").forEach(input=>{ this._configDraft[input.dataset.configKey]=input.value; });
-      layer.querySelectorAll("[data-config-label]").forEach(input=>{ this._configLabelDraft[input.dataset.configLabel]=input.value; });
-      layer.querySelectorAll("[data-overview-key]").forEach(input=>{
-        if((input.type==="radio" || input.type==="checkbox") && !input.checked) return;
-        this._overviewDraft[input.dataset.overviewKey]=input.value;
-      });
-      layer.querySelectorAll("[data-room-entity-image-room]").forEach(input=>{
-        this._setRoomEntityImage(input.dataset.roomEntityImageRoom,input.dataset.roomEntityImageEntity,input.value);
-      });
-    };
-
-    layer.querySelectorAll("[data-config-tab]").forEach(button=>{
-      button.addEventListener("click",()=>{
-        syncRooms(); syncVisibleMappingFields();
-        const page=layer.querySelector(".config-page");
-        if(page && this._configTab){
-          this._configScrollByTab=this._configScrollByTab||{};
-          this._configScrollByTab[this._configTab]=page.scrollTop||0;
-        }
-        this._configTab=button.dataset.configTab||"overview";
-        this._configFilter="";
-        this._renderConfigLayer();
-      });
-    });
-
-    layer.querySelectorAll("[data-room-name],[data-room-type],[data-room-icon],[data-room-image]").forEach(el=>el.addEventListener("change",syncRooms));
-
-    layer.querySelectorAll("[data-overview-key]").forEach(input=>{
-      const sync=()=>{
-        if((input.type==="radio" || input.type==="checkbox") && !input.checked) return;
-        this._overviewDraft[input.dataset.overviewKey]=input.value;
-        if(input.type==="radio") this._renderConfigLayer();
-      };
-      input.addEventListener("input",sync);
-      input.addEventListener("change",sync);
-    });
-
-    layer.querySelectorAll("[data-room-entity-image-room]").forEach(input=>{
-      const roomId=input.dataset.roomEntityImageRoom, entity=input.dataset.roomEntityImageEntity;
-      const sync=()=>this._setRoomEntityImage(roomId,entity,input.value);
-      input.addEventListener("input",sync); input.addEventListener("change",sync);
-    });
-
-    layer.querySelectorAll("[data-room-entity-label-room]").forEach(input=>{
-      const roomId=input.dataset.roomEntityLabelRoom, entity=input.dataset.roomEntityLabelEntity;
-      input.addEventListener("input",()=>this._setRoomEntityLabel(roomId,entity,input.value));
-      input.addEventListener("change",()=>this._setRoomEntityLabel(roomId,entity,input.value));
-    });
-
-    layer.querySelectorAll("[data-room-entity-search]").forEach(input=>{
-      const roomId=input.dataset.roomEntitySearch;
-      const show=()=>this._renderRoomEntitySuggestions(roomId,input.value);
-      input.addEventListener("focus",show); input.addEventListener("input",show); input.addEventListener("click",show);
-      input.addEventListener("keydown",ev=>{
-        if(ev.key==="Enter"){
-          ev.preventDefault();
-          const room=this._roomsDraft.find(r=>r.id===roomId); if(!room)return;
-          const suggestions=this._roomEntitySuggestions(input.value,room.entities||[]);
-          const resolved=suggestions[0]?.id || this._resolveRoomEntityToken(input.value);
-          if(this._hass?.states?.[resolved] && !(room.entities||[]).includes(resolved)){
-            room.entities=[...(room.entities||[]),resolved]; this._renderConfigLayer();
-          }
-        }else if(ev.key==="Escape"){
-          const box=layer.querySelector(`[data-room-entity-suggestions="${roomId}"]`); if(box)box.hidden=true;
-        }
-      });
-    });
-
-    const search=layer.querySelector("#configSearch");
-    search?.addEventListener("input",ev=>{
-      syncRooms(); syncVisibleMappingFields();
-      const page=layer.querySelector(".config-page");
-      if(page && this._configTab){
-        this._configScrollByTab=this._configScrollByTab||{};
-        this._configScrollByTab[this._configTab]=page.scrollTop||0;
-      }
-      this._configFilter=ev.target.value;
-      this._renderConfigLayer();
-      requestAnimationFrame(()=>{
-        const next=this.shadowRoot.querySelector("#configSearch");
-        next?.focus(); next?.setSelectionRange(next.value.length,next.value.length);
-      });
-    });
-
-    layer.querySelectorAll("[data-config-key]").forEach(input=>{
-      input.addEventListener("input",ev=>{
-        const key=ev.target.dataset.configKey;
-        const oldEntity=String(this._configDraft[key]||"").trim();
-        this._configDraft[key]=ev.target.value;
-        this._syncConfiguredKeyToRoom(key,oldEntity,ev.target.value);
-      });
-      input.addEventListener("change",ev=>{
-        const key=ev.target.dataset.configKey;
-        const oldEntity=String(this._configDraft[key]||"").trim();
-        const resolved=this._entityIdFromFriendlyName(ev.target.value);
-        ev.target.value=resolved; this._configDraft[key]=resolved;
-        this._syncConfiguredKeyToRoom(key,oldEntity,resolved);
-      });
-    });
-
-    layer.querySelectorAll("[data-config-label]").forEach(input=>{
-      const sync=()=>{this._configLabelDraft[input.dataset.configLabel]=input.value;};
-      input.addEventListener("input",sync); input.addEventListener("change",sync);
-    });
-
-    const handleNativePhoto=async(input,roomId,entity="")=>{
-      const file=input.files?.[0];
-      if(!file) return;
-
-      this._imageUploadNotice=`Elaborazione foto: ${file.name||"immagine"}…`;
-      const setImage=(url)=>{
-        if(entity){
-          this._setRoomEntityImage(roomId,entity,url);
-        }else{
-          const room=this._roomsDraft.find(r=>r.id===roomId);
-          if(room) room.image=url;
-        }
-      };
-
-      try{
-        const uploaded=await this._uploadDashboardImage(file,(inline)=>{
-          // Immediate result: persist in draft and show preview now.
-          setImage(inline);
-          this._imageUploadNotice="Foto acquisita. Ottimizzazione del salvataggio in corso…";
-          this._renderConfigLayer();
-        });
-
-        if(uploaded?.url) setImage(uploaded.url);
-        this._imageUploadNotice=uploaded?.mode==="file"
-          ? "Foto caricata e verificata."
-          : "Foto acquisita e pronta per il salvataggio.";
-        this._renderConfigLayer();
-      }catch(err){
-        this._imageUploadNotice=`Errore foto: ${err?.message||String(err)}`;
-        this._renderConfigLayer();
-        alert(this._imageUploadNotice);
-      }
-    };
-
-    layer.querySelectorAll("[data-room-photo-file]").forEach(input=>{
-      input.addEventListener("change",()=>handleNativePhoto(input,input.dataset.roomPhotoFile));
-    });
-    layer.querySelectorAll("[data-entity-photo-file-room]").forEach(input=>{
-      input.addEventListener("change",()=>handleNativePhoto(input,input.dataset.entityPhotoFileRoom,input.dataset.entityPhotoFile));
-    });
-
-    layer.addEventListener("click",async ev=>{
-      const clearRoom=ev.target.closest?.("[data-clear-room-image]");
-      const clearEntity=ev.target.closest?.("[data-clear-entity-image-room]");
-      if(clearRoom){
-        ev.preventDefault();
-        const room=this._roomsDraft.find(r=>r.id===clearRoom.dataset.clearRoomImage);
-        if(room){room.image="";this._renderConfigLayer();} return;
-      }
-      if(clearEntity){
-        ev.preventDefault();
-        this._setRoomEntityImage(clearEntity.dataset.clearEntityImageRoom,clearEntity.dataset.clearEntityImage,"");
-        this._renderConfigLayer(); return;
-      }
-      const add=ev.target.closest?.("[data-room-entity-add]");
-      if(add){
-        ev.preventDefault();
-        const room=this._roomsDraft.find(r=>r.id===add.dataset.roomEntityAdd), entity=add.dataset.entity;
-        if(room && entity && this._hass?.states?.[entity] && !(room.entities||[]).includes(entity)){
-          room.entities=[...(room.entities||[]),entity]; this._renderConfigLayer();
-        }
-        return;
-      }
-      const rem=ev.target.closest?.("[data-room-entity-remove]");
-      if(rem){
-        ev.preventDefault();
-        const room=this._roomsDraft.find(r=>r.id===rem.dataset.roomEntityRemove);
-        if(room){
-          room.entities=(room.entities||[]).filter(e=>e!==rem.dataset.entity);
-          if(room.entity_labels)delete room.entity_labels[rem.dataset.entity];
-          if(room.entity_images)delete room.entity_images[rem.dataset.entity];
-          this._renderConfigLayer();
-        }
-      }
-    });
-  }
-
-  async _saveConfigDialog() {
-    const layer=this.shadowRoot.querySelector("#configLayer");
-    for(const r of this._roomsDraft){
-      const n=layer?.querySelector(`[data-room-name="${r.id}"]`); if(n) r.name=n.value.trim()||"Stanza";
-      const t=layer?.querySelector(`[data-room-type="${r.id}"]`); if(t) r.type=t.value;
-      const ic=layer?.querySelector(`[data-room-icon="${r.id}"]`); if(ic) r.icon=ic.value.trim()||this._roomIcon(r.type);
-      const im=layer?.querySelector(`[data-room-image="${r.id}"]`); if(im) r.image=im.value.trim();
-    }
-    layer?.querySelectorAll("[data-overview-key]").forEach(input=>{
-      if((input.type==="radio" || input.type==="checkbox") && !input.checked) return;
-      this._overviewDraft[input.dataset.overviewKey]=String(input.value||"").trim();
-    });
-    layer?.querySelectorAll("[data-room-entity-image-room]").forEach(input=>{
-      this._setRoomEntityImage(input.dataset.roomEntityImageRoom,input.dataset.roomEntityImageEntity,input.value);
-    });
-    layer?.querySelectorAll("[data-config-key]").forEach(input=>{
-      const key=input.dataset.configKey;
-      const oldEntity=String(this._configDraft[key]||"").trim();
-      const resolved=this._entityIdFromFriendlyName(input.value);
-      this._configDraft[key]=resolved;
-      this._syncConfiguredKeyToRoom(key,oldEntity,resolved);
-    });
-    layer?.querySelectorAll("[data-config-label]").forEach(input=>{
-      this._configLabelDraft[input.dataset.configLabel]=input.value.trim();
-    });
-    const saveButtons=[...(layer?.querySelectorAll('[data-action="config-save"]')||[])];
-    saveButtons.forEach(save=>{ save.disabled=true; save.innerHTML='<ha-icon icon="mdi:loading" class="spin"></ha-icon> Salvataggio…'; });
-    try {
-      const result=await this._hass.callWS({type:"casa_dashboard_community/config/save",entities:this._configDraft,rooms:this._roomsDraft,labels:this._configLabelDraft,overview:this._overviewDraft});
-      this._rooms=Array.isArray(result?.rooms)?result.rooms:this._roomsDraft;
-      this._entityMap=result?.entities || {...this._configDraft};
-      this._entityLabels=result?.labels || {...this._configLabelDraft};
-      this._overviewConfig=result?.overview || {...this._overviewDraft};
-      this._entityConfigLoaded=true;
-      this._configDialogOpen=false;
-      this._renderConfigLayer();
-      this._renderPage(false);
-    } catch(err) {
-      saveButtons.forEach(save=>{ save.disabled=false; save.innerHTML='<ha-icon icon="mdi:alert-circle-outline"></ha-icon> Riprova'; });
-      alert(`Impossibile salvare la configurazione: ${err?.message || err}`);
-    }
-  }
-
-  _state(id, fallback="—") {
-    const pending=this._optimistic.get(id);
-    if(pending && Date.now()-pending.at < 3500) return pending.state;
-    const s=this._s(id)?.state;
-    return (!s || ["unknown","unavailable","none",""].includes(s)) ? fallback : s;
-  }
-  _on(id) { return this._state(id,"off") === "on"; }
-  _num(id, fallback=null) { const v=parseFloat(this._state(id,"")); return Number.isFinite(v)?v:fallback; }
-  _attr(id, key, fallback=null) { const v=this._s(id)?.attributes?.[key]; return v ?? fallback; }
-  _fmt(id, digits=1, unit=null) {
-    const n=this._num(id,null); if(n===null) return "—";
-    const u=unit ?? this._attr(id,"unit_of_measurement","");
-    return `${n.toFixed(digits)}${u ? ` ${u}` : ""}`;
-  }
-  _fmtLuxCompact(id, digits=1){
-    const n=this._num(id,null); if(n===null) return "—";
-    if(Math.abs(n) >= 1000) return `${(n/1000).toFixed(digits)} klx`;
-    return `${n.toFixed(0)} lx`;
-  }
-  _fmtLuxExact(id){
-    const n=this._num(id,null); if(n===null) return "—";
-    return `${new Intl.NumberFormat('it-IT',{maximumFractionDigits:0}).format(n)} lx`;
-  }
-  _luxLabel(id){
-    const n=this._num(id,null); if(n===null) return "—";
-    const outdoor=id==="sensor.weather_solar_lux";
-    if(outdoor) return n>=40000?"Luce forte":n>=20000?"Luce buona":"Luce bassa";
-    return n>=500?"Luce forte":n>=100?"Luce buona":"Luce bassa";
-  }
-  _luxTone(id){
-    const n=this._num(id,null); if(n===null) return "state-off";
-    const outdoor=id==="sensor.weather_solar_lux";
-    if(outdoor) return n>=40000?"state-good":n>=20000?"state-active":"state-off";
-    return n>=500?"state-good":n>=100?"state-active":"state-off";
-  }
-  _radLabel(id){
-    const n=this._num(id,null); if(n===null) return "—";
-    return n>=350?"Radiazione forte":n>=150?"Radiazione moderata":n>=30?"Radiazione bassa":"Radiazione minima";
-  }
-  _radTone(id){
-    const n=this._num(id,null); if(n===null) return "state-off";
-    return n>=350?"state-good":n>=150?"state-active":n>=30?"state-warn":"state-off";
-  }
-  _fmtAcPowerFromCurrent(currentId, voltageId, digits=2){
-    const a=this._num(currentId,null), v=this._num(voltageId,null);
-    if(a===null || v===null) return "—";
-    return `${((a*v)/1000).toFixed(digits)} kW`;
-  }
-  _esc(v) { return String(v ?? "").replace(/[&<>'"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c])); }
-  _icon(icon, cls="") { return `<div class="iconbox ${cls}"><ha-icon ico
+        <div class="room-image-field"><span>FOTO STANZA</span><div class="photo-config-line"><input data-room-image="${r.id}" value="${this._esc(r.image||"")}" placeholder="/local/... oppure carica foto"><label class="photo-upload-btn n

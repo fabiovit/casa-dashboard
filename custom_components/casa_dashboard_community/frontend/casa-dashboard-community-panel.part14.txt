@@ -1,4 +1,284 @@
->`}
+Fmt(ids=[], digits=1, unit=null){ const id=this._firstId(ids); return id ? this._fmt(id,digits,unit) : "—"; }
+  _fmtPowerAuto(idOrIds, digits=2){
+    const ids = Array.isArray(idOrIds) ? idOrIds : [idOrIds];
+    const id = this._firstId(ids);
+    if(!id) return "—";
+    const n = this._num(id, null);
+    if(n===null) return "—";
+    const rawUnit = String(this._attr(id, "unit_of_measurement", "") || "").toLowerCase();
+    if(rawUnit === 'w' || (!rawUnit && Math.abs(n) >= 100)) return `${(n/1000).toFixed(digits)} kW`;
+    if(rawUnit === 'kw') return `${n.toFixed(digits)} kW`;
+    return `${n.toFixed(digits)} ${rawUnit || 'kW'}`;
+  }
+  _powerValueAuto(idOrIds){
+    const ids = Array.isArray(idOrIds) ? idOrIds : [idOrIds];
+    const id = this._firstId(ids);
+    if(!id) return null;
+    let n = this._num(id, null);
+    if(n===null) return null;
+    const rawUnit = String(this._attr(id, "unit_of_measurement", "") || "").toLowerCase();
+    if(rawUnit === 'w' || (!rawUnit && Math.abs(n) >= 100)) n = n / 1000;
+    return n;
+  }
+  _fmtSignedPowerAuto(idOrIds, digits=2){
+    const n = this._powerValueAuto(idOrIds);
+    if(n===null) return "—";
+    const sign = n > 0 ? '+' : n < 0 ? '−' : '±';
+    return `${sign}${Math.abs(n).toFixed(digits)} kW`;
+  }
+  _fmtAbsPowerAuto(idOrIds, digits=2){
+    const n = this._powerValueAuto(idOrIds);
+    if(n===null) return "—";
+    return `${Math.abs(n).toFixed(digits)} kW`;
+  }
+  _themeIsLight(){
+    const v = getComputedStyle(this).getPropertyValue('--primary-background-color').trim();
+    if(!v) return false;
+    let r=255,g=255,b=255;
+    if(v.startsWith('#')){
+      const h=v.slice(1);
+      if(h.length===3){ r=parseInt(h[0]+h[0],16); g=parseInt(h[1]+h[1],16); b=parseInt(h[2]+h[2],16); }
+      else if(h.length>=6){ r=parseInt(h.slice(0,2),16); g=parseInt(h.slice(2,4),16); b=parseInt(h.slice(4,6),16); }
+    } else {
+      const m=v.match(/rgba?\(([^)]+)\)/i);
+      if(m){ const p=m[1].split(',').map(s=>parseFloat(s.trim())); [r,g,b]=p; }
+    }
+    const luminance = (0.2126*r + 0.7152*g + 0.0722*b) / 255;
+    return luminance > 0.62;
+  }
+  _applyThemeMode(){
+    const shell = this.shadowRoot?.querySelector('.app-shell');
+    if(!shell) return;
+    const light = this._themeIsLight();
+    shell.classList.toggle('theme-light', light);
+    shell.classList.toggle('theme-dark', !light);
+  }
+  _windDir(id){ const deg=this._num(id,null); if(deg===null) return "—"; const dirs=['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSO','SO','OSO','O','ONO','NO','NNO']; return `${Math.round(deg)}° · ${dirs[Math.floor((deg+11.25)/22.5)%16]}`; }
+  _metricTone(entity,value=""){
+    const st=this._state(entity,""); const val=String(value).toLowerCase();
+    if((entity.includes("wleak")||entity.includes("water_leak")) && this._on(entity)) return "state-bad";
+    if(entity.includes("tank_status") && this._on(entity)) return "state-bad";
+    if(entity==="alarm_control_panel.home_alarm") return st==="triggered"?"state-bad":st==="disarmed"?"state-warn":"state-good";
+    if(entity.startsWith("binary_sensor.") && this._on(entity)) return entity.includes("motion")||entity.includes("occupancy")||entity.includes("occupazione")?"state-active":"state-warn";
+    if(["aperta","aperto","sbloccata","rilevata","rilevato","pieno","allarme"].some(x=>val.includes(x))) return val.includes("perdita")||val.includes("pieno")||val.includes("allarme")?"state-bad":"state-warn";
+    if(["accesa","acceso","attivo","attiva","occupato","in carica","cleaning"].some(x=>val.includes(x))) return "state-active";
+    if(["chiusa","chiuso","spenta","spento","libero","assente","ok","nessuna"].some(x=>val.includes(x))) return "state-good";
+    return "";
+  }
+  _controlTone(entity,on){
+    if(!on) return "state-off";
+    if(entity.startsWith("light.")) return "state-on light-tone";
+    if(entity.startsWith("climate.")) return "state-on blue-tone";
+    return "state-on";
+  }
+
+  _overall() {
+    const configured=this._configuredCount();
+    if(configured===0) return {level:"blue", icon:"mdi:tune-variant", title:"Configura la dashboard", text:"Associa le entità che vuoi utilizzare"};
+    const alarm=this._state("alarm_control_panel.home_alarm","unknown");
+    const leak=this._on("binary_sensor.bathroom_water_leak");
+    const tank=this._on("binary_sensor.garage_dehumidifier_tank_full") || ["full","pieno","water full","tank full"].includes(this._state("sensor.garage_dehumidifier_tank_status","").toLowerCase());
+    const open=this._openCount();
+    if(alarm==="triggered" || leak || tank) return {level:"bad", icon:"mdi:alert-octagon", title:"Attenzione richiesta", text: alarm==="triggered"?"Allarme in corso":leak?"Perdita acqua rilevata":"Serbatoio deumidificatore pieno"};
+    if(open>0) return {level:"warn", icon:"mdi:shield-alert-outline", title:"Casa da controllare", text:`${open} aperture aperte`};
+    if(alarm==="disarmed") return {level:"warn", icon:"mdi:shield-off-outline", title:"Casa tranquilla", text:"Allarme disinserito"};
+    return {level:"good", icon:"mdi:shield-check-outline", title:"Tutto sotto controllo", text:"Nessuna criticità rilevata"};
+  }
+
+  _anyConfigured(ids=[]) { return ids.some(id=>this._configured(id)); }
+
+  _roomConfigured(room) {
+    const groups={
+      esterno:["input_boolean.pedestrian_gate","switch.gate_command"],
+      scale:["light.stairs","input_boolean.main_gate"],
+      ingresso:["alarm_control_panel.home_alarm","binary_sensor.entry_door","binary_sensor.entry_motion","binary_sensor.entry_occupancy","input_boolean.entry_door_unlock","light.entry_main","sensor.entry_illuminance"],
+      disimpegno:["binary_sensor.hallway_motion","binary_sensor.hallway_occupancy","light.hallway_main","sensor.hallway_illuminance"],
+      bagno:[...ENTITY_KEYS].filter(id=>id.includes("bathroom_") || id==="fan.bathroom_extractor"),
+      cucina:[...ENTITY_KEYS].filter(id=>id.includes("kitchen_") || id.startsWith("sensor.heating_") || id==="climate.home_heating" || id==="calendar.heating_program" || id==="water_heater.domestic_hot_water" || id.startsWith("sensor.weather_indoor_")),
+      camera:[...ENTITY_KEYS].filter(id=>id.includes("bedroom_") || id.includes("robot_vacuum")),
+      balcone:[...ENTITY_KEYS].filter(id=>id.includes("balcony_") || id.startsWith("sensor.weather_") || id.startsWith("binary_sensor.weather_") || id.startsWith("sensor.solar_")),
+      garage:[...ENTITY_KEYS].filter(id=>id.includes("garage_") || id.includes("wallbox_") || id.includes("ev_") || id==="sensor.grid_current_l1" || id.startsWith("sensor.utility_room_"))
+    };
+    return this._anyConfigured(groups[room]||[]);
+  }
+
+  _roomStatus(room) {
+    const light=(ids)=>ids.some(id=>this._on(id));
+    const active=(ids)=>ids.some(id=>this._on(id));
+    switch(room){
+      case "esterno": return this._on("input_boolean.pedestrian_gate") ? {level:"warn",text:"Cancellino aperto"}:{level:"good",text:"Accesso chiuso"};
+      case "scale": return light(["light.stairs"]) ? {level:"blue",text:"Luce accesa"}:{level:"good",text:"Tutto ok"};
+      case "ingresso": {
+        if(this._state("alarm_control_panel.home_alarm")==="triggered") return {level:"bad",text:"Allarme in corso"};
+        if(this._on("binary_sensor.entry_door")) return {level:"warn",text:"Porta aperta"};
+        if(this._on("input_boolean.entry_door_unlock")) return {level:"warn",text:"Porta sbloccata"};
+        return {level:"good",text:"Ingresso sicuro"}; }
+      case "disimpegno": return active(["binary_sensor.hallway_motion","binary_sensor.hallway_occupancy"]) ? {level:"blue",text:"Presenza rilevata"}:{level:"good",text:"Libero"};
+      case "bagno": {
+        if(this._on("binary_sensor.bathroom_water_leak")) return {level:"bad",text:"Perdita acqua"};
+        if(this._on("binary_sensor.bathroom_window")) return {level:"warn",text:"Finestra aperta"};
+        return this._climateActive("fan.bathroom_extractor") ? {level:"blue",text:"Aspiratore attivo"}:{level:"good",text:"Tutto ok"}; }
+      case "cucina": {
+        if(this._on("binary_sensor.kitchen_door_window")) return {level:"warn",text:"Porta finestra aperta"};
+        if(this._climateActive("climate.kitchen")) return {level:"blue",text:"Clima attivo"};
+        return light(["light.kitchen_main","light.kitchen_led"]) ? {level:"blue",text:"Luci accese"}:{level:"good",text:"Tutto ok"}; }
+      case "camera": {
+        if(this._on("binary_sensor.bedroom_door_window")) return {level:"warn",text:"Porta finestra aperta"};
+        if(this._climateActive("climate.bedroom")) return {level:"blue",text:"Clima attivo"};
+        const v=this._state("vacuum.robot_vacuum",""); if(["cleaning","returning","paused"].includes(v)) return {level:"blue",text:"Robot aspirapolvere attivo"};
+        return {level:"good",text:"Tutto ok"}; }
+      case "balcone": {
+        if(this._on("binary_sensor.weather_rain") || (this._num("sensor.weather_rain_rate",0)>=0.1)) return {level:"warn",text:"Pioggia rilevata"};
+        if(this._num("sensor.weather_wind_gust",0)>=24) return {level:"warn",text:"Raffiche forti"};
+        if(this._on("switch.balcony_barbecue")) return {level:"blue",text:"Barbecue acceso"};
+        return {level:"good",text:"Meteo regolare"}; }
+      case "garage": {
+        if(this._on("binary_sensor.garage_door_contact")) return {level:"warn",text:"Basculante aperto"};
+        if(this._on("binary_sensor.ev_charging_at_home")) return {level:"blue",text:"EV in carica"};
+        if(this._on("binary_sensor.garage_dehumidifier_tank_full")) return {level:"bad",text:"Serbatoio pieno"};
+        return {level:"good",text:"Tutto ok"}; }
+    }
+    return {level:"good",text:"Tutto ok"};
+  }
+
+  _renderNav(force=false) {
+    const nav=this.shadowRoot.querySelector("#nav"); if(!nav) return;
+    const dynamic=this._effectiveRooms().filter(r=>this._dynamicRoomConfigured(r)).map(r=>[r.id,r.icon||this._roomIcon(r.type),r.name]);
+    const visibleNav=[["panoramica","mdi:home-analytics","Panoramica"],...dynamic,["info","mdi:information-outline","Informazioni"]];
+    const valid=new Set(visibleNav.map(x=>x[0])); if(!valid.has(this._active)) this._active="panoramica";
+    if(force || !nav.children.length || nav.children.length!==visibleNav.length || nav.dataset.signature!==JSON.stringify(visibleNav)){
+      nav.innerHTML=visibleNav.map(([id,icon,label])=>`<button class="nav-btn ${id===this._active?'active':''}" data-nav="${id}" type="button"><ha-icon icon="${icon}"></ha-icon><span>${this._esc(label)}</span></button>`).join("");
+      nav.dataset.signature=JSON.stringify(visibleNav);
+    } else nav.querySelectorAll("[data-nav]").forEach(b=>b.classList.toggle("active",b.dataset.nav===this._active));
+  }
+  _renderHeader() {
+    const host=this.shadowRoot.querySelector("#headerStatus"); if(!host||!this._hass) return;
+    const all=this._overall();
+    const temp=this._configured("sensor.weather_outdoor_temperature")?`<div class="header-pill"><ha-icon icon="mdi:thermometer"></ha-icon>${this._fmt("sensor.weather_outdoor_temperature",1,"°C")}</div>`:"";
+    host.innerHTML=`<div class="header-pill"><ha-icon icon="${all.icon}"></ha-icon>${this._esc(all.title)}</div>${temp}`;
+  }
+
+  _translations(){
+    return {
+      "Panoramica":"Overview","Informazioni":"Information","Configura le entità":"Configure entities","Configura":"Configure","Chiudi":"Close",
+      "Caricamento Casa Dashboard…":"Loading Casa Dashboard…","Realizzato da":"Created by","Offrimi un caffè":"Buy me a coffee",
+      "Pagina non disponibile":"Page unavailable","Dashboard pronta":"Dashboard ready","Versione":"Version","Piattaforma":"Platform",
+      "Dettagli e personalizzazione di Casa Dashboard Community.":"Casa Dashboard Community details and customization.",
+      "Dashboard app-like, adattiva e configurabile per Home Assistant.":"An app-like, adaptive and configurable dashboard for Home Assistant.",
+      "In uso":"Active","Grafica originale di Casa Dashboard Community v4.0.0.":"Original Casa Dashboard Community interface.",
+      "Nuova grafica derivata da Casa Dashboard v4.3.54, con visual dedicati per luci, sensori, clima, dispositivi e aperture.":"New dynamic interface with dedicated visuals for lights, sensors, climate, devices and openings.",
+      "La scelta viene salvata sul browser/dispositivo e non modifica entità o automazioni.":"Your choice is saved on this browser/device and does not change entities or automations.",
+      "SUPPORTA IL PROGETTO":"SUPPORT THE PROJECT","Casa Dashboard Community è gratuita":"Casa Dashboard Community is free","Se ti piace, puoi supportarne lo sviluppo.":"If you like it, you can support its development.",
+      "Stanze":"Rooms","Crea, rinomina e ordina gli ambienti della dashboard. In Casa V2 non esistono ambienti preimpostati: compariranno solo quelli creati qui.":"Create, rename and reorder dashboard rooms. Casa V2 has no preset rooms: only the rooms you create here will appear.",
+      "Aggiungi stanza":"Add room","Salva configurazione":"Save configuration","Nome stanza":"Room name","Sposta su":"Move up","Sposta giù":"Move down","Elimina":"Delete",
+      "Nessuna stanza creata":"No rooms created","Casa V2 partirà vuota. Premi “Aggiungi stanza” per costruire la tua casa.":"Casa V2 starts empty. Press “Add room” to build your home.",
+      "Al primo utilizzo le entità già configurate nelle 173 associazioni vengono importate nelle stanze. Dopo il primo salvataggio, le stanze vengono gestite solo da questa sezione e le entità rimosse non vengono reinserite automaticamente.":"On first use, entities already configured in the 173 mappings are imported into rooms. After the first save, rooms are managed only from this section and removed entities are not automatically added again.",
+      "Cerca stanza, funzione, chiave o nome entità…":"Search room, function, key or entity name…","Nessuna associazione corrisponde alla ricerca.":"No mappings match your search.",
+      "Le modifiche vengono salvate nel file Community separato.":"Changes are saved in the separate Community file.","Annulla":"Cancel","Svuota":"Clear","Salvataggio…":"Saving…","Riprova":"Retry","Nessuna entità trovata":"No entities found",
+      "Cerca per nome o entity_id…":"Search by name or entity_id…","Cerca le entità anche con il nome assegnato in Home Assistant oppure digita direttamente la entity_id. Puoi lasciare vuote le funzioni che non utilizzi.":"Search entities using the name assigned in Home Assistant or enter the entity_id directly. You can leave unused functions empty.",
+      "CASA & GENERALE":"HOME & GENERAL","Casa":"Home","Stanza":"Room","Ambiente generico":"Generic room","Ingresso":"Entrance","Cucina":"Kitchen","Bagno":"Bathroom","Camera":"Bedroom","Scale":"Stairs","Balcone / Terrazzo":"Balcony / Terrace","Garage":"Garage","Soggiorno":"Living room","Ufficio / Studio":"Office / Study","Lavanderia":"Laundry","Taverna":"Basement / Den","Cantina":"Cellar","Giardino":"Garden",
+      "Stati attivi":"Active states","Solo ciò che in questo momento sta cambiando":"Only what is changing right now","Clima casa":"Home climate","Sintesi interno ed esterno":"Indoor and outdoor summary","Meteo balcone":"Outdoor weather","Condizioni esterne in tempo reale":"Real-time outdoor conditions","Fotovoltaico":"Solar","EV + Wallbox":"EV + WALLBOX",
+      "Luci":"Lights","Luci accese":"Lights on","Aperture":"Openings","Presenze":"Presence","Vibrazioni":"Vibrations","Nessuna":"None","Nessuno":"None","Assente":"None","Rilevata":"Detected","Rilevato":"Detected","Attivo":"Active","Attiva":"Active","Spento":"Off","Spenta":"Off","Acceso":"On","Accesa":"On","Chiuso":"Closed","Chiusa":"Closed","Aperto":"Open","Aperta":"Open","Bloccata":"Locked","Non armato":"Disarmed","Pronta":"Ready","standby":"standby",
+      "Temperatura":"Temperature","Umidità":"Humidity","Esterno":"Outdoor","Vento":"Wind","Pioggia":"Rain","Radiazione":"Radiation","Indice UV":"UV index","Pressione":"Pressure","Batteria":"Battery","Scarica":"Discharging","Carica":"Charging","Produzione":"Production","Consumo":"Consumption","Prelievo":"Grid import","Immissione":"Grid export","Potenza":"Power","Energia sessione":"Session energy","Ultima sessione":"Last session","Limite ricarica":"Charge limit","Stato EVSE":"EVSE status","Stato DAZE":"DAZE status",
+      "Sicurezza e accesso":"Security and access","Accessi, ricarica e qualità aria":"Access, charging and air quality","Comfort, luci ed elettrodomestici":"Comfort, lights and appliances","Luci, tende e dispositivi":"Lights, blinds and devices","Ambiente":"Environment","Dispositivo":"Device","Gestisci clima":"Manage climate","Porta di casa":"Front door","Accesso principale":"Main entrance","Sistema pronto per l’inserimento":"System ready to arm","Apri pannello allarme":"Open alarm panel","Sicurezza e accesso":"Security and access","Sensori ingresso":"Entrance sensors",
+      "Qualità aria":"Air quality","Purificatore":"Air purifier","Deumidificatore":"Dehumidifier","Serbatoio":"Tank","PIENO":"FULL","Svuotare serbatoio":"Empty tank","Regolare":"Normal","Umidità rilevata":"Detected humidity","Blocco tasti":"Child lock","Livello acqua":"Water level","Retroilluminazione":"Backlight","Alimentazione":"Power","Display":"Display","Buzzer":"Buzzer",
+      "Luce forte":"Strong light","Luce buona":"Good light","Luce bassa":"Low light","Meteo tranquillo":"Calm weather","Pioggia rilevata":"Rain detected","Vento forte":"Strong wind","Vento moderato":"Moderate wind","Tramonto vicino":"Sunset approaching","Sole forte":"Strong sun","Luminoso":"Bright","Nessuna precipitazione":"No precipitation","Raffica":"Gust","Direzione vento":"Wind direction","Istantanea":"Instantaneous","Settimana":"Week","Mese":"Month","Anno":"Year","Evento":"Event","Cumulata":"Total","Cumulata giornaliera":"Daily total","Ultima ora":"Last hour","24 ore":"24 hours",
+      "ON":"ON","OFF":"OFF"
+    };
+  }
+  _tr(value){
+    if(this._language!=="en") return value;
+    let out=String(value??""); const map=this._translations();
+    if(map[out]!==undefined) return map[out];
+    const keys=Object.keys(map).sort((a,b)=>b.length-a.length);
+    for(const k of keys) if(out.includes(k)) out=out.split(k).join(map[k]);
+    return out;
+  }
+  _applyLanguage(root=this.shadowRoot){
+    if(!root) return;
+    root.querySelectorAll?.('[data-language]').forEach(b=>b.classList.toggle('active',b.dataset.language===this._language));
+    if(this._language!=="en") return;
+    const showText=globalThis.NodeFilter?.SHOW_TEXT ?? 4;
+    const walker=document.createTreeWalker(root,showText); const nodes=[]; while(walker.nextNode()) nodes.push(walker.currentNode);
+    for(const n of nodes){ const v=n.nodeValue; if(v&&v.trim()){ const t=this._tr(v); if(t!==v)n.nodeValue=t; } }
+    root.querySelectorAll?.('[placeholder],[title],[aria-label]').forEach(el=>{ for(const a of ['placeholder','title','aria-label']) if(el.hasAttribute(a)) el.setAttribute(a,this._tr(el.getAttribute(a))); });
+  }
+  _setLanguage(lang){
+    if(!["it","en"].includes(lang)) return;
+    this._language=lang;
+    try{ localStorage.setItem("casa_dashboard_community_language",lang); }catch(e){}
+    const configWasOpen=this._configDialogOpen;
+    this._renderShell();
+    this._renderPage(true);
+    if(configWasOpen) this._renderConfigLayer();
+    this._applyLanguage();
+    requestAnimationFrame(()=>this._applyLanguage());
+  }
+
+  _renderPage(forceNav=false) {
+    if(!this._hass || !this.shadowRoot) return;
+    this._renderNav(forceNav); this._renderHeader(); this._applyThemeMode();
+    const shell=this.shadowRoot.querySelector(".app-shell"); if(shell){ shell.classList.toggle("ui-v1",this._uiTheme==="v1"); shell.classList.toggle("ui-v2",this._uiTheme==="v2"); shell.dataset.page=this._active; }
+    const host=this.shadowRoot.querySelector("#content"); if(!host) return;
+    const dynamicRoom=this._roomById(this._active);
+    const fixedRenderer={panoramica:()=>this._overview(),info:()=>this._info()}[this._active];
+    // The Rooms manager is the single source of truth for BOTH Casa V1 and Casa V2.
+    // Themes only change presentation; room content/entities are identical.
+    const renderer=dynamicRoom
+      ? (()=>String(dynamicRoom.type||"").toLowerCase()==="cucina" || /cucina|kitchen/i.test(String(dynamicRoom.name||""))
+          ? this._dynamicKitchen(dynamicRoom)
+          : (String(dynamicRoom.type||"").toLowerCase()==="disimpegno"
+              || /disimpegno|corridoio|hallway|corridor/i.test(String(dynamicRoom.name||"")))
+            ? this._dynamicHallway(dynamicRoom)
+            : this._dynamicRoom(dynamicRoom))
+      : fixedRenderer;
+    host.innerHTML=renderer ? renderer() : `<div class="empty">Pagina non disponibile</div>`;
+    this._cleanEmptySections(host);
+    this._lastStateFingerprint=this._stateFingerprint();
+    this._applyLanguage();
+  }
+
+  _setUiTheme(theme){
+    if(!["v1","v2"].includes(theme)) return;
+    this._uiTheme=theme;
+    try { localStorage.setItem("casa_dashboard_community_style",theme); } catch(e) {}
+    const shell=this.shadowRoot?.querySelector(".app-shell");
+    if(shell){ shell.classList.toggle("ui-v1",theme==="v1"); shell.classList.toggle("ui-v2",theme==="v2"); }
+    this._renderPage(false);
+  }
+
+  _info(){
+    const selected=this._uiTheme;
+    return `<div class="page">${this._hero("Informazioni","Dettagli e personalizzazione di Casa Dashboard Community.",{level:"good",text:"Dashboard pronta"},[
+      {label:"Versione",value:"4.0.0",small:"Casa Dashboard Community"},
+      {label:"Piattaforma",value:"Home Assistant",small:"Custom integration"}
+    ])}<div class="info-card"><div class="info-icon"><ha-icon icon="mdi:home-heart"></ha-icon></div><h2>Casa Dashboard Community</h2>
+    <p>Dashboard app-like, adattiva e configurabile per Home Assistant.</p>
+    <div class="style-picker">
+      <button class="style-option ${selected==="v1"?"active":""}" data-ui-theme="v1" type="button">${selected==="v1"?'<span class="selected">In uso</span>':""}<div class="style-head"><ha-icon icon="mdi:home-variant-outline"></ha-icon><strong>Casa V1</strong></div><p>Grafica originale di Casa Dashboard Community v4.0.0.</p></button>
+      <button class="style-option ${selected==="v2"?"active":""}" data-ui-theme="v2" type="button">${selected==="v2"?'<span class="selected">In uso</span>':""}<div class="style-head"><ha-icon icon="mdi:vector-square"></ha-icon><strong>Casa V2</strong></div><p>Nuova grafica derivata da Casa Dashboard v4.3.54, con visual dedicati per luci, sensori, clima, dispositivi e aperture.</p></button>
+    </div>
+    <div class="style-note">La scelta viene salvata sul browser/dispositivo e non modifica entità o automazioni.</div>
+    <div class="info-config-box"><div><span>CONFIGURAZIONE</span><strong>Personalizza Casa Dashboard</strong><p>Stanze, dispositivi, energia, mobilità, foto e nomi.</p></div><button data-action="entity-config" type="button"><ha-icon icon="mdi:tune-variant"></ha-icon> Configura</button></div>
+    <div class="community-support-box"><div><span>SUPPORTA IL PROGETTO</span><strong>Casa Dashboard Community è gratuita</strong><p>Se ti piace, puoi supportarne lo sviluppo.</p></div><a href="https://ko-fi.com/fabvittori" target="_blank" rel="noopener noreferrer">☕ Offrimi un caffè</a></div>
+    <p class="credit">Realizzato da Fabio Vittori</p></div></div>`;
+  }
+
+  _lightVisual(entity,title,icon="mdi:lightbulb",sub="",span=4){
+    const on=this._on(entity);
+    const isLed=/led|retroillumin/i.test(`${entity} ${title} ${icon}`);
+    const isLamp=/lampada|lamp\b|wall-sconce|outdoor-lamp/i.test(`${title} ${icon}`);
+    const scene=isLed?"led":isLamp?"lamp":"ceiling";
+    const customPhoto=this._customObjectVisual(entity,"light");
+    return `<div class="light-visual-card ${scene} ${on?'on':'off'} span-${span} ${customPhoto?'has-custom-photo':''}">
+      ${customPhoto || `<div class="light-fixture ${scene}">
+        ${scene==="led"?
+          `<div class="led-strip">${Array.from({length:8},()=>'<i></i>').join("")}</div>`:
+          scene==="lamp"?
+          `<div class="lamp-shade"></div><div class="lamp-stem"></div><div class="lamp-base"></div>`:
+          `<div class="ceiling-wire"></div><div class="ceiling-cap"></div><div class="ceiling-glow"></div>`
+        }
+      </div>`}
       <div class="light-visual-copy clickable" data-more="${entity}">
         <span>${this._esc(title)}</span><strong>${on?"Accesa":"Spenta"}</strong><small>${this._esc(sub || (isLed?"Illuminazione LED":"Illuminazione"))}</small>
       </div>
@@ -49,6 +329,57 @@
     </div>`;
   }
 
+  _openingVisual(entity,label,type="window",span=3,subtitle=""){
+    const isOpen=this._on(entity);
+    const visualClass=type==="cabinet"?"cabinet":"window";
+    const icon=type==="cabinet"?(isOpen?"mdi:door-open":"mdi:door-closed"):(isOpen?"mdi:window-open-variant":"mdi:window-closed-variant");
+    return `<button class="opening-card ${visualClass} ${isOpen?'open':'closed'} span-${span}" data-more="${entity}">
+      <div class="opening-scene ${visualClass}">
+        ${visualClass==="window"?
+          `<div class="window-frame">
+             <div class="window-sky"></div>
+             <div class="window-sash left"></div>
+             <div class="window-sash right"></div>
+             <div class="window-handle"></div>
+           </div>`:
+          `<div class="cabinet-frame">
+             <div class="cabinet-door left"></div>
+             <div class="cabinet-door right"></div>
+             <div class="cabinet-handle left"></div>
+             <div class="cabinet-handle right"></div>
+           </div>`
+        }
+      </div>
+      <div class="opening-copy">
+        <span>${label}</span>
+        <strong>${isOpen?'Aperta':'Chiusa'}</strong>
+        <small>${subtitle||'Stato sensore'}</small>
+      </div>
+      <div class="opening-state ${isOpen?'warn':'good'}"><ha-icon icon="${icon}"></ha-icon></div>
+    </button>`;
+  }
+
+  _activityVisual(entity,label,type="motion",span=3,subtitle=""){
+    const active=this._on(entity);
+    const cfg={
+      motion:{icon:"mdi:motion-sensor",on:"Rilevato",off:"Assente",scene:"motion"},
+      occupancy:{icon:"mdi:account-check",on:"Occupato",off:"Libero",scene:"occupancy"},
+      vibration:{icon:"mdi:vibrate",on:"Rilevata",off:"Assente",scene:"vibration"}
+    }[type];
+    return `<button class="activity-card ${cfg.scene} ${active?'active':'idle'} span-${span}" data-more="${entity}">
+      <div class="activity-visual ${cfg.scene}">
+        ${cfg.scene==="motion"?
+          `<div class="motion-person"><i class="head"></i><i class="body"></i><i class="arm a"></i><i class="arm b"></i><i class="leg a"></i><i class="leg b"></i></div><div class="motion-waves"><i></i><i></i><i></i></div>`:
+          cfg.scene==="occupancy"?
+          `<div class="occupancy-room"><div class="occupancy-person one"></div><div class="occupancy-person two"></div><div class="occupancy-floor"></div></div>`:
+          `<div class="vibration-object"><div class="vibration-window"></div></div><div class="vibration-lines left"><i></i><i></i></div><div class="vibration-lines right"><i></i><i></i></div>`
+        }
+      </div>
+      <div class="activity-copy"><span>${label}</span><strong>${active?cfg.on:cfg.off}</strong><small>${subtitle}</small></div>
+      <div class="activity-state ${active?'warn':'good'}"><ha-icon icon="${cfg.icon}"></ha-icon></div>
+    </button>`;
+  }
+
   _environmentVisual(entity,label,type="temperature",span=3,subtitle=""){
     const raw=this._state(entity,"unknown"); const n=Number(raw), valid=Number.isFinite(n);
     let value="—", icon="mdi:gauge", scene=type, tone="normal";
@@ -73,209 +404,4 @@
     let visual="",status="",icon="mdi:devices";
 
     if(type==="airfryer"){
-      icon="mdi:toaster-oven"; status=active?"Attiva":"Spenta";
-      visual=`<div class="uv-airfryer ${active?'active':''}">
-        <div class="uv-airfryer-body">
-          <div class="uv-airfryer-top"><i></i><i></i></div>
-          <div class="uv-airfryer-display">${active?'<b>ON</b>':'<b>OFF</b>'}</div>
-          <div class="uv-airfryer-basket"><div class="uv-airfryer-window"></div><div class="uv-airfryer-handle"></div></div>
-          <div class="uv-airfryer-heat"><i></i><i></i><i></i></div>
-        </div>
-      </div>`;
-    } else if(type==="wicket"){
-      icon=isOpen?"mdi:gate-open":"mdi:gate"; status=isOpen?"Aperto":"Chiuso";
-      visual=`<div class="uv-wicket"><div class="uv-wall left"></div><div class="uv-wall right"></div><div class="uv-post left"></div><div class="uv-post right"></div><div class="uv-wicket-leaf ${isOpen?'open':''}">${Array.from({length:5},()=>'<i></i>').join("")}</div></div>`;
-    } else if(type==="gate"){
-      icon=isOpen?"mdi:gate-open":"mdi:gate"; status=isOpen?"Aperto":"Chiuso";
-      visual=`<div class="uv-gate"><div class="uv-gate-pillar left"></div><div class="uv-gate-pillar right"></div><div class="uv-gate-leaf ${isOpen?'open':''}">${Array.from({length:8},()=>'<i></i>').join("")}</div></div>`;
-    } else if(type==="garage"){
-      icon=isOpen?"mdi:garage-open":"mdi:garage"; status=isOpen?"Aperta":"Chiusa";
-      visual=`<div class="uv-garage"><div class="uv-garage-frame"><div class="uv-garage-door ${isOpen?'open':''}">${Array.from({length:5},()=>'<i></i>').join("")}</div></div></div>`;
-    } else if(type==="irrigation"){
-      icon="mdi:sprinkler-variant"; status=active?"Irrigazione attiva":"Irrigazione ferma";
-      visual=`<div class="uv-irrigation"><div class="uv-grass"></div><div class="uv-sprinkler"></div><div class="uv-water ${active?'active':''}"><i></i><i></i><i></i><i></i><i></i></div></div>`;
-    } else if(type==="mower"){
-      icon="mdi:robot-mower";
-      const map={mowing:"Taglio in corso",docked:"Alla base",paused:"In pausa",returning:"Ritorno alla base",error:"Errore",unavailable:"Non disponibile",unknown:"Stato sconosciuto",idle:"In attesa","rain delayed":"Ritardo pioggia",rain_delayed:"Ritardo pioggia",rain_delay:"Ritardo pioggia"};
-      status=map[normalized]||String(state).replaceAll("_"," ");
-      visual=`<div class="uv-mower"><div class="uv-lawn"></div><div class="uv-mower-body ${active?'active':''}"><div class="uv-mower-top"></div><div class="uv-mower-eye"></div></div></div>`;
-    } else if(type==="washer"){
-      icon="mdi:washing-machine"; status=active?"Alimentata":"Disattivata";
-      visual=`<div class="uv-washer ${active?'active':''}"><div class="uv-washer-body"><div class="uv-washer-panel"><i></i><i></i><i></i></div><div class="uv-washer-door"><div></div></div></div></div>`;
-    } else if(type==="vacuum" || type==="mop"){
-      icon=type==="mop"?"mdi:robot-vacuum-variant":"mdi:robot-vacuum";
-      const map={docked:"Alla base",cleaning:"In pulizia",returning:"Rientro alla base",paused:"In pausa",idle:"In attesa",error:"Errore",unavailable:"Non disponibile",unknown:"Stato sconosciuto"};
-      status=map[normalized]||String(state).replaceAll("_"," ");
-      visual=`<div class="uv-vacuum ${type}"><div class="uv-vacuum-body ${active?'active':''}"><div class="uv-vacuum-top"></div><div class="uv-vacuum-eye"></div>${type==="mop"?'<div class="uv-mop-pad"></div>':""}</div></div>`;
-    } else if(type==="catfood"){
-      icon="mdi:cat"; status="Pronto";
-      visual=`<div class="uv-catfood"><div class="uv-cat"><div class="uv-cat-ear left"></div><div class="uv-cat-ear right"></div><div class="uv-cat-head"><i></i><i></i><b></b></div><div class="uv-cat-body"></div></div><div class="uv-bowl"><div class="uv-kibble">${Array.from({length:7},()=>'<i></i>').join("")}</div></div></div>`;
-    } else if(type==="humidifier"){
-      icon="mdi:air-humidifier"; status=active?"Attivo":"Disattivo";
-      visual=`<div class="uv-humidifier ${active?'active':''}"><div class="uv-hum-body"><div class="uv-hum-tank"></div><div class="uv-hum-display"></div><div class="uv-hum-mist"><i></i><i></i><i></i></div></div></div>`;
-    } else {
-      icon=options.icon||"mdi:devices"; status=active?"Attivo":"Disattivo";
-      visual=`<div class="generic-sensor"><ha-icon icon="${icon}"></ha-icon></div>`;
-    }
-
-    if(options.status) status=options.status;
-    if(options.icon) icon=options.icon;
-    const visualActive=options.visualActive===false?false:active;
-    let actionAttr="",actionText=options.actionText||"",actionClass=visualActive?"active":"";
-    if(options.kind==="service"){
-      actionAttr=`data-service-domain="${options.domain}" data-service="${options.service}" data-entity="${entity}"`;
-      actionText=actionText||"ESEGUI";
-      actionClass=options.tone==="warn"?"warn":actionClass;
-    } else if(options.kind==="more"){
-      actionAttr=`data-more="${entity}"`;
-      actionText=actionText||"DETTAGLI";
-    } else {
-      actionAttr=`data-toggle="${entity}"`;
-      actionText=actionText||(on?"ON":"OFF");
-    }
-    const customPhoto=this._customObjectVisual(entity,"universal");
-    return `<div class="universal-device-card ${type} ${visualActive?'active':'inactive'} span-${span} ${customPhoto?'has-custom-photo':''}">${customPhoto || `<div class="universal-device-scene">${visual}</div>`}<div class="universal-device-copy clickable" data-more="${entity}"><span>${this._esc(title)}</span><strong>${this._esc(status)}</strong><small>${this._esc(subtitle)}</small></div><button class="universal-device-action ${actionClass}" ${actionAttr} type="button"><ha-icon icon="${icon}"></ha-icon>${actionText?`<span>${this._esc(actionText)}</span>`:""}</button></div>`;
-  }
-
-  _v2HeroScene(sceneKey){
-    if(this._uiTheme!=="v2") return "";
-    if(sceneKey==="cucina") return `<div class="kitchen-scene community-original-scene">
-      <div class="kitchen-wall"></div>
-      <div class="kitchen-window"><div class="kitchen-sky"></div></div>
-      <div class="kitchen-cabinets"><i></i><i></i><i></i></div>
-      <div class="kitchen-counter"><div></div><div></div><div></div></div>
-      <div class="kitchen-pendant on"><span></span><i></i></div>
-    </div>`;
-    if(sceneKey==="bagno") return `<div class="bathroom-scene community-original-scene">
-      <div class="bathroom-window"><div class="bathroom-sky"></div><div class="bathroom-blind" style="height:24%"></div><div class="bathroom-blind-bar" style="top:24%"></div><div class="bathroom-sash"></div></div>
-      <div class="bathroom-basin"><div class="bathroom-mirror"></div><div class="bathroom-sink"></div><div class="bathroom-tap"></div><div class="bathroom-cabinet"><div class="cab left"></div><div class="cab right"></div></div></div>
-      <div class="bathroom-water"><ha-icon icon="mdi:water-check"></ha-icon></div>
-    </div>`;
-    if(sceneKey==="camera") return `<div class="bedroom-scene community-original-scene">
-      <div class="bedroom-bed"><div class="bed-head"></div><div class="bed-pillow left"></div><div class="bed-pillow right"></div><div class="bed-cover"></div></div>
-      <div class="bedroom-window"><div class="bedroom-sky"></div><div class="bedroom-blind" style="height:24%"></div><div class="bedroom-blind-bar" style="top:24%"></div></div>
-      <div class="bedroom-lamp"></div>
-    </div>`;
-    if(sceneKey==="garage") return `<div class="garage-scene community-original-scene">
-      <div class="garage-building"><div class="garage-roof"></div><div class="garage-frame"><div class="garage-door-visual">${Array.from({length:8},()=>'<i></i>').join("")}</div><div class="garage-car"><div class="car-body"></div><div class="car-window"></div><div class="car-wheel left"></div><div class="car-wheel right"></div></div></div></div>
-      <div class="garage-charge-dot"></div>
-    </div>`;
-    if(sceneKey==="balcone") return `<div class="balcony-scene balcony-scene-v2 community-original-scene">
-      <div class="balcony-v2-sky"></div><div class="balcony-v2-sun"></div>
-      <div class="balcony-v2-wall"><div class="balcony-v2-window left"></div><div class="balcony-v2-window right"></div></div>
-      <div class="balcony-v2-awning left"></div><div class="balcony-v2-awning right"></div>
-      <div class="balcony-v2-railing"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="balcony-v2-floor"></div>
-    </div>`;
-    if(sceneKey==="ingresso") return `<div class="entrance-door-scene community-original-scene">
-      <div class="entrance-wall-glow"></div><div class="entrance-door"><div class="entrance-door-inner"><div class="entrance-door-window"></div><div class="entrance-door-lines"></div><div class="entrance-door-handle"></div></div></div>
-    </div>`;
-    if(sceneKey==="scale") return `<div class="stairs-hero-scene community-original-scene">
-      <div class="stairs-wall"></div><div class="stairs-flight"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="stairs-rail"></div><div class="stairs-door"></div>
-    </div>`;
-    if(sceneKey==="disimpegno") return `<div class="hallway-scene community-original-scene">
-      <div class="hallway-wall left"></div><div class="hallway-wall right"></div><div class="hallway-floor"></div><div class="hallway-door left"></div><div class="hallway-door right"></div>
-      <div class="hallway-person"><i class="head"></i><i class="body"></i><i class="arm a"></i><i class="arm b"></i><i class="leg a"></i><i class="leg b"></i></div>
-    </div>`;
-    if(sceneKey==="esterno") return `<div class="gate-visual gate-visual-v2 community-original-scene">
-      <div class="gate-v2-sky"></div><div class="gate-v2-ground"></div><div class="gate-v2-wall left"></div><div class="gate-v2-wall right"></div><div class="gate-v2-pillar left"></div><div class="gate-v2-pillar right"></div><div class="gate-v2-leaf"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="gate-v2-handle"></div>
-    </div>`;
-    if(sceneKey==="soggiorno") return `<div class="living-scene community-original-scene"><div class="living-wall"></div><div class="living-tv"></div><div class="living-sofa"><i></i><i></i></div><div class="living-lamp"></div><div class="living-rug"></div></div>`;
-    if(sceneKey==="studio") return `<div class="office-scene community-original-scene"><div class="office-wall"></div><div class="office-desk"></div><div class="office-monitor"></div><div class="office-chair"></div><div class="office-lamp"></div></div>`;
-    if(sceneKey==="lavanderia") return `<div class="laundry-scene community-original-scene"><div class="laundry-wall"></div><div class="laundry-machine"><div class="laundry-door"></div></div><div class="laundry-shelf"></div><div class="laundry-basket"></div></div>`;
-    if(sceneKey==="taverna") return `<div class="hobby-scene community-original-scene"><div class="hobby-wall"></div><div class="hobby-table"></div><div class="hobby-cabinet"></div><div class="hobby-lamp"></div></div>`;
-    return `<div class="generic-home-scene community-original-scene"><div class="generic-room-wall"></div><div class="generic-window"></div><div class="generic-table"></div><div class="generic-lamp"></div></div>`;
-  }
-  _cleanEmptySections(host){
-    host.querySelectorAll(".grid").forEach(grid=>{
-      if(!grid.children.length){
-        const prev=grid.previousElementSibling;
-        if(prev?.classList?.contains("chapter")) prev.remove();
-        grid.remove();
-      }
-    });
-    const mosaic=host.querySelector(".room-mosaic");
-    if(mosaic && !mosaic.children.length){
-      const prev=mosaic.previousElementSibling;
-      if(prev?.classList?.contains("chapter")) prev.remove();
-      mosaic.remove();
-    }
-  }
-
-  _hero(title, subtitle, status, metrics=[], sceneKey="", roomConfig=null) {
-    const level=status.level||"good";
-    const heroIcon=level==='bad'?'mdi:alert-decagram':level==='warn'?'mdi:shield-alert-outline':level==='blue'?'mdi:home-lightning-bolt-outline':'mdi:home-heart';
-    const visibleMetrics=metrics.filter(m=>m.show!==false && String(m.value??"").trim() && String(m.value).trim()!=="—");
-    if(this._uiTheme==="v2" && sceneKey){
-      const side=visibleMetrics.slice(0,3);
-      return `<section class="scene-hero scene-${level} original-room-hero v2-room-${sceneKey}">
-        <div class="scene-copy">
-          <div class="scene-kicker">CASA · LIVE</div>
-          <div class="scene-title-row"><h1>${title}</h1><div class="scene-icon"><ha-icon icon="${this._v1RoomIcon(sceneKey)}"></ha-icon></div></div>
-          <div class="scene-sub">${subtitle}</div>
-          <div class="scene-status ${level}"><span class="pulse"></span><strong>${this._esc(status.title||status.text)}</strong>${status.title&&status.text?`<span>${this._esc(status.text)}</span>`:""}</div>
-        </div>
-        <div class="original-room-hero-card">
-          <div class="original-room-visual">${this._roomImageUrl(roomConfig)
-            ? `<div class="custom-room-photo"><img src="${this._esc(this._roomImageUrl(roomConfig))}" alt="${this._esc(title)}" loading="lazy"></div>`
-            : this._v2HeroScene(sceneKey)}</div>
-          <div class="original-room-side">
-            ${side.length?side.map((m,i)=>`<div class="original-room-meta"><span>${m.label}</span><strong>${m.value}</strong>${m.small?`<small>${m.small}</small>`:""}</div>${i<side.length-1?'<div class="original-room-divider"></div>':''}`).join(""):`<div class="original-room-meta"><span>AMBIENTE</span><strong>Pronto</strong><small>Nessun dato sintetico disponibile</small></div>`}
-          </div>
-        </div>
-      </section>`;
-    }
-    return `<section class="scene-hero scene-${level}">
-      <div class="scene-copy"><div class="scene-kicker">CASA · LIVE</div><div class="scene-title-row"><h1>${title}</h1><div class="scene-mark ${level}"><ha-icon icon="${sceneKey?this._v1RoomIcon(sceneKey):heroIcon}"></ha-icon></div></div><div class="scene-sub">${subtitle}</div><div class="scene-status ${level}"><span class="pulse"></span><strong>${this._esc(status.title || status.text)}</strong>${status.title&&status.text?`<span>${this._esc(status.text)}</span>`:""}</div></div>
-      ${visibleMetrics.length?`<div class="scene-dashboard">${visibleMetrics.map((m,i)=>`<div class="scene-stat s${i}"><span>${m.label}</span><strong>${m.value}</strong>${m.small?`<small>${m.small}</small>`:""}</div>`).join("")}</div>`:""}
-    </section>`;
-  }
-
-  _section(title, sub="") { return `<div class="chapter"><div class="chapter-line"></div><div class="chapter-copy"><div class="chapter-title">${title}</div>${sub?`<div class="chapter-sub">${sub}</div>`:""}</div></div>`; }
-  _metric(icon,label,value,foot="",span=3,entity="",tone="") {
-    const configured=!entity || this._configured(entity);
-    if(entity && !configured) return "";
-    const cls=tone || (entity?this._metricTone(entity,value):"");
-    if(this._uiTheme==="v2" && entity){
-      const lowLabel=String(label||"").toLowerCase(), lowIcon=String(icon||"").toLowerCase();
-      const envType=lowIcon.includes("thermometer")||lowLabel.includes("temperatura")?"temperature":
-                    lowIcon.includes("water-percent")||lowLabel.includes("umid")?"humidity":
-                    lowLabel.includes("lux")||lowLabel.includes("illumin")?"lux":"";
-      if(envType) return this._environmentVisual(entity,label,envType,span,foot);
-      return this._sensorVisual(icon,label,value,foot,span,entity,cls);
-    }
-    const shown=value;
-    const plain=String(shown).replace(/<[^>]+>/g,'').trim();
-    const longClass=plain.length>26?'value-long':'';
-    return `<div class="data-node span-${span} ${entity&&configured?'clickable':''} ${cls} ${longClass}" ${entity&&configured?`data-more="${entity}"`:""}><div class="data-node-top"><span class="data-label">${label}</span><ha-icon icon="${icon}"></ha-icon></div><div class="data-value">${shown}</div>${foot?`<div class="data-foot">${foot}</div>`:""}<div class="data-glow"></div></div>`;
-  }
-  _control(entity,title,icon,sub="",mode="toggle",span=4) {
-    const configured=this._configured(entity);
-    if(!configured) return "";
-    if(this._uiTheme==="v2"){
-      const domain=String(entity).split(".")[0];
-      if(domain==="light") return this._lightVisual(entity,title,icon,sub,span);
-      if(domain==="fan") return this._deviceVisual(entity,title,"fan",sub,span);
-      if(domain==="humidifier") return this._universalDeviceVisual(entity,title,"humidifier",span,sub,{kind:"toggle",icon});
-      if(["switch","input_boolean"].includes(domain)) return this._universalDeviceVisual(entity,title,this._v2DeviceType(entity),span,sub,{kind:"toggle",icon});
-    }
-    const st=this._state(entity,"off");
-    const on=this._on(entity)||["open","cool","heat","heating","cooling"].includes(st);
-    const cls=this._controlTone(entity,on);
-    return `<div class="command-strip span-${span} ${cls}"><div class="command-symbol ${on?'active':''}"><ha-icon icon="${icon}"></ha-icon></div><div class="command-copy clickable" data-more="${entity}"><div class="command-title">${title}</div><div class="command-sub">${sub||this._esc(st)}</div></div>${mode==='toggle'?`<button class="command-action ${on?'active':''}" data-toggle="${entity}" type="button"><span>${on?'ON':'OFF'}</span><i></i></button>`:""}</div>`;
-  }
-  _coverControl(entity,title,inverted=false,span=6,subPrefix="Posizione"){
-    const configured=this._configured(entity); if(!configured) return "";
-    const open=this._coverOpen(entity,inverted),pos=this._attr(entity,"current_position",null);
-    const stateText=inverted?(open?"Aperta":"Chiusa"):(open?"Giù / aperta":"Su / chiusa");
-    if(this._uiTheme==="v2"){
-      return `<div class="universal-device-card blinds ${open?'active':'inactive'} span-${span}">
-        <div class="universal-device-scene"><div class="blind-visual ${open?'open':''}"><div class="blind-box"></div><div class="blind-slats">${Array.from({length:7},()=>'<i></i>').join("")}</div><div class="blind-cord"></div></div></div>
-        <div class="universal-device-copy clickable" data-more="${entity}"><span>${this._esc(title)}</span><strong>${this._esc(stateText)}</strong><small>${pos!==null?`${subPrefix} ${pos}%`:"Serramento"}</small></div>
-        <button class="universal-device-action ${open?'active':''}" data-cover-toggle="${entity}" data-inverted="${inverted?1:0}" type="button"><ha-icon icon="mdi:blinds-horizontal"></ha-icon><span>${open?'CHIUDI':'APRI'}</span></button>
-      </div>`;
-    }
-    return `<div class="command-strip span-${span} ${open?'state-warn':'state-off'}"><div class="command-symbol ${open?'warn':''}"><ha-icon icon="mdi:blinds-horizontal"></ha-icon></div><div class="command-copy clickable" data-more="${entity}"><div class="command-title">${title}</div><div class="command-sub">${pos!==null?`${subPrefix} ${pos}% · `:""}${stateText}</div></div><button class="command-action ${open?'warn':''}" data-cover-toggle="${entity}" data-inverted="${inverted?1:0}" type="button"><span>${open?'CHIUDI':'APRI'}</span><i></i></button></div>`;
-  }
-  _alert(level,icon,title,text) { return `<div class="signal ${level}"><div class="signal-icon"><ha-icon icon="${icon}"></ha-icon></div><div><strong>${title}</strong><span>${text}</span></div></div>`; }
-  _logic(title,text,level=""){ return `<div class="logic-ribbon ${level}"><span>${title}</span><strong>${text}</strong></div>`; }
-  _compareCard(title, items, foot="", span=6, ico
+      icon="mdi:toaster-oven"; status=active?"Atti

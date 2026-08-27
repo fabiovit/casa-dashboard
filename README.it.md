@@ -2,7 +2,7 @@
 
 [🇬🇧 English](README.md) | 🇮🇹 **Italiano**
 
-[![Release](https://img.shields.io/badge/release-v3.5.3-blue)](https://github.com/fabiovit/casa-dashboard/releases)
+[![Release](https://img.shields.io/badge/release-v4.0.0-blue)](https://github.com/fabiovit/casa-dashboard/releases)
 [![HACS](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz/)
 [![Validate](https://img.shields.io/github/actions/workflow/status/fabiovit/casa-dashboard/hacs.yml?branch=main&label=Validate)](https://github.com/fabiovit/casa-dashboard/actions/workflows/hacs.yml)
 [![Hassfest](https://img.shields.io/github/actions/workflow/status/fabiovit/casa-dashboard/hassfest.yml?branch=main&label=Hassfest)](https://github.com/fabiovit/casa-dashboard/actions/workflows/hassfest.yml)
@@ -12,7 +12,7 @@
 
 Casa Dashboard Community è una dashboard app-like completa per **Home Assistant**, pensata per adattarsi ad abitazioni diverse senza dipendere dalle classiche card Lovelace.
 
-La **v3.5.3** è una release di consolidamento: il progetto è stato ripulito, il versioning è ora coerente tra backend e frontend e tutte le funzioni mature introdotte nella serie 2.x restano disponibili in un pacchetto più ordinato.
+La **v4.0.0** è una release di consolidamento: il progetto è stato ripulito, il versioning è ora coerente tra backend e frontend e tutte le funzioni mature introdotte nella serie 2.x restano disponibili in un pacchetto più ordinato.
 
 **Realizzato da Fabio Vittori** · [☕ Offrimi un caffè](https://ko-fi.com/fabvittori)
 
@@ -35,6 +35,12 @@ Altri esempi:
 ![Casa Dashboard Community - Casa V2 Ingresso](images/casa-v2-ingresso.png)
 
 ![Casa Dashboard Community - Casa V2 Garage](images/casa-v2-garage.png)
+
+## 🛡️ Sicurezza e accesso
+
+Le stanze dinamiche Casa V2 riconoscono ora le entità `lock.*` e `alarm_control_panel.*`.
+
+Quando configurate in una stanza, Casa Dashboard aggiunge automaticamente una sezione **Sicurezza e accesso** con stato serratura, comandi Blocca / Sblocca, stato antifurto e comandi rapidi Notte / Fuori casa / Off.
 
 ## ☀️ Visual Energia Avanzato
 

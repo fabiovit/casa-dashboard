@@ -1,4 +1,93 @@
-olar-panel solar-flow-card">
+rong><p>Dopo le 14:00 · almeno 1h dal tramonto · ≥40.000 lx · ≥350 W/m² · raffica &lt;15 · vento &lt;10 · nessuna pioggia/fulmini · blocco vento scaduto.</p></div><div class="decision-card ${risalitaLevel} span-6"><div class="eyebrow">↑ RISALITA TENDE</div><strong>${manual?"Modalità manuale attiva":risalita}</strong><p>Pioggia · raffica ≥24 · vento ≥18 · fulmini ≤5 km · luce bassa · prevenzione temporale · risalita garantita 10 min prima del tramonto.</p></div>`:""}
+      ${this._coverControl("cover.balcony_bedroom_blind","Tenda balcone camera",false,6,"Posizione")}
+      ${this._coverControl("cover.balcony_kitchen_blind","Tenda balcone cucina",false,6,"Posizione")}
+      ${this._control("light.balcony_bedroom","Luce balcone camera","mdi:wall-sconce",this._on("light.balcony_bedroom")?"Accesa":"Spenta","toggle",4)}
+      ${this._control("light.balcony_kitchen","Luce balcone cucina","mdi:wall-sconce",this._on("light.balcony_kitchen")?"Accesa":"Spenta","toggle",4)}
+      ${this._control("switch.balcony_barbecue","Barbecue","mdi:grill",this._on("switch.balcony_barbecue")?"Acceso":"Spento","toggle",4)}
+    </div>${hasUtility?this._section("Locale tecnico"):""}<div class="grid">
+      ${this._metric("mdi:thermometer","Temperatura locale tecnico",this._fmt("sensor.utility_room_temperature",1,"°C"),"Locale tecnico",6,"sensor.utility_room_temperature")}
+      ${this._metric("mdi:water-percent","Umidità locale tecnico",this._fmt("sensor.utility_room_humidity",0,"%"),"Locale tecnico",6,"sensor.utility_room_humidity")}
+    </div>${(()=>{
+      const candidates=["sensor.solar_pv_power"];
+      const found=this._firstId(candidates);
+      if(!found || !this._s(found)) return "";
+      const pv1Ids=["sensor.solar_pv1_power"];
+      const pv2Ids=["sensor.solar_pv2_power"];
+      const pv1VoltIds=["sensor.solar_pv1_voltage"];
+      const pv1CurrIds=["sensor.solar_pv1_current"];
+      const pv2VoltIds=["sensor.solar_pv2_voltage"];
+      const pv2CurrIds=["sensor.solar_pv2_current"];
+      const todayIds=["sensor.solar_energy_today"];
+      const loadIds=["sensor.solar_load_power"];
+      const gridIds=["sensor.solar_grid_power"];
+      const socIds=["sensor.solar_battery_soc"];
+      const battPowerIds=["sensor.solar_battery_power"];
+      const modeIds=["sensor.solar_battery_mode"];
+      const chargeTodayIds=["sensor.solar_battery_charged_today"];
+      const dischargeTodayIds=["sensor.solar_battery_discharged_today"];
+      const lossIds=["sensor.solar_battery_losses_today"];
+      const pvTotal = this._powerValueAuto(candidates);
+      const pv1 = this._powerValueAuto(pv1Ids);
+      const pv2 = this._powerValueAuto(pv2Ids);
+      const pvMax = Math.max(pv1||0,pv2||0,0.1);
+      const soc=this._firstNum(socIds,null);
+      const battPower=this._powerValueAuto(battPowerIds);
+      const battMode=String(this._firstState(modeIds,"")||"").toLowerCase();
+      const loadPower=this._powerValueAuto(loadIds);
+      const gridPower=this._powerValueAuto(gridIds);
+      const battPct = soc!==null ? Math.max(0, Math.min(100, soc)) : 0;
+      const battStatus = soc!==null ? `${soc.toFixed(0)}%` : 'Non disp.';
+      const battFlow = battPower===null ? '—' : this._fmtAbsPowerAuto(battPowerIds);
+      const battDirection = battPower===null ? 'idle' : battPower > 0 ? 'charge' : battPower < 0 ? 'discharge' : 'idle';
+      const battFlowLabel = battDirection === 'charge' ? 'Carica in corso' : battDirection === 'discharge' ? 'Scarica in corso' : (battMode.includes('charge') || battMode.includes('caric') ? 'Carica in corso' : battMode.includes('discharge') || battMode.includes('scar') ? 'Scarica in corso' : 'Energia accumulo');
+      const battDesc = battDirection === 'charge' ? 'Energia diretta verso l’accumulo' : battDirection === 'discharge' ? 'Energia diretta verso la casa' : 'Stato batteria disponibile';
+      const battTone = battDirection === 'charge' ? 'good' : battDirection === 'discharge' ? 'bad' : 'active';
+      const gridLabel = gridPower===null ? 'Scambio rete' : gridPower > 0 ? 'Prelievo dalla rete' : gridPower < 0 ? 'Export in rete' : 'Scambio nullo';
+      const gridTone = gridPower===null ? 'active' : gridPower > 0 ? 'warn' : gridPower < 0 ? 'good' : 'active';
+      const flowChips = [
+        {label:'Carica oggi', value:this._firstFmt(chargeTodayIds,2,'kWh')},
+        {label:'Scarica oggi', value:this._firstFmt(dischargeTodayIds,2,'kWh')},
+        {label:'Perdite', value:this._firstFmt(lossIds,2,'kWh')}
+      ].filter(x=>x.value && x.value!=='—');
+      return `${this._section("Energia solare","Solo ciò che serve, senza duplicare la dashboard Inverter")}
+        <div class="solar-showcase">
+          <div class="solar-panel solar-prod-card">
+            <div class="solar-prod-top">
+              <div class="solar-sun"><ha-icon icon="mdi:white-balance-sunny"></ha-icon></div>
+            </div>
+            <div class="solar-prod-copy">
+              <span>Produzione live</span>
+              <strong>${this._fmtPowerAuto(found)}</strong>
+              <small>${this._firstFmt(todayIds,2,'kWh')} generati oggi · ${this._radLabel("sensor.weather_solar_radiation")} · ${this._fmt("sensor.weather_solar_radiation",0,"W/m²")}</small>
+            </div>
+            <div class="solar-pv-bars">
+              <div class="solar-pv-line">
+                <div class="solar-pv-meta"><span>Falda Est</span><strong>${pv1!==null?`${pv1.toFixed(2)} kW`:'—'}</strong><small>${this._firstFmt(pv1VoltIds,0,'V')} · ${this._firstFmt(pv1CurrIds,2,'A')}</small></div>
+                <div class="solar-pv-track"><div class="solar-pv-fill" style="width:${pv1!==null?Math.min(100,(pv1/pvMax)*100):0}%"></div></div>
+              </div>
+              <div class="solar-pv-line">
+                <div class="solar-pv-meta"><span>Falda Ovest</span><strong>${pv2!==null?`${pv2.toFixed(2)} kW`:'—'}</strong><small>${this._firstFmt(pv2VoltIds,0,'V')} · ${this._firstFmt(pv2CurrIds,2,'A')}</small></div>
+                <div class="solar-pv-track"><div class="solar-pv-fill west" style="width:${pv2!==null?Math.min(100,(pv2/pvMax)*100):0}%"></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="solar-panel solar-battery-hero">
+            <div class="solar-battery-visual">
+              <div class="solar-battery-shell">
+                <div class="solar-battery-fill" style="height:${Math.max(12,battPct)}%"></div>
+                <div class="solar-battery-soc"><div><span>SOC</span><strong>${battStatus}</strong></div></div>
+              </div>
+            </div>
+            <div class="solar-battery-copy">
+              <div class="eyebrow">${battFlowLabel}</div>
+              <div class="power ${battTone}">${battFlow}<small></small></div>
+              <div class="desc">${battDesc}</div>
+              <div class="solar-energy-pills">
+                ${flowChips.map(c=>`<div class="solar-energy-pill"><span>${c.label}</span><strong>${c.value}</strong></div>`).join('')}
+              </div>
+            </div>
+          </div>
+          <div class="solar-panel solar-flow-card">
             <div class="solar-flow-grid">
               <div class="solar-node house">
                 <div class="solar-node-orb"><ha-icon icon="mdi:home-import-outline"></ha-icon></div>
@@ -132,7 +221,7 @@ olar-panel solar-flow-card">
   }
 
   _handleClick(ev) {
-    const target=ev.target.closest?.("[data-action],[data-nav],[data-toggle],[data-more],[data-cover-toggle],[data-climate],[data-climate-temp],[data-vacuum],[data-alarm],[data-humidity-delta],[data-script],[data-ui-theme],[data-room-entity-add],[data-room-entity-remove]"); if(!target) return;
+    const target=ev.target.closest?.("[data-action],[data-nav],[data-toggle],[data-more],[data-cover-toggle],[data-climate],[data-climate-temp],[data-vacuum],[data-alarm],[data-alarm-service],[data-lock-action],[data-humidity-delta],[data-script],[data-ui-theme],[data-room-entity-add],[data-room-entity-remove]"); if(!target) return;
     if(target.dataset.action==="ha-menu") { this.dispatchEvent(new CustomEvent("hass-toggle-menu",{bubbles:true,composed:true})); return; }
     if(target.dataset.uiTheme){ this._setUiTheme(target.dataset.uiTheme); return; }
     if(target.dataset.action==="room-add"){ this._addRoomDraft(); return; }
@@ -166,6 +255,7 @@ olar-panel solar-flow-card">
     if(target.dataset.action==="config-close") { this._closeConfigDialog(); return; }
     if(target.dataset.action==="config-overlay-close") { if(ev.target===target) this._closeConfigDialog(); return; }
     if(target.dataset.action==="config-save") { this._saveConfigDialog(); return; }
+    if(target.dataset.action==="auto-map-empty") { this._autoMapEmptyMappings(); return; }
     if(target.dataset.action==="config-clear") {
       const key=target.dataset.configClear; if(key){ this._configDraft[key]=""; const input=this.shadowRoot.querySelector(`[data-config-key="${key}"]`); if(input) input.value=""; } return;
     }
@@ -200,6 +290,17 @@ olar-panel solar-flow-card">
       const eid=this._eid(id); if(!eid) return; this._hass.callService("script","turn_on",{entity_id:eid}); return;
     }
     if(target.dataset.vacuum){ const eid=this._eid("vacuum.robot_vacuum"); if(!eid) return; this._hass.callService("vacuum",target.dataset.vacuum,{entity_id:eid}); return; }
+    if(target.dataset.lockAction){
+      const eid=target.dataset.lockEntity; if(!eid) return;
+      if(eid.startsWith("input_boolean.")){
+        this._hass.callService("input_boolean","toggle",{entity_id:eid}); return;
+      }
+      this._hass.callService("lock",target.dataset.lockAction,{entity_id:eid}); return;
+    }
+    if(target.dataset.alarmService){
+      const eid=target.dataset.alarmEntity; if(!eid) return;
+      this._hass.callService("alarm_control_panel",target.dataset.alarmService,{entity_id:eid}); return;
+    }
     if(target.dataset.alarm){ const eid=this._eid("alarm_control_panel.home_alarm"); if(!eid) return; this._hass.callService("alarm_control_panel",target.dataset.alarm,{entity_id:eid}); return; }
     if(target.dataset.humidityDelta){
       const id="humidifier.garage_dehumidifier", current=Number(this._attr(id,"humidity",this._attr(id,"target_humidity",55))), delta=Number(target.dataset.humidityDelta||0);

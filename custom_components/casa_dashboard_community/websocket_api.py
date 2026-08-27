@@ -143,6 +143,17 @@ def _save_config(
             images = room.get("entity_images", {})
             if not isinstance(images, dict):
                 images = {}
+            icons = room.get("entity_icons", {})
+            if not isinstance(icons, dict):
+                icons = {}
+            modules = room.get("modules", [])
+            if not isinstance(modules, list):
+                modules = []
+            clean_modules = [
+                str(v).strip()
+                for v in modules
+                if str(v).strip() in {"solar", "mobility", "weather", "alarm"}
+            ]
             clean_entities = [str(x).strip() for x in entities if str(x).strip()] if isinstance(entities, list) else []
             clean_labels = {
                 str(k).strip(): str(v).strip()
@@ -154,6 +165,11 @@ def _save_config(
                 for k, v in images.items()
                 if str(k).strip() in clean_entities and str(v).strip()
             }
+            clean_entity_icons = {
+                str(k).strip(): str(v).strip()
+                for k, v in icons.items()
+                if str(k).strip() in clean_entities and str(v).strip()
+            }
             clean_rooms.append({
                 "id": rid,
                 "name": name,
@@ -163,6 +179,8 @@ def _save_config(
                 "entities": clean_entities,
                 "entity_labels": clean_labels,
                 "entity_images": clean_entity_images,
+                "entity_icons": clean_entity_icons,
+                "modules": clean_modules,
             })
         output["rooms"] = clean_rooms
 

@@ -1,136 +1,417 @@
-arent)}
-      .community-advanced-energy .solar-node-orb ha-icon{--mdc-icon-size:34px;color:#67b8ff}.community-advanced-energy .solar-node.house .solar-node-orb ha-icon,.community-advanced-energy .solar-node.battery .solar-node-orb ha-icon{color:#55e6ad}.community-advanced-energy .solar-node.network .solar-node-orb ha-icon{color:#ffb45c}
-      .community-advanced-energy .solar-node strong{display:block;font-size:32px;line-height:1;letter-spacing:-.05em;margin-top:15px}.community-advanced-energy .solar-node strong.good{color:#55e6ad}.community-advanced-energy .solar-node strong.bad{color:#ff6f6f}.community-advanced-energy .solar-node small{display:block;color:var(--secondary-text-color);margin-top:6px;line-height:1.4;font-size:10px}
-      .community-advanced-energy .solar-node-chip{display:inline-flex;margin-top:11px;padding:7px 11px;border-radius:999px;background:color-mix(in srgb,var(--card-background-color) 94%,var(--primary-color) 6%);border:1px solid var(--divider-color);font-size:10px;font-weight:800}.community-advanced-energy .solar-node-chip.good{color:#55e6ad;background:rgba(76,175,80,.10)}.community-advanced-energy .solar-node-chip.warn{color:#ffb45c;background:rgba(255,180,92,.10)}.community-advanced-energy .solar-node-chip.bad{color:#ff6f6f;background:rgba(255,111,111,.10)}.community-advanced-energy .solar-node-chip.active{color:#67b8ff}
-      .theme-light .community-advanced-energy .solar-panel{box-shadow:0 14px 34px rgba(35,60,90,.08)}
+stove","Forno"],["mdi:coffee-maker-outline","Macchina caffè"],
+      ["mdi:range-hood","Cappa"],["mdi:pot-steam-outline","Robot cucina"],["mdi:air-fryer","Airfryer"],["mdi:power-plug-outline","Presa"],
+      ["mdi:cctv","Videocamera"],["mdi:lock-outline","Serratura"],["mdi:shield-home-outline","Allarme"],["mdi:car-electric","Auto elettrica"],
+      ["mdi:ev-station","Wallbox"],["mdi:battery-high","Batteria"],["mdi:solar-power","Fotovoltaico"],["mdi:home-assistant","Home Assistant"]
+    ];
+  }
+  _roomEntityIcon(entity,room=null){
+    return room?.entity_icons && typeof room.entity_icons==="object"
+      ? String(room.entity_icons[entity]||"").trim()
+      : "";
+  }
+  _setRoomEntityIcon(roomId,entity,value){
+    const room=this._roomsDraft.find(r=>r.id===roomId);
+    if(!room) return;
+    room.entity_icons=(room.entity_icons && typeof room.entity_icons==="object") ? {...room.entity_icons} : {};
+    const clean=String(value||"").trim();
+    if(clean) room.entity_icons[entity]=clean;
+    else delete room.entity_icons[entity];
 
-      @media(max-width:1000px){
-        .community-advanced-energy .solar-prod-card,.community-advanced-energy .solar-battery-hero{grid-column:span 12}
-        .community-advanced-energy .solar-battery-hero{grid-template-columns:200px 1fr}
-        .energy-view-fields{grid-template-columns:repeat(2,minmax(0,1fr))}
-      }
-      @media(max-width:720px){
-        .energy-view-choice,.energy-view-fields{grid-template-columns:1fr}
-        .community-advanced-energy .solar-battery-hero{grid-template-columns:1fr;text-align:center;padding:24px 18px}
-        .community-advanced-energy .solar-battery-copy .power{font-size:52px}
-        .community-advanced-energy .solar-pv-line{grid-template-columns:1fr;gap:8px}
-        .community-advanced-energy .solar-flow-grid,.community-advanced-energy .solar-flow-grid.energy-nodes-3,.community-advanced-energy .solar-flow-grid.energy-nodes-2{grid-template-columns:repeat(2,minmax(0,1fr))}
-      }
-      @media(max-width:480px){
-        .community-advanced-energy .solar-flow-grid,.community-advanced-energy .solar-flow-grid.energy-nodes-3,.community-advanced-energy .solar-flow-grid.energy-nodes-2{grid-template-columns:1fr}
-        .community-advanced-energy .solar-prod-copy strong{font-size:46px}
-      }
-
-      /* v3.5.3 - reliable image persistence + preview */
-      .photo-preview{margin-top:8px;overflow:hidden;border-radius:11px;border:1px solid var(--divider-color);background:var(--secondary-background-color)}
-      .photo-preview img{display:block;width:100%;height:100%;object-fit:cover}
-      .room-photo-preview{width:min(260px,100%);height:116px}
-      .object-photo-preview{width:118px;height:82px}
-      .room-entity-photo .object-photo-preview{margin-top:7px}
-
-      .native-photo-picker{position:relative;overflow:hidden;cursor:pointer}
-      .native-photo-picker>input[type="file"]{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:100px}
-      .native-photo-picker.loading{opacity:.65;pointer-events:none}
-
-      .config-hint span{display:inline-flex;align-items:center;min-height:20px}
-      .config-hint span:not(:empty){font-weight:750}
-
-      .config-page-intro-actions{align-items:center}
-      .config-page-intro-actions>div{min-width:0;flex:1}
-      .room-add-primary{margin-left:auto;display:inline-flex;align-items:center;gap:6px;flex:none;cursor:pointer}
-      .room-add-primary ha-icon,.room-add-footer .room-add ha-icon{--mdc-icon-size:18px}
-      .room-add-footer{display:flex;justify-content:center;padding:16px 0 2px}
-      .room-add-footer .room-add{display:inline-flex;align-items:center;gap:7px;cursor:pointer;padding:10px 15px}
-      @media(max-width:650px){
-        .config-page-intro-actions{display:grid;grid-template-columns:auto 1fr}
-        .config-page-intro-actions .room-add-primary{grid-column:1/-1;width:100%;justify-content:center;margin:4px 0 0}
-      }
-    `;
+    // Keep the draft object reference fresh so save/normalization paths
+    // cannot miss the icon change.
+    this._roomsDraft=[...this._roomsDraft];
+  }
+  _activeRoomEntityIcon(entity){
+    if(this._uiTheme!=="v2") return "";
+    return this._roomEntityIcon(entity,this._roomById(this._active));
   }
 
-  _s(id) { const eid=this._eid(id); return eid ? this._hass?.states?.[eid] : null; }
-  async _loadEntityConfig(force=false) {
-    if((this._entityConfigLoaded && !force) || this._entityConfigLoading) return;
-    this._entityConfigLoading=true;
-    try {
-      let entities=null;
-      let labels=null;
-      let overview=null;
-      if(this._hass?.callWS){
-        try {
-          const result=await this._hass.callWS({type:"casa_dashboard_community/config/get"});
-          if(result?.entities && typeof result.entities==="object") entities=result.entities;
-          if(result?.labels && typeof result.labels==="object") labels=result.labels;
-          if(result?.overview && typeof result.overview==="object") overview=result.overview;
-          if(Array.isArray(result?.rooms)) this._rooms=result.rooms;
-        } catch(_wsErr) { /* fallback below */ }
+
+  _autoMapRoomCandidates(){
+    const out=[];
+    for(const room of (this._effectiveRooms()||[])){
+      for(const entity of (room.entities||[])){
+        const obj=this._hass?.states?.[entity];
+        if(!obj) continue;
+        const name=this._roomEntityDisplay(entity,room);
+        out.push({
+          entity,room,name,
+          dc:String(obj.attributes?.device_class||"").toLowerCase(),
+          unit:String(obj.attributes?.unit_of_measurement||"").toLowerCase(),
+          domain:String(entity).split(".")[0],
+          hay:`${entity} ${name} ${room.name||""} ${room.type||""}`.toLowerCase()
+        });
       }
-      if(!entities){
-        const res=await fetch(`${ENTITY_CONFIG_URL}?v=${Date.now()}`, {cache:"no-store"});
-        if(res.ok){
-          const json=await res.json();
-          if(json?.entities && typeof json.entities==="object") entities=json.entities;
-          if(json?.labels && typeof json.labels==="object") labels=json.labels;
-          if(json?.overview && typeof json.overview==="object") overview=json.overview;
-        }
-      }
-      this._entityMap=entities || {};
-      this._entityLabels=labels || {};
-      this._overviewConfig=overview || {};
-    } catch(_err) {
-      this._entityMap={};
-      this._entityLabels={};
-      this._overviewConfig={};
-    } finally {
-      this._entityConfigLoaded=true;
-      this._entityConfigLoading=false;
-      this._renderPage(false);
     }
-  }
-  _eid(id) {
-    if(!ENTITY_KEYS.has(id)) return id;
-    const mapped=this._entityMap?.[id];
-    return typeof mapped==="string" && mapped.trim() ? mapped.trim() : null;
-  }
-  _configured(id) { const eid=this._eid(id); return !!eid && !!this._hass?.states?.[eid]; }
-  _overviewDisplayName(logicalKey, entityId=null) {
-    const custom=String(this._entityLabels?.[logicalKey]||"").trim();
-    if(custom) return custom;
-    const eid=entityId || this._eid(logicalKey);
-    const friendly=eid ? String(this._hass?.states?.[eid]?.attributes?.friendly_name||"").trim() : "";
-    if(friendly) return friendly;
-    return this._configLabel(logicalKey);
-  }
-  _configuredCount() { return [...ENTITY_KEYS].filter(id=>this._eid(id)).length; }
-  _configNotice() {
-    const configured=this._configuredCount();
-    const total=ENTITY_KEYS.size;
-    const title=configured===0?"Configura le entità":"Entità configurate";
-    const text=configured===0
-      ? `Sono disponibili ${total} associazioni opzionali. Configura solo le funzioni che utilizzi nel tuo Home Assistant.`
-      : `${configured} di ${total} associazioni disponibili configurate. Non è necessario compilarle tutte: configura solo quelle che utilizzi.`;
-    const tone=configured===0?"warn":"info";
-    const icon=configured===0?"mdi:cog-alert-outline":"mdi:check-circle-outline";
-    return `<div class="alert ${tone} config-alert"><ha-icon icon="${icon}"></ha-icon><div><strong>${title}</strong><span>${text}</span></div><button class="config-open-btn" data-action="entity-config" type="button"><ha-icon icon="mdi:tune-variant"></ha-icon> Configura</button></div>`;
+    return out;
   }
 
-  _configLabel(key) {
-    const pretty=key.split(".")[1]?.replaceAll("_"," ") || key;
-    return pretty.replace(/\b\w/g,c=>c.toUpperCase());
+  _autoMapGlobalCandidates(){
+    return Object.entries(this._hass?.states||{}).map(([entity,obj])=>({
+      entity,
+      room:null,
+      name:String(obj?.attributes?.friendly_name||entity),
+      dc:String(obj?.attributes?.device_class||"").toLowerCase(),
+      unit:String(obj?.attributes?.unit_of_measurement||"").toLowerCase(),
+      domain:String(entity).split(".")[0],
+      hay:`${entity} ${obj?.attributes?.friendly_name||""}`.toLowerCase()
+    }));
   }
-  _roomEntitySuggestions(query="", selected=[]){
-    const q=String(query||"").trim().toLocaleLowerCase("it");
-    const chosen=new Set(selected||[]);
-    return Object.entries(this._hass?.states||{})
-      .filter(([id])=>!chosen.has(id))
-      .map(([id,obj])=>({id,name:String(obj?.attributes?.friendly_name||id)}))
-      .filter(x=>!q || x.id.toLocaleLowerCase("it").includes(q) || x.name.toLocaleLowerCase("it").includes(q))
-      .sort((a,b)=>{
-        const an=a.name.toLocaleLowerCase("it"), bn=b.name.toLocaleLowerCase("it");
-        const ae=an===q?0:an.startsWith(q)?1:an.includes(q)?2:3;
-        const be=bn===q?0:bn.startsWith(q)?1:bn.includes(q)?2:3;
-        return ae-be || an.localeCompare(bn,"it");
-      }).slice(0,12);
+
+  _autoMapScore(candidate,key){
+    const k=String(key||"").toLowerCase();
+    const hay=candidate.hay;
+    const direct=`${candidate.entity} ${candidate.name}`.toLowerCase();
+    const domain=candidate.domain, dc=candidate.dc, unit=candidate.unit;
+    let score=0;
+
+    const add=(re,n)=>{ if(re.test(hay)) score+=n; };
+    const words=k.replace(/^(sensor|binary_sensor|switch|input_boolean|alarm_control_panel)\./,"")
+      .split(/[_\s]+/).filter(w=>w.length>2);
+    for(const w of words) if(hay.includes(w)) score+=7;
+
+    if(k.includes("temperature")){
+      if(dc==="temperature") score+=55;
+      if(/°c|°f/.test(unit)) score+=35;
+      add(/temperatura|temperature/,25);
+      if(dc==="humidity" || unit==="%") score-=100;
+    }
+    if(k.includes("humidity")){
+      if(dc==="humidity") score+=55;
+      if(unit==="%") score+=20;
+      add(/umidit|humidity/,30);
+      if(dc==="temperature") score-=25;
+    }
+    if(k.includes("illumin") || k.includes("lux")){
+      if(dc==="illuminance") score+=55;
+      if(unit==="lx") score+=40;
+      add(/lux|luminos|illumin/,28);
+    }
+    if(k.includes("motion") || k.includes("occupancy") || k.includes("presence")){
+      if(["motion","occupancy","presence"].includes(dc)) score+=60;
+      add(/movimento|motion|occupaz|presenza|presence/,30);
+    }
+    if(k.includes("door") || k.includes("window") || k.includes("opening")){
+      if(["door","window","opening","garage_door"].includes(dc)) score+=60;
+      add(/porta|door|finestra|window|apertura/,28);
+    }
+    if(k.includes("climate")){
+      if(domain==="climate") score+=75;
+      add(/clima|climatizz|condizion|air.?condition/,30);
+    }
+    if(k.includes("light")){
+      if(domain==="light") score+=70;
+      add(/luce|light|lamp|led|plafon/,24);
+    }
+    if(k.includes("alarm")){
+      if(domain==="alarm_control_panel") score+=90;
+      add(/allarme|alarm/,35);
+    }
+
+    if(/wallbox|ev_|vehicle/.test(k)){
+      if(/wallbox|evse|auto elettrica|vehicle|ricarica|charging/.test(direct)) score+=70;
+      if(/frigo|forno|lavastov|microonde|cappa|luce|cucina/.test(direct)) score-=120;
+    }
+    if(/solar|pv|inverter|battery|grid/.test(k)){
+      if(/solar|fotovolta|\bpv\b|inverter|battery|batteria|pcc|grid|rete/.test(direct)) score+=65;
+      if(/wallbox|evse/.test(direct) && !/grid/.test(k)) score-=50;
+    }
+    if(k.includes("weather")){
+      if(/meteo|weather|outdoor|esterno|vento|wind|pioggia|rain|radiazione|\buv\b/.test(direct)) score+=60;
+    }
+
+    if(candidate.room){
+      const roomText=`${candidate.room.name||""} ${candidate.room.type||""}`.toLowerCase();
+      const roomRules=[
+        [/kitchen|cucina/,/cucina|kitchen/],
+        [/bathroom|bagno/,/bagno|bathroom/],
+        [/bedroom|camera/,/camera|bedroom/],
+        [/garage/,/garage/],
+        [/entry|entrance|ingresso/,/ingresso|entry|entrance/],
+        [/hallway|disimpegno|corridoio/,/disimpegno|corridoio|hallway|corridor/],
+        [/balcony|balcone/,/balcone|terrazzo|balcony/],
+      ];
+      for(const [keyRe,roomRe] of roomRules) if(keyRe.test(k) && roomRe.test(roomText)) score+=50;
+    }
+
+    return score;
+  }
+
+  _autoMapBestCandidate(key,candidates,used){
+    let best=null,bestScore=0;
+    for(const c of candidates){
+      if(used.has(c.entity)) continue;
+      const score=this._autoMapScore(c,key);
+      if(score>bestScore){ best=c; bestScore=score; }
+    }
+    return bestScore>=45 ? {...best,_score:bestScore} : null;
+  }
+
+  _autoMapEmptyMappings(){
+    const roomCandidates=this._autoMapRoomCandidates();
+    const globalCandidates=this._autoMapGlobalCandidates();
+    const used=new Set(Object.values(this._configDraft||{}).map(v=>String(v||"").trim()).filter(Boolean));
+    const changes=[];
+
+    for(const key of ENTITY_KEYS){
+      if(String(this._configDraft?.[key]||"").trim()) continue;
+
+      let candidate=this._autoMapBestCandidate(key,roomCandidates,used);
+      if(!candidate) candidate=this._autoMapBestCandidate(key,globalCandidates,used);
+      if(!candidate) continue;
+
+      this._configDraft[key]=candidate.entity;
+      used.add(candidate.entity);
+      changes.push({key,entity:candidate.entity,score:candidate._score});
+    }
+
+    this._autoMapChanges=changes;
+    this._autoMapNotice=changes.length
+      ? `Auto-abbinamento: ${changes.length} campi vuoti compilati. Controlla i risultati e poi premi Salva configurazione.`
+      : "Auto-abbinamento: nessuna nuova associazione sufficientemente sicura trovata.";
+    this._renderConfigLayer();
+  }
+
+
+  _roomModuleDefinitions(){
+    return [
+      {id:"solar",label:"Energia solare",icon:"mdi:solar-power-variant"},
+      {id:"mobility",label:"Wallbox & EV",icon:"mdi:ev-station"},
+      {id:"weather",label:"Meteo",icon:"mdi:weather-partly-cloudy"},
+      {id:"alarm",label:"Allarme",icon:"mdi:shield-home-outline"},
+    ];
+  }
+
+  _roomHasModule(room,id){
+    return Array.isArray(room?.modules) && room.modules.includes(id);
+  }
+
+  _setRoomModule(roomId,id,enabled){
+    const room=this._roomsDraft.find(r=>r.id===roomId);
+    if(!room) return;
+    const set=new Set(Array.isArray(room.modules)?room.modules:[]);
+    enabled?set.add(id):set.delete(id);
+    room.modules=[...set];
+    this._roomsDraft=[...this._roomsDraft];
+  }
+
+  _moduleEntity(key){
+    const eid=this._eid(key);
+    return eid && this._hass?.states?.[eid] ? eid : null;
+  }
+
+  _roomModuleMetric(entity,label,icon,span=3){
+    if(!entity) return "";
+    const unit=this._attr(entity,"unit_of_measurement","")||"";
+    return `<div class="room-module-metric span-${span} clickable" data-more="${entity}">
+      <div class="room-module-icon"><ha-icon icon="${icon}"></ha-icon></div>
+      <div><span>${this._esc(label)}</span><strong>${this._state(entity,"—")}${unit?` ${unit}`:""}</strong><small>${this._hass?.states?.[entity]?.attributes?.friendly_name||entity}</small></div>
+    </div>`;
+  }
+
+  _roomSolarModule(){
+    // Reuse the exact Overview advanced-energy renderer.
+    // This guarantees identical layout, signs, labels and battery/grid logic.
+    const html=this._advancedEnergySection();
+    return html ? `<div class="room-shared-solar-advanced">${html}</div>` : "";
+  }
+
+  _roomMobilityModule(){
+    const chargingEntity=this._moduleEntity("binary_sensor.ev_charging_at_home");
+    const gridCurrentEntity=this._moduleEntity("sensor.grid_current_l1");
+    const boardTempEntity=this._moduleEntity("sensor.wallbox_board_temperature");
+    const caseTempEntity=this._moduleEntity("sensor.wallbox_case_temperature");
+    const chargeCurrentEntity=this._moduleEntity("sensor.wallbox_charging_current_l1");
+    const powerEntity=this._moduleEntity("sensor.wallbox_charging_power");
+    const evseEntity=this._moduleEntity("sensor.wallbox_evse_status");
+    const fanEntity=this._moduleEntity("sensor.wallbox_fan_status");
+    const maxCurrentEntity=this._moduleEntity("sensor.wallbox_max_charging_current");
+    const sessionEntity=this._moduleEntity("sensor.wallbox_session_energy");
+    const statusEntity=this._moduleEntity("sensor.wallbox_status");
+    const voltageEntity=this._moduleEntity("sensor.wallbox_voltage_l1");
+
+    const any=[chargingEntity,gridCurrentEntity,boardTempEntity,caseTempEntity,chargeCurrentEntity,powerEntity,evseEntity,fanEntity,maxCurrentEntity,sessionEntity,statusEntity,voltageEntity].some(Boolean);
+    if(!any) return "";
+
+    const charging=chargingEntity?this._on(chargingEntity):false;
+    const state=e=>e?this._state(e,"—"):"—";
+    const num=(e,def=null)=>{
+      if(!e) return def;
+      const n=Number(this._state(e,""));
+      return Number.isFinite(n)?n:def;
+    };
+    const unit=e=>e?(this._attr(e,"unit_of_measurement","")||""):"";
+    const fmt=(e,digits=1)=>{
+      if(!e) return "—";
+      const n=num(e,null);
+      return n===null?state(e):`${n.toFixed(digits)} ${unit(e)}`.trim();
+    };
+    const powerKW=()=>{
+      if(!powerEntity) return "—";
+      const n=num(powerEntity,null);
+      if(n===null) return state(powerEntity);
+      const u=unit(powerEntity).toLowerCase();
+      const kw=u==="w"?n/1000:n;
+      return `${kw.toFixed(2)} kW`;
+    };
+    const voltage=num(voltageEntity,null);
+    const gridCurrent=num(gridCurrentEntity,null);
+    const chargeCurrent=num(chargeCurrentEntity,null);
+    const maxCurrent=num(maxCurrentEntity,null);
+    const gridKW=(gridCurrent!==null && voltage!==null)?Math.abs(gridCurrent*voltage)/1000:null;
+    const maxKW=(maxCurrent!==null && voltage!==null)?Math.abs(maxCurrent*voltage)/1000:null;
+
+    const gridPowerText=gridKW===null?"—":`${gridKW.toFixed(2)} kW`;
+    const maxPowerText=maxKW===null?"—":`${maxKW.toFixed(2)} kW`;
+    const currentText=chargeCurrent===null?"—":`${chargeCurrent.toFixed(1)} A`;
+    const gridCurrentText=gridCurrent===null?"—":`${gridCurrent.toFixed(1)} A`;
+    const voltageText=voltage===null?"—":`${voltage.toFixed(0)} V`;
+    const maxCurrentText=maxCurrent===null?"—":`${maxCurrent.toFixed(1)} A`;
+    const sessionText=sessionEntity?fmt(sessionEntity,2):"—";
+    const dazeState=statusEntity?state(statusEntity):"—";
+    const evseState=evseEntity?state(evseEntity):"—";
+
+    return `${this._section("EV + Wallbox","Ricarica domestica")}
+      <div class="community-daze-console">
+        <div class="community-daze-visual">
+          <div class="community-daze-car">
+            <div class="community-daze-car-body"></div>
+            <div class="community-daze-car-glass"></div>
+            <div class="community-daze-wheel left"></div>
+            <div class="community-daze-wheel right"></div>
+          </div>
+          <div class="community-daze-wallbox">
+            <div class="community-daze-screen"></div>
+            <div class="community-daze-led ${charging?'active':''}"></div>
+            <div class="community-daze-cable"></div>
+          </div>
+          <div class="community-daze-status ${charging?'active':''}"><span></span>${charging?"In carica":"A riposo"}</div>
+        </div>
+
+        <div class="community-daze-data">
+          <div class="community-daze-data-card primary">
+            <span>POTENZA RICARICA</span><strong>${powerKW()}</strong><small>${currentText} · ${voltageText}</small>
+          </div>
+          <div class="community-daze-data-card">
+            <span>CARICO CONTATORE</span><strong>${gridPowerText}</strong><small>${gridCurrentText} · ${voltageText}</small>
+          </div>
+          <div class="community-daze-data-card">
+            <span>ENERGIA SESSIONE</span><strong>${sessionText}</strong><small>${charging?"Sessione in corso":"Ultima sessione"}</small>
+          </div>
+          <div class="community-daze-data-card">
+            <span>LIMITE RICARICA</span><strong>${maxPowerText}</strong><small>${maxCurrentText}</small>
+          </div>
+          <div class="community-daze-data-card">
+            <span>STATO WALLBOX</span><strong>${this._esc(dazeState)}</strong><small>Wallbox</small>
+          </div>
+          <div class="community-daze-data-card">
+            <span>STATO EVSE</span><strong>${this._esc(evseState)}</strong><small>Veicolo elettrico</small>
+          </div>
+        </div>
+      </div>
+
+      ${(boardTempEntity||caseTempEntity||fanEntity)?`<div class="community-daze-diagnostics">
+        ${boardTempEntity?this._roomModuleMetric(boardTempEntity,"Temperatura scheda","mdi:thermometer",4):""}
+        ${caseTempEntity?this._roomModuleMetric(caseTempEntity,"Temperatura case","mdi:thermometer",4):""}
+        ${fanEntity?this._roomModuleMetric(fanEntity,"Ventola wallbox","mdi:fan",4):""}
+      </div>`:""}`;
+  }
+
+
+  _roomVehicleModule(){
+    const batt=this._eid("sensor.vehicle_battery_level");
+    const range=this._eid("sensor.vehicle_range");
+    const remaining=this._eid("sensor.vehicle_charge_remaining_minutes");
+    const odo=this._eid("sensor.vehicle_odometer");
+    const vehiclePower=this._eid("sensor.vehicle_charging_power");
+    const session=this._eid("sensor.vehicle_session_energy");
+
+    const configured=[batt,range,remaining,odo,vehiclePower,session]
+      .filter(Boolean)
+      .filter(e=>this._hass?.states?.[e]);
+
+    if(!configured.length) return "";
+
+    const identity=this._overviewIdentity();
+    const vehicleName=identity.vehicle||"Auto elettrica";
+    const fmt=e=>{
+      if(!e || !this._hass?.states?.[e]) return "—";
+      const unit=this._attr(e,"unit_of_measurement","")||"";
+      return `${this._state(e,"—")}${unit?` ${unit}`:""}`;
+    };
+
+    return `<div class="room-vehicle-card">
+      <div class="room-vehicle-visual">
+        <ha-icon icon="mdi:car-electric"></ha-icon>
+      </div>
+      <div class="room-vehicle-main">
+        <div class="room-vehicle-head">
+          <span>AUTO ELETTRICA</span>
+          <strong>${this._esc(vehicleName)}</strong>
+          <small>Dati veicolo configurati</small>
+        </div>
+        <div class="room-vehicle-stats">
+          ${batt?`<div><span>BATTERIA</span><strong>${fmt(batt)}</strong></div>`:""}
+          ${range?`<div><span>AUTONOMIA</span><strong>${fmt(range)}</strong></div>`:""}
+          ${remaining?`<div><span>TEMPO RIMANENTE</span><strong>${fmt(remaining)}</strong></div>`:""}
+          ${vehiclePower?`<div><span>POTENZA</span><strong>${fmt(vehiclePower)}</strong></div>`:""}
+          ${session?`<div><span>ENERGIA SESSIONE</span><strong>${fmt(session)}</strong></div>`:""}
+          ${odo?`<div><span>CHILOMETRAGGIO</span><strong>${fmt(odo)}</strong></div>`:""}
+        </div>
+      </div>
+    </div>`;
+  }
+
+  _roomWeatherModule(){
+    // Reuse the same weather source and presentation used by Overview.
+    const cards=this._overviewWeatherCards();
+    if(!cards) return "";
+
+    return `<div class="room-shared-weather-overview">
+      ${this._section(this._overviewText("outdoor_label","Meteo Balcone"),"Condizioni esterne in tempo reale")}
+      <div class="overview-weather-grid">${cards}</div>
+    </div>`;
+  }
+
+  _roomAlarmModule(){
+    const keys=[...ENTITY_KEYS].filter(k=>/alarm/.test(k));
+    const alarm=keys.map(k=>this._moduleEntity(k)).find(e=>e?.startsWith("alarm_control_panel."))||keys.map(k=>this._moduleEntity(k)).find(Boolean)||null;
+    if(!alarm) return "";
+    const state=this._state(alarm,"unknown");
+    const label=state==="disarmed"?"Non armato":state==="armed_home"?"Armato casa":state==="armed_away"?"Armato fuori casa":state==="armed_night"?"Armato notte":state==="triggered"?"ALLARME":state;
+    return `<div class="room-module">
+      <div class="room-module-head"><div><ha-icon icon="mdi:shield-home-outline"></ha-icon><strong>Allarme</strong></div><small>Configurazione globale</small></div>
+      <div class="room-alarm-panel clickable" data-more="${alarm}">
+        <div class="room-alarm-orb"><ha-icon icon="${state==="triggered"?"mdi:alarm-light":"mdi:shield-home"}"></ha-icon></div>
+        <div><span>STATO SISTEMA</span><strong>${this._esc(label)}</strong><small>${this._hass?.states?.[alarm]?.attributes?.friendly_name||alarm}</small></div>
+        <button data-more="${alarm}" type="button">Apri pannello allarme</button>
+      </div>
+    </div>`;
+  }
+
+  _renderRoomModules(room){
+    const solar=this._roomHasModule(room,"solar") ? this._roomSolarModule() : "";
+    const weather=this._roomHasModule(room,"weather") ? this._roomWeatherModule() : "";
+
+    let mobility="";
+    if(this._roomHasModule(room,"mobility")){
+      const wallbox=this._roomMobilityModule();
+      const vehicle=this._roomVehicleModule();
+      mobility=[wallbox,vehicle].filter(Boolean).join("");
+    }
+
+    const others=[];
+    if(this._roomHasModule(room,"alarm")) others.push(this._roomAlarmModule());
+    const otherHtml=others.filter(Boolean).join("");
+
+    return [
+      solar,
+      weather,
+      mobility,
+      otherHtml
+        ? `${this._section("Moduli condivisi","Configurazione globale richiamata nella stanza")}<div class="room-modules-stack">${otherHtml}</div>`
+        : ""
+    ].filter(Boolean).join("");
   }
 
   _roomEntityPicker(room){
@@ -148,6 +429,12 @@ arent)}
             <input data-room-entity-label-room="${room.id}" data-room-entity-label-entity="${this._esc(e)}"
               value="${this._esc(this._roomEntityCustomLabel(e,room))}"
               placeholder="${this._esc(this._hass?.states?.[e]?.attributes?.friendly_name||e)}">
+          </label>
+          <label class="room-entity-icon-field">
+            <span>Icona</span>
+            <select data-room-entity-icon-room="${room.id}" data-room-entity-icon-entity="${this._esc(e)}">
+              ${this._entityIconChoices().map(([value,label])=>`<option value="${value}" ${this._roomEntityIcon(e,room)===value?"selected":""}>${label}</option>`).join("")}
+            </select>
           </label>
           <div class="room-entity-photo">
             <span>Foto oggetto</span>
@@ -372,7 +659,7 @@ arent)}
     return byGroup[group]||"";
   }
   _mergeConfiguredEntitiesIntoRooms(rooms){
-    const out=(Array.isArray(rooms)?rooms:[]).map(r=>({...r,entities:[...(r.entities||[])],entity_labels:{...(r.entity_labels||{})},entity_images:{...(r.entity_images||{})}}));
+    const out=(Array.isArray(rooms)?rooms:[]).map(r=>({...r,entities:[...(r.entities||[])],entity_labels:{...(r.entity_labels||{})},entity_images:{...(r.entity_images||{})},entity_icons:{...(r.entity_icons||{})}}));
     const defaults=new Map(this._defaultRooms().map(r=>[r.id,r]));
     const configured=[...ENTITY_KEYS].map(key=>{
       const entity=String(this._configDraft?.[key] ?? this._entityMap?.[key] ?? "").trim();
@@ -413,49 +700,4 @@ arent)}
         this._legacyRoomForConfigKey(k)===roomId &&
         String(this._configDraft[k]||"").trim()===oldEntity
       );
-      if(!stillUsed) room.entities=room.entities.filter(e=>e!==oldEntity);
-    }
-    if(newEntity && !room.entities.includes(newEntity)) room.entities.push(newEntity);
-  }
-
-  _defaultRooms(){
-    return [
-      {id:"esterno",name:"Esterno",type:"esterno",icon:"mdi:tree-outline",image:""},
-      {id:"scale",name:"Scale",type:"scale",icon:"mdi:stairs"},
-      {id:"ingresso",name:"Ingresso",type:"ingresso",icon:"mdi:door"},
-      {id:"cucina",name:"Cucina",type:"cucina",icon:"mdi:chef-hat"},
-      {id:"disimpegno",name:"Disimpegno",type:"disimpegno",icon:"mdi:walk"},
-      {id:"bagno",name:"Bagno",type:"bagno",icon:"mdi:shower"},
-      {id:"camera",name:"Camera",type:"camera",icon:"mdi:bed-king-outline"},
-      {id:"balcone",name:"Balcone",type:"balcone",icon:"mdi:balcony"},
-      {id:"garage",name:"Garage",type:"garage",icon:"mdi:garage-variant"}
-    ];
-  }
-  _roomTypes(){
-    return [
-      ["generico","Ambiente generico","mdi:home-outline"],["soggiorno","Soggiorno","mdi:sofa-outline"],
-      ["cucina","Cucina","mdi:chef-hat"],["camera","Camera","mdi:bed-king-outline"],
-      ["bagno","Bagno","mdi:shower"],["studio","Studio","mdi:desk"],
-      ["lavanderia","Lavanderia","mdi:washing-machine"],["taverna","Taverna / Sala hobby","mdi:glass-mug-variant"],
-      ["disimpegno","Corridoio / Disimpegno","mdi:walk"],["ingresso","Ingresso","mdi:door"],
-      ["scale","Scale","mdi:stairs"],["balcone","Balcone / Terrazzo","mdi:balcony"],
-      ["esterno","Giardino / Esterno","mdi:tree-outline"],["garage","Garage","mdi:garage-variant"]
-    ];
-  }
-  _effectiveRooms(){
-    if(Array.isArray(this._rooms) && this._rooms.length) return this._rooms;
-    return this._uiTheme==="v1"?this._defaultRooms():[];
-  }
-  _roomById(id){ return this._effectiveRooms().find(r=>r.id===id)||null; }
-  _roomIcon(type){ return this._roomTypes().find(x=>x[0]===type)?.[2]||"mdi:home-outline"; }
-  _slugRoom(name){
-    const base=String(name||"stanza").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")||"stanza";
-    let id=`room-${base}`, n=2; const used=new Set(this._roomsDraft.map(r=>r.id));
-    while(used.has(id)) id=`room-${base}-${n++}`; return id;
-  }
-  _addRoomDraft(){
-    const id=this._slugRoom("Nuova stanza");
-    this._roomsDraft.push({id,name:"Nuova stanza",type:"generico",icon:"mdi:home-outline",image:"",entities:[],entity_labels:{},entity_images:{}});
-    this._configTab="rooms";
-    this._renderConfigLayer();
-    requestAnimationFrame
+      if(!stillUsed) room.entities=room.

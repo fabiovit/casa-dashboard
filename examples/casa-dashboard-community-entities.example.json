@@ -175,7 +175,13 @@
     "switch.kitchen_hood": "",
     "switch.kitchen_tv": "",
     "vacuum.robot_vacuum": "",
-    "water_heater.domestic_hot_water": ""
+    "water_heater.domestic_hot_water": "",
+    "sensor.vehicle_battery_level": "",
+    "sensor.vehicle_range": "",
+    "sensor.vehicle_charge_remaining_minutes": "",
+    "sensor.vehicle_odometer": "",
+    "sensor.vehicle_charging_power": "",
+    "sensor.vehicle_session_energy": ""
   },
   "overview": {}
 }
