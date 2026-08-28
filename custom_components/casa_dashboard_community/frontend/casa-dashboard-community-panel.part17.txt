@@ -1,4 +1,28 @@
-penta","toggle",6)}</div></div>`;
+Occupazione":["binary_sensor.hallway_occupancy"],"Luminosità":["sensor.hallway_illuminance"],"Luce":["light.hallway_main"]},
+      bagno:{"Temperatura":["sensor.bathroom_temperature"],"Umidità":["sensor.bathroom_humidity"],"Finestra":["binary_sensor.bathroom_window"],"Acqua":["binary_sensor.bathroom_water_leak"]},
+      camera:{"Temperatura":["sensor.bedroom_temperature"],"Umidità":["sensor.bedroom_humidity"],"Clima":["climate.bedroom"],"Robot":["vacuum.robot_vacuum","sensor.robot_vacuum_battery"]}
+    };
+    const roomReq=requirements[room]||{};
+    const visible=metrics.map(metric=>{
+      const req=roomReq[metric.label];
+      return req ? {...metric,show:metric.show!==false&&this._anyConfigured(req)} : metric;
+    });
+    return this._hero(m.title,m.subtitle,{...s,title:s.text,text:""},visible,room);
+  }
+
+  _esterno(){
+    const open=this._on("input_boolean.pedestrian_gate");
+    return `<div class="page ${this._uiTheme==="v2"?"overview-v2-page":""}">${this._zoneHero("esterno",[
+      {label:"Cancellino",value:open?"Aperto / apertura…":"Chiuso",small:"Accesso esterno"},
+      {label:"Stato",value:open?"Attivo":"Pronto",small:"Comando pedonale"}
+    ])}${this._section("Accesso esterno")}<div class="grid">${this._control("input_boolean.pedestrian_gate","Cancellino","mdi:gate",open?"Apertura in corso / aperto":"Premi per aprire","toggle",12)}</div></div>`;
+  }
+
+  _scale(){
+    return `<div class="page">${this._zoneHero("scale",[
+      {label:"Luce",value:this._on("light.stairs")?"Accesa":"Spenta",small:"Illuminazione scale"},
+      {label:"Portoncino",value:this._on("input_boolean.main_gate")?"Apertura…":"Pronto",small:"Comando accesso"}
+    ])}${this._section("Controlli rapidi")}<div class="grid">${this._control("input_boolean.main_gate","Portoncino","mdi:gate",this._on("input_boolean.main_gate")?"Apertura in corso":"Premi per aprire","toggle",6)}${this._control("light.stairs","Luce scale","mdi:ceiling-light",this._on("light.stairs")?"Accesa":"Spenta","toggle",6)}</div></div>`;
   }
 
   _ingresso(){
@@ -222,7 +246,4 @@ penta","toggle",6)}</div></div>`;
       {label:"Vento",value:this._configured("sensor.weather_wind_speed")?this._fmt("sensor.weather_wind_speed",1,"km/h"):"—",small:this._configured("sensor.weather_wind_gust")?`Raffica ${this._fmt("sensor.weather_wind_gust",1,"km/h")}`:"",show:hasWind}
     ];
     const balconyV2Hero=this._uiTheme==="v2"?this._hero("Balcone","Meteo, tende, illuminazione e ambiente esterno.",{level:(water||rain||lightning)?"warn":"good",title:water?"Acqua rilevata":rain?"Pioggia in corso":lightning?"Fulmini vicini":weatherStatus,text:""},balconyHeroMetrics,"balcone"):"";
-    return `<div class="page">${balconyV2Hero}${hasWeather?`<div class="weather-hero"><div class="weather-head"><div class="weather-now"><div class="weather-icon"><ha-icon icon="${weatherIcon}"></ha-icon></div><div><div class="hero-overline">METEO CASA</div><div class="weather-temp">${this._configured("sensor.weather_outdoor_temperature")?this._fmt("sensor.weather_outdoor_temperature",1,"°C"):"—"}</div><div class="weather-status">${weatherStatus}</div><div class="weather-sub">${this._configured("sensor.weather_feels_like_temperature")?`Percepita ${this._fmt("sensor.weather_feels_like_temperature",1,"°C")}`:""}${this._configured("sensor.weather_outdoor_humidity")?` · Umidità ${this._fmt("sensor.weather_outdoor_humidity",0,"%")}`:""}</div></div></div><div class="weather-station">Stazione meteo</div></div><div class="weather-strip">${hasRain?`<div class="weather-chip"><div class="k">Pioggia</div><div class="v">${rain?"🌧️ Rilevata":"✅ Asciutto"}</div></div>`:""}${hasWind?`<div class="weather-chip"><div class="k">Vento</div><div class="v">${this._fmt("sensor.weather_wind_speed",1,"km/h")}</div></div>`:""}${hasSun?`<div class="weather-chip"><div class="k">Sole</div><div class="v">${this._luxLabel("sensor.weather_solar_lux")} · ${this._fmtLuxCompact("sensor.weather_solar_lux")}</div></div>`:""}${hasLightning?`<div class="weather-chip"><div class="k">Fulmini</div><div class="v">${lightning?"⚡ ≤5 km":lightningCount>0?"⚡ Lontani":"✅ Nessuno"}</div></div>`:""}</div></div>`:""}
-    ${hasBalconyControls?this._section(hasBlinds?"Tende, luci e dispositivi":"Luci e dispositivi",hasBlinds?"Controlli configurati":"Dispositivi configurati"):""}<div class="grid">
-      ${this._control("input_boolean.blinds_manual_mode","Modalità manuale tende","mdi:hand-back-right-outline",manual?"Automazioni tende sospese":"Gestione automatica attiva","toggle",12)}
-      ${hasBlinds&&hasWeather?`<div class="decision-card ${discesaLevel} span-6"><div class="eyebrow">↓ DISCESA TENDE</div><strong>${manual?"Modalità manuale attiva":discesa}</st
+    return `<div class="page">${balconyV2Hero}${hasWeather?`<div class="weather-hero"><div class="weather-head"><div class="weather-now"><div class="weather-icon"><ha-icon icon="${weatherIcon}"></ha-icon></div><div><div class="hero-overline">METEO CASA</div><div class="weather-temp">${this._configured("sensor.weather_outdoor_temperature")?this._fmt("sensor.weather_outdoor_temperature",1,"°C"):"—"}</div><div class="weather-status">${weatherStatus}</div><div class="weather-sub">${this._configured("sensor.weather_feels_like_temperature")?`Percepita ${this._fmt("sensor.weather_feels_like_temperature",1,"°C")}`:""}${this._configured("sensor.weather_outdoor_humidity")?` · Umidità ${this._fmt("sensor.weather_outdoor_humidity",0,"%")}`:""}</div></div></div><div class="weather-station">Stazione meteo</div></div><div class="weather-strip">${hasRain?`<div class="weather-chip"><div class="k">Pioggia</div><div class="v">${rain?"🌧️ Rilevata":"✅ Asciutto"}</div></div>`:""}${hasWind?`<div class="weather-chip"><div class="k">Vento</div><div class="v">${this._fmt("sensor.weather_wind_speed",1,"km/h")}</div></div>`:""}${hasSun?`<div class="weather-chip"><div class="k">Sole</div><div class="v">${this._luxLabel("sensor.weather_solar_lux")} · ${this._fmtLuxCompact("sensor.weather_solar_lux")}</div></d

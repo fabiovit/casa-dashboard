@@ -1,4 +1,4 @@
-entities.filter(e=>e!==oldEntity);
+ if(!stillUsed) room.entities=room.entities.filter(e=>e!==oldEntity);
     }
     if(newEntity && !room.entities.includes(newEntity)) room.entities.push(newEntity);
   }
@@ -40,7 +40,7 @@ entities.filter(e=>e!==oldEntity);
   }
   _addRoomDraft(){
     const id=this._slugRoom("Nuova stanza");
-    this._roomsDraft.push({id,name:"Nuova stanza",type:"generico",icon:"mdi:home-outline",image:"",entities:[],entity_labels:{},entity_images:{},entity_icons:{},modules:[]});
+    this._roomsDraft.push({id,name:"Nuova stanza",type:"generico",icon:"mdi:home-outline",image:"",entities:[],entity_labels:{},entity_images:{},entity_icons:{},entity_sizes:{},modules:[]});
     this._configTab="rooms";
     this._renderConfigLayer();
     requestAnimationFrame(()=>{
@@ -325,7 +325,7 @@ entities.filter(e=>e!==oldEntity);
       semanticType==="tv" ? `<div class="kitchen-tv"><div class="tv-screen ${on?'on':''}"><ha-icon icon="mdi:television"></ha-icon></div><div class="tv-stand"></div></div>` :
       `<div class="kitchen-semantic-icon ${semanticType} ${on?'on':'off'}"><ha-icon icon="${semanticIcon}"></ha-icon></div>`;
 
-    return `<div class="kitchen-appliance-card ${semanticType} ${on?'on':'off'} span-${span}">
+    return `<div class="kitchen-appliance-card ${semanticType} ${on?'on':'off'} span-${span}${entity?this._entitySizeClass(entity):""}">
       <div class="kitchen-appliance-visual">${visual}</div>
       <div class="kitchen-appliance-copy clickable" data-more="${entity}">
         <span>${this._esc(title)}</span>
@@ -459,6 +459,7 @@ entities.filter(e=>e!==oldEntity);
     ].join("");
 
     const blindCards=covers.map(e=>{
+      const customPhoto=this._customObjectVisual(e,"device");
       const posRaw=this._attr(e,"current_position",null);
       const pos=posRaw===null?null:Math.max(0,Math.min(100,Number(posRaw)||0));
       const state=this._state(e,"unknown");
@@ -467,14 +468,14 @@ entities.filter(e=>e!==oldEntity);
       const value=pos!==null
         ? (pos<=5?"Su / Chiusa":pos>=95?"Giù / Aperta":`${Math.round(pos)}%`)
         : (open?"Aperta":"Chiusa");
-      return `<div class="kitchen-blind-card span-12 ${open?"open":"closed"}">
-        <div class="kitchen-blind-scene">
+      return `<div class="kitchen-blind-card span-12 ${open?"open":"closed"} ${customPhoto?"has-custom-photo":""}">
+        ${customPhoto || `<div class="kitchen-blind-scene">
           <div class="kitchen-blind-window">
             <div class="kitchen-blind-sky"></div>
             <div class="kitchen-blind-sheet" style="height:${pos===null?(open?88:12):Math.max(8,Math.min(92,pos))}%"></div>
             <div class="kitchen-blind-bar" style="top:${pos===null?(open?88:12):Math.max(8,Math.min(92,pos))}%"></div>
           </div>
-        </div>
+        </div>`}
         <div class="kitchen-blind-copy clickable" data-more="${e}">
           <span>${this._esc(label)}</span>
           <strong>${value}</strong>
@@ -538,4 +539,33 @@ entities.filter(e=>e!==oldEntity);
       }
       if(dc==="vibration") return this._activityVisual(e,name,"vibration",3,room.name);
       if(["motion","occupancy","presence"].includes(dc)) return this._activityVisual(e,name,dc==="motion"?"motion":"occupancy",3,room.name);
-      retur
+      return this._metric(this._v1OriginalIcon(e,room.type,name),name,this._state(e),this._attr(e,"unit_of_measurement",""),3,e);
+    }).join("");
+
+    return `<div class="page kitchen-dynamic-page">
+      ${hero}
+
+      ${lightsCards?this._section("Luci"):""}
+      <div class="grid">${lightsCards}</div>
+
+      ${roomClimate?this._section("Comfort e Clima","Pannello climatizzatore reale"):""}
+      <div class="grid">${roomClimate?this._dynamicKitchenClimatePanel(
+        roomClimate,
+        temp||climateTemp||null,
+        hum||null
+      ):""}</div>
+
+      ${blindCards?this._section("Tenda"):""}
+      <div class="grid">${blindCards}</div>
+
+      ${applianceCards?this._section("Elettrodomestici"):""}
+      <div class="grid">${applianceCards}</div>
+
+      ${heatCards.length?this._section("Riscaldamento e ACS"):""}
+      <div class="grid">${heatCards.join("")}</div>
+
+      ${environment?this._section("Ambiente"):""}
+      <div class="grid">${environment}</div>
+
+      ${sensorCards?this._section("Sensori"):""}
+      <div class

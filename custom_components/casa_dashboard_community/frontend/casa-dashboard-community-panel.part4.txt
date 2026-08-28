@@ -1,43 +1,4 @@
-olute;bottom:20px;width:34px;height:76px;background:#667075}.uv-wall.left{left:0}.uv-wall.right{right:0}
-      .uv-post{position:absolute;bottom:18px;width:12px;height:94px;background:#7f898e}.uv-post.left{left:30px}.uv-post.right{right:30px}
-      .uv-wicket-leaf{position:absolute;left:42px;right:42px;bottom:27px;height:70px;border:4px solid #67747b;display:flex;justify-content:space-around;transform-origin:left center;background:rgba(41,50,55,.28)}
-      .uv-wicket-leaf.open{transform:perspective(350px) rotateY(-48deg)}.uv-wicket-leaf i{width:4px;background:#7b878d}
-
-      /* cancello */
-      .uv-gate-pillar{position:absolute;bottom:14px;width:16px;height:98px;background:#747f86}.uv-gate-pillar.left{left:16px}.uv-gate-pillar.right{right:16px}
-      .uv-gate-leaf{position:absolute;left:32px;right:32px;bottom:24px;height:74px;border:5px solid #647178;display:flex;justify-content:space-around;background:#343d42;transform-origin:left center}
-      .uv-gate-leaf.open{transform:perspective(400px) rotateY(-40deg)}.uv-gate-leaf i{width:4px;background:#707d84}
-
-      /* basculante */
-      .uv-garage-frame{position:absolute;left:20px;right:20px;top:16px;bottom:16px;border:8px solid #737f86;background:#20272b}
-      .uv-garage-door{position:absolute;inset:0;background:#4f5a61;display:flex;flex-direction:column;justify-content:space-evenly;transform-origin:top center}
-      .uv-garage-door.open{transform:perspective(450px) rotateX(65deg)}.uv-garage-door i{height:3px;background:#6e7a81}
-
-      /* irrigazione */
-      .uv-grass{position:absolute;left:0;right:0;bottom:0;height:45px;background:#314b32}
-      .uv-sprinkler{position:absolute;left:50%;bottom:28px;width:14px;height:30px;transform:translateX(-50%);background:#727d83;border-radius:5px}
-      .uv-water{position:absolute;left:50%;bottom:54px;width:120px;height:58px;transform:translateX(-50%)}
-      .uv-water i{position:absolute;left:58px;bottom:0;width:3px;height:56px;background:#66c8ff;transform-origin:bottom;opacity:.25}
-      .uv-water.active i{opacity:.85}.uv-water i:nth-child(1){transform:rotate(-55deg)}.uv-water i:nth-child(2){transform:rotate(-30deg)}.uv-water i:nth-child(4){transform:rotate(30deg)}.uv-water i:nth-child(5){transform:rotate(55deg)}
-
-      /* mower */
-      .uv-lawn{position:absolute;left:0;right:0;bottom:0;height:46px;background:#2d4d32}
-      .uv-mower-body{position:absolute;left:50%;bottom:29px;width:78px;height:44px;border-radius:32px 32px 18px 18px;background:#59656c;transform:translateX(-50%)}
-      .uv-mower-body.active{box-shadow:0 0 18px rgba(98,220,160,.14)}.uv-mower-top{position:absolute;left:20px;right:20px;top:8px;height:18px;border-radius:13px;background:#252d31}.uv-mower-eye{position:absolute;left:34px;top:13px;width:10px;height:10px;border-radius:50%;background:#70e0b1}
-
-      /* lavatrice */
-      .uv-washer-body{position:absolute;left:50%;top:12px;width:82px;height:104px;transform:translateX(-50%);border-radius:12px;background:#c0c8cd;border:4px solid #7d898f}
-      .uv-washer-panel{position:absolute;left:8px;right:8px;top:8px;height:18px;display:flex;gap:5px}.uv-washer-panel i{width:9px;height:9px;border-radius:50%;background:#53636d}
-      .uv-washer-door{position:absolute;left:18px;right:18px;bottom:10px;height:52px;border-radius:50%;border:7px solid #5f6b72;background:#1d2d36}.uv-washer-door div{position:absolute;inset:6px;border-radius:50%;background:#3e7388}
-      .uv-washer.active .uv-washer-door div{box-shadow:inset 0 0 18px rgba(99,211,255,.35)}
-
-      /* termostato */
-      .uv-thermostat-ring{position:absolute;left:50%;top:16px;width:82px;height:82px;border-radius:50%;transform:translateX(-50%);border:8px solid #65727a;display:grid;place-items:center;background:#172028;color:#85d6ff}
-      .uv-thermostat-ring.active{border-color:#5fcfff;box-shadow:0 0 18px rgba(95,207,255,.14)}.uv-thermostat-ring ha-icon{--mdc-icon-size:35px}.uv-thermostat-base{position:absolute;left:50%;bottom:15px;width:56px;height:10px;border-radius:10px;background:#59656c;transform:translateX(-50%)}
-
-      /* vacuum/mop */
-      .uv-vacuum-body{position:absolute;left:50%;top:23px;width:86px;height:86px;border-radius:50%;transform:translateX(-50%);background:#56636a;border:7px solid #6d7a82}
-      .uv-vacuum-body.active{box-shadow:0 0 18px rgba(98,220,160,.14)}.uv-vacuum-top{position:absolute;left:20px;right:20px;top:16px;height:24px;border-radius:50%;background:#273139}.uv-vacuum-eye{position:absolute;left:37px;top:23px;width:12px;height:12px;border-radius:50%;background:#67d8ff}
+e{box-shadow:0 0 18px rgba(98,220,160,.14)}.uv-vacuum-top{position:absolute;left:20px;right:20px;top:16px;height:24px;border-radius:50%;background:#273139}.uv-vacuum-eye{position:absolute;left:37px;top:23px;width:12px;height:12px;border-radius:50%;background:#67d8ff}
       .uv-mop-pad{position:absolute;left:14px;right:14px;bottom:-8px;height:18px;border-radius:50%;background:#71b8cc;opacity:.8}
 
       /* gatto + crocchette */
@@ -165,4 +126,24 @@ olute;bottom:20px;width:34px;height:76px;background:#667075}.uv-wall.left{left:0
       .balcony-awning{position:absolute;top:20px;width:68px;max-height:85px;background:repeating-linear-gradient(90deg,#e5dbc8 0 10px,#718698 10px 20px);clip-path:polygon(0 0,100% 0,84% 100%,16% 100%)}.balcony-awning.left{left:8px}.balcony-awning.right{right:8px}
       .balcony-side{display:flex;flex-direction:column;gap:13px}.balcony-meta span{display:block;font-size:9px;letter-spacing:.18em;font-weight:850;color:#8da6bd}.balcony-meta strong{display:block;font-size:29px;margin-top:6px;letter-spacing:-.04em}.balcony-meta small{display:block;color:var(--secondary-text-color);margin-top:4px}.balcony-divider{height:1px;background:linear-gradient(90deg,rgba(77,213,171,.8),transparent)}
       .balcony-awning-card{display:grid;grid-template-columns:220px 1fr auto;gap:20px;align-items:center;min-height:180px;border:1px solid rgba(255,255,255,.07);border-radius:22px;padding:18px;background:rgba(255,255,255,.015)}
-      .balcony-awning-card .awning-scene{position:relative;width:220px;height:135px;border-radius:16px;overflow:hidden;background:linear-gradient(180deg,#29485a,#182b36)}.balcony-awning-card .awning-box{position:absolute;left:18px;right:18px;top:14px;height:18px;background:#89939a;border-radius:6px}.balcony-awning-card .awning-fabric{position:absolute;left:34px;right:34px;top:32px;max-height:82px;background:repeating-linear-gradient(90deg,#e7ddc9 0 14px,#738899 14
+      .balcony-awning-card .awning-scene{position:relative;width:220px;height:135px;border-radius:16px;overflow:hidden;background:linear-gradient(180deg,#29485a,#182b36)}.balcony-awning-card .awning-box{position:absolute;left:18px;right:18px;top:14px;height:18px;background:#89939a;border-radius:6px}.balcony-awning-card .awning-fabric{position:absolute;left:34px;right:34px;top:32px;max-height:82px;background:repeating-linear-gradient(90deg,#e7ddc9 0 14px,#738899 14px 28px);clip-path:polygon(0 0,100% 0,88% 100%,12% 100%)}.balcony-awning-card .awning-arm{position:absolute;top:48px;width:3px;height:68px;background:#9aa6ae;transform-origin:top}.balcony-awning-card .awning-arm.left{left:44px;transform:rotate(-15deg)}.balcony-awning-card .awning-arm.right{right:44px;transform:rotate(15deg)}
+      .awning-info span{display:block;font-size:9px;letter-spacing:.16em;color:#8da6bd}.awning-info strong{display:block;font-size:28px;margin-top:7px}.awning-info small{display:block;color:var(--secondary-text-color);margin-top:4px}.balcony-awning-card button{height:44px;padding:0 15px;border-radius:13px;border:1px solid rgba(80,200,255,.3);background:rgba(80,200,255,.05);color:#6ecbff;font-weight:800;cursor:pointer}
+      .app-shell.theme-light .balcony-hero-card,.app-shell.theme-light .balcony-awning-card{background:linear-gradient(180deg,#fff,#f5f9fd);border-color:rgba(15,23,42,.09)}.app-shell.theme-light .balcony-scene,.app-shell.theme-light .balcony-awning-card .awning-scene{background:linear-gradient(180deg,#d9eff9,#c6dde8)}.app-shell.theme-light .balcony-meta span,.app-shell.theme-light .awning-info span{color:#587292}
+      @media(max-width:900px){.balcony-hero{grid-template-columns:1fr!important}.balcony-hero-card{grid-template-columns:1fr}.balcony-awning-card{grid-template-columns:180px 1fr}.balcony-awning-card button{grid-column:1/-1}.balcony-awning-card .awning-scene{width:180px}}@media(max-width:620px){.balcony-hero-card{padding:14px}.balcony-awning-card{grid-template-columns:1fr}.balcony-awning-card .awning-scene{width:100%}}
+
+
+/* ===== v4.3.54 Garage completo ===== */
+      .garage-hero{grid-template-columns:minmax(360px,.95fr) minmax(560px,1.35fr)!important}
+      .garage-hero-card{display:grid;grid-template-columns:minmax(360px,1.2fr) minmax(230px,.8fr);gap:18px;align-items:center;min-height:275px;padding:20px;border-radius:26px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(72,151,255,.045))}
+      .garage-scene{position:relative;height:235px;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#16232d,#0e151b)}
+      .garage-building{position:absolute;left:38px;right:38px;bottom:18px;height:180px}.garage-roof{position:absolute;left:18px;right:18px;top:0;height:60px;background:#3a4248;clip-path:polygon(50% 0,100% 72%,92% 72%,92% 100%,8% 100%,8% 72%,0 72%)}.garage-frame{position:absolute;left:35px;right:35px;top:55px;bottom:0;border:7px solid #4f5a62;background:#11171c;overflow:hidden}
+      .garage-door-visual{position:absolute;inset:0 0 0 0;background:#48525b;display:flex;flex-direction:column;transition:none!important}.garage-door-visual i{flex:1;border-bottom:2px solid #6b7680}.garage-door-visual.open{transform:translateY(-76%)}.garage-car{position:absolute;left:50%;bottom:6px;width:150px;height:60px;transform:translateX(-50%)}.car-body{position:absolute;left:8px;right:8px;bottom:10px;height:34px;border-radius:38px 38px 12px 12px;background:linear-gradient(180deg,#8d98a3,#56616b)}.car-window{position:absolute;left:43px;top:3px;width:64px;height:28px;border-radius:28px 28px 4px 4px;background:#263744}.car-wheel{position:absolute;bottom:0;width:24px;height:24px;border-radius:50%;background:#111;border:5px solid #3a4045}.car-wheel.left{left:24px}.car-wheel.right{right:24px}.garage-charge-dot{position:absolute;right:17px;top:17px;width:16px;height:16px;border-radius:50%;background:#55616c}.garage-charge-dot.active{background:#54df9b;box-shadow:0 0 18px rgba(84,223,155,.6)}
+      .garage-side{display:flex;flex-direction:column;gap:13px}.garage-meta span{display:block;font-size:9px;letter-spacing:.18em;font-weight:850;color:#8da6bd}.garage-meta strong{display:block;font-size:29px;margin-top:6px;letter-spacing:-.04em}.garage-meta small{display:block;color:var(--secondary-text-color);margin-top:4px}.garage-divider{height:1px;background:linear-gradient(90deg,rgba(90,188,255,.8),transparent)}
+
+      .garage-access-grid{display:grid;grid-template-columns:minmax(340px,.9fr) minmax(520px,1.1fr);gap:14px}
+      .garage-door-card{min-height:230px;border:1px solid rgba(255,255,255,.07);border-radius:22px;padding:18px;display:grid;grid-template-columns:170px 1fr;gap:18px;align-items:center;background:rgba(255,255,255,.015)}.garage-door-mini{position:relative;width:160px;height:135px;border:6px solid #5b6770;background:#46515a;overflow:hidden;display:flex;flex-direction:column}.garage-door-mini i{flex:1;border-bottom:2px solid #6a7680}.garage-door-mini.open{transform:translateY(-58px);clip-path:inset(58px 0 0 0)}.garage-door-copy span{display:block;font-size:9px;letter-spacing:.17em;color:#8da6bd}.garage-door-copy strong{display:block;font-size:30px;margin-top:7px}.garage-door-copy small{display:block;color:var(--secondary-text-color);margin-top:4px}.garage-door-card button{grid-column:1/-1;height:46px;border-radius:14px;border:1px solid rgba(82,186,255,.32);background:rgba(82,186,255,.05);color:#72caff;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px}
+      .garage-controls{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+
+      .daze-console{display:grid;grid-template-columns:minmax(300px,.8fr) minmax(620px,1.6fr);gap:16px;align-items:stretch}
+      .daze-visual{position:relative;min-height:285px;border:1px solid rgba(255,255,255,.07);border-radius:24px;background:linear-gradient(180deg,#111b23,#0d1419);overflow:hidden}
+      .daze-car{position:absolute;left:25px;bott

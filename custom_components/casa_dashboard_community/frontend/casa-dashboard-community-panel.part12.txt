@@ -1,33 +1,4 @@
-n this._metric(this._v1OriginalIcon(e,room.type,name),name,this._state(e),this._attr(e,"unit_of_measurement",""),3,e);
-    }).join("");
-
-    return `<div class="page kitchen-dynamic-page">
-      ${hero}
-
-      ${lightsCards?this._section("Luci"):""}
-      <div class="grid">${lightsCards}</div>
-
-      ${roomClimate?this._section("Comfort e Clima","Pannello climatizzatore reale"):""}
-      <div class="grid">${roomClimate?this._dynamicKitchenClimatePanel(
-        roomClimate,
-        temp||climateTemp||null,
-        hum||null
-      ):""}</div>
-
-      ${blindCards?this._section("Tenda"):""}
-      <div class="grid">${blindCards}</div>
-
-      ${applianceCards?this._section("Elettrodomestici"):""}
-      <div class="grid">${applianceCards}</div>
-
-      ${heatCards.length?this._section("Riscaldamento e ACS"):""}
-      <div class="grid">${heatCards.join("")}</div>
-
-      ${environment?this._section("Ambiente"):""}
-      <div class="grid">${environment}</div>
-
-      ${sensorCards?this._section("Sensori"):""}
-      <div class="grid">${sensorCards}</div>
+="grid">${sensorCards}</div>
     </div>`;
   }
 
@@ -49,7 +20,7 @@ n this._metric(this._v1OriginalIcon(e,room.type,name),name,this._state(e),this._
   _hallwayApplianceVisual(entity,title,span=6){
     const [kind,icon,sub]=this._hallwayApplianceKind(entity,title);
     const on=this._on(entity);
-    return `<div class="hallway-appliance-card ${kind} ${on?'on':'off'} span-${span}">
+    return `<div class="hallway-appliance-card ${kind} ${on?'on':'off'} span-${span}${entity?this._entitySizeClass(entity):""}">
       <div class="hallway-appliance-visual">
         <div class="hallway-appliance-icon ${kind} ${on?'on':'off'}">
           <ha-icon icon="${icon}"></ha-icon>
@@ -171,7 +142,7 @@ n this._metric(this._v1OriginalIcon(e,room.type,name),name,this._state(e),this._
 
   _roomFanVisual(entity,title,span=6,subtitle="Ventilazione"){
     const on=this._on(entity);
-    return `<div class="room-fan-card ${on?'on':'off'} span-${span}">
+    return `<div class="room-fan-card ${on?'on':'off'} span-${span}${entity?this._entitySizeClass(entity):""}">
       <div class="room-fan-scene">
         <div class="room-fan-rotor ${on?'active':''}">
           <div class="room-fan-hub"></div>
@@ -207,6 +178,7 @@ n this._metric(this._v1OriginalIcon(e,room.type,name),name,this._state(e),this._
   }
 
   _awningVisual(entity,title,span=6){
+    const customPhoto=this._customObjectVisual(entity,"device");
     const posRaw=this._attr(entity,"current_position",null);
     const pos=posRaw===null?null:Math.max(0,Math.min(100,Number(posRaw)||0));
     const state=this._state(entity,"unknown");
@@ -216,13 +188,13 @@ n this._metric(this._v1OriginalIcon(e,room.type,name),name,this._state(e),this._
       : (open?"Estesa":"Raccolta");
     const visualPos=pos===null?(open?75:10):Math.max(10,Math.min(92,pos));
 
-    return `<div class="community-awning-card span-${span}">
-      <div class="community-awning-scene">
+    return `<div class="community-awning-card span-${span}${entity?this._entitySizeClass(entity):""} ${customPhoto?"has-custom-photo":""}">
+      ${customPhoto || `<div class="community-awning-scene">
         <div class="community-awning-box"></div>
         <div class="community-awning-fabric" style="height:${visualPos}%"></div>
         <div class="community-awning-arm left"></div>
         <div class="community-awning-arm right"></div>
-      </div>
+      </div>`}
       <div class="community-awning-info clickable" data-more="${entity}">
         <span>${this._esc(title)}</span>
         <strong>${status}</strong>
@@ -230,6 +202,39 @@ n this._metric(this._v1OriginalIcon(e,room.type,name),name,this._state(e),this._
       </div>
       <button class="community-awning-manage" data-more="${entity}" type="button">Gestisci tenda</button>
     </div>`;
+  }
+
+  _vacuumRoomCard(entity,title,span=6){
+    const state=this._state(entity,"—");
+    const active=["cleaning","returning","paused"].includes(String(state).toLowerCase());
+    const battery=this._attr(entity,"battery_level",null);
+    return `<div class="robot-room-card ${active?"active":"idle"} span-${span}${entity?this._entitySizeClass(entity):""}">
+      <div class="robot-room-visual"><ha-icon icon="mdi:robot-vacuum-variant"></ha-icon><i></i></div>
+      <div class="robot-room-copy clickable" data-more="${entity}"><span>${this._esc(title)}</span><strong>${active?"In attività":"A riposo"}</strong><small>${battery!==null?`Batteria ${battery}% · `:""}${this._esc(state)}</small></div>
+      <div class="robot-room-actions">
+        <button data-vacuum-entity="${entity}" data-vacuum-service="start" type="button"><ha-icon icon="mdi:play"></ha-icon></button>
+        <button data-vacuum-entity="${entity}" data-vacuum-service="return_to_base" type="button"><ha-icon icon="mdi:home-import-outline"></ha-icon></button>
+      </div>
+    </div>`;
+  }
+
+  _robotOverviewSection(){
+    const entity=this._moduleEntity("vacuum.robot_vacuum");
+    if(!entity) return "";
+    const state=this._state(entity,"—");
+    const batt=this._attr(entity,"battery_level",null);
+    const area=this._moduleEntity("sensor.robot_vacuum_cleaned_area");
+    const duration=this._moduleEntity("sensor.robot_vacuum_cleaning_duration");
+    return `${this._section("Robot pulizia","Aspirazione e lavaggio")}
+      <div class="robot-overview-card">
+        <div class="robot-overview-visual"><ha-icon icon="mdi:robot-vacuum-variant"></ha-icon></div>
+        <div class="robot-overview-copy"><span>ROBOT</span><strong>${this._esc(this._hass?.states?.[entity]?.attributes?.friendly_name||"Robot aspirapolvere")}</strong><small>${this._esc(state)}</small></div>
+        <div class="robot-overview-stats">
+          ${batt!==null?`<div><span>BATTERIA</span><strong>${batt}%</strong></div>`:""}
+          ${area?`<div><span>AREA</span><strong>${this._state(area,"—")} ${this._attr(area,"unit_of_measurement","")||""}</strong></div>`:""}
+          ${duration?`<div><span>DURATA</span><strong>${this._state(duration,"—")} ${this._attr(duration,"unit_of_measurement","")||""}</strong></div>`:""}
+        </div>
+      </div>`;
   }
 
   _dynamicRoom(room){
@@ -246,6 +251,7 @@ n this._metric(this._v1OriginalIcon(e,room.type,name),name,this._state(e),this._
     const scripts=byDomain("script");
     const buttons=byDomain("button");
     const media=byDomain("media_player");
+    const vacuums=byDomain("vacuum");
 
     const temp=sensors.find(e=>{
       const dc=String(this._attr(e,"device_class","")).toLowerCase();
@@ -423,6 +429,7 @@ n this._metric(this._v1OriginalIcon(e,room.type,name),name,this._state(e),this._
             "toggle",6
           )),
       ...media.map(e=>`<div class="command-strip span-6"><div class="command-symbol"><ha-icon icon="${this._v1OriginalIcon(e,room.type,display(e))}"></ha-icon></div><div class="command-copy clickable" data-more="${e}"><div class="command-title">${this._esc(display(e))}</div><div class="command-sub">${this._esc(this._state(e,"—"))}</div></div></div>`),
+      ...vacuums.map(e=>this._vacuumRoomCard(e,display(e),6)),
       ...scripts.map(e=>`<div class="command-strip span-6"><div class="command-symbol"><ha-icon icon="${this._v1OriginalIcon(e,room.type,display(e))}"></ha-icon></div><div class="command-copy"><div class="command-title">${this._esc(display(e))}</div><div class="command-sub">Azione</div></div><button class="command-action" data-script="${e}" type="button"><span>ESEGUI</span><i></i></button></div>`),
       ...buttons.map(e=>`<div class="command-strip span-6"><div class="command-symbol"><ha-icon icon="${this._v1OriginalIcon(e,room.type,display(e))}"></ha-icon></div><div class="command-copy clickable" data-more="${e}"><div class="command-title">${this._esc(display(e))}</div><div class="command-sub">Comando</div></div></div>`)
     ].join("");
@@ -599,7 +606,7 @@ n this._metric(this._v1OriginalIcon(e,room.type,name),name,this._state(e),this._
       <small>${this._esc(description)}</small>
       <div class="photo-config-line">
         <input data-overview-key="${key}" value="${this._esc(value)}" placeholder="/local/... oppure carica foto">
-        <label class="photo-upload-btn native-photo-picker"><ha-icon icon="mdi:image-plus"></ha-icon><span>Carica</span><input type="file" data-overview-photo-file="${key}" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.jpg,.jpeg,.png,.webp,.heic,.heif"></label>
+        <label class="photo-upload-btn native-photo-picker"><ha-icon icon="mdi:image-plus"></ha-icon><span>Carica</span><input type="file" data-overview-photo-file="${key}" accept="image/*,.jpg,.jpeg,.png,.webp,.heic,.heif"></label>
         ${value?`<button class="photo-clear-btn" type="button" data-clear-overview-image="${key}" title="Rimuovi foto"><ha-icon icon="mdi:image-remove-outline"></ha-icon></button>`:""}
       </div>
       ${value?`<div class="photo-preview overview-photo-preview"><img src="${this._esc(value)}" alt=""></div>`:""}
@@ -624,22 +631,18 @@ n this._metric(this._v1OriginalIcon(e,room.type,name),name,this._state(e),this._
       <div class="overview-photo-config-grid">
         ${this._overviewImageConfig("overview_image","Foto generale casa","Immagine mostrata nella Panoramica")}
         ${this._overviewImageConfig("vehicle_image","Foto auto","Immagine mostrata nella sezione Auto EV")}
+        ${this._overviewImageConfig("dashboard_background_image","Sfondo dashboard","Immagine usata come sfondo generale quando selezioni “Immagine”")}
+      </div>
+      <div class="background-config-panel">
+        <div><strong>Sfondo generale dashboard</strong><span>Automatico, colore fisso, sfumatura o immagine.</span></div>
+        <label><span>TIPO</span><select data-overview-key="dashboard_background_mode">
+          ${[["auto","Automatico"],["color","Colore"],["gradient","Sfumatura"],["image","Immagine"]].map(([v,l])=>`<option value="${v}" ${(this._overviewDraft.dashboard_background_mode||"auto")===v?"selected":""}>${l}</option>`).join("")}
+        </select></label>
+        <label><span>COLORE / SFUMATURA</span><input data-overview-key="dashboard_background_value" value="${this._esc(this._overviewDraft.dashboard_background_value||"")}" placeholder="#101820 oppure linear-gradient(135deg,#101820,#183040)"></label>
       </div>
       <div class="config-page-note"><ha-icon icon="mdi:information-outline"></ha-icon><span>Queste etichette incidono solo sulla grafica della Panoramica Casa V2 e non modificano i nomi delle entità in Home Assistant.</span></div>
     </div>`;
   }
   _renderConfigRoomsPage(){
     return `<div class="config-page">
-      <div class="config-page-intro config-page-intro-actions">
-        <ha-icon icon="mdi:floor-plan"></ha-icon>
-        <div><strong>Struttura della casa</strong><span>Crea, rinomina e riordina gli ambienti. Qui gestisci solo la struttura e la foto principale della stanza.</span></div>
-        <button class="room-add room-add-primary" data-action="room-add" type="button"><ha-icon icon="mdi:plus"></ha-icon><span>Aggiungi stanza</span></button>
-      </div>
-      <div class="room-list room-list-page">${this._roomsDraft.map((r,i)=>`<div class="room-edit-row room-edit-row-page" data-room-id="${r.id}">
-        <span class="room-order">${i+1}</span>
-        <div class="room-main-fields">
-          <input data-room-name="${r.id}" value="${this._esc(r.name||"")}" placeholder="Nome stanza">
-          <select data-room-type="${r.id}">${this._roomTypes().map(([v,l])=>`<option value="${v}" ${r.type===v?"selected":""}>${l}</option>`).join("")}</select>
-          <input data-room-icon="${r.id}" value="${this._esc(r.icon||this._roomIcon(r.type))}" placeholder="mdi:icona">
-        </div>
-        <div class="room-image-field"><span>FOTO STANZA</span><div class="photo-config-line"><input data-room-image="${r.id}" value="${this._esc(r.image||"")}" placeholder="/local/... oppure carica foto"><label class="photo-upload-btn n
+      <div class="config-page-intro config-page-intro-actio

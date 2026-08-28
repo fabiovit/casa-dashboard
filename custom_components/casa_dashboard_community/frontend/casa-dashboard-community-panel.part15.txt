@@ -1,4 +1,42 @@
-va":"Spenta";
+idle'} span-${span}${entity?this._entitySizeClass(entity):""}" data-more="${entity}">
+      <div class="activity-visual ${cfg.scene}">
+        ${cfg.scene==="motion"?
+          `<div class="motion-person"><i class="head"></i><i class="body"></i><i class="arm a"></i><i class="arm b"></i><i class="leg a"></i><i class="leg b"></i></div><div class="motion-waves"><i></i><i></i><i></i></div>`:
+          cfg.scene==="occupancy"?
+          `<div class="occupancy-room"><div class="occupancy-person one"></div><div class="occupancy-person two"></div><div class="occupancy-floor"></div></div>`:
+          `<div class="vibration-object"><div class="vibration-window"></div></div><div class="vibration-lines left"><i></i><i></i></div><div class="vibration-lines right"><i></i><i></i></div>`
+        }
+      </div>
+      <div class="activity-copy"><span>${label}</span><strong>${active?cfg.on:cfg.off}</strong><small>${subtitle}</small></div>
+      <div class="activity-state ${active?'warn':'good'}"><ha-icon icon="${cfg.icon}"></ha-icon></div>
+    </button>`;
+  }
+
+  _environmentVisual(entity,label,type="temperature",span=3,subtitle=""){
+    const raw=this._state(entity,"unknown"); const n=Number(raw), valid=Number.isFinite(n);
+    let value="—", icon="mdi:gauge", scene=type, tone="normal";
+    if(type==="temperature"){ value=valid?`${n.toFixed(1)} °C`:"—"; icon="mdi:thermometer"; tone=valid?(n>=28?"hot":n<=18?"cold":"normal"):"normal"; }
+    else if(type==="humidity"){ value=valid?`${Math.round(n)} %`:"—"; icon="mdi:water-percent"; tone=valid?(n>=65?"humid":n<=35?"dry":"normal"):"normal"; }
+    else if(type==="lux"){ value=this._fmtLuxExact(entity); icon="mdi:white-balance-sunny"; const l=valid?n:0; tone=l>=20000?"bright":l>=3500?"good":"low"; }
+    const customPhoto=this._customObjectVisual(entity,"environment");
+    return `<button class="environment-card ${scene} ${tone} span-${span}${entity?this._entitySizeClass(entity):""} ${customPhoto?'has-custom-photo':''}" data-more="${entity}">
+      ${customPhoto || `<div class="environment-visual ${scene}">
+        ${scene==="temperature"?`<div class="thermometer"><div class="thermo-tube"><i style="height:${valid?Math.max(12,Math.min(90,(n+5)/45*100)):30}%"></i></div><div class="thermo-bulb"></div></div>`:scene==="humidity"?`<div class="humidity-drop"><div class="humidity-fill" style="height:${valid?Math.max(8,Math.min(100,n)):35}%"></div></div>`:`<div class="sun-meter"><div class="sun-core"></div>${Array.from({length:8},(_,i)=>`<i class="r${i+1}"></i>`).join("")}</div>`}
+      </div>`}
+      <div class="environment-copy"><span>${this._esc(label)}</span><strong>${this._esc(value)}</strong><small>${this._esc(subtitle)}</small></div><div class="environment-state"><ha-icon icon="${icon}"></ha-icon></div>
+    </button>`;
+  }
+
+  _universalDeviceVisual(entity,title,type="generic",span=4,subtitle="",options={}){
+    const state=this._state(entity,"unknown");
+    const normalized=String(state||"").toLowerCase();
+    const on=this._on(entity);
+    const isOpen=["open","opening","on","true"].includes(normalized) || on;
+    const active=["on","playing","cleaning","mowing","watering","heat","cool","heating","cooling","open","opening","returning","paused"].includes(normalized) || on;
+    let visual="",status="",icon="mdi:devices";
+
+    if(type==="airfryer"){
+      icon="mdi:toaster-oven"; status=active?"Attiva":"Spenta";
       visual=`<div class="uv-airfryer ${active?'active':''}">
         <div class="uv-airfryer-body">
           <div class="uv-airfryer-top"><i></i><i></i></div>
@@ -59,7 +97,7 @@ va":"Spenta";
       actionText=actionText||(on?"ON":"OFF");
     }
     const customPhoto=this._customObjectVisual(entity,"universal");
-    return `<div class="universal-device-card ${type} ${visualActive?'active':'inactive'} span-${span} ${customPhoto?'has-custom-photo':''}">${customPhoto || `<div class="universal-device-scene">${visual}</div>`}<div class="universal-device-copy clickable" data-more="${entity}"><span>${this._esc(title)}</span><strong>${this._esc(status)}</strong><small>${this._esc(subtitle)}</small></div><button class="universal-device-action ${actionClass}" ${actionAttr} type="button"><ha-icon icon="${icon}"></ha-icon>${actionText?`<span>${this._esc(actionText)}</span>`:""}</button></div>`;
+    return `<div class="universal-device-card ${type} ${visualActive?'active':'inactive'} span-${span}${entity?this._entitySizeClass(entity):""} ${customPhoto?'has-custom-photo':''}">${customPhoto || `<div class="universal-device-scene">${visual}</div>`}<div class="universal-device-copy clickable" data-more="${entity}"><span>${this._esc(title)}</span><strong>${this._esc(status)}</strong><small>${this._esc(subtitle)}</small></div><button class="universal-device-action ${actionClass}" ${actionAttr} type="button"><ha-icon icon="${icon}"></ha-icon>${actionText?`<span>${this._esc(actionText)}</span>`:""}</button></div>`;
   }
 
   _v2HeroScene(sceneKey){
@@ -171,7 +209,7 @@ va":"Spenta";
     const shown=value;
     const plain=String(shown).replace(/<[^>]+>/g,'').trim();
     const longClass=plain.length>26?'value-long':'';
-    return `<div class="data-node span-${span} ${entity&&configured?'clickable':''} ${cls} ${longClass}" ${entity&&configured?`data-more="${entity}"`:""}><div class="data-node-top"><span class="data-label">${label}</span><ha-icon icon="${icon}"></ha-icon></div><div class="data-value">${shown}</div>${foot?`<div class="data-foot">${foot}</div>`:""}<div class="data-glow"></div></div>`;
+    return `<div class="data-node span-${span}${entity?this._entitySizeClass(entity):""} ${entity&&configured?'clickable':''} ${cls} ${longClass}" ${entity&&configured?`data-more="${entity}"`:""}><div class="data-node-top"><span class="data-label">${label}</span><ha-icon icon="${icon}"></ha-icon></div><div class="data-value">${shown}</div>${foot?`<div class="data-foot">${foot}</div>`:""}<div class="data-glow"></div></div>`;
   }
   _control(entity,title,icon,sub="",mode="toggle",span=4) {
     const configured=this._configured(entity);
@@ -186,20 +224,21 @@ va":"Spenta";
     const st=this._state(entity,"off");
     const on=this._on(entity)||["open","cool","heat","heating","cooling"].includes(st);
     const cls=this._controlTone(entity,on);
-    return `<div class="command-strip span-${span} ${cls}"><div class="command-symbol ${on?'active':''}"><ha-icon icon="${icon}"></ha-icon></div><div class="command-copy clickable" data-more="${entity}"><div class="command-title">${title}</div><div class="command-sub">${sub||this._esc(st)}</div></div>${mode==='toggle'?`<button class="command-action ${on?'active':''}" data-toggle="${entity}" type="button"><span>${on?'ON':'OFF'}</span><i></i></button>`:""}</div>`;
+    return `<div class="command-strip span-${span}${entity?this._entitySizeClass(entity):""} ${cls}"><div class="command-symbol ${on?'active':''}"><ha-icon icon="${icon}"></ha-icon></div><div class="command-copy clickable" data-more="${entity}"><div class="command-title">${title}</div><div class="command-sub">${sub||this._esc(st)}</div></div>${mode==='toggle'?`<button class="command-action ${on?'active':''}" data-toggle="${entity}" type="button"><span>${on?'ON':'OFF'}</span><i></i></button>`:""}</div>`;
   }
   _coverControl(entity,title,inverted=false,span=6,subPrefix="Posizione"){
     const configured=this._configured(entity); if(!configured) return "";
+    const customPhoto=this._customObjectVisual(entity,"device");
     const open=this._coverOpen(entity,inverted),pos=this._attr(entity,"current_position",null);
     const stateText=inverted?(open?"Aperta":"Chiusa"):(open?"Giù / aperta":"Su / chiusa");
     if(this._uiTheme==="v2"){
-      return `<div class="universal-device-card blinds ${open?'active':'inactive'} span-${span}">
-        <div class="universal-device-scene"><div class="blind-visual ${open?'open':''}"><div class="blind-box"></div><div class="blind-slats">${Array.from({length:7},()=>'<i></i>').join("")}</div><div class="blind-cord"></div></div></div>
+      return `<div class="universal-device-card blinds ${open?'active':'inactive'} span-${span}${entity?this._entitySizeClass(entity):""} ${customPhoto?"has-custom-photo":""}">
+        ${customPhoto || `<div class="universal-device-scene"><div class="blind-visual ${open?'open':''}"><div class="blind-box"></div><div class="blind-slats">${Array.from({length:7},()=>'<i></i>').join("")}</div><div class="blind-cord"></div></div></div>`}
         <div class="universal-device-copy clickable" data-more="${entity}"><span>${this._esc(title)}</span><strong>${this._esc(stateText)}</strong><small>${pos!==null?`${subPrefix} ${pos}%`:"Serramento"}</small></div>
         <button class="universal-device-action ${open?'active':''}" data-cover-toggle="${entity}" data-inverted="${inverted?1:0}" type="button"><ha-icon icon="mdi:blinds-horizontal"></ha-icon><span>${open?'CHIUDI':'APRI'}</span></button>
       </div>`;
     }
-    return `<div class="command-strip span-${span} ${open?'state-warn':'state-off'}"><div class="command-symbol ${open?'warn':''}"><ha-icon icon="mdi:blinds-horizontal"></ha-icon></div><div class="command-copy clickable" data-more="${entity}"><div class="command-title">${title}</div><div class="command-sub">${pos!==null?`${subPrefix} ${pos}% · `:""}${stateText}</div></div><button class="command-action ${open?'warn':''}" data-cover-toggle="${entity}" data-inverted="${inverted?1:0}" type="button"><span>${open?'CHIUDI':'APRI'}</span><i></i></button></div>`;
+    return `<div class="command-strip span-${span}${entity?this._entitySizeClass(entity):""} ${open?'state-warn':'state-off'}"><div class="command-symbol ${open?'warn':''}"><ha-icon icon="mdi:blinds-horizontal"></ha-icon></div><div class="command-copy clickable" data-more="${entity}"><div class="command-title">${title}</div><div class="command-sub">${pos!==null?`${subPrefix} ${pos}% · `:""}${stateText}</div></div><button class="command-action ${open?'warn':''}" data-cover-toggle="${entity}" data-inverted="${inverted?1:0}" type="button"><span>${open?'CHIUDI':'APRI'}</span><i></i></button></div>`;
   }
   _alert(level,icon,title,text) { return `<div class="signal ${level}"><div class="signal-icon"><ha-icon icon="${icon}"></ha-icon></div><div><strong>${title}</strong><span>${text}</span></div></div>`; }
   _logic(title,text,level=""){ return `<div class="logic-ribbon ${level}"><span>${title}</span><strong>${text}</strong></div>`; }
@@ -419,31 +458,4 @@ va":"Spenta";
         <div class="solar-pv-meta"><span>${this._esc(pv1Label)}</span><strong>${this._energyFmtKW(pv1,true)}</strong><small>${[pv1Volt,pv1Current].filter(v=>v!=="—").join(" · ")}</small></div>
         <div class="solar-pv-track"><div class="solar-pv-fill" style="width:${Math.min(100,(Math.abs(pv1)/pvMax)*100)}%"></div></div>
       </div>`:"",
-      pv2!==null?`<div class="solar-pv-line">
-        <div class="solar-pv-meta"><span>${this._esc(pv2Label)}</span><strong>${this._energyFmtKW(pv2,true)}</strong><small>${[pv2Volt,pv2Current].filter(v=>v!=="—").join(" · ")}</small></div>
-        <div class="solar-pv-track"><div class="solar-pv-fill west" style="width:${Math.min(100,(Math.abs(pv2)/pvMax)*100)}%"></div></div>
-      </div>`:""
-    ].join("");
-
-    const topCards=[
-      pvTotal!==null?`<div class="solar-panel solar-prod-card">
-        <div class="solar-prod-top"><div class="solar-sun"><ha-icon icon="mdi:white-balance-sunny"></ha-icon></div></div>
-        <div class="solar-prod-copy"><span>${this._esc(prodLabel)}</span><strong>${this._energyFmtKW(pvTotal,true)}</strong>${dailyParts.length?`<small>${dailyParts.join(" · ")}</small>`:""}</div>
-        ${pvRows?`<div class="solar-pv-bars">${pvRows}</div>`:""}
-      </div>`:"",
-      (soc!==null || battPower!==null)?`<div class="solar-panel solar-battery-hero">
-        <div class="solar-battery-visual">
-          <div class="solar-battery-shell"><div class="solar-battery-fill ${battTone}" style="height:${Math.max(soc===null?10:12,socPct)}%"></div><div class="solar-battery-soc"><div><span>SOC</span><strong>${socText}</strong></div></div></div>
-        </div>
-        <div class="solar-battery-copy">
-          <div class="eyebrow ${battTone}">${this._esc(battFlowLabel)}</div>
-          <div class="power ${battTone}">${battPower!==null?this._energyFmtKW(battPower,true):"—"}</div>
-          <div class="desc">${this._esc(battDesc)}</div>
-          ${batteryPills.length?`<div class="solar-energy-pills">${batteryPills.map(([label,value])=>`<div class="solar-energy-pill"><span>${label}</span><strong>${value}</strong></div>`).join("")}</div>`:""}
-        </div>
-      </div>`:""
-    ].filter(Boolean).join("");
-
-    const nodes=[
-      load!==null?`<div class="solar-node house"><div class="solar-node-orb"><ha-icon icon="mdi:home-import-outline"></ha-icon></div><div class="solar-node-label">${this._esc(houseLabel)}</div><strong>${this._energyFmtKW(load,true)}</strong><small>${this._language==="en"?"Current home consumption":"Consumo istantaneo della casa"}</small><div class="solar-node-chip active">${this._language==="en"?"Home load":"Consumo casa"}</div></div>`:"",
-      pvTotal!==null?`<div class="solar-node inverter"><div class="solar-node-orb"><ha-icon icon="mdi:solar-power-variant"></ha-icon></div><div class="solar-node-label">${this._esc(invert
+      pv2!==null?`<d

@@ -2,7 +2,7 @@
 
 [🇬🇧 English](README.md) | 🇮🇹 **Italiano**
 
-[![Release](https://img.shields.io/badge/release-v4.0.0-blue)](https://github.com/fabiovit/casa-dashboard/releases)
+[![Release](https://img.shields.io/badge/release-v4.1.0-blue)](https://github.com/fabiovit/casa-dashboard/releases)
 [![HACS](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz/)
 [![Validate](https://img.shields.io/github/actions/workflow/status/fabiovit/casa-dashboard/hacs.yml?branch=main&label=Validate)](https://github.com/fabiovit/casa-dashboard/actions/workflows/hacs.yml)
 [![Hassfest](https://img.shields.io/github/actions/workflow/status/fabiovit/casa-dashboard/hassfest.yml?branch=main&label=Hassfest)](https://github.com/fabiovit/casa-dashboard/actions/workflows/hassfest.yml)
@@ -12,7 +12,7 @@
 
 Casa Dashboard Community è una dashboard app-like completa per **Home Assistant**, pensata per adattarsi ad abitazioni diverse senza dipendere dalle classiche card Lovelace.
 
-La **v4.0.0** consolida l'attuale generazione Dynamic in una base stabile e più ordinata, con versioning allineato tra frontend e backend.
+La **v4.1.0** è una release di consolidamento: il progetto è stato ripulito, il versioning è ora coerente tra backend e frontend e tutte le funzioni mature introdotte nella serie 2.x restano disponibili in un pacchetto più ordinato.
 
 **Realizzato da Fabio Vittori** · [☕ Offrimi un caffè](https://ko-fi.com/fabvittori)
 
@@ -58,28 +58,25 @@ La 4.0 porta una nuova esperienza visiva coerente in **tema scuro e chiaro**, ma
 
 ![Casa Dashboard Community 4.0 - Configuratore Energia e Mobilità](images/casa-v4-config-energy.png)
 
+
+
 ## 🛡️ Sicurezza e accesso
 
-Le stanze dinamiche riconoscono le entità `lock.*` e `alarm_control_panel.*` e, quando configurate, possono mostrare comandi dedicati per serratura e antifurto.
+Le stanze dinamiche Casa V2 riconoscono ora le entità `lock.*` e `alarm_control_panel.*`.
+
+Quando configurate in una stanza, Casa Dashboard aggiunge automaticamente una sezione **Sicurezza e accesso** con stato serratura, comandi Blocca / Sblocca, stato antifurto e comandi rapidi Notte / Fuori casa / Off.
 
 ## ☀️ Visual Energia Avanzato
 
-Casa Dashboard 4.0 supporta le modalità Fotovoltaico **Compatta** e **Avanzata**, con produzione live, eventuali PV1/PV2, SOC e flusso batteria e nodi Casa / Inverter / Batteria / Rete.
+Casa V2 permette ora di scegliere la sezione Fotovoltaico in modalità **Compatta** oppure **Avanzata**.
 
-Le convenzioni del segno di Rete e Batteria sono configurabili per adattarsi a integrazioni inverter differenti.
+La modalità Avanzata mostra produzione live, eventuali PV1/PV2, SOC e flusso batteria, oltre ai nodi Casa / Inverter / Batteria / Rete.
 
-## 🔗 Moduli condivisi nelle stanze
-
-Configura i dati globali una sola volta e richiamali nelle stanze senza duplicare le associazioni:
-
-- Energia solare
-- EV + Wallbox
-- Meteo
-- Allarme
+Le convenzioni del segno di Rete e Batteria sono configurabili, così il visual può adattarsi a integrazioni inverter differenti.
 
 ## 🧭 Configuratore a pagine
 
-Il configuratore è suddiviso in pagine dedicate:
+Il configuratore Casa V2 è ora suddiviso in pagine dedicate:
 
 - Panoramica
 - Stanze
@@ -88,27 +85,66 @@ Il configuratore è suddiviso in pagine dedicate:
 - Meteo & Sicurezza
 - Avanzate
 
-## 🎨 Personalizzazione visuale
+La configurazione normale rimane semplice, mentre l'elenco completo delle 173 associazioni viene spostato nella pagina avanzata.
 
-Puoi personalizzare le label della Panoramica, i nomi di auto e Wallbox, le immagini delle stanze, i nomi visualizzati, le icone e le foto degli oggetti.
+## 🎨 Personalizzazione visuale completa
 
-Le foto caricate per le entità vengono ridimensionate e salvate sotto `/local/casa_dashboard_community/uploads/`.
+Casa V2 permette ora di personalizzare le macro-label della Panoramica, il nome dell'auto e il nome della Wallbox.
+
+Ogni stanza può inoltre utilizzare una foto personalizzata. È possibile indicare un percorso Home Assistant `/local/...` (ad esempio `/local/casa/cucina.jpg`) oppure un URL immagine. Se il campo resta vuoto, viene mantenuto il normale visual Casa V2.
 
 ## 🏠 Stanze dinamiche
 
-Casa Dashboard 4.0 permette di creare, rinominare, riordinare e rimuovere stanze, scegliere tipo/icona e associare più entità Home Assistant alla stessa stanza.
+Con Casa V2 è possibile:
+
+- creare liberamente le stanze;
+- rinominarle e riordinarle;
+- scegliere tipo e icona;
+- creare più stanze dello stesso tipo;
+- rimuovere quelle inutilizzate;
+- associare più entità Home Assistant alla stessa stanza.
 
 ## ⚙️ Configuratore visuale
 
-Le entità possono essere cercate tramite friendly name Home Assistant, `entity_id` o nome visualizzato personalizzato. Le installazioni grandi sono supportate con pagine raggruppate e scroll dedicati.
+La configurazione avviene direttamente dalla dashboard.
+
+Le entità possono essere cercate tramite:
+
+- friendly name Home Assistant;
+- `entity_id`;
+- nome visualizzato personalizzato.
+
+Il configuratore mantiene le **173 associazioni Community** usate dalle funzioni globali e specialistiche.
+
+Anche le associazioni globali possono avere un **nome visualizzato personalizzato** per la Panoramica. Se lasciato vuoto, Casa Dashboard usa il friendly name di Home Assistant e poi il nome Community.
+
+Le installazioni grandi sono gestite con scroll separati e bilanciati per Stanze e associazioni entità.
 
 ## 🧠 Riconoscimento intelligente
 
-Casa Dashboard può scegliere un visual adatto usando nome personalizzato, friendly name Home Assistant, funzione riconosciuta, icona HA, `device_class` e dominio dell'entità.
+Casa V2 può scegliere icona e visual usando:
 
-## 📊 Panoramica
+1. nome visualizzato;
+2. friendly name Home Assistant;
+3. funzione riconosciuta;
+4. icona Home Assistant;
+5. `device_class`;
+6. dominio dell'entità.
 
-La Panoramica mette in evidenza stati attivi, temperature, meteo, fotovoltaico/batteria, rete, Wallbox e, se configurati, i dati reali dell'auto elettrica. Le sezioni non configurate restano nascoste.
+Questo permette anche a una presa smart generica di essere rappresentata come il dispositivo che controlla quando il nome in Home Assistant fornisce abbastanza informazioni.
+
+## 📊 Panoramica V2
+
+La Panoramica mette in evidenza ciò che serve davvero:
+
+- stati attivi;
+- temperature;
+- condizioni esterne e meteo;
+- fotovoltaico e batteria;
+- dati rete;
+- Wallbox ed EV.
+
+Le sezioni non configurate restano nascoste.
 
 ## 🌍 Lingue
 
@@ -117,11 +153,16 @@ Supporto nativo:
 - 🇮🇹 Italiano
 - 🇬🇧 English
 
-La lingua scelta viene memorizzata localmente. I nomi personalizzati delle stanze e delle entità Home Assistant vengono mantenuti.
+Il selettore è disponibile direttamente nella dashboard e la lingua scelta viene memorizzata localmente.
+
+I nomi personalizzati delle stanze e delle entità Home Assistant vengono mantenuti.
+
+
+Anche le singole entità V2 possono avere una foto personalizzata. Usa **Carica** nel configuratore della stanza per luci, prese, elettrodomestici, sensori e altri oggetti. Le foto vengono ridimensionate e salvate sotto `/local/casa_dashboard_community/uploads/`; senza foto resta il visual automatico V2.
 
 ## 📱 Responsive
 
-Casa Dashboard 4.0 è progettata per desktop e smartphone.
+Casa V1 e Casa V2 sono progettate per desktop e smartphone.
 
 ## 📦 Installazione HACS
 
@@ -139,7 +180,9 @@ Copia `custom_components/casa_dashboard_community` in `/config/custom_components
 
 ## ℹ️ Note
 
-Dispositivi, sensori, automazioni, fotovoltaico, EV e Wallbox sono opzionali. Le funzioni non configurate vengono nascoste automaticamente.
+Casa Dashboard Community è un template avanzato. Dispositivi, sensori, automazioni, fotovoltaico, EV e Wallbox sono opzionali.
+
+Le funzioni non configurate vengono nascoste automaticamente.
 
 ## ☕ Supporto
 

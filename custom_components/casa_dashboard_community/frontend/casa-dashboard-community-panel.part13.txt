@@ -1,4 +1,23 @@
-ative-photo-picker"><ha-icon icon="mdi:image-plus"></ha-icon><span>Carica</span><input type="file" data-room-photo-file="${r.id}" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.jpg,.jpeg,.png,.webp,.heic,.heif"></label>${r.image?`<button class="photo-clear-btn" type="button" data-clear-room-image="${r.id}" title="Rimuovi foto"><ha-icon icon="mdi:image-remove-outline"></ha-icon></button>`:""}</div>${r.image?`<div class="photo-preview room-photo-preview"><img src="${this._esc(r.image)}" alt=""></div>`:""}</div>
+ns">
+        <ha-icon icon="mdi:floor-plan"></ha-icon>
+        <div><strong>Struttura della casa</strong><span>Crea, rinomina e riordina gli ambienti. Qui gestisci solo la struttura e la foto principale della stanza.</span></div>
+        <button class="room-add room-add-primary" data-action="room-add" type="button"><ha-icon icon="mdi:plus"></ha-icon><span>Aggiungi stanza</span></button>
+      </div>
+      <div class="room-list room-list-page">${this._roomsDraft.map((r,i)=>`<div class="room-edit-row room-edit-row-page" data-room-id="${r.id}">
+        <span class="room-order">${i+1}</span>
+        <div class="room-main-fields">
+          <input data-room-name="${r.id}" value="${this._esc(r.name||"")}" placeholder="Nome stanza">
+          <select data-room-type="${r.id}">${this._roomTypes().map(([v,l])=>`<option value="${v}" ${r.type===v?"selected":""}>${l}</option>`).join("")}</select>
+          <input data-room-icon="${r.id}" value="${this._esc(r.icon||this._roomIcon(r.type))}" placeholder="mdi:icona">
+        </div>
+        <div class="room-image-field"><span>FOTO STANZA</span><div class="photo-config-line"><input data-room-image="${r.id}" value="${this._esc(r.image||"")}" placeholder="/local/... oppure carica foto"><label class="photo-upload-btn native-photo-picker"><ha-icon icon="mdi:image-plus"></ha-icon><span>Carica</span><input type="file" data-room-photo-file="${r.id}" accept="image/*,.jpg,.jpeg,.png,.webp,.heic,.heif"></label>${r.image?`<button class="photo-clear-btn" type="button" data-clear-room-image="${r.id}" title="Rimuovi foto"><ha-icon icon="mdi:image-remove-outline"></ha-icon></button>`:""}</div>${r.image?`<div class="photo-preview room-photo-preview"><img src="${this._esc(r.image)}" alt=""></div>`:""}
+          <div class="room-background-fields">
+            <label><span>SFONDO</span><select data-room-background-mode="${r.id}">
+              ${[["auto","Automatico"],["color","Colore"],["gradient","Sfumatura"],["image","Foto stanza"]].map(([v,l])=>`<option value="${v}" ${(r.background_mode||"auto")===v?"selected":""}>${l}</option>`).join("")}
+            </select></label>
+            <label><span>VALORE</span><input data-room-background-value="${r.id}" value="${this._esc(r.background_value||"")}" placeholder="#101820 o linear-gradient(...)"></label>
+          </div>
+        </div>
         <div class="room-shared-modules">
           <span>MODULI CONDIVISI</span>
           <div class="room-shared-modules-grid">${this._roomModuleDefinitions().map(mod=>`<label class="room-shared-module ${this._roomHasModule(r,mod.id)?"active":""}"><input type="checkbox" data-room-module-room="${r.id}" data-room-module-id="${mod.id}" ${this._roomHasModule(r,mod.id)?"checked":""}><ha-icon icon="${mod.icon}"></ha-icon><b>${mod.label}</b></label>`).join("")}</div>
@@ -10,10 +29,19 @@ ative-photo-picker"><ha-icon icon="mdi:image-plus"></ha-icon><span>Carica</span>
     </div>`;
   }
   _renderConfigDevicesPage(){
+    const selected=this._deviceRoomFilter||"all";
+    const rooms=selected==="all"?this._roomsDraft:this._roomsDraft.filter(r=>r.id===selected);
     return `<div class="config-page">
       <div class="config-page-intro"><ha-icon icon="mdi:devices"></ha-icon><div><strong>Dispositivi delle stanze</strong><span>Associa entità alle stanze, rinominale e assegna una foto reale ai singoli oggetti.</span></div></div>
+      <div class="device-room-filter">
+        <ha-icon icon="mdi:filter-variant"></ha-icon>
+        <label><span>FILTRA PER STANZA</span><select data-device-room-filter>
+          <option value="all" ${selected==="all"?"selected":""}>Tutte le stanze</option>
+          ${this._roomsDraft.map(r=>`<option value="${r.id}" ${selected===r.id?"selected":""}>${this._esc(r.name||"Stanza")}</option>`).join("")}
+        </select></label>
+      </div>
       <div class="device-room-list">
-        ${this._roomsDraft.map(r=>`<section class="device-room-card">
+        ${rooms.map(r=>`<section class="device-room-card">
           <div class="device-room-card-head"><div><ha-icon icon="${this._esc(r.icon||this._roomIcon(r.type))}"></ha-icon><strong>${this._esc(r.name||"Stanza")}</strong></div><span>${(r.entities||[]).length} entità</span></div>
           ${this._roomEntityPicker(r)}
         </section>`).join("") || `<div class="room-empty"><ha-icon icon="mdi:floor-plan"></ha-icon><strong>Prima crea almeno una stanza</strong><span>Vai nella pagina “Stanze” e costruisci la struttura della casa.</span></div>`}
@@ -93,12 +121,16 @@ ative-photo-picker"><ha-icon icon="mdi:image-plus"></ha-icon><span>Carica</span>
       modules:[...(r.modules||[])],
       entity_labels:{...(r.entity_labels||{})},
       entity_images:{...(r.entity_images||{})},
-      entity_icons:{...(r.entity_icons||{})}
+      entity_icons:{...(r.entity_icons||{})},
+      entity_sizes:{...(r.entity_sizes||{})},
+      background_mode:r.background_mode||"auto",
+      background_value:r.background_value||""
     }));
     this._roomsDraft=savedRooms.length
       ? savedRooms
       : this._mergeConfiguredEntitiesIntoRooms([]);
     this._configFilter="";
+    this._deviceRoomFilter="all";
     this._imageUploadNotice="";
     this._autoMapNotice="";
     this._autoMapChanges=[];
@@ -125,13 +157,15 @@ ative-photo-picker"><ha-icon icon="mdi:image-plus"></ha-icon><span>Carica</span>
     this._applyLanguage(layer);
     if(!this._configDialogOpen) return;
 
-    requestAnimationFrame(()=>{
+    const restoreConfigScroll=()=>{
       const page=layer.querySelector(".config-page");
       if(page){
         const saved=this._configScrollByTab?.[this._configTab];
         if(Number.isFinite(saved)) page.scrollTop=saved;
       }
-    });
+    };
+    requestAnimationFrame(()=>{ restoreConfigScroll(); requestAnimationFrame(restoreConfigScroll); });
+    setTimeout(restoreConfigScroll,60);
 
     const syncRooms=()=>{
       for(const r of this._roomsDraft){
@@ -139,6 +173,8 @@ ative-photo-picker"><ha-icon icon="mdi:image-plus"></ha-icon><span>Carica</span>
         const t=layer.querySelector(`[data-room-type="${r.id}"]`); if(t){ r.type=t.value; if(!r.icon) r.icon=this._roomIcon(r.type); }
         const ic=layer.querySelector(`[data-room-icon="${r.id}"]`); if(ic) r.icon=ic.value.trim()||this._roomIcon(r.type);
         const im=layer.querySelector(`[data-room-image="${r.id}"]`); if(im) r.image=im.value.trim();
+        const bm=layer.querySelector(`[data-room-background-mode="${r.id}"]`); if(bm) r.background_mode=bm.value||"auto";
+        const bv=layer.querySelector(`[data-room-background-value="${r.id}"]`); if(bv) r.background_value=bv.value.trim();
 
         // Modules are part of the room itself. Capture every visible checkbox
         // before any rerender/tab switch/save.
@@ -169,6 +205,15 @@ ative-photo-picker"><ha-icon icon="mdi:image-plus"></ha-icon><span>Carica</span>
       });
     };
 
+    layer.querySelectorAll("[data-device-room-filter]").forEach(select=>{
+      select.addEventListener("change",()=>{
+        const page=layer.querySelector(".config-page");
+        if(page) this._configScrollByTab[this._configTab]=page.scrollTop||0;
+        this._deviceRoomFilter=select.value||"all";
+        this._renderConfigLayer();
+      });
+    });
+
     layer.querySelectorAll("[data-config-tab]").forEach(button=>{
       button.addEventListener("click",()=>{
         syncRooms(); syncVisibleMappingFields();
@@ -183,7 +228,7 @@ ative-photo-picker"><ha-icon icon="mdi:image-plus"></ha-icon><span>Carica</span>
       });
     });
 
-    layer.querySelectorAll("[data-room-name],[data-room-type],[data-room-icon],[data-room-image]").forEach(el=>el.addEventListener("change",syncRooms));
+    layer.querySelectorAll("[data-room-name],[data-room-type],[data-room-icon],[data-room-image],[data-room-background-mode],[data-room-background-value]").forEach(el=>el.addEventListener("change",syncRooms));
 
     layer.querySelectorAll("[data-room-module-room]").forEach(input=>{
       input.addEventListener("change",()=>{
@@ -217,6 +262,10 @@ ative-photo-picker"><ha-icon icon="mdi:image-plus"></ha-icon><span>Carica</span>
     layer.querySelectorAll("[data-room-entity-icon-room]").forEach(input=>{
       const roomId=input.dataset.roomEntityIconRoom, entity=input.dataset.roomEntityIconEntity;
       input.addEventListener("change",()=>this._setRoomEntityIcon(roomId,entity,input.value));
+    });
+    layer.querySelectorAll("[data-room-entity-size-room]").forEach(input=>{
+      const roomId=input.dataset.roomEntitySizeRoom, entity=input.dataset.roomEntitySizeEntity;
+      input.addEventListener("change",()=>this._setRoomEntitySize(roomId,entity,input.value));
     });
 
     layer.querySelectorAll("[data-room-entity-search]").forEach(input=>{
@@ -401,6 +450,13 @@ ative-photo-picker"><ha-icon icon="mdi:image-plus"></ha-icon><span>Carica</span>
         input.value
       );
     });
+    layer?.querySelectorAll("[data-room-entity-size-room]").forEach(input=>{
+      this._setRoomEntitySize(
+        input.dataset.roomEntitySizeRoom,
+        input.dataset.roomEntitySizeEntity,
+        input.value
+      );
+    });
     layer?.querySelectorAll("[data-room-module-room]").forEach(input=>{
       this._setRoomModule(input.dataset.roomModuleRoom,input.dataset.roomModuleId,input.checked);
     });
@@ -500,61 +556,4 @@ ative-photo-picker"><ha-icon icon="mdi:image-plus"></ha-icon><span>Carica</span>
     return `${((a*v)/1000).toFixed(digits)} kW`;
   }
   _esc(v) { return String(v ?? "").replace(/[&<>'"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c])); }
-  _icon(icon, cls="") { return `<div class="iconbox ${cls}"><ha-icon icon="${icon}"></ha-icon></div>`; }
-  _setOptimistic(id,state){ this._optimistic.set(id,{state,at:Date.now()}); this._renderPage(false); }
-  _syncOptimistic(){
-    const now=Date.now();
-    for(const [id,p] of this._optimistic){
-      const eid=this._eid(id); const actual=eid?this._hass?.states?.[eid]?.state:null;
-      if(actual===p.state || now-p.at>3500) this._optimistic.delete(id);
-    }
-  }
-  _stateFingerprint(){
-    if(!this._hass?.states || !this._entityConfigLoaded) return "";
-    const rows=[];
-    const seen=new Set();
-    const track=(eid)=>{
-      if(!eid || seen.has(eid)) return;
-      seen.add(eid);
-      const st=this._hass.states[eid];
-      if(!st){ rows.push(`${eid}|missing`); return; }
-      let attrs="";
-      try { attrs=JSON.stringify(st.attributes || {}); } catch(_err) {}
-      rows.push(`${eid}|${st.state}|${attrs}`);
-    };
-
-    // Global Community mappings.
-    for(const logical of ENTITY_KEYS) track(this._eid(logical));
-
-    // Casa V2 rooms may contain any HA entity, including entities that do not
-    // belong to the 173 legacy mappings. They must participate in the
-    // fingerprint or their visual state can remain stale until another entity
-    // causes a render.
-    for(const room of this._effectiveRooms()){
-      for(const eid of (Array.isArray(room?.entities)?room.entities:[])) track(eid);
-    }
-
-    return rows.join("\n");
-  }
-
-  _scheduleRender(){
-    if(this._pointerBusy){ this._renderPending=true; return; }
-    if(this._renderTimer) return;
-    this._renderTimer=setTimeout(()=>{
-      this._renderTimer=null;
-      if(this._pointerBusy){ this._renderPending=true; return; }
-      this._renderPage(false);
-    },70);
-  }
-  _countOn(list) { return list.filter(id=>this._on(id)).length; }
-  _openCount() { return OPENINGS.filter(id=>this._on(id)).length; }
-  _climateActive(id) { const st=this._state(id,"off"); const act=this._attr(id,"hvac_action",""); return st!=="off" || ["heating","cooling","drying","fan"].includes(act); }
-  _coverOpen(id, invertedPosition=false) {
-    const p=this._optimistic.get(id); if(p && ["open","closed"].includes(p.state)) return p.state==="open";
-    return invertedPosition ? Number(this._attr(id,"current_position",0))>5 : this._state(id)==="open";
-  }
-  _imageUrl(id){ const p=this._attr(id,"entity_picture",""); return p ? this._esc(p) : ""; }
-  _firstId(ids=[]){ return ids.find(id=>this._s(id)) || ids[0] || ""; }
-  _firstState(ids=[], fallback="—"){ const id=this._firstId(ids); return id ? this._state(id,fallback) : fallback; }
-  _firstNum(ids=[], fallback=null){ const id=this._firstId(ids); return id ? this._num(id,fallback) : fallback; }
-  _first
+  _icon(icon, cls="") { return `<div class="iconbox ${cls}"><ha-icon icon="${icon}"></ha-ic

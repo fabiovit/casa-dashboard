@@ -1,115 +1,9 @@
- border-radius:0 !important;
-        }
-        .room-manager{
-          margin:0 8px 10px !important;
-          max-height:38dvh !important;
-        }
-        .room-list{
-          min-height:120px !important;
-          max-height:27dvh !important;
-        }
-        .config-scroll{
-          min-height:30dvh !important;
-          flex-basis:34dvh !important;
-        }
-      }
-
-      /* v4.0.0 - adaptive Community overview */
-      .alert.info{border-color:color-mix(in srgb,var(--primary-color) 22%,var(--divider-color));background:color-mix(in srgb,var(--primary-color) 5%,var(--card-background-color))}
-      .alert.info ha-icon{color:var(--primary-color)}
-      .alert.info .config-open-btn{border-color:color-mix(in srgb,var(--primary-color) 34%,var(--divider-color));background:color-mix(in srgb,var(--primary-color) 8%,var(--card-background-color))}
-      .alert.info .config-open-btn ha-icon{color:var(--primary-color)}
-
-      .overview-key-grid{
-        display:grid!important;
-        grid-template-columns:repeat(auto-fit,minmax(220px,1fr))!important;
-        gap:14px!important;
-        margin:14px 0 32px!important;
-      }
-      .overview-key-card{
-        min-height:108px;
-        padding:16px!important;
-        display:flex;
-        align-items:center;
-        gap:14px;
-        border:1px solid color-mix(in srgb,var(--primary-color) 13%,var(--divider-color))!important;
-        border-radius:19px!important;
-        background:linear-gradient(145deg,
-          color-mix(in srgb,var(--card-background-color) 96%,var(--primary-color) 4%),
-          color-mix(in srgb,var(--secondary-background-color) 94%,var(--primary-color) 6%))!important;
-        box-shadow:0 10px 28px color-mix(in srgb,#000 10%,transparent);
-        overflow:hidden;
-      }
-      .overview-key-card.solar{background:linear-gradient(145deg,color-mix(in srgb,var(--card-background-color) 94%,#f6b73c 6%),color-mix(in srgb,var(--secondary-background-color) 96%,#f6b73c 4%))!important}
-      .overview-key-card.wallbox{background:linear-gradient(145deg,color-mix(in srgb,var(--card-background-color) 94%,var(--primary-color) 6%),color-mix(in srgb,var(--secondary-background-color) 95%,var(--primary-color) 5%))!important}
-      .overview-key-card.external{background:linear-gradient(145deg,color-mix(in srgb,var(--card-background-color) 94%,#5eaefe 6%),color-mix(in srgb,var(--secondary-background-color) 96%,#5eaefe 4%))!important}
-      .overview-key-icon{
-        width:54px;height:54px;border-radius:16px;display:grid;place-items:center;flex:none;
-        color:var(--primary-color);
-        border:1px solid color-mix(in srgb,var(--primary-color) 25%,var(--divider-color));
-        background:color-mix(in srgb,var(--primary-color) 8%,var(--card-background-color));
-      }
-      .overview-key-card.solar .overview-key-icon{color:#d69614;border-color:color-mix(in srgb,#d69614 30%,var(--divider-color));background:color-mix(in srgb,#f6b73c 10%,var(--card-background-color))}
-      .overview-key-icon ha-icon{--mdc-icon-size:27px}
-      .overview-key-copy{min-width:0;flex:1}
-      .overview-key-card .overview-key-copy>span{
-        display:block!important;font-size:10px!important;letter-spacing:.1em!important;
-        color:var(--secondary-text-color)!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-      }
-      .overview-key-value{display:flex;align-items:baseline;gap:7px;margin-top:8px}
-      .overview-key-value strong{margin:0!important;font-size:26px!important;letter-spacing:-.035em;color:var(--primary-text-color)}
-      .overview-key-value b{font-size:12px;color:var(--secondary-text-color);font-weight:750}
-      .theme-light .overview-key-card{box-shadow:0 8px 24px rgba(25,55,80,.08)}
-      @media(max-width:650px){
-        .overview-key-grid{grid-template-columns:1fr!important}
-        .overview-key-card{min-height:94px}
-      }
-
-      /* v4.0.0 - full visual customization */
-      .overview-config-panel{
-        flex:0 0 auto;margin:14px 16px 10px;padding:14px 16px;border-radius:18px;
-        border:1px solid color-mix(in srgb,var(--primary-color) 20%,var(--divider-color));
-        background:color-mix(in srgb,var(--primary-color) 4%,var(--card-background-color));
-      }
-      .overview-config-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:12px}
-      .overview-config-head strong{display:block;font-size:14px}
-      .overview-config-head span{display:block;margin-top:3px;color:var(--secondary-text-color);font-size:10px;line-height:1.4}
-      .overview-config-head ha-icon{color:var(--primary-color);--mdc-icon-size:24px}
-      .overview-config-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
-      .overview-config-grid label,.room-image-field{display:block;min-width:0}
-      .overview-config-grid label>span,.room-image-field>span{display:block;margin-bottom:5px;font-size:8px;letter-spacing:.09em;text-transform:uppercase;font-weight:900;color:var(--secondary-text-color)}
-      .overview-config-grid input,.room-image-field input{
-        box-sizing:border-box;width:100%;height:37px;border:1px solid var(--divider-color);border-radius:10px;
-        background:var(--secondary-background-color);color:var(--primary-text-color);padding:0 9px;outline:0;font:inherit;font-size:11px
-      }
-      .overview-config-grid input:focus,.room-image-field input:focus{border-color:var(--primary-color);box-shadow:0 0 0 2px color-mix(in srgb,var(--primary-color) 14%,transparent)}
-      .room-image-field{grid-column:2/-2}
-      .custom-room-photo{height:220px;border-radius:20px;overflow:hidden;background:var(--secondary-background-color);position:relative}
-      .custom-room-photo img{width:100%;height:100%;object-fit:cover;display:block}
-      .custom-room-photo:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.16))}
-      @media(max-width:980px){.overview-config-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.room-image-field{grid-column:auto}}
-      @media(max-width:620px){.overview-config-grid{grid-template-columns:1fr}.custom-room-photo{height:185px}}
-
-      /* v4.0.0 - direct photo upload for rooms and individual objects */
-      .photo-config-line{display:flex;align-items:center;gap:6px;min-width:0}
-      .photo-config-line>input{min-width:0;flex:1}
-      .photo-upload-btn,.photo-clear-btn{height:37px;display:inline-flex;align-items:center;justify-content:center;gap:5px;flex:none;border:1px solid color-mix(in srgb,var(--primary-color) 28%,var(--divider-color));border-radius:9px;background:color-mix(in srgb,var(--primary-color) 7%,var(--card-background-color));color:var(--primary-text-color);font-size:10px;font-weight:850;padding:0 9px;cursor:pointer}
-      .photo-upload-btn ha-icon,.photo-clear-btn ha-icon{--mdc-icon-size:17px;color:var(--primary-color)}
-      .photo-clear-btn{width:37px;padding:0;border-color:var(--divider-color);background:var(--secondary-background-color)}
-      .photo-upload-btn:disabled{opacity:.6;cursor:wait}
-      .room-entity-photo{display:block;padding:0 2px;margin-top:1px}
-      .room-entity-photo>span{display:block;margin-bottom:5px;font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:var(--secondary-text-color);font-weight:800}
-      .room-entity-photo input{height:32px!important;padding:5px 8px!important;font-size:9px!important;border-radius:8px!important}
-      .room-entity-photo .photo-upload-btn,.room-entity-photo .photo-clear-btn{height:32px;font-size:9px}
-      .room-entity-photo .photo-clear-btn{width:32px}
-      .custom-object-photo{position:relative;overflow:hidden;flex:none;background:var(--secondary-background-color);border:1px solid color-mix(in srgb,var(--primary-color) 12%,var(--divider-color))}
-      .custom-object-photo img{display:block;width:100%;height:100%;object-fit:cover}
-      .light-visual-card>.custom-object-photo,.device-visual-card>.custom-object-photo,.universal-device-card>.custom-object-photo{width:132px;height:118px;border-radius:16px}
+custom-object-photo{width:132px;height:118px;border-radius:16px}
       .sensor-visual-card>.custom-object-photo,.environment-card>.custom-object-photo{width:130px;height:112px;border-radius:15px}
       .has-custom-photo .custom-object-photo:after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)}
       @media(max-width:620px){.light-visual-card>.custom-object-photo,.device-visual-card>.custom-object-photo,.universal-device-card>.custom-object-photo,.sensor-visual-card>.custom-object-photo,.environment-card>.custom-object-photo{width:105px;height:96px}}
 
-      /* v4.0.0 - paged configurator */
+      /* v4.1.0 - paged configurator */
       .config-dialog-tabs{
         width:min(1180px,calc(100vw - 28px))!important;
         height:min(94vh,980px)!important;
@@ -186,7 +80,7 @@
         .room-main-fields>input:last-child{grid-column:auto}
       }
 
-      /* v4.0.0 - Advanced Energy View */
+      /* v4.1.0 - Advanced Energy View */
       .energy-view-config{margin:0 0 18px;padding:16px;border:1px solid color-mix(in srgb,#ffb45c 22%,var(--divider-color));border-radius:18px;background:linear-gradient(145deg,color-mix(in srgb,var(--card-background-color) 97%,#ffb45c 3%),color-mix(in srgb,var(--secondary-background-color) 96%,#ffb45c 4%))}
       .energy-view-config-head{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:13px}
       .energy-view-config-head strong{display:block;font-size:14px}.energy-view-config-head span{display:block;margin-top:3px;color:var(--secondary-text-color);font-size:10px}.energy-view-config-head ha-icon{color:#ffb45c;--mdc-icon-size:26px}
@@ -251,7 +145,7 @@
         .community-advanced-energy .solar-prod-copy strong{font-size:46px}
       }
 
-      /* v4.0.0 - reliable image persistence + preview */
+      /* v4.1.0 - reliable image persistence + preview */
       .photo-preview{margin-top:8px;overflow:hidden;border-radius:11px;border:1px solid var(--divider-color);background:var(--secondary-background-color)}
       .photo-preview img{display:block;width:100%;height:100%;object-fit:cover}
       .room-photo-preview{width:min(260px,100%);height:116px}
@@ -276,7 +170,7 @@
         .config-page-intro-actions .room-add-primary{grid-column:1/-1;width:100%;justify-content:center;margin:4px 0 0}
       }
 
-      /* Community v4.0.0 - Security & Access */
+      /* Community v4.1.0 - Security & Access */
       .community-security-alert{margin:18px 0 4px}
       .community-security-grid{display:grid;grid-template-columns:minmax(360px,.8fr) minmax(520px,1.2fr);gap:18px;margin-bottom:28px}
       .community-security-card{min-height:260px;border:1px solid rgba(255,255,255,.08);border-radius:26px;background:radial-gradient(circle at 100% 100%,rgba(84,211,174,.08),transparent 38%),linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.012));display:grid;overflow:hidden}
@@ -315,4 +209,39 @@
       .activity-visual{height:112px;border-radius:15px;position:relative;overflow:hidden;background:linear-gradient(180deg,#172631,#101820);border:1px solid rgba(255,255,255,.06)}
       .activity-copy span{display:block;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#8da6bd}.activity-copy strong{display:block;font-size:26px;margin-top:7px}.activity-copy small{display:block;color:var(--secondary-text-color);margin-top:4px}
       .activity-state{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.04)}.activity-state.good{color:#55e6ad}.activity-state.warn{color:#ffb45c}
-      .motion-person{position:absolute;left:45%;top:20px;width:46px;height:78px}.motion-person .head{position:absolute;left:17px;top:0;width:17px;height:17px;border-radius:50%;background:#768899}.motion-person .bod
+      .motion-person{position:absolute;left:45%;top:20px;width:46px;height:78px}.motion-person .head{position:absolute;left:17px;top:0;width:17px;height:17px;border-radius:50%;background:#768899}.motion-person .body{position:absolute;left:21px;top:17px;width:8px;height:34px;border-radius:5px;background:#768899;transform:rotate(12deg)}.motion-person .arm,.motion-person .leg{position:absolute;width:7px;height:34px;border-radius:5px;background:#768899;transform-origin:top center}.motion-person .arm.a{left:20px;top:25px;transform:rotate(55deg)}.motion-person .arm.b{left:24px;top:27px;transform:rotate(-47deg)}.motion-person .leg.a{left:23px;top:48px;transform:rotate(37deg)}.motion-person .leg.b{left:25px;top:48px;transform:rotate(-35deg)}.activity-card.active .motion-person *{background:#ffb45c}.motion-waves{position:absolute;right:15px;top:31px}.motion-waves i{display:block;width:16px;height:16px;border:2px solid #617384;border-left:0;border-bottom:0;border-radius:0 16px 0 0;margin:4px}.activity-card.active .motion-waves i{border-color:#ffb45c}
+      .occupancy-room{position:absolute;inset:14px;border:2px solid #536675;border-radius:10px}.occupancy-floor{position:absolute;left:10px;right:10px;bottom:12px;height:2px;background:#536675}.occupancy-person{position:absolute;bottom:14px;width:24px;height:48px}.occupancy-person:before{content:"";position:absolute;left:6px;top:0;width:13px;height:13px;border-radius:50%;background:#758797}.occupancy-person:after{content:"";position:absolute;left:9px;top:14px;width:7px;height:29px;border-radius:5px;background:#758797}.occupancy-person.one{left:26px}.occupancy-person.two{right:26px}.activity-card.active .occupancy-person:before,.activity-card.active .occupancy-person:after{background:#55e6ad}
+      .vibration-object{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:62px;height:72px;border:4px solid #657684;border-radius:7px}.vibration-window{position:absolute;inset:8px;border:2px solid #7b8c98;background:rgba(103,184,255,.12)}.vibration-lines{position:absolute;top:33px}.vibration-lines.left{left:19px}.vibration-lines.right{right:19px}.vibration-lines i{display:block;width:17px;height:3px;background:#657684;margin:9px 0;border-radius:4px}.activity-card.active .vibration-lines i,.activity-card.active .vibration-object{border-color:#ffb45c}
+      .house-thermostat{display:grid;grid-template-columns:190px 1fr;gap:20px;align-items:center;min-height:210px;padding:18px;border:1px solid rgba(255,255,255,.07);border-radius:22px;background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(255,127,74,.035))}
+      .house-thermo-ring{width:170px;height:170px;border-radius:50%;display:grid;place-items:center;position:relative;background:conic-gradient(from 220deg,#2b3740 0 65%,#3d4851 65% 79%,#263139 79%)}.house-thermo-ring:before{content:"";position:absolute;inset:12px;border-radius:50%;background:var(--card-background-color)}.house-thermo-ring.heating{background:conic-gradient(from 220deg,#ff8a46 0 58%,#ffb45c 58% 79%,#263139 79%)}.house-thermo-center{position:relative;z-index:2;text-align:center}.house-thermo-center span{display:block;font-size:8px;letter-spacing:.16em;color:#8da6bd}.house-thermo-center strong{display:block;font-size:38px;letter-spacing:-.05em;margin-top:5px}.house-thermo-center small{display:block;color:var(--secondary-text-color);font-size:10px;margin-top:3px}
+      .house-thermo-data{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.house-thermo-data>div{padding:12px;border-radius:14px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.025)}.house-thermo-data span{display:block;font-size:8px;letter-spacing:.14em;color:#8da6bd}.house-thermo-data strong{display:block;font-size:18px;margin-top:6px}.house-thermo-data button{grid-column:1/-1;height:44px;border-radius:13px;border:1px solid rgba(255,155,75,.28);background:rgba(255,155,75,.05);color:#ffb45c;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px}button,.metric,.opening-card,.activity-card{transition:none!important;animation:none!important}button:hover,.metric:hover,.opening-card:hover,.activity-card:hover{transform:none!important}
+      .app-shell.theme-light .activity-card,.app-shell.theme-light .house-thermostat{background:linear-gradient(180deg,#fff,#f5f9fd);border-color:rgba(15,23,42,.10)}.app-shell.theme-light .activity-visual{background:linear-gradient(180deg,#edf5fa,#ddeaf2)}.app-shell.theme-light .activity-copy span,.app-shell.theme-light .house-thermo-data span,.app-shell.theme-light .house-thermo-center span{color:#587292}.app-shell.theme-light .house-thermo-ring:before{background:#fff}.app-shell.theme-light .house-thermo-data>div{background:#f8fbfe;border-color:rgba(15,23,42,.08)}
+      @media(max-width:900px){.house-thermostat{grid-template-columns:1fr}.house-thermo-data{grid-template-columns:repeat(3,1fr)}}@media(max-width:620px){.activity-card{grid-template-columns:105px 1fr 34px}.activity-visual{height:96px}.activity-copy strong{font-size:21px}.house-thermo-data{grid-template-columns:1fr}.house-thermo-data button{grid-column:auto}}
+
+
+      /* ===== v4.3.75 aperture visuali + anti flicker ===== */
+      .opening-card{width:100%;min-height:150px;border:1px solid rgba(255,255,255,.07);border-radius:var(--r-md);background:linear-gradient(180deg,rgba(255,255,255,.025),rgba(255,255,255,.012));padding:14px;display:grid;grid-template-columns:130px 1fr 42px;align-items:center;gap:16px;color:inherit;text-align:left;cursor:pointer;contain:layout paint}
+      .opening-scene{height:112px;border-radius:15px;display:grid;place-items:center;overflow:hidden;background:linear-gradient(180deg,#203949,#15242d);border:1px solid rgba(255,255,255,.06)}
+      .window-frame{position:relative;width:96px;height:80px;border:5px solid #596773;background:#23455a;perspective:450px}
+      .window-sky{position:absolute;inset:4px;background:linear-gradient(180deg,#467f9f,#27495d)}
+      .window-sash{position:absolute;top:4px;bottom:4px;width:42%;background:rgba(182,209,225,.18);border:3px solid #85939f;transform-origin:left center}
+      .window-sash.left{left:4px}.window-sash.right{right:4px;transform-origin:right center}
+      .opening-card.window.open .window-sash.left{transform:rotateY(-38deg)}
+      .opening-card.window.open .window-sash.right{transform:rotateY(38deg)}
+      .window-handle{position:absolute;left:50%;top:50%;width:5px;height:20px;border-radius:4px;background:#e0e6eb;transform:translate(-50%,-50%)}
+      .cabinet-frame{position:relative;width:104px;height:86px;border:5px solid #58636d;background:#20272e;perspective:450px}
+      .cabinet-door{position:absolute;top:4px;bottom:4px;width:43%;background:linear-gradient(180deg,#49545f,#333c45);border:1px solid #697681}
+      .cabinet-door.left{left:4px;transform-origin:left center}.cabinet-door.right{right:4px;transform-origin:right center}
+      .opening-card.cabinet.open .cabinet-door.left{transform:rotateY(-45deg)}
+      .opening-card.cabinet.open .cabinet-door.right{transform:rotateY(45deg)}
+      .cabinet-handle{position:absolute;top:50%;width:4px;height:18px;background:#dfe5ea;border-radius:3px}.cabinet-handle.left{left:46%}.cabinet-handle.right{right:46%}
+      .opening-copy span{display:block;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#8da6bd}.opening-copy strong{display:block;font-size:26px;margin-top:7px}.opening-copy small{display:block;color:var(--secondary-text-color);margin-top:4px}
+      .opening-state{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.04)}.opening-state.good{color:#55e6ad}.opening-state.warn{color:#ffb45c}
+      .app-shell.theme-light .opening-card{background:linear-gradient(180deg,#fff,#f5f9fd);border-color:rgba(15,23,42,.10)}.app-shell.theme-light .opening-scene{background:linear-gradient(180deg,#e7f3fa,#d8e8f2)}.app-shell.theme-light .opening-copy span{color:#587292}.app-shell.theme-light .cabinet-frame{background:#dce5ec;border-color:#899aa8}.app-shell.theme-light .cabinet-door{background:linear-gradient(180deg,#eef3f6,#cbd6df);border-color:#96a6b4}/* Remove transitions/animations that cause visible blinking during HA state refreshes. */
+      .opening-card *,.kitchen-blind-fabric,.kitchen-blind-bottom,.blind-sheet,.blind-bar,.awning-fabric{transition:none!important;animation:none!important}.page,.scene-hero,.grid,.metric,.opening-card{backface-visibility:hidden;transform:translateZ(0)}
+      @media(max-width:620px){.opening-card{grid-template-columns:105px 1fr 34px}.opening-scene{height:96px}.window-frame{width:82px;height:68px}.cabinet-frame{width:88px;height:72px}.opening-copy strong{font-size:21px}}
+
+      /* ===== v4.3.75 sensori ambiente visuali ===== */
+      .environment-card{width:100%;min-height:150px;border:1px solid rgba(255,255,255,.07);border-radius:var(--r-md);background:linear-gradient(180deg,rgba(255,255,255,.025),rgba(255,255,255,.012));padding:14px;display:grid;grid-template-columns:130px 1fr 42px;align-items:center;gap:16px;color:inherit;text-align:left;cursor:pointer;contain:layout paint}
+      .environment-visual{height:112px;border-radius:15px;display:grid;place-items:center;position:relative;overflow:hidden;background:linear-gradient(180deg,#172631,#101820);border:1px solid rgba(255,255,255,.06)}
+      .environment-copy span{display:block;font-size:9px;letter-spacing:.16em;text-transform:upperca

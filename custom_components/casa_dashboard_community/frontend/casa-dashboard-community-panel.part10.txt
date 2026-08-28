@@ -1,17 +1,4 @@
-stove","Forno"],["mdi:coffee-maker-outline","Macchina caffè"],
-      ["mdi:range-hood","Cappa"],["mdi:pot-steam-outline","Robot cucina"],["mdi:air-fryer","Airfryer"],["mdi:power-plug-outline","Presa"],
-      ["mdi:cctv","Videocamera"],["mdi:lock-outline","Serratura"],["mdi:shield-home-outline","Allarme"],["mdi:car-electric","Auto elettrica"],
-      ["mdi:ev-station","Wallbox"],["mdi:battery-high","Batteria"],["mdi:solar-power","Fotovoltaico"],["mdi:home-assistant","Home Assistant"]
-    ];
-  }
-  _roomEntityIcon(entity,room=null){
-    return room?.entity_icons && typeof room.entity_icons==="object"
-      ? String(room.entity_icons[entity]||"").trim()
-      : "";
-  }
-  _setRoomEntityIcon(roomId,entity,value){
-    const room=this._roomsDraft.find(r=>r.id===roomId);
-    if(!room) return;
+rn;
     room.entity_icons=(room.entity_icons && typeof room.entity_icons==="object") ? {...room.entity_icons} : {};
     const clean=String(value||"").trim();
     if(clean) room.entity_icons[entity]=clean;
@@ -24,6 +11,29 @@ stove","Forno"],["mdi:coffee-maker-outline","Macchina caffè"],
   _activeRoomEntityIcon(entity){
     if(this._uiTheme!=="v2") return "";
     return this._roomEntityIcon(entity,this._roomById(this._active));
+  }
+  _roomEntitySize(entity,room=null){
+    const value=room?.entity_sizes && typeof room.entity_sizes==="object"
+      ? String(room.entity_sizes[entity]||"auto").trim().toLowerCase()
+      : "auto";
+    return ["auto","compact","normal","wide","full"].includes(value)?value:"auto";
+  }
+  _setRoomEntitySize(roomId,entity,value){
+    const room=this._roomsDraft.find(r=>r.id===roomId);
+    if(!room) return;
+    room.entity_sizes=(room.entity_sizes && typeof room.entity_sizes==="object")?{...room.entity_sizes}:{};
+    const clean=String(value||"auto").trim().toLowerCase();
+    if(clean && clean!=="auto") room.entity_sizes[entity]=clean;
+    else delete room.entity_sizes[entity];
+    this._roomsDraft=[...this._roomsDraft];
+  }
+  _activeRoomEntitySize(entity){
+    if(this._uiTheme!=="v2") return "auto";
+    return this._roomEntitySize(entity,this._roomById(this._active));
+  }
+  _entitySizeClass(entity){
+    const size=this._activeRoomEntitySize(entity);
+    return size==="auto"?"":` entity-size-${size}`;
   }
 
 
@@ -203,7 +213,7 @@ stove","Forno"],["mdi:coffee-maker-outline","Macchina caffè"],
   _roomModuleMetric(entity,label,icon,span=3){
     if(!entity) return "";
     const unit=this._attr(entity,"unit_of_measurement","")||"";
-    return `<div class="room-module-metric span-${span} clickable" data-more="${entity}">
+    return `<div class="room-module-metric span-${span}${entity?this._entitySizeClass(entity):""} clickable" data-more="${entity}">
       <div class="room-module-icon"><ha-icon icon="${icon}"></ha-icon></div>
       <div><span>${this._esc(label)}</span><strong>${this._state(entity,"—")}${unit?` ${unit}`:""}</strong><small>${this._hass?.states?.[entity]?.attributes?.friendly_name||entity}</small></div>
     </div>`;
@@ -436,12 +446,18 @@ stove","Forno"],["mdi:coffee-maker-outline","Macchina caffè"],
               ${this._entityIconChoices().map(([value,label])=>`<option value="${value}" ${this._roomEntityIcon(e,room)===value?"selected":""}>${label}</option>`).join("")}
             </select>
           </label>
+          <label class="room-entity-size-field">
+            <span>Dimensione</span>
+            <select data-room-entity-size-room="${room.id}" data-room-entity-size-entity="${this._esc(e)}">
+              ${[["auto","Automatico"],["compact","Compatta"],["normal","Normale"],["wide","Larga"],["full","Intera"]].map(([value,label])=>`<option value="${value}" ${this._roomEntitySize(e,room)===value?"selected":""}>${label}</option>`).join("")}
+            </select>
+          </label>
           <div class="room-entity-photo">
             <span>Foto oggetto</span>
             <div class="photo-config-line">
               <input data-room-entity-image-room="${room.id}" data-room-entity-image-entity="${this._esc(e)}"
                 value="${this._esc(this._roomEntityImage(e,room))}" placeholder="/local/... oppure carica foto">
-              <label class="photo-upload-btn native-photo-picker"><ha-icon icon="mdi:image-plus"></ha-icon><span>Carica</span><input type="file" data-entity-photo-file-room="${room.id}" data-entity-photo-file="${this._esc(e)}" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.jpg,.jpeg,.png,.webp,.heic,.heif"></label>
+              <label class="photo-upload-btn native-photo-picker"><ha-icon icon="mdi:image-plus"></ha-icon><span>Carica</span><input type="file" data-entity-photo-file-room="${room.id}" data-entity-photo-file="${this._esc(e)}" accept="image/*,.jpg,.jpeg,.png,.webp,.heic,.heif"></label>
               ${this._roomEntityImage(e,room)?`<button class="photo-clear-btn" type="button" data-clear-entity-image-room="${room.id}" data-clear-entity-image="${this._esc(e)}" title="Rimuovi foto"><ha-icon icon="mdi:image-remove-outline"></ha-icon></button>`:""}
             </div>
             ${this._roomEntityImage(e,room)?`<div class="photo-preview object-photo-preview"><img src="${this._esc(this._roomEntityImage(e,room))}" alt=""></div>`:""}
@@ -553,8 +569,23 @@ stove","Forno"],["mdi:coffee-maker-outline","Macchina caffè"],
     const type=String(file.type||"").toLowerCase();
     const name=String(file.name||"").toLowerCase();
     const imageLike=type.startsWith("image/") || /\.(jpe?g|png|webp|heic|heif)$/i.test(name);
-    if(!imageLike) throw new Error("Formato non supportato. Usa JPG, PNG o WebP.");
-    if(file.size>20*1024*1024) throw new Error("La foto originale è troppo grande (max 20 MB).");
+    if(!imageLike) throw new Error("Formato non supportato. Usa JPG, PNG, WebP, HEIC o HEIF.");
+    if(file.size>25*1024*1024) throw new Error("La foto originale è troppo grande (max 25 MB).");
+
+    if("createImageBitmap" in window){
+      try{
+        const bitmap=await createImageBitmap(file,{imageOrientation:"from-image"});
+        return {
+          source:bitmap,
+          naturalWidth:bitmap.width,
+          naturalHeight:bitmap.height,
+          width:bitmap.width,
+          height:bitmap.height,
+          close:()=>bitmap.close?.()
+        };
+      }catch(_err){}
+    }
+
     const source=await new Promise((resolve,reject)=>{
       const reader=new FileReader();
       reader.onload=()=>resolve(reader.result);
@@ -562,15 +593,18 @@ stove","Forno"],["mdi:coffee-maker-outline","Macchina caffè"],
       reader.readAsDataURL(file);
     });
     try{
-      return await new Promise((resolve,reject)=>{
+      const img=await new Promise((resolve,reject)=>{
         const el=new Image();
         el.onload=()=>resolve(el);
         el.onerror=()=>reject(new Error("decode"));
         el.src=source;
       });
+      img.source=img;
+      img.close=()=>{};
+      return img;
     }catch(_err){
       if(type.includes("heic") || type.includes("heif") || /\.(heic|heif)$/i.test(name)){
-        throw new Error("Questa foto è HEIC/HEIF e il browser non riesce a convertirla. Esportala come JPG e riprova.");
+        throw new Error("Questa foto HEIC/HEIF non è supportata dal browser in uso. Salvala come JPG/PNG e riprova.");
       }
       throw new Error("Il browser non riesce a decodificare questa immagine. Usa JPG, PNG o WebP.");
     }
@@ -579,6 +613,7 @@ stove","Forno"],["mdi:coffee-maker-outline","Macchina caffè"],
     const img=await this._readImageFile(file);
     const naturalW=img.naturalWidth||img.width;
     const naturalH=img.naturalHeight||img.height;
+    const drawSource=img.source||img;
     if(!naturalW || !naturalH) throw new Error("Dimensioni immagine non valide.");
     let side=Math.min(maxSide,Math.max(naturalW,naturalH));
     let quality=.82;
@@ -593,10 +628,10 @@ stove","Forno"],["mdi:coffee-maker-outline","Macchina caffè"],
       if(!ctx) throw new Error("Il browser non può elaborare la foto.");
       ctx.fillStyle="#ffffff";
       ctx.fillRect(0,0,width,height);
-      ctx.drawImage(img,0,0,width,height);
+      ctx.drawImage(drawSource,0,0,width,height);
       const encoded=canvas.toDataURL("image/jpeg",quality);
       best=encoded;
-      if(this._dataUrlBytes(encoded)<=targetBytes) return encoded;
+      if(this._dataUrlBytes(encoded)<=targetBytes){ img.close?.(); return encoded; }
       if(quality>.58) quality-=.08;
       else side=Math.max(minSide,Math.round(side*.84));
     }
@@ -659,7 +694,7 @@ stove","Forno"],["mdi:coffee-maker-outline","Macchina caffè"],
     return byGroup[group]||"";
   }
   _mergeConfiguredEntitiesIntoRooms(rooms){
-    const out=(Array.isArray(rooms)?rooms:[]).map(r=>({...r,entities:[...(r.entities||[])],entity_labels:{...(r.entity_labels||{})},entity_images:{...(r.entity_images||{})},entity_icons:{...(r.entity_icons||{})}}));
+    const out=(Array.isArray(rooms)?rooms:[]).map(r=>({...r,entities:[...(r.entities||[])],entity_labels:{...(r.entity_labels||{})},entity_images:{...(r.entity_images||{})},entity_icons:{...(r.entity_icons||{})},entity_sizes:{...(r.entity_sizes||{})}}));
     const defaults=new Map(this._defaultRooms().map(r=>[r.id,r]));
     const configured=[...ENTITY_KEYS].map(key=>{
       const entity=String(this._configDraft?.[key] ?? this._entityMap?.[key] ?? "").trim();
@@ -700,4 +735,4 @@ stove","Forno"],["mdi:coffee-maker-outline","Macchina caffè"],
         this._legacyRoomForConfigKey(k)===roomId &&
         String(this._configDraft[k]||"").trim()===oldEntity
       );
-      if(!stillUsed) room.entities=room.
+     

@@ -146,6 +146,9 @@ def _save_config(
             icons = room.get("entity_icons", {})
             if not isinstance(icons, dict):
                 icons = {}
+            sizes = room.get("entity_sizes", {})
+            if not isinstance(sizes, dict):
+                sizes = {}
             modules = room.get("modules", [])
             if not isinstance(modules, list):
                 modules = []
@@ -170,16 +173,24 @@ def _save_config(
                 for k, v in icons.items()
                 if str(k).strip() in clean_entities and str(v).strip()
             }
+            clean_entity_sizes = {
+                str(k).strip(): str(v).strip().lower()
+                for k, v in sizes.items()
+                if str(k).strip() in clean_entities and str(v).strip().lower() in {"compact", "normal", "wide", "full"}
+            }
             clean_rooms.append({
                 "id": rid,
                 "name": name,
                 "type": str(room.get("type", "generico")).strip() or "generico",
                 "icon": str(room.get("icon", "mdi:home-outline")).strip() or "mdi:home-outline",
                 "image": str(room.get("image", "")).strip(),
+                "background_mode": str(room.get("background_mode", "auto")).strip() or "auto",
+                "background_value": str(room.get("background_value", "")).strip(),
                 "entities": clean_entities,
                 "entity_labels": clean_labels,
                 "entity_images": clean_entity_images,
                 "entity_icons": clean_entity_icons,
+                "entity_sizes": clean_entity_sizes,
                 "modules": clean_modules,
             })
         output["rooms"] = clean_rooms

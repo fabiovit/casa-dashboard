@@ -1,5 +1,28 @@
 # Changelog
 
+## 4.1.0 - 2026-08-28
+
+- Added per-entity size controls.
+- Made solar and battery sections more compact on mobile.
+- Improved smartphone photo decoding and EXIF orientation support.
+- Expanded mobile image picker compatibility.
+
+
+### Tester improvements
+
+- Expanded icon library and added state-aware lighting visuals.
+- Fixed lampadina/plafoniera visual duplication.
+- Added room filter to Devices configurator.
+- Fixed custom photos on cover / blind / awning entities.
+- Improved configurator scroll-position persistence after edits/removals.
+- Removed room-name based rendering: room type is now the only renderer selector.
+- Added global and per-room backgrounds: automatic, solid color, gradient or image.
+- Kept Overview/Home fixed in the top navigation while rooms scroll independently, with arrow controls.
+- Removed duplicate EV data from the Wallbox strip when only vehicle mappings are configured.
+- Improved electric vehicle visual presentation.
+- Added vacuum/cleaning robot rendering in rooms and Overview.
+- Preserved shared Solar, EV + Wallbox, Weather and Alarm modules.
+
 ## 4.0.0 - 2026-08-27
 
 ### Major Community Release

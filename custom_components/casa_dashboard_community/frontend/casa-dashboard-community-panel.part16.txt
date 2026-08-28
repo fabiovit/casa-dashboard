@@ -1,4 +1,31 @@
-erLabel)}</div><strong>${this._energyFmtKW(pvTotal,true)}</strong><small>${this._language==="en"?"Available solar production":"Produzione fotovoltaica disponibile"}</small><div class="solar-node-chip active">${this._language==="en"?"Solar":"Energia FV"}</div></div>`:"",
+iv class="solar-pv-line">
+        <div class="solar-pv-meta"><span>${this._esc(pv2Label)}</span><strong>${this._energyFmtKW(pv2,true)}</strong><small>${[pv2Volt,pv2Current].filter(v=>v!=="—").join(" · ")}</small></div>
+        <div class="solar-pv-track"><div class="solar-pv-fill west" style="width:${Math.min(100,(Math.abs(pv2)/pvMax)*100)}%"></div></div>
+      </div>`:""
+    ].join("");
+
+    const topCards=[
+      pvTotal!==null?`<div class="solar-panel solar-prod-card">
+        <div class="solar-prod-top"><div class="solar-sun"><ha-icon icon="mdi:white-balance-sunny"></ha-icon></div></div>
+        <div class="solar-prod-copy"><span>${this._esc(prodLabel)}</span><strong>${this._energyFmtKW(pvTotal,true)}</strong>${dailyParts.length?`<small>${dailyParts.join(" · ")}</small>`:""}</div>
+        ${pvRows?`<div class="solar-pv-bars">${pvRows}</div>`:""}
+      </div>`:"",
+      (soc!==null || battPower!==null)?`<div class="solar-panel solar-battery-hero">
+        <div class="solar-battery-visual">
+          <div class="solar-battery-shell"><div class="solar-battery-fill ${battTone}" style="height:${Math.max(soc===null?10:12,socPct)}%"></div><div class="solar-battery-soc"><div><span>SOC</span><strong>${socText}</strong></div></div></div>
+        </div>
+        <div class="solar-battery-copy">
+          <div class="eyebrow ${battTone}">${this._esc(battFlowLabel)}</div>
+          <div class="power ${battTone}">${battPower!==null?this._energyFmtKW(battPower,true):"—"}</div>
+          <div class="desc">${this._esc(battDesc)}</div>
+          ${batteryPills.length?`<div class="solar-energy-pills">${batteryPills.map(([label,value])=>`<div class="solar-energy-pill"><span>${label}</span><strong>${value}</strong></div>`).join("")}</div>`:""}
+        </div>
+      </div>`:""
+    ].filter(Boolean).join("");
+
+    const nodes=[
+      load!==null?`<div class="solar-node house"><div class="solar-node-orb"><ha-icon icon="mdi:home-import-outline"></ha-icon></div><div class="solar-node-label">${this._esc(houseLabel)}</div><strong>${this._energyFmtKW(load,true)}</strong><small>${this._language==="en"?"Current home consumption":"Consumo istantaneo della casa"}</small><div class="solar-node-chip active">${this._language==="en"?"Home load":"Consumo casa"}</div></div>`:"",
+      pvTotal!==null?`<div class="solar-node inverter"><div class="solar-node-orb"><ha-icon icon="mdi:solar-power-variant"></ha-icon></div><div class="solar-node-label">${this._esc(inverterLabel)}</div><strong>${this._energyFmtKW(pvTotal,true)}</strong><small>${this._language==="en"?"Available solar production":"Produzione fotovoltaica disponibile"}</small><div class="solar-node-chip active">${this._language==="en"?"Solar":"Energia FV"}</div></div>`:"",
       (soc!==null || battPower!==null)?`<div class="solar-node battery"><div class="solar-node-orb"><ha-icon icon="mdi:battery-high"></ha-icon></div><div class="solar-node-label">${this._esc(batteryLabel)}</div><strong class="${battTone}">${battPower!==null?this._energyFmtKW(battPower,true):socText}</strong><small>${soc!==null?`${socText} · `:""}${this._esc(battFlowLabel)}</small><div class="solar-node-chip ${battTone}">${battDirection==="charge"?(this._language==="en"?"Charge":"Carica"):battDirection==="discharge"?(this._language==="en"?"Discharge":"Scarica"):batteryLabel}</div></div>`:"",
       grid!==null?`<div class="solar-node network"><div class="solar-node-orb"><ha-icon icon="${gridDirection==="export"?"mdi:transmission-tower-export":"mdi:transmission-tower-import"}"></ha-icon></div><div class="solar-node-label">${this._esc(gridNodeLabel)}</div><strong>${this._energyFmtKW(grid,true)}</strong><small>${this._esc(gridLabel)}</small><div class="solar-node-chip ${gridTone}">${gridDirection==="import"?(this._language==="en"?"Import":"Prelievo"):gridDirection==="export"?"Export":gridNodeLabel}</div></div>`:""
     ].filter(Boolean).join("");
@@ -25,11 +52,15 @@ erLabel)}</div><strong>${this._energyFmtKW(pvTotal,true)}</strong><small>${this.
     const fmt=e=>e&&this._hass?.states?.[e]?`${this._state(e)}${this._attr(e,"unit_of_measurement","")||""}`:"—";
     const powerValue=vehiclePower&&this._hass?.states?.[vehiclePower]?this._overviewMetric(vehiclePower,"power").value:null;
     const chargingNow=vehiclePower&&Number(this._state(vehiclePower,"0"))>0;
+    const battValue=batt?Number(this._state(batt,"0")):null;
+    const battPct=Number.isFinite(battValue)?Math.max(0,Math.min(100,battValue)):null;
     return `${this._section(identity.vehicle,chargingNow?"Ricarica in corso":"Stato e autonomia")}
-      <div class="vehicle-overview-card">
-        <div class="vehicle-overview-visual ${photo?"has-photo":""}">${photo?`<img src="${this._esc(photo)}" alt="${this._esc(identity.vehicle)}" loading="lazy">`:`<ha-icon icon="mdi:car-electric"></ha-icon>`}</div>
+      <div class="vehicle-overview-card vehicle-showcase">
+        <div class="vehicle-overview-visual ${photo?"has-photo":""}">${photo?`<img src="${this._esc(photo)}" alt="${this._esc(identity.vehicle)}" loading="lazy">`:`<ha-icon icon="mdi:car-electric"></ha-icon>`}
+          ${battPct!==null?`<div class="vehicle-battery-gauge"><i style="width:${battPct}%"></i><strong>${Math.round(battPct)}%</strong></div>`:""}
+        </div>
         <div class="vehicle-overview-main">
-          <div class="vehicle-overview-head"><span>AUTO EV</span><strong>${this._esc(identity.vehicle)}</strong><small>${chargingNow?"In carica":"Veicolo configurato"}</small></div>
+          <div class="vehicle-overview-head"><span>AUTO ELETTRICA</span><strong>${this._esc(identity.vehicle)}</strong><small>${chargingNow?"⚡ Ricarica in corso":"Pronta per partire"}</small></div>
           <div class="vehicle-overview-stats">
             ${batt?`<div><span>Batteria</span><strong>${fmt(batt)}</strong></div>`:""}
             ${range?`<div><span>Autonomia</span><strong>${fmt(range)}</strong></div>`:""}
@@ -120,6 +151,14 @@ erLabel)}</div><strong>${this._energyFmtKW(pvTotal,true)}</strong><small>${this.
 
     return /solar_|fotovolta|fotovoltaico|\bpv\b|pv[12]|battery|batteria|inverter|pcc|grid power|rete.*potenza|produzione.*fv/.test(hay)
       && !/wallbox|evse|vehicle|auto elettrica/.test(hay);
+  }
+
+  _isOverviewWallboxEntity(entity){
+    const keys=this._overviewEntityLogicalKeys(entity);
+    if(keys.some(k=>k.includes("vehicle_"))) return false;
+    const hay=this._overviewEntityHay(entity);
+    return /wallbox|evse|grid_current|ev_charging_at_home/.test(hay)
+      || keys.some(k=>/wallbox|grid_current|ev_charging_at_home/.test(k));
   }
 
   _isOverviewMobilityEntity(entity){
@@ -270,7 +309,7 @@ erLabel)}</div><strong>${this._energyFmtKW(pvTotal,true)}</strong><small>${this.
 
     const solarSensors=entities.filter(e=>this._isOverviewSolarEntity(e));
 
-    const wallboxSensors=entities.filter(e=>this._isOverviewMobilityEntity(e));
+    const wallboxSensors=entities.filter(e=>this._isOverviewWallboxEntity(e));
 
     const hero=`<section class="scene-hero community-personal-overview compact">
       <div class="scene-copy">
@@ -333,8 +372,9 @@ erLabel)}</div><strong>${this._energyFmtKW(pvTotal,true)}</strong><small>${this.
       ? `${this._section(this._overviewText("mobility_label",mobilityDefault),`${mobilityIdentity.vehicle} · ${mobilityIdentity.wallbox}`)}<div class="overview-key-grid">${wallboxCards}</div>`
       : "";
     const vehicleSection=this._vehicleOverviewSection();
+    const robotSection=this._robotOverviewSection();
 
-    return `<div class="page overview-personal-v2 summary-only">${hero}${activeSection}${tempSection}${extSection}${solarSection}${wallboxSection}${vehicleSection}</div>`;
+    return `<div class="page overview-personal-v2 summary-only">${hero}${activeSection}${tempSection}${extSection}${solarSection}${wallboxSection}${vehicleSection}${robotSection}</div>`;
   }
 
   _overview() {
@@ -464,28 +504,4 @@ erLabel)}</div><strong>${this._energyFmtKW(pvTotal,true)}</strong><small>${this.
       scale:{"Luce":["light.stairs"],"Portoncino":["input_boolean.main_gate"]},
       ingresso:{"Porta":["binary_sensor.entry_door","input_boolean.entry_door_unlock"],"Allarme":["alarm_control_panel.home_alarm"],"Luminosità":["sensor.entry_illuminance"],"Presenza":["binary_sensor.entry_occupancy","binary_sensor.entry_motion"]},
       cucina:{"Temperatura":["sensor.kitchen_temperature"],"Umidità":["sensor.kitchen_humidity"],"Clima":["climate.kitchen"],"Finestra":["binary_sensor.kitchen_door_window"]},
-      disimpegno:{"Movimento":["binary_sensor.hallway_motion"],"Occupazione":["binary_sensor.hallway_occupancy"],"Luminosità":["sensor.hallway_illuminance"],"Luce":["light.hallway_main"]},
-      bagno:{"Temperatura":["sensor.bathroom_temperature"],"Umidità":["sensor.bathroom_humidity"],"Finestra":["binary_sensor.bathroom_window"],"Acqua":["binary_sensor.bathroom_water_leak"]},
-      camera:{"Temperatura":["sensor.bedroom_temperature"],"Umidità":["sensor.bedroom_humidity"],"Clima":["climate.bedroom"],"Robot":["vacuum.robot_vacuum","sensor.robot_vacuum_battery"]}
-    };
-    const roomReq=requirements[room]||{};
-    const visible=metrics.map(metric=>{
-      const req=roomReq[metric.label];
-      return req ? {...metric,show:metric.show!==false&&this._anyConfigured(req)} : metric;
-    });
-    return this._hero(m.title,m.subtitle,{...s,title:s.text,text:""},visible,room);
-  }
-
-  _esterno(){
-    const open=this._on("input_boolean.pedestrian_gate");
-    return `<div class="page ${this._uiTheme==="v2"?"overview-v2-page":""}">${this._zoneHero("esterno",[
-      {label:"Cancellino",value:open?"Aperto / apertura…":"Chiuso",small:"Accesso esterno"},
-      {label:"Stato",value:open?"Attivo":"Pronto",small:"Comando pedonale"}
-    ])}${this._section("Accesso esterno")}<div class="grid">${this._control("input_boolean.pedestrian_gate","Cancellino","mdi:gate",open?"Apertura in corso / aperto":"Premi per aprire","toggle",12)}</div></div>`;
-  }
-
-  _scale(){
-    return `<div class="page">${this._zoneHero("scale",[
-      {label:"Luce",value:this._on("light.stairs")?"Accesa":"Spenta",small:"Illuminazione scale"},
-      {label:"Portoncino",value:this._on("input_boolean.main_gate")?"Apertura…":"Pronto",small:"Comando accesso"}
-    ])}${this._section("Controlli rapidi")}<div class="grid">${this._control("input_boolean.main_gate","Portoncino","mdi:gate",this._on("input_boolean.main_gate")?"Apertura in corso":"Premi per aprire","toggle",6)}${this._control("light.stairs","Luce scale","mdi:ceiling-light",this._on("light.stairs")?"Accesa":"S
+      disimpegno:{"Movimento":["binary_sensor.hallway_motion"],"

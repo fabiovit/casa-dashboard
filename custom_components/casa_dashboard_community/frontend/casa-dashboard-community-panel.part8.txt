@@ -1,39 +1,4 @@
-y{position:absolute;left:21px;top:17px;width:8px;height:34px;border-radius:5px;background:#768899;transform:rotate(12deg)}.motion-person .arm,.motion-person .leg{position:absolute;width:7px;height:34px;border-radius:5px;background:#768899;transform-origin:top center}.motion-person .arm.a{left:20px;top:25px;transform:rotate(55deg)}.motion-person .arm.b{left:24px;top:27px;transform:rotate(-47deg)}.motion-person .leg.a{left:23px;top:48px;transform:rotate(37deg)}.motion-person .leg.b{left:25px;top:48px;transform:rotate(-35deg)}.activity-card.active .motion-person *{background:#ffb45c}.motion-waves{position:absolute;right:15px;top:31px}.motion-waves i{display:block;width:16px;height:16px;border:2px solid #617384;border-left:0;border-bottom:0;border-radius:0 16px 0 0;margin:4px}.activity-card.active .motion-waves i{border-color:#ffb45c}
-      .occupancy-room{position:absolute;inset:14px;border:2px solid #536675;border-radius:10px}.occupancy-floor{position:absolute;left:10px;right:10px;bottom:12px;height:2px;background:#536675}.occupancy-person{position:absolute;bottom:14px;width:24px;height:48px}.occupancy-person:before{content:"";position:absolute;left:6px;top:0;width:13px;height:13px;border-radius:50%;background:#758797}.occupancy-person:after{content:"";position:absolute;left:9px;top:14px;width:7px;height:29px;border-radius:5px;background:#758797}.occupancy-person.one{left:26px}.occupancy-person.two{right:26px}.activity-card.active .occupancy-person:before,.activity-card.active .occupancy-person:after{background:#55e6ad}
-      .vibration-object{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:62px;height:72px;border:4px solid #657684;border-radius:7px}.vibration-window{position:absolute;inset:8px;border:2px solid #7b8c98;background:rgba(103,184,255,.12)}.vibration-lines{position:absolute;top:33px}.vibration-lines.left{left:19px}.vibration-lines.right{right:19px}.vibration-lines i{display:block;width:17px;height:3px;background:#657684;margin:9px 0;border-radius:4px}.activity-card.active .vibration-lines i,.activity-card.active .vibration-object{border-color:#ffb45c}
-      .house-thermostat{display:grid;grid-template-columns:190px 1fr;gap:20px;align-items:center;min-height:210px;padding:18px;border:1px solid rgba(255,255,255,.07);border-radius:22px;background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(255,127,74,.035))}
-      .house-thermo-ring{width:170px;height:170px;border-radius:50%;display:grid;place-items:center;position:relative;background:conic-gradient(from 220deg,#2b3740 0 65%,#3d4851 65% 79%,#263139 79%)}.house-thermo-ring:before{content:"";position:absolute;inset:12px;border-radius:50%;background:var(--card-background-color)}.house-thermo-ring.heating{background:conic-gradient(from 220deg,#ff8a46 0 58%,#ffb45c 58% 79%,#263139 79%)}.house-thermo-center{position:relative;z-index:2;text-align:center}.house-thermo-center span{display:block;font-size:8px;letter-spacing:.16em;color:#8da6bd}.house-thermo-center strong{display:block;font-size:38px;letter-spacing:-.05em;margin-top:5px}.house-thermo-center small{display:block;color:var(--secondary-text-color);font-size:10px;margin-top:3px}
-      .house-thermo-data{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.house-thermo-data>div{padding:12px;border-radius:14px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.025)}.house-thermo-data span{display:block;font-size:8px;letter-spacing:.14em;color:#8da6bd}.house-thermo-data strong{display:block;font-size:18px;margin-top:6px}.house-thermo-data button{grid-column:1/-1;height:44px;border-radius:13px;border:1px solid rgba(255,155,75,.28);background:rgba(255,155,75,.05);color:#ffb45c;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px}button,.metric,.opening-card,.activity-card{transition:none!important;animation:none!important}button:hover,.metric:hover,.opening-card:hover,.activity-card:hover{transform:none!important}
-      .app-shell.theme-light .activity-card,.app-shell.theme-light .house-thermostat{background:linear-gradient(180deg,#fff,#f5f9fd);border-color:rgba(15,23,42,.10)}.app-shell.theme-light .activity-visual{background:linear-gradient(180deg,#edf5fa,#ddeaf2)}.app-shell.theme-light .activity-copy span,.app-shell.theme-light .house-thermo-data span,.app-shell.theme-light .house-thermo-center span{color:#587292}.app-shell.theme-light .house-thermo-ring:before{background:#fff}.app-shell.theme-light .house-thermo-data>div{background:#f8fbfe;border-color:rgba(15,23,42,.08)}
-      @media(max-width:900px){.house-thermostat{grid-template-columns:1fr}.house-thermo-data{grid-template-columns:repeat(3,1fr)}}@media(max-width:620px){.activity-card{grid-template-columns:105px 1fr 34px}.activity-visual{height:96px}.activity-copy strong{font-size:21px}.house-thermo-data{grid-template-columns:1fr}.house-thermo-data button{grid-column:auto}}
-
-
-      /* ===== v4.3.75 aperture visuali + anti flicker ===== */
-      .opening-card{width:100%;min-height:150px;border:1px solid rgba(255,255,255,.07);border-radius:var(--r-md);background:linear-gradient(180deg,rgba(255,255,255,.025),rgba(255,255,255,.012));padding:14px;display:grid;grid-template-columns:130px 1fr 42px;align-items:center;gap:16px;color:inherit;text-align:left;cursor:pointer;contain:layout paint}
-      .opening-scene{height:112px;border-radius:15px;display:grid;place-items:center;overflow:hidden;background:linear-gradient(180deg,#203949,#15242d);border:1px solid rgba(255,255,255,.06)}
-      .window-frame{position:relative;width:96px;height:80px;border:5px solid #596773;background:#23455a;perspective:450px}
-      .window-sky{position:absolute;inset:4px;background:linear-gradient(180deg,#467f9f,#27495d)}
-      .window-sash{position:absolute;top:4px;bottom:4px;width:42%;background:rgba(182,209,225,.18);border:3px solid #85939f;transform-origin:left center}
-      .window-sash.left{left:4px}.window-sash.right{right:4px;transform-origin:right center}
-      .opening-card.window.open .window-sash.left{transform:rotateY(-38deg)}
-      .opening-card.window.open .window-sash.right{transform:rotateY(38deg)}
-      .window-handle{position:absolute;left:50%;top:50%;width:5px;height:20px;border-radius:4px;background:#e0e6eb;transform:translate(-50%,-50%)}
-      .cabinet-frame{position:relative;width:104px;height:86px;border:5px solid #58636d;background:#20272e;perspective:450px}
-      .cabinet-door{position:absolute;top:4px;bottom:4px;width:43%;background:linear-gradient(180deg,#49545f,#333c45);border:1px solid #697681}
-      .cabinet-door.left{left:4px;transform-origin:left center}.cabinet-door.right{right:4px;transform-origin:right center}
-      .opening-card.cabinet.open .cabinet-door.left{transform:rotateY(-45deg)}
-      .opening-card.cabinet.open .cabinet-door.right{transform:rotateY(45deg)}
-      .cabinet-handle{position:absolute;top:50%;width:4px;height:18px;background:#dfe5ea;border-radius:3px}.cabinet-handle.left{left:46%}.cabinet-handle.right{right:46%}
-      .opening-copy span{display:block;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#8da6bd}.opening-copy strong{display:block;font-size:26px;margin-top:7px}.opening-copy small{display:block;color:var(--secondary-text-color);margin-top:4px}
-      .opening-state{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.04)}.opening-state.good{color:#55e6ad}.opening-state.warn{color:#ffb45c}
-      .app-shell.theme-light .opening-card{background:linear-gradient(180deg,#fff,#f5f9fd);border-color:rgba(15,23,42,.10)}.app-shell.theme-light .opening-scene{background:linear-gradient(180deg,#e7f3fa,#d8e8f2)}.app-shell.theme-light .opening-copy span{color:#587292}.app-shell.theme-light .cabinet-frame{background:#dce5ec;border-color:#899aa8}.app-shell.theme-light .cabinet-door{background:linear-gradient(180deg,#eef3f6,#cbd6df);border-color:#96a6b4}/* Remove transitions/animations that cause visible blinking during HA state refreshes. */
-      .opening-card *,.kitchen-blind-fabric,.kitchen-blind-bottom,.blind-sheet,.blind-bar,.awning-fabric{transition:none!important;animation:none!important}.page,.scene-hero,.grid,.metric,.opening-card{backface-visibility:hidden;transform:translateZ(0)}
-      @media(max-width:620px){.opening-card{grid-template-columns:105px 1fr 34px}.opening-scene{height:96px}.window-frame{width:82px;height:68px}.cabinet-frame{width:88px;height:72px}.opening-copy strong{font-size:21px}}
-
-      /* ===== v4.3.75 sensori ambiente visuali ===== */
-      .environment-card{width:100%;min-height:150px;border:1px solid rgba(255,255,255,.07);border-radius:var(--r-md);background:linear-gradient(180deg,rgba(255,255,255,.025),rgba(255,255,255,.012));padding:14px;display:grid;grid-template-columns:130px 1fr 42px;align-items:center;gap:16px;color:inherit;text-align:left;cursor:pointer;contain:layout paint}
-      .environment-visual{height:112px;border-radius:15px;display:grid;place-items:center;position:relative;overflow:hidden;background:linear-gradient(180deg,#172631,#101820);border:1px solid rgba(255,255,255,.06)}
-      .environment-copy span{display:block;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#8da6bd}.environment-copy strong{display:block;font-size:26px;margin-top:7px}.environment-copy small{display:block;color:var(--secondary-text-color);margin-top:4px}
+se;color:#8da6bd}.environment-copy strong{display:block;font-size:26px;margin-top:7px}.environment-copy small{display:block;color:var(--secondary-text-color);margin-top:4px}
       .environment-state{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.04);color:#67b8ff}
       .thermometer{position:relative;width:34px;height:84px}.thermo-tube{position:absolute;left:11px;top:4px;width:12px;height:62px;border:3px solid #7890a4;border-radius:9px;overflow:hidden}.thermo-tube i{position:absolute;left:2px;right:2px;bottom:2px;background:#67b8ff;border-radius:8px}.thermo-bulb{position:absolute;left:5px;bottom:0;width:24px;height:24px;border-radius:50%;background:#67b8ff;border:3px solid #7890a4}.environment-card.hot .thermo-tube i,.environment-card.hot .thermo-bulb{background:#ff8a5b}.environment-card.cold .thermo-tube i,.environment-card.cold .thermo-bulb{background:#67b8ff}
       .humidity-drop{width:58px;height:74px;position:relative;overflow:hidden;clip-path:polygon(50% 0,68% 25%,82% 43%,88% 58%,86% 71%,78% 84%,66% 93%,50% 97%,34% 93%,22% 84%,14% 71%,12% 58%,18% 43%,32% 25%);background:#273845;border:2px solid #63829a}.humidity-fill{position:absolute;left:0;right:0;bottom:0;background:#55e6ad}.environment-card.humid .humidity-fill{background:#67b8ff}.environment-card.dry .humidity-fill{background:#86b6d0}
@@ -43,7 +8,7 @@ y{position:absolute;left:21px;top:17px;width:8px;height:34px;border-radius:5px;b
       @media(max-width:620px){.environment-card{grid-template-columns:105px 1fr 34px}.environment-visual{height:96px}.environment-copy strong{font-size:21px}}
 
 
-      /* v4.0.0 - Security parity with Casa v5.4.0 */
+      /* v4.1.0 - Security parity with Casa v5.4.0 */
       .community-security-grid.two{grid-template-columns:minmax(360px,.82fr) minmax(520px,1.18fr)}
       .community-security-grid.single{grid-template-columns:minmax(0,1fr)}
       .community-security-grid.single .community-security-card{width:100%}
@@ -123,7 +88,7 @@ y{position:absolute;left:21px;top:17px;width:8px;height:34px;border-radius:5px;b
 
       /* ===== v4.3.75 Bagno - Crocchette Nila ===== */
 
-      /* v4.0.0 - Dynamic Kitchen parity */
+      /* v4.1.0 - Dynamic Kitchen parity */
       .kitchen-dyn-hero{grid-template-columns:minmax(340px,.9fr) minmax(520px,1.25fr)}
       .kitchen-dyn-showcase{display:grid;grid-template-columns:minmax(300px,1.15fr) minmax(210px,.85fr);gap:18px;align-items:center;min-height:250px;padding:20px;border-radius:var(--r-lg);border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(103,184,255,.045))}
       .kitchen-dyn-scene{height:210px;border-radius:var(--r-md);position:relative;overflow:hidden;background:linear-gradient(180deg,#141a20,#0d1116)}
@@ -140,7 +105,7 @@ y{position:absolute;left:21px;top:17px;width:8px;height:34px;border-radius:5px;b
       @media(max-width:620px){.kitchen-heat-info{grid-template-columns:1fr}.kitchen-heat-info button{grid-column:auto}}
 
 
-      /* v4.0.0 - Dynamic Kitchen blind section */
+      /* v4.1.0 - Dynamic Kitchen blind section */
       .kitchen-blind-card{min-height:190px;padding:18px;border-radius:22px;border:1px solid rgba(255,255,255,.07);background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(103,184,255,.025));display:grid;grid-template-columns:220px 1fr auto;gap:22px;align-items:center}
       .kitchen-blind-scene{height:150px;border-radius:16px;display:grid;place-items:center;background:linear-gradient(180deg,#172631,#101820);border:1px solid rgba(255,255,255,.06);overflow:hidden}
       .kitchen-blind-window{position:relative;width:150px;height:112px;border:5px solid #596773;background:#24465a;overflow:hidden}
@@ -154,7 +119,7 @@ y{position:absolute;left:21px;top:17px;width:8px;height:34px;border-radius:5px;b
       @media(max-width:520px){.kitchen-blind-card{grid-template-columns:1fr}.kitchen-blind-scene{height:145px}}
 
 
-      /* v4.0.0 - Kitchen Comfort & Climate parity */
+      /* v4.1.0 - Kitchen Comfort & Climate parity */
       .kitchen-climate-real{min-height:300px;border-radius:26px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(103,184,255,.022));display:grid;grid-template-columns:320px 1fr;gap:28px;align-items:center;padding:24px 26px}
       .kitchen-climate-ring-wrap{display:grid;place-items:center}
       .kitchen-climate-ring{width:245px;height:245px;border-radius:50%;display:grid;place-items:center;align-content:center;text-align:center;background:
@@ -184,7 +149,7 @@ y{position:absolute;left:21px;top:17px;width:8px;height:34px;border-radius:5px;b
       @media(max-width:620px){.kitchen-climate-real{padding:18px}.kitchen-climate-stats{grid-template-columns:1fr}.kitchen-climate-ring{width:190px;height:190px}.kitchen-climate-ring strong{font-size:36px}}
 
 
-      /* v4.0.0 - Kitchen semantic appliance icons */
+      /* v4.1.0 - Kitchen semantic appliance icons */
       .kitchen-semantic-icon{width:86px;height:86px;border-radius:18px;display:grid;place-items:center;background:#132633;border:1px solid rgba(103,184,255,.24);color:#67b8ff}
       .kitchen-semantic-icon ha-icon{--mdc-icon-size:42px}
       .kitchen-semantic-icon.off{color:#8294a3;background:#14222c;border-color:rgba(130,148,163,.18)}
@@ -204,7 +169,7 @@ y{position:absolute;left:21px;top:17px;width:8px;height:34px;border-radius:5px;b
       .app-shell.theme-light .kitchen-semantic-icon{background:#eef6fb;border-color:rgba(46,140,200,.18)}
 
 
-      /* v4.0.0 - Mario feedback */
+      /* v4.1.0 - Mario feedback */
       .topbar-tools{display:flex;align-items:center;gap:10px;margin-left:auto}
       .topbar-config-btn{height:34px;padding:0 11px;border-radius:10px;border:1px solid rgba(103,184,255,.22);background:rgba(103,184,255,.05);color:var(--primary-text-color);display:flex;align-items:center;gap:6px;cursor:pointer;font-size:10px;font-weight:850}
       .topbar-config-btn ha-icon{--mdc-icon-size:17px;color:#67b8ff}
@@ -237,7 +202,7 @@ y{position:absolute;left:21px;top:17px;width:8px;height:34px;border-radius:5px;b
       }
 
 
-      /* v4.0.0 FIXED - safe Community climate polish */
+      /* v4.1.0 FIXED - safe Community climate polish */
       .kitchen-climate-real{grid-column:1/-1}
       .kitchen-climate-ring strong{font-size:44px;letter-spacing:-.045em}
       .kitchen-climate-status strong{font-size:20px}
@@ -248,6 +213,172 @@ y{position:absolute;left:21px;top:17px;width:8px;height:34px;border-radius:5px;b
       }
 
 
-      /* v4.0.0 - Dynamic Hallway / Disimpegno */
+      /* v4.1.0 - Dynamic Hallway / Disimpegno */
       .hallway-dyn-hero{grid-template-columns:minmax(360px,.9fr) minmax(560px,1.25fr)}
-      .hallway-hero-showcase{display:grid
+      .hallway-hero-showcase{display:grid;grid-template-columns:minmax(360px,1.2fr) minmax(220px,.8fr);gap:18px;align-items:stretch;min-height:250px;padding:20px;border-radius:26px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(71,180,140,.035))}
+      .hallway-scene{min-height:210px;position:relative;overflow:hidden;border-radius:18px;background:linear-gradient(180deg,#18212a,#0d1217)}
+      .hallway-frame{position:absolute;top:22px;width:70px;height:118px;border:5px solid #53616d}
+      .hallway-frame.left{left:58px}.hallway-frame.right{right:58px}
+      .hallway-cone{position:absolute;bottom:0;width:0;height:0;border-left:64px solid transparent;border-right:64px solid transparent;border-bottom:145px solid rgba(92,107,120,.14)}
+      .hallway-cone.left{left:92px}.hallway-cone.right{right:92px}
+      .hallway-person{position:absolute;left:50%;top:50%;transform:translate(-50%,-44%);color:#8294a3}
+      .hallway-person ha-icon{--mdc-icon-size:82px}
+      .hallway-person.active{color:#67b8ff;filter:drop-shadow(0 0 15px rgba(103,184,255,.25))}
+      .hallway-hero-meta{display:flex;flex-direction:column;justify-content:center;gap:12px}
+      .hallway-hero-meta span{font-size:9px;letter-spacing:.17em;color:#8da6bd;font-weight:900}
+      .hallway-hero-meta strong{display:block;font-size:28px;margin-top:5px}
+      .hallway-hero-meta small{display:block;color:var(--secondary-text-color);margin-top:4px}
+      .hallway-meta-divider{height:1px;background:linear-gradient(90deg,rgba(103,184,255,.75),transparent)}
+      .hallway-appliance-card{min-height:150px;border-radius:20px;border:1px solid rgba(255,255,255,.07);background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(103,184,255,.018));display:grid;grid-template-columns:112px minmax(0,1fr) auto;gap:18px;align-items:center;padding:14px 16px}
+      .hallway-appliance-visual{display:grid;place-items:center}
+      .hallway-appliance-icon{width:86px;height:86px;border-radius:18px;display:grid;place-items:center;background:#132633;border:1px solid rgba(103,184,255,.24);color:#67b8ff}
+      .hallway-appliance-icon ha-icon{--mdc-icon-size:46px}
+      .hallway-appliance-icon.off{color:#8294a3;background:#14222c;border-color:rgba(130,148,163,.18)}
+      .hallway-appliance-icon.dryer ha-icon,.hallway-appliance-icon.washer ha-icon{--mdc-icon-size:52px}
+      .hallway-appliance-copy span{display:block;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:#8da6bd;font-weight:850}
+      .hallway-appliance-copy strong{display:block;font-size:24px;margin-top:6px}
+      .hallway-appliance-copy small{display:block;color:var(--secondary-text-color);margin-top:4px}
+      .hallway-appliance-toggle{height:44px;padding:0 14px;border-radius:13px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.025);color:#8294a3;font-weight:850;display:flex;align-items:center;gap:6px;cursor:pointer}
+      .hallway-appliance-toggle.active{border-color:rgba(85,230,173,.35);background:rgba(85,230,173,.07);color:#55e6ad}
+      .hallway-appliance-toggle ha-icon{--mdc-icon-size:18px}
+      .app-shell.theme-light .hallway-hero-showcase,.app-shell.theme-light .hallway-appliance-card{background:linear-gradient(145deg,#fff,#f4f8fb);border-color:rgba(15,23,42,.09)}
+      .app-shell.theme-light .hallway-scene{background:linear-gradient(180deg,#eef3f7,#dce5ec)}
+      @media(max-width:900px){.hallway-dyn-hero{grid-template-columns:1fr}.hallway-hero-showcase{grid-template-columns:1fr}}
+      @media(max-width:650px){.hallway-appliance-card{grid-template-columns:86px 1fr}.hallway-appliance-toggle{grid-column:1/-1;justify-content:center}.hallway-appliance-icon{width:76px;height:76px}}
+
+
+      /* v4.1.0 - Overview Climate / Weather parity */
+      .overview-room-climate-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:12px 0 28px}
+      .overview-room-climate-card{min-height:92px;padding:14px;border-radius:16px;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.018);display:flex;flex-direction:column;justify-content:center}
+      .overview-room-climate-card span{font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:#8da6bd;font-weight:900}
+      .overview-room-climate-card strong{font-size:25px;margin-top:5px;letter-spacing:-.035em}
+      .overview-room-climate-card small{font-size:10px;color:var(--secondary-text-color);margin-top:3px}
+      .overview-room-climate-card.external{border-color:rgba(103,184,255,.25)}
+      .overview-weather-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;margin:12px 0 28px;border:1px solid rgba(255,255,255,.07);border-radius:22px;overflow:hidden;background:rgba(255,255,255,.014)}
+      .overview-weather-card{min-height:105px;padding:16px;display:grid;grid-template-columns:54px 1fr;gap:10px;align-items:center;border-right:1px solid rgba(255,255,255,.06)}
+      .overview-weather-card:last-child{border-right:0}
+      .overview-weather-icon{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:#182633;color:#67b8ff}
+      .overview-weather-icon ha-icon{--mdc-icon-size:25px}
+      .overview-weather-card span{display:block;font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:#8da6bd;font-weight:900}
+      .overview-weather-card strong{display:block;font-size:24px;margin-top:5px}
+      .overview-weather-card small{display:block;font-size:9px;color:var(--secondary-text-color);margin-top:3px}
+      .app-shell.theme-light .overview-room-climate-card,.app-shell.theme-light .overview-weather-grid{background:#fff;border-color:rgba(15,23,42,.08)}
+      @media(max-width:1100px){.overview-room-climate-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.overview-weather-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.overview-weather-card{border-bottom:1px solid rgba(255,255,255,.06)}}
+      @media(max-width:650px){.overview-room-climate-grid{grid-template-columns:1fr 1fr}.overview-weather-grid{grid-template-columns:1fr}.overview-weather-card{border-right:0}}
+
+
+      /* v4.1.0 - Physical fan / extractor visual */
+      .room-fan-card{
+        min-height:164px;
+        border-radius:20px;
+        border:1px solid rgba(255,255,255,.07);
+        background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(103,184,255,.018));
+        display:grid;
+        grid-template-columns:126px minmax(0,1fr) auto;
+        gap:18px;
+        align-items:center;
+        padding:14px 16px;
+      }
+      .room-fan-scene{
+        width:126px;
+        height:126px;
+        border-radius:17px;
+        position:relative;
+        display:grid;
+        place-items:center;
+        overflow:hidden;
+        background:linear-gradient(180deg,#172936,#101d25);
+        border:1px solid rgba(103,184,255,.18);
+      }
+      .room-fan-rotor{
+        position:relative;
+        width:96px;
+        height:96px;
+        display:grid;
+        place-items:center;
+      }
+      .room-fan-hub{
+        position:absolute;
+        width:25px;
+        height:25px;
+        border-radius:50%;
+        background:#8795a1;
+        z-index:3;
+      }
+      .room-fan-blade{
+        position:absolute;
+        width:18px;
+        height:48px;
+        border-radius:80% 20% 80% 20%;
+        background:#647580;
+        transform-origin:50% 100%;
+      }
+      .room-fan-blade.b1{transform:translateY(-25px) rotate(0deg)}
+      .room-fan-blade.b2{transform:translateX(25px) rotate(90deg)}
+      .room-fan-blade.b3{transform:translateY(25px) rotate(180deg)}
+      .room-fan-blade.b4{transform:translateX(-25px) rotate(270deg)}
+      .room-fan-card.on .room-fan-blade{background:#55e6ad}
+      .room-fan-card.on .room-fan-hub{background:#55e6ad;box-shadow:0 0 20px rgba(85,230,173,.25)}
+      .room-fan-card.on .room-fan-rotor{animation:roomFanSpin 2.2s linear infinite}
+      @keyframes roomFanSpin{to{transform:rotate(360deg)}}
+
+      .room-fan-copy span{
+        display:block;
+        font-size:9px;
+        letter-spacing:.15em;
+        text-transform:uppercase;
+        color:#8da6bd;
+        font-weight:850;
+      }
+      .room-fan-copy strong{display:block;font-size:25px;margin-top:7px}
+      .room-fan-copy small{display:block;color:var(--secondary-text-color);margin-top:4px}
+
+      .room-fan-toggle{
+        min-width:70px;
+        height:48px;
+        padding:0 12px;
+        border-radius:14px;
+        border:1px solid rgba(255,255,255,.08);
+        background:rgba(255,255,255,.025);
+        color:#8899a8;
+        font-weight:850;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:7px;
+        cursor:pointer;
+      }
+      .room-fan-toggle ha-icon{--mdc-icon-size:20px}
+      .room-fan-toggle.active{
+        color:#55e6ad;
+        border-color:rgba(85,230,173,.30);
+        background:rgba(85,230,173,.07);
+      }
+
+      .app-shell.theme-light .room-fan-card{
+        background:linear-gradient(145deg,#fff,#f4f8fb);
+        border-color:rgba(15,23,42,.09);
+      }
+      .app-shell.theme-light .room-fan-scene{
+        background:linear-gradient(180deg,#eef5f8,#dce8ee);
+        border-color:rgba(46,140,200,.16);
+      }
+
+      @media(max-width:650px){
+        .room-fan-card{grid-template-columns:104px 1fr}
+        .room-fan-scene{width:104px;height:104px}
+        .room-fan-toggle{grid-column:1/-1;justify-self:stretch}
+      }
+
+
+      /* v4.1.0 - Smart auto mapping */
+      .auto-map-toolbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:12px 0 4px;padding:12px 14px;border:1px solid rgba(103,184,255,.18);border-radius:14px;background:rgba(103,184,255,.035)}
+      .auto-map-btn{height:38px;padding:0 14px;border-radius:11px;border:1px solid rgba(103,184,255,.32);background:rgba(103,184,255,.08);color:#67b8ff;font-weight:850;cursor:pointer;display:flex;align-items:center;gap:7px}
+      .auto-map-btn ha-icon{--mdc-icon-size:18px}
+      .auto-map-toolbar small{color:var(--secondary-text-color);font-size:10px;line-height:1.4}
+      .auto-map-notice{margin:8px 0 4px;padding:10px 12px;border-radius:12px;border:1px solid rgba(85,230,173,.22);background:rgba(85,230,173,.045);color:var(--primary-text-color);font-size:11px}
+      @media(max-width:650px){.auto-map-toolbar{align-items:stretch;flex-direction:column}.auto-map-btn{justify-content:center;width:100%}}
+
+
+      /* v4.1.0 - Dedicated awning / tenda visual */
+      .community-awning-card{display:grid;grid-template-columns:220px minmax(0,1fr) auto;gap:20px;align-items:ce

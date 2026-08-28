@@ -1,170 +1,4 @@
-;grid-template-columns:minmax(360px,1.2fr) minmax(220px,.8fr);gap:18px;align-items:stretch;min-height:250px;padding:20px;border-radius:26px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(71,180,140,.035))}
-      .hallway-scene{min-height:210px;position:relative;overflow:hidden;border-radius:18px;background:linear-gradient(180deg,#18212a,#0d1217)}
-      .hallway-frame{position:absolute;top:22px;width:70px;height:118px;border:5px solid #53616d}
-      .hallway-frame.left{left:58px}.hallway-frame.right{right:58px}
-      .hallway-cone{position:absolute;bottom:0;width:0;height:0;border-left:64px solid transparent;border-right:64px solid transparent;border-bottom:145px solid rgba(92,107,120,.14)}
-      .hallway-cone.left{left:92px}.hallway-cone.right{right:92px}
-      .hallway-person{position:absolute;left:50%;top:50%;transform:translate(-50%,-44%);color:#8294a3}
-      .hallway-person ha-icon{--mdc-icon-size:82px}
-      .hallway-person.active{color:#67b8ff;filter:drop-shadow(0 0 15px rgba(103,184,255,.25))}
-      .hallway-hero-meta{display:flex;flex-direction:column;justify-content:center;gap:12px}
-      .hallway-hero-meta span{font-size:9px;letter-spacing:.17em;color:#8da6bd;font-weight:900}
-      .hallway-hero-meta strong{display:block;font-size:28px;margin-top:5px}
-      .hallway-hero-meta small{display:block;color:var(--secondary-text-color);margin-top:4px}
-      .hallway-meta-divider{height:1px;background:linear-gradient(90deg,rgba(103,184,255,.75),transparent)}
-      .hallway-appliance-card{min-height:150px;border-radius:20px;border:1px solid rgba(255,255,255,.07);background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(103,184,255,.018));display:grid;grid-template-columns:112px minmax(0,1fr) auto;gap:18px;align-items:center;padding:14px 16px}
-      .hallway-appliance-visual{display:grid;place-items:center}
-      .hallway-appliance-icon{width:86px;height:86px;border-radius:18px;display:grid;place-items:center;background:#132633;border:1px solid rgba(103,184,255,.24);color:#67b8ff}
-      .hallway-appliance-icon ha-icon{--mdc-icon-size:46px}
-      .hallway-appliance-icon.off{color:#8294a3;background:#14222c;border-color:rgba(130,148,163,.18)}
-      .hallway-appliance-icon.dryer ha-icon,.hallway-appliance-icon.washer ha-icon{--mdc-icon-size:52px}
-      .hallway-appliance-copy span{display:block;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:#8da6bd;font-weight:850}
-      .hallway-appliance-copy strong{display:block;font-size:24px;margin-top:6px}
-      .hallway-appliance-copy small{display:block;color:var(--secondary-text-color);margin-top:4px}
-      .hallway-appliance-toggle{height:44px;padding:0 14px;border-radius:13px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.025);color:#8294a3;font-weight:850;display:flex;align-items:center;gap:6px;cursor:pointer}
-      .hallway-appliance-toggle.active{border-color:rgba(85,230,173,.35);background:rgba(85,230,173,.07);color:#55e6ad}
-      .hallway-appliance-toggle ha-icon{--mdc-icon-size:18px}
-      .app-shell.theme-light .hallway-hero-showcase,.app-shell.theme-light .hallway-appliance-card{background:linear-gradient(145deg,#fff,#f4f8fb);border-color:rgba(15,23,42,.09)}
-      .app-shell.theme-light .hallway-scene{background:linear-gradient(180deg,#eef3f7,#dce5ec)}
-      @media(max-width:900px){.hallway-dyn-hero{grid-template-columns:1fr}.hallway-hero-showcase{grid-template-columns:1fr}}
-      @media(max-width:650px){.hallway-appliance-card{grid-template-columns:86px 1fr}.hallway-appliance-toggle{grid-column:1/-1;justify-content:center}.hallway-appliance-icon{width:76px;height:76px}}
-
-
-      /* v4.0.0 - Overview Climate / Weather parity */
-      .overview-room-climate-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:12px 0 28px}
-      .overview-room-climate-card{min-height:92px;padding:14px;border-radius:16px;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.018);display:flex;flex-direction:column;justify-content:center}
-      .overview-room-climate-card span{font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:#8da6bd;font-weight:900}
-      .overview-room-climate-card strong{font-size:25px;margin-top:5px;letter-spacing:-.035em}
-      .overview-room-climate-card small{font-size:10px;color:var(--secondary-text-color);margin-top:3px}
-      .overview-room-climate-card.external{border-color:rgba(103,184,255,.25)}
-      .overview-weather-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;margin:12px 0 28px;border:1px solid rgba(255,255,255,.07);border-radius:22px;overflow:hidden;background:rgba(255,255,255,.014)}
-      .overview-weather-card{min-height:105px;padding:16px;display:grid;grid-template-columns:54px 1fr;gap:10px;align-items:center;border-right:1px solid rgba(255,255,255,.06)}
-      .overview-weather-card:last-child{border-right:0}
-      .overview-weather-icon{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:#182633;color:#67b8ff}
-      .overview-weather-icon ha-icon{--mdc-icon-size:25px}
-      .overview-weather-card span{display:block;font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:#8da6bd;font-weight:900}
-      .overview-weather-card strong{display:block;font-size:24px;margin-top:5px}
-      .overview-weather-card small{display:block;font-size:9px;color:var(--secondary-text-color);margin-top:3px}
-      .app-shell.theme-light .overview-room-climate-card,.app-shell.theme-light .overview-weather-grid{background:#fff;border-color:rgba(15,23,42,.08)}
-      @media(max-width:1100px){.overview-room-climate-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.overview-weather-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.overview-weather-card{border-bottom:1px solid rgba(255,255,255,.06)}}
-      @media(max-width:650px){.overview-room-climate-grid{grid-template-columns:1fr 1fr}.overview-weather-grid{grid-template-columns:1fr}.overview-weather-card{border-right:0}}
-
-
-      /* v4.0.0 - Physical fan / extractor visual */
-      .room-fan-card{
-        min-height:164px;
-        border-radius:20px;
-        border:1px solid rgba(255,255,255,.07);
-        background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(103,184,255,.018));
-        display:grid;
-        grid-template-columns:126px minmax(0,1fr) auto;
-        gap:18px;
-        align-items:center;
-        padding:14px 16px;
-      }
-      .room-fan-scene{
-        width:126px;
-        height:126px;
-        border-radius:17px;
-        position:relative;
-        display:grid;
-        place-items:center;
-        overflow:hidden;
-        background:linear-gradient(180deg,#172936,#101d25);
-        border:1px solid rgba(103,184,255,.18);
-      }
-      .room-fan-rotor{
-        position:relative;
-        width:96px;
-        height:96px;
-        display:grid;
-        place-items:center;
-      }
-      .room-fan-hub{
-        position:absolute;
-        width:25px;
-        height:25px;
-        border-radius:50%;
-        background:#8795a1;
-        z-index:3;
-      }
-      .room-fan-blade{
-        position:absolute;
-        width:18px;
-        height:48px;
-        border-radius:80% 20% 80% 20%;
-        background:#647580;
-        transform-origin:50% 100%;
-      }
-      .room-fan-blade.b1{transform:translateY(-25px) rotate(0deg)}
-      .room-fan-blade.b2{transform:translateX(25px) rotate(90deg)}
-      .room-fan-blade.b3{transform:translateY(25px) rotate(180deg)}
-      .room-fan-blade.b4{transform:translateX(-25px) rotate(270deg)}
-      .room-fan-card.on .room-fan-blade{background:#55e6ad}
-      .room-fan-card.on .room-fan-hub{background:#55e6ad;box-shadow:0 0 20px rgba(85,230,173,.25)}
-      .room-fan-card.on .room-fan-rotor{animation:roomFanSpin 2.2s linear infinite}
-      @keyframes roomFanSpin{to{transform:rotate(360deg)}}
-
-      .room-fan-copy span{
-        display:block;
-        font-size:9px;
-        letter-spacing:.15em;
-        text-transform:uppercase;
-        color:#8da6bd;
-        font-weight:850;
-      }
-      .room-fan-copy strong{display:block;font-size:25px;margin-top:7px}
-      .room-fan-copy small{display:block;color:var(--secondary-text-color);margin-top:4px}
-
-      .room-fan-toggle{
-        min-width:70px;
-        height:48px;
-        padding:0 12px;
-        border-radius:14px;
-        border:1px solid rgba(255,255,255,.08);
-        background:rgba(255,255,255,.025);
-        color:#8899a8;
-        font-weight:850;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        gap:7px;
-        cursor:pointer;
-      }
-      .room-fan-toggle ha-icon{--mdc-icon-size:20px}
-      .room-fan-toggle.active{
-        color:#55e6ad;
-        border-color:rgba(85,230,173,.30);
-        background:rgba(85,230,173,.07);
-      }
-
-      .app-shell.theme-light .room-fan-card{
-        background:linear-gradient(145deg,#fff,#f4f8fb);
-        border-color:rgba(15,23,42,.09);
-      }
-      .app-shell.theme-light .room-fan-scene{
-        background:linear-gradient(180deg,#eef5f8,#dce8ee);
-        border-color:rgba(46,140,200,.16);
-      }
-
-      @media(max-width:650px){
-        .room-fan-card{grid-template-columns:104px 1fr}
-        .room-fan-scene{width:104px;height:104px}
-        .room-fan-toggle{grid-column:1/-1;justify-self:stretch}
-      }
-
-
-      /* v4.0.0 - Smart auto mapping */
-      .auto-map-toolbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:12px 0 4px;padding:12px 14px;border:1px solid rgba(103,184,255,.18);border-radius:14px;background:rgba(103,184,255,.035)}
-      .auto-map-btn{height:38px;padding:0 14px;border-radius:11px;border:1px solid rgba(103,184,255,.32);background:rgba(103,184,255,.08);color:#67b8ff;font-weight:850;cursor:pointer;display:flex;align-items:center;gap:7px}
-      .auto-map-btn ha-icon{--mdc-icon-size:18px}
-      .auto-map-toolbar small{color:var(--secondary-text-color);font-size:10px;line-height:1.4}
-      .auto-map-notice{margin:8px 0 4px;padding:10px 12px;border-radius:12px;border:1px solid rgba(85,230,173,.22);background:rgba(85,230,173,.045);color:var(--primary-text-color);font-size:11px}
-      @media(max-width:650px){.auto-map-toolbar{align-items:stretch;flex-direction:column}.auto-map-btn{justify-content:center;width:100%}}
-
-
-      /* v4.0.0 - Dedicated awning / tenda visual */
-      .community-awning-card{display:grid;grid-template-columns:220px minmax(0,1fr) auto;gap:20px;align-items:center;min-height:180px;border:1px solid rgba(255,255,255,.07);border-radius:22px;padding:18px;background:rgba(255,255,255,.015)}
+nter;min-height:180px;border:1px solid rgba(255,255,255,.07);border-radius:22px;padding:18px;background:rgba(255,255,255,.015)}
       .community-awning-scene{position:relative;width:220px;height:135px;border-radius:16px;overflow:hidden;background:linear-gradient(180deg,#29485a,#182b36)}
       .community-awning-box{position:absolute;left:18px;right:18px;top:14px;height:18px;background:#89939a;border-radius:6px}
       .community-awning-fabric{position:absolute;left:34px;right:34px;top:32px;max-height:82px;background:repeating-linear-gradient(90deg,#e7ddc9 0 14px,#738899 14px 28px);clip-path:polygon(0 0,100% 0,88% 100%,12% 100%)}
@@ -182,7 +16,7 @@
       @media(max-width:620px){.community-awning-card{grid-template-columns:1fr}.community-awning-scene{width:100%}}
 
 
-      /* v4.0.0 - reusable room modules */
+      /* v4.1.0 - reusable room modules */
       .room-shared-modules{grid-column:1/-1;margin-top:8px;padding:11px;border:1px solid rgba(103,184,255,.14);border-radius:12px;background:rgba(103,184,255,.025)}
       .room-shared-modules>span{display:block;font-size:8px;letter-spacing:.15em;color:#8da6bd;font-weight:900;margin-bottom:8px}
       .room-shared-modules-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
@@ -200,7 +34,7 @@
       @media(max-width:900px){.room-shared-modules-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:650px){.room-shared-modules-grid{grid-template-columns:1fr}.room-alarm-panel{grid-template-columns:54px 1fr}.room-alarm-panel button{grid-column:1/-1}}
 
 
-      /* v4.0.0 - persistent shared-module selector state */
+      /* v4.1.0 - persistent shared-module selector state */
       .room-shared-module.active{
         border-color:rgba(103,184,255,.36);
         background:rgba(103,184,255,.09);
@@ -208,7 +42,7 @@
       .room-shared-module.active ha-icon{color:#67b8ff}
 
 
-      /* v4.0.0 - Solar room module uses the exact Overview advanced renderer */
+      /* v4.1.0 - Solar room module uses the exact Overview advanced renderer */
       .room-shared-solar-advanced{
         width:100%;
         margin-top:6px;
@@ -221,7 +55,7 @@
       }
 
 
-      /* v4.0.0 - Weather module / Overview visual parity */
+      /* v4.1.0 - Weather module / Overview visual parity */
       .room-shared-weather-overview{
         width:100%;
         margin-top:8px;
@@ -332,7 +166,7 @@
       }
 
 
-      /* v4.0.0 - EV + Wallbox room module parity */
+      /* v4.1.0 - EV + Wallbox room module parity */
       .community-daze-console{
         display:grid;
         grid-template-columns:465px minmax(0,1fr);
@@ -465,7 +299,7 @@
       }
 
 
-      /* v4.0.0 - EV vehicle card inside rooms using EV + Wallbox */
+      /* v4.1.0 - EV vehicle card inside rooms using EV + Wallbox */
       .room-vehicle-card{
         display:grid;
         grid-template-columns:280px minmax(0,1fr);
@@ -541,6 +375,119 @@
       }
       @media(max-width:650px){
         .room-vehicle-stats{grid-template-columns:1fr}
+      }
+
+
+
+      /* v4.1.0 - tester improvements */
+      .nav-bar{max-width:1480px;margin:auto;display:grid;grid-template-columns:auto auto minmax(0,1fr) auto auto;align-items:stretch;padding:0 18px;gap:6px}
+      .nav-bar .nav-scroller{min-width:0;margin:0;padding:0;overflow-x:auto}
+      .nav-fixed,.nav-arrow{border:0;background:transparent;color:var(--secondary-text-color);min-height:44px;display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;font-weight:760;white-space:nowrap}
+      .nav-fixed{position:relative;padding:10px 8px 12px}
+      .nav-fixed ha-icon{--mdc-icon-size:18px}
+      .nav-fixed.active{color:var(--casa-accent);font-weight:900}
+      .nav-fixed.active:after{content:"";position:absolute;left:6px;right:6px;bottom:0;height:3px;border-radius:3px;background:var(--casa-accent)}
+      .nav-arrow{width:30px;justify-content:center;border-radius:9px}
+      .nav-arrow:hover{background:var(--secondary-background-color);color:var(--primary-text-color)}
+      .nav-arrow ha-icon{--mdc-icon-size:19px}
+      @media(max-width:720px){.nav-info-fixed span,.nav-home-fixed span{display:none}.nav-bar{padding:0 8px;gap:2px}.nav-arrow{width:28px}}
+
+      .device-room-filter{display:flex;align-items:center;gap:10px;margin:0 0 14px;padding:11px 13px;border:1px solid var(--divider-color);border-radius:14px;background:var(--card-background-color)}
+      .device-room-filter>ha-icon{color:var(--primary-color);--mdc-icon-size:20px}
+      .device-room-filter label{display:flex;align-items:center;gap:10px;min-width:0}
+      .device-room-filter label span{font-size:9px;font-weight:850;letter-spacing:.11em;color:var(--secondary-text-color)}
+      .device-room-filter select{height:36px;min-width:220px;border:1px solid var(--divider-color);border-radius:9px;background:var(--secondary-background-color);color:var(--primary-text-color);padding:0 9px}
+
+      .background-config-panel{margin-top:13px;padding:14px;border:1px solid var(--divider-color);border-radius:15px;background:var(--card-background-color);display:grid;grid-template-columns:minmax(220px,1fr) minmax(180px,.45fr) minmax(280px,1fr);gap:12px;align-items:end}
+      .background-config-panel>div strong{display:block}.background-config-panel>div span{display:block;margin-top:4px;font-size:10px;color:var(--secondary-text-color)}
+      .background-config-panel label span,.room-background-fields label span{display:block;font-size:8px;font-weight:850;letter-spacing:.1em;color:var(--secondary-text-color);margin-bottom:5px}
+      .background-config-panel input,.background-config-panel select,.room-background-fields input,.room-background-fields select{width:100%;height:38px;border:1px solid var(--divider-color);border-radius:9px;background:var(--secondary-background-color);color:var(--primary-text-color);padding:0 9px}
+      .room-background-fields{display:grid;grid-template-columns:130px minmax(180px,1fr);gap:8px;margin-top:8px}
+      @media(max-width:760px){.background-config-panel{grid-template-columns:1fr}.room-background-fields{grid-template-columns:1fr}}
+
+      #content.custom-room-background{max-width:none;width:100%;padding-left:max(22px,calc((100vw - 1480px)/2 + 22px));padding-right:max(22px,calc((100vw - 1480px)/2 + 22px));border-radius:0}
+      .app-shell.custom-dashboard-background{background-attachment:fixed!important;background-size:cover!important}
+      .app-shell.custom-dashboard-background .topbar{background:color-mix(in srgb,var(--primary-background-color) 88%,transparent)}
+
+      .light-visual-card.on .light-visual-toggle,.light-visual-card.on .light-fixture{color:#ffd35a}
+      .light-visual-card.on .light-visual-toggle ha-icon{color:#ffd35a}
+      .light-fixture.bulb{position:relative;width:110px;height:105px;margin:auto}
+      .bulb-wire{position:absolute;left:50%;top:0;width:2px;height:25px;background:#91a0ad}
+      .bulb-glass{position:absolute;left:50%;top:24px;transform:translateX(-50%);width:52px;height:54px;border-radius:50% 50% 44% 44%;background:#8293a2}
+      .bulb-base{position:absolute;left:50%;top:70px;transform:translateX(-50%);width:29px;height:24px;border-radius:4px;background:#60717f}
+      .bulb-glow{position:absolute;left:50%;top:28px;transform:translateX(-50%);width:42px;height:42px;border-radius:50%;background:transparent}
+      .light-visual-card.on .bulb-glass{background:#ffe083}
+      .light-visual-card.on .bulb-glow{background:#ffd45a;filter:blur(18px);opacity:.75}
+
+      .community-awning-card>.custom-object-photo,.kitchen-blind-card>.custom-object-photo{width:190px;height:135px;border-radius:16px;margin:14px}
+      .universal-device-card.blinds>.custom-object-photo{width:132px;height:118px;border-radius:16px}
+
+      .vehicle-showcase{border-color:color-mix(in srgb,var(--primary-color) 28%,var(--divider-color));box-shadow:0 14px 38px color-mix(in srgb,var(--primary-color) 7%,transparent)}
+      .vehicle-battery-gauge{position:absolute;left:16px;right:16px;bottom:14px;height:24px;border-radius:999px;background:rgba(0,0,0,.48);overflow:hidden;border:1px solid rgba(255,255,255,.12)}
+      .vehicle-battery-gauge i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,#20c997,#5bbcff)}
+      .vehicle-battery-gauge strong{position:relative;z-index:2;height:100%;display:grid;place-items:center;color:#fff;font-size:11px}
+      .vehicle-overview-visual{position:relative}
+
+      .robot-room-card{grid-column:span 6;min-height:150px;border:1px solid var(--divider-color);border-radius:18px;background:var(--card-background-color);display:grid;grid-template-columns:125px 1fr auto;gap:15px;align-items:center;padding:14px}
+      .robot-room-visual{height:112px;border-radius:15px;background:color-mix(in srgb,var(--primary-color) 10%,var(--secondary-background-color));display:grid;place-items:center;color:var(--primary-color);position:relative}
+      .robot-room-visual ha-icon{--mdc-icon-size:58px}.robot-room-card.active .robot-room-visual ha-icon{animation:robotPulse 1.4s ease-in-out infinite}
+      @keyframes robotPulse{50%{transform:scale(1.08)}}
+      .robot-room-copy span,.robot-overview-copy span{display:block;font-size:8px;letter-spacing:.14em;color:var(--secondary-text-color);font-weight:850}.robot-room-copy strong{display:block;font-size:20px;margin-top:5px}.robot-room-copy small{display:block;margin-top:4px;color:var(--secondary-text-color)}
+      .robot-room-actions{display:flex;gap:7px}.robot-room-actions button{width:38px;height:38px;border:1px solid var(--divider-color);border-radius:10px;background:var(--secondary-background-color);color:var(--primary-color);cursor:pointer}
+      .robot-overview-card{display:grid;grid-template-columns:150px minmax(180px,.65fr) 1fr;gap:18px;align-items:center;padding:18px;border:1px solid var(--divider-color);border-radius:22px;background:var(--card-background-color)}
+      .robot-overview-visual{height:130px;border-radius:17px;background:color-mix(in srgb,var(--primary-color) 10%,var(--secondary-background-color));display:grid;place-items:center;color:var(--primary-color)}
+      .robot-overview-visual ha-icon{--mdc-icon-size:72px}.robot-overview-copy strong{display:block;font-size:24px;margin-top:5px}.robot-overview-copy small{display:block;color:var(--secondary-text-color);margin-top:4px}
+      .robot-overview-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.robot-overview-stats>div{padding:12px;border:1px solid var(--divider-color);border-radius:12px}.robot-overview-stats span{display:block;font-size:8px;letter-spacing:.12em;color:var(--secondary-text-color)}.robot-overview-stats strong{display:block;margin-top:5px;font-size:16px}
+      @media(max-width:760px){.robot-room-card{grid-column:span 12;grid-template-columns:90px 1fr}.robot-room-actions{grid-column:1/-1}.robot-overview-card{grid-template-columns:1fr}.robot-overview-stats{grid-template-columns:1fr}}
+
+
+
+      /* v4.1.0 SAFE TEST REV2 */
+      .room-entity-size-field>span{display:block;font-size:8px;font-weight:850;letter-spacing:.1em;color:var(--secondary-text-color);margin-bottom:5px}
+      .room-entity-size-field select{width:100%;height:38px;border:1px solid var(--divider-color);border-radius:9px;background:var(--secondary-background-color);color:var(--primary-text-color);padding:0 9px}
+
+      .entity-size-compact{grid-column:span 3!important}
+      .entity-size-normal{grid-column:span 4!important}
+      .entity-size-wide{grid-column:span 8!important}
+      .entity-size-full{grid-column:1/-1!important}
+
+      @media(max-width:720px){
+        .entity-size-compact,.entity-size-normal{grid-column:span 6!important}
+        .entity-size-wide,.entity-size-full{grid-column:1/-1!important}
+
+        /* Solar / battery: much denser on phones */
+        .overview-solar-grid,.solar-hero-grid{grid-template-columns:1fr!important;gap:10px!important}
+        .solar-showcase,.room-solar-showcase,.overview-solar-advanced{gap:10px!important}
+        .solar-production-card,.solar-battery-card,.battery-showcase,.energy-battery-card{
+          min-height:0!important;
+          padding:14px!important;
+        }
+        .solar-production-card strong,.solar-main-value,.solar-production-live strong{
+          font-size:clamp(30px,10vw,46px)!important;
+          line-height:1!important;
+        }
+        .battery-visual{
+          transform:scale(.72)!important;
+          transform-origin:center!important;
+          margin:-22px auto!important;
+        }
+        .battery-power,.solar-battery-card .battery-power{
+          font-size:clamp(30px,10vw,46px)!important;
+        }
+        .energy-flow-row,.solar-flow-row,.solar-nodes{
+          grid-template-columns:repeat(2,minmax(0,1fr))!important;
+          gap:8px!important;
+          padding:10px!important;
+        }
+        .energy-flow-node,.solar-flow-node,.solar-node{
+          min-height:96px!important;
+          padding:9px 6px!important;
+        }
+        .energy-flow-node strong,.solar-node strong{font-size:21px!important}
+      }
+
+      @media(max-width:480px){
+        .entity-size-compact,.entity-size-normal,.entity-size-wide,.entity-size-full{grid-column:1/-1!important}
       }
 
     `;
@@ -659,9 +606,30 @@
 
   _entityIconChoices(){
     return [
-      ["","Automatico"],["mdi:ceiling-light","Plafoniera"],["mdi:lightbulb-outline","Lampadina"],["mdi:lamp","Lampada"],
-      ["mdi:led-strip-variant","Striscia LED"],["mdi:wall-sconce-outline","Applique"],["mdi:door","Porta"],["mdi:door-open","Porta aperta"],
-      ["mdi:window-closed-variant","Finestra"],["mdi:garage-variant","Garage"],["mdi:blinds-horizontal","Tenda / tapparella"],
-      ["mdi:motion-sensor","Movimento"],["mdi:thermometer","Temperatura"],["mdi:water-percent","Umidità"],["mdi:white-balance-sunny","Luminosità"],
-      ["mdi:air-conditioner","Climatizzatore"],["mdi:fan","Ventola"],["mdi:television","TV"],["mdi:fridge-outline","Frigorifero"],
-      ["mdi:dishwasher","Lavastoviglie"],["mdi:microwave","Microonde"],["mdi:
+      ["","Automatico"],
+      ["mdi:ceiling-light","Plafoniera"],["mdi:dome-light","Plafoniera tonda"],["mdi:ceiling-light-multiple","Plafoniera multipla"],
+      ["mdi:lightbulb-outline","Lampadina"],["mdi:lightbulb-on-outline","Lampadina accesa"],["mdi:lightbulb-spot","Faretto"],
+      ["mdi:lamp","Lampada"],["mdi:floor-lamp","Lampada da terra"],["mdi:desk-lamp","Lampada da tavolo"],["mdi:wall-sconce-outline","Applique"],
+      ["mdi:led-strip-variant","Striscia LED"],["mdi:string-lights","Catena luminosa"],
+      ["mdi:door","Porta"],["mdi:door-open","Porta aperta"],["mdi:window-closed-variant","Finestra"],["mdi:gate","Cancello"],["mdi:garage-variant","Garage"],
+      ["mdi:blinds-horizontal","Tapparella"],["mdi:awning-outline","Tenda da sole"],
+      ["mdi:motion-sensor","Movimento"],["mdi:account-eye-outline","Presenza"],["mdi:vibrate","Vibrazione"],
+      ["mdi:thermometer","Temperatura"],["mdi:water-percent","Umidità"],["mdi:white-balance-sunny","Luminosità"],
+      ["mdi:air-conditioner","Climatizzatore"],["mdi:radiator","Riscaldamento"],["mdi:water-boiler","Acqua calda"],
+      ["mdi:fan","Ventola"],["mdi:television","TV"],["mdi:speaker","Speaker"],["mdi:cast","Media player"],
+      ["mdi:fridge-outline","Frigorifero"],["mdi:dishwasher","Lavastoviglie"],["mdi:washing-machine","Lavatrice"],["mdi:tumble-dryer","Asciugatrice"],
+      ["mdi:microwave","Microonde"],["mdi:stove","Forno"],["mdi:coffee-maker-outline","Macchina caffè"],["mdi:range-hood","Cappa"],
+      ["mdi:pot-steam-outline","Robot cucina"],["mdi:robot-vacuum","Robot aspirapolvere"],["mdi:robot-vacuum-variant","Robot lavapavimenti"],
+      ["mdi:air-fryer","Airfryer"],["mdi:power-plug-outline","Presa"],["mdi:cctv","Videocamera"],
+      ["mdi:lock-outline","Serratura"],["mdi:shield-home-outline","Allarme"],["mdi:car-electric","Auto elettrica"],["mdi:ev-station","Wallbox"],
+      ["mdi:battery-high","Batteria"],["mdi:solar-power","Fotovoltaico"],["mdi:weather-partly-cloudy","Meteo"],["mdi:home-assistant","Home Assistant"]
+    ];
+  }
+  _roomEntityIcon(entity,room=null){
+    return room?.entity_icons && typeof room.entity_icons==="object"
+      ? String(room.entity_icons[entity]||"").trim()
+      : "";
+  }
+  _setRoomEntityIcon(roomId,entity,value){
+    const room=this._roomsDraft.find(r=>r.id===roomId);
+    if(!room) retu

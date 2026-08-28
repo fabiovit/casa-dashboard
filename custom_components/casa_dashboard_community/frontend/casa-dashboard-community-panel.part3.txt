@@ -1,9 +1,4 @@
-:4px solid #7d898f;border-bottom:4px solid #7d898f;display:flex;justify-content:space-around}.balcony-v2-railing i{display:block;width:3px;background:#707b81}.balcony-v2-floor{position:absolute;left:0;right:0;bottom:0;height:30px;background:linear-gradient(180deg,#2b3331,#1b2220)}
-      .generic-room-v2{display:grid;place-items:center;background:radial-gradient(circle at 50% 42%,rgba(64,201,255,.10),transparent 34%),linear-gradient(155deg,#142633,#101c27)}.generic-room-v2:before{content:"";position:absolute;left:9%;right:9%;bottom:27px;height:1px;background:linear-gradient(90deg,transparent,rgba(120,159,190,.40),transparent)}.generic-room-v2 .generic-frame{width:104px;height:104px;border-radius:28px;display:grid;place-items:center;border:1px solid rgba(122,181,220,.20);background:rgba(56,136,185,.07);box-shadow:0 22px 50px rgba(0,0,0,.18)}.generic-room-v2 ha-icon{--mdc-icon-size:50px;color:#75c7ef}.generic-room-v2 .generic-caption{position:absolute;bottom:11px;font-size:9px;letter-spacing:.18em;font-weight:900;text-transform:uppercase;color:#7893ab}
-      .garage-visual-v2{background:linear-gradient(180deg,#172b36 0%,#11202a 72%,#202321 72%,#151817 100%)}.garage-v2-door{position:absolute;left:18%;right:18%;bottom:27px;height:92px;border:6px solid #69777f;background:repeating-linear-gradient(180deg,#465159 0 15px,#3c464d 15px 18px)}.garage-v2-door:after{content:"";position:absolute;left:50%;top:0;bottom:0;width:3px;background:#718087}.garage-v2-lamp{position:absolute;left:50%;top:19px;transform:translateX(-50%);width:62px;height:8px;border-radius:999px;background:#ffd56c;box-shadow:0 0 24px rgba(255,213,108,.22)}
-
-      .ui-v2.theme-light{background:radial-gradient(circle at 82% 0%,rgba(82,170,225,.08),transparent 34%),linear-gradient(180deg,#f5f8fb,#eef3f7)}.ui-v2.theme-light .topbar{background:rgba(250,252,254,.94)}.ui-v2.theme-light .scene-hero{background:linear-gradient(145deg,#ffffff,#f4f8fb);border-color:rgba(15,23,42,.09);box-shadow:0 20px 44px rgba(15,23,42,.06)}.ui-v2.theme-light .scene-dashboard{background:#f4f7fa;border-color:rgba(15,23,42,.07)}.ui-v2.theme-light .scene-stat{background:rgba(255,255,255,.72)}.ui-v2.theme-light .data-node,.ui-v2.theme-light .command-strip,.ui-v2.theme-light .premium-room,.ui-v2.theme-light .weather-hero,.ui-v2.theme-light .solar-panel,.ui-v2.theme-light .info-card{background:linear-gradient(160deg,#ffffff,#f7f9fb);border-color:rgba(15,23,42,.08);box-shadow:0 12px 28px rgba(15,23,42,.045)}.ui-v2.theme-light .data-node:hover{background:#fff}.ui-v2.theme-light .command-symbol{background:#f1f5f8}.ui-v2.theme-light .fabio-visual{border-color:rgba(15,23,42,.07)}
-      .ui-v2.theme-light .overview-house-v2{background:linear-gradient(180deg,#f4f8fb 0%,#e9f1f6 64%,#e2e8e2 64%,#d8dfd9 100%)}.ui-v2.theme-light .house-v2-sky{background:linear-gradient(180deg,rgba(190,219,237,.38),rgba(233,242,247,.12))}.ui-v2.theme-light .house-v2-ground{background:linear-gradient(180deg,#dde6dd,#cfd9d0)}.ui-v2.theme-light .house-v2-roof{background:linear-gradient(180deg,#9daab2,#87969f)}.ui-v2.theme-light .house-v2-body{background:linear-gradient(180deg,#d7e0e5,#c6d1d7);border-color:#9caab3}.ui-v2.theme-light .house-v2-window{background:#d7edf8;border-color:#97a7b0}.ui-v2.theme-light .house-v2-window i{background:linear-gradient(90deg,#63bdf1 0 48%,#a8ddfa 48% 100%)}.ui-v2.theme-light .house-v2-door{background:#b69066;border-color:#9caab3}.ui-v2.theme-light .house-v2-garage{background:#b9c4ca;border-color:#94a2ab}.ui-v2.theme-light .house-v2-garage i{background:rgba(50,67,77,.18)}
+gradient(180deg,#9daab2,#87969f)}.ui-v2.theme-light .house-v2-body{background:linear-gradient(180deg,#d7e0e5,#c6d1d7);border-color:#9caab3}.ui-v2.theme-light .house-v2-window{background:#d7edf8;border-color:#97a7b0}.ui-v2.theme-light .house-v2-window i{background:linear-gradient(90deg,#63bdf1 0 48%,#a8ddfa 48% 100%)}.ui-v2.theme-light .house-v2-door{background:#b69066;border-color:#9caab3}.ui-v2.theme-light .house-v2-garage{background:#b9c4ca;border-color:#94a2ab}.ui-v2.theme-light .house-v2-garage i{background:rgba(50,67,77,.18)}
       .ui-v2.theme-light .gate-visual-v2{background:linear-gradient(180deg,#f4f8fb 0%,#e8f0f5 70%,#dfe7df 70%,#d4ddd5 100%)}.ui-v2.theme-light .gate-v2-sky{background:linear-gradient(180deg,rgba(190,219,237,.34),rgba(235,244,248,.08))}.ui-v2.theme-light .gate-v2-ground{background:linear-gradient(180deg,#e4ebe4,#d7dfd8)}.ui-v2.theme-light .gate-v2-wall{background:#d9dfe2;border-top-color:#bcc6cc}.ui-v2.theme-light .gate-v2-pillar{background:#c3ccd1;border-top-color:#a9b5bc}.ui-v2.theme-light .gate-v2-leaf{background:#8f999f;border-color:#7e8b92}.ui-v2.theme-light .gate-v2-leaf i{background:#6f7c83}.ui-v2.theme-light .gate-v2-handle{background:#6d6252}
       .ui-v2.theme-light .balcony-scene-v2{background:linear-gradient(180deg,#f5f9fc 0%,#eaf2f7 66%,#e4ebe4 66%,#d9e1da 100%)}.ui-v2.theme-light .balcony-v2-sky{background:linear-gradient(180deg,rgba(190,219,237,.34),rgba(235,244,248,.08))}.ui-v2.theme-light .balcony-v2-wall{background:#d7e0e5;border-color:#9caab3}.ui-v2.theme-light .balcony-v2-window{background:#b9e2f7;border-color:#98a8b1}.ui-v2.theme-light .balcony-v2-window:after{background:#9aaab3}.ui-v2.theme-light .balcony-v2-awning{background:repeating-linear-gradient(90deg,#6fa7c8 0 12px,#9bc7df 12px 24px)}.ui-v2.theme-light .balcony-v2-railing{border-color:#9aa6ad}.ui-v2.theme-light .balcony-v2-railing i{background:#98a5ac}.ui-v2.theme-light .balcony-v2-floor{background:linear-gradient(180deg,#dde5df,#cfd8d1)}
       .ui-v2.theme-light .generic-room-v2{background:radial-gradient(circle at 50% 42%,rgba(22,102,217,.08),transparent 34%),linear-gradient(155deg,#f7fafc,#edf3f7)}.ui-v2.theme-light .generic-room-v2 .generic-frame{background:#f4f8fb;border-color:rgba(22,102,217,.14);box-shadow:none}.ui-v2.theme-light .generic-room-v2 ha-icon{color:#2775b8}.ui-v2.theme-light .generic-room-v2 .generic-caption{color:#607990}.ui-v2.theme-light .garage-visual-v2{background:linear-gradient(180deg,#f5f9fc 0%,#eaf1f5 72%,#e0e6e1 72%,#d5ddd7 100%)}.ui-v2.theme-light .garage-v2-door{border-color:#99a7af;background:repeating-linear-gradient(180deg,#c3ccd1 0 15px,#b6c1c7 15px 18px)}.ui-v2.theme-light .garage-v2-door:after{background:#9ba9b0}
@@ -149,4 +144,43 @@
       .uv-wicket,.uv-gate,.uv-garage,.uv-irrigation,.uv-mower,.uv-washer,.uv-thermostat,.uv-vacuum,.uv-catfood,.uv-humidifier{position:absolute;inset:0}
 
       /* cancellino */
-      .uv-wall{position:abs
+      .uv-wall{position:absolute;bottom:20px;width:34px;height:76px;background:#667075}.uv-wall.left{left:0}.uv-wall.right{right:0}
+      .uv-post{position:absolute;bottom:18px;width:12px;height:94px;background:#7f898e}.uv-post.left{left:30px}.uv-post.right{right:30px}
+      .uv-wicket-leaf{position:absolute;left:42px;right:42px;bottom:27px;height:70px;border:4px solid #67747b;display:flex;justify-content:space-around;transform-origin:left center;background:rgba(41,50,55,.28)}
+      .uv-wicket-leaf.open{transform:perspective(350px) rotateY(-48deg)}.uv-wicket-leaf i{width:4px;background:#7b878d}
+
+      /* cancello */
+      .uv-gate-pillar{position:absolute;bottom:14px;width:16px;height:98px;background:#747f86}.uv-gate-pillar.left{left:16px}.uv-gate-pillar.right{right:16px}
+      .uv-gate-leaf{position:absolute;left:32px;right:32px;bottom:24px;height:74px;border:5px solid #647178;display:flex;justify-content:space-around;background:#343d42;transform-origin:left center}
+      .uv-gate-leaf.open{transform:perspective(400px) rotateY(-40deg)}.uv-gate-leaf i{width:4px;background:#707d84}
+
+      /* basculante */
+      .uv-garage-frame{position:absolute;left:20px;right:20px;top:16px;bottom:16px;border:8px solid #737f86;background:#20272b}
+      .uv-garage-door{position:absolute;inset:0;background:#4f5a61;display:flex;flex-direction:column;justify-content:space-evenly;transform-origin:top center}
+      .uv-garage-door.open{transform:perspective(450px) rotateX(65deg)}.uv-garage-door i{height:3px;background:#6e7a81}
+
+      /* irrigazione */
+      .uv-grass{position:absolute;left:0;right:0;bottom:0;height:45px;background:#314b32}
+      .uv-sprinkler{position:absolute;left:50%;bottom:28px;width:14px;height:30px;transform:translateX(-50%);background:#727d83;border-radius:5px}
+      .uv-water{position:absolute;left:50%;bottom:54px;width:120px;height:58px;transform:translateX(-50%)}
+      .uv-water i{position:absolute;left:58px;bottom:0;width:3px;height:56px;background:#66c8ff;transform-origin:bottom;opacity:.25}
+      .uv-water.active i{opacity:.85}.uv-water i:nth-child(1){transform:rotate(-55deg)}.uv-water i:nth-child(2){transform:rotate(-30deg)}.uv-water i:nth-child(4){transform:rotate(30deg)}.uv-water i:nth-child(5){transform:rotate(55deg)}
+
+      /* mower */
+      .uv-lawn{position:absolute;left:0;right:0;bottom:0;height:46px;background:#2d4d32}
+      .uv-mower-body{position:absolute;left:50%;bottom:29px;width:78px;height:44px;border-radius:32px 32px 18px 18px;background:#59656c;transform:translateX(-50%)}
+      .uv-mower-body.active{box-shadow:0 0 18px rgba(98,220,160,.14)}.uv-mower-top{position:absolute;left:20px;right:20px;top:8px;height:18px;border-radius:13px;background:#252d31}.uv-mower-eye{position:absolute;left:34px;top:13px;width:10px;height:10px;border-radius:50%;background:#70e0b1}
+
+      /* lavatrice */
+      .uv-washer-body{position:absolute;left:50%;top:12px;width:82px;height:104px;transform:translateX(-50%);border-radius:12px;background:#c0c8cd;border:4px solid #7d898f}
+      .uv-washer-panel{position:absolute;left:8px;right:8px;top:8px;height:18px;display:flex;gap:5px}.uv-washer-panel i{width:9px;height:9px;border-radius:50%;background:#53636d}
+      .uv-washer-door{position:absolute;left:18px;right:18px;bottom:10px;height:52px;border-radius:50%;border:7px solid #5f6b72;background:#1d2d36}.uv-washer-door div{position:absolute;inset:6px;border-radius:50%;background:#3e7388}
+      .uv-washer.active .uv-washer-door div{box-shadow:inset 0 0 18px rgba(99,211,255,.35)}
+
+      /* termostato */
+      .uv-thermostat-ring{position:absolute;left:50%;top:16px;width:82px;height:82px;border-radius:50%;transform:translateX(-50%);border:8px solid #65727a;display:grid;place-items:center;background:#172028;color:#85d6ff}
+      .uv-thermostat-ring.active{border-color:#5fcfff;box-shadow:0 0 18px rgba(95,207,255,.14)}.uv-thermostat-ring ha-icon{--mdc-icon-size:35px}.uv-thermostat-base{position:absolute;left:50%;bottom:15px;width:56px;height:10px;border-radius:10px;background:#59656c;transform:translateX(-50%)}
+
+      /* vacuum/mop */
+      .uv-vacuum-body{position:absolute;left:50%;top:23px;width:86px;height:86px;border-radius:50%;transform:translateX(-50%);background:#56636a;border:7px solid #6d7a82}
+      .uv-vacuum-body.activ
