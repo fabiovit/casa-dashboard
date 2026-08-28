@@ -12,7 +12,7 @@
 
 Casa Dashboard Community is a complete app-like dashboard for **Home Assistant**, designed to adapt to different homes without relying on traditional Lovelace cards.
 
-**v4.0.0** is a consolidation release: the project has been cleaned up, versioning is now consistent across backend and frontend, and the mature features introduced in the 2.x generation are retained in a cleaner package.
+**v4.0.0** consolidates the current Dynamic generation into a cleaner, stable base with aligned frontend/backend versioning.
 
 **Created by Fabio Vittori** · [☕ Buy me a coffee](https://ko-fi.com/fabvittori)
 
@@ -58,25 +58,28 @@ Version 4.0 introduces a refined visual experience across **dark and light theme
 
 ![Casa Dashboard Community 4.0 - Energy and Mobility configurator](images/casa-v4-config-energy.png)
 
-
-
 ## 🛡️ Security & Access
 
-Casa V2 dynamic rooms can now recognize `lock.*` and `alarm_control_panel.*` entities.
-
-When configured in a room, Casa Dashboard automatically adds a dedicated **Security & Access** section with lock status, Lock / Unlock controls, alarm state and quick Home / Away / Off actions.
+Dynamic rooms recognize `lock.*` and `alarm_control_panel.*` entities and can add dedicated lock/alarm controls when configured.
 
 ## ☀️ Advanced Energy View
 
-Casa V2 can now switch the Solar section between **Compact** and **Advanced** mode.
+Casa Dashboard 4.0 supports **Compact** and **Advanced** Solar views with live production, optional PV1/PV2 strings, battery SOC and charge/discharge flow, plus Home / Inverter / Battery / Grid nodes.
 
-Advanced mode provides an adaptive energy showcase with live solar production, optional PV1/PV2 strings, battery SOC and charge/discharge flow, plus Home / Inverter / Battery / Grid nodes.
+Grid and battery sign conventions are configurable to adapt to different inverter integrations.
 
-Grid and battery sign conventions are configurable, so the view can adapt to different inverter integrations.
+## 🔗 Shared room modules
+
+Configure global data once and reuse it inside rooms without duplicating mappings:
+
+- Solar Energy
+- EV + Wallbox
+- Weather
+- Alarm
 
 ## 🧭 Paged configurator
 
-The Casa V2 configurator is now split into dedicated pages:
+The configurator is split into dedicated pages:
 
 - Overview
 - Rooms
@@ -85,66 +88,27 @@ The Casa V2 configurator is now split into dedicated pages:
 - Weather & Security
 - Advanced
 
-This keeps normal configuration simple while moving the full 173-mapping list into an advanced page.
+## 🎨 Visual customization
 
-## 🎨 Full visual customization
+Customize Overview labels, vehicle and Wallbox names, room images, entity names, icons and object photos.
 
-Casa V2 can now personalize the main Overview section labels, vehicle name and Wallbox name.
-
-Rooms can also use a custom photo. Enter a Home Assistant `/local/...` path (for example `/local/casa/kitchen.jpg`) or an image URL. If no image is configured, the normal Casa V2 visual remains active.
+Uploaded entity photos are resized and stored under `/local/casa_dashboard_community/uploads/`.
 
 ## 🏠 Dynamic rooms
 
-Casa V2 lets you:
-
-- create rooms freely;
-- rename and reorder them;
-- choose room type and icon;
-- create multiple rooms of the same type;
-- remove unused rooms;
-- assign multiple Home Assistant entities to each room.
+Casa Dashboard 4.0 lets you create, rename, reorder and remove rooms, choose room type/icon and assign multiple Home Assistant entities to each room.
 
 ## ⚙️ Visual configurator
 
-Configuration is handled directly from the dashboard.
-
-Entities can be searched by:
-
-- Home Assistant friendly name;
-- `entity_id`;
-- custom display name.
-
-The configurator keeps the **173 Community mappings** used by global and specialized functions.
-
-Global mappings can also have a **custom display name** for the Overview. If left empty, Casa Dashboard uses the Home Assistant friendly name and then the Community fallback name.
-
-Large installations are supported with dedicated scrolling for Rooms and the entity mapping list.
+Entities can be searched by Home Assistant friendly name, `entity_id` or custom display name. Large installations are supported with dedicated scrolling and grouped configuration pages.
 
 ## 🧠 Smart device recognition
 
-Casa V2 can choose a suitable icon/visual using:
+Casa Dashboard can choose a suitable visual using custom name, Home Assistant friendly name, recognized function, HA icon, `device_class` and entity domain.
 
-1. custom display name;
-2. Home Assistant friendly name;
-3. recognized function;
-4. Home Assistant icon;
-5. `device_class`;
-6. entity domain.
+## 📊 Overview
 
-This helps generic smart plugs appear as the device they actually control when the Home Assistant name provides enough context.
-
-## 📊 V2 Overview
-
-The Overview focuses on useful information rather than duplicating every room:
-
-- active states;
-- temperatures;
-- outdoor and weather conditions;
-- solar production and battery;
-- grid data;
-- Wallbox and EV.
-
-Unconfigured sections remain hidden.
+The Overview focuses on active states, temperatures, weather, solar/battery, grid data, Wallbox and optional electric vehicle data. Unconfigured sections remain hidden.
 
 ## 🌍 Languages
 
@@ -153,16 +117,11 @@ Native interface support:
 - 🇬🇧 English
 - 🇮🇹 Italiano
 
-The language selector is available in the dashboard and the selected language is stored locally.
-
-Custom room names and Home Assistant entity names are preserved.
-
-
-Individual V2 entities can also use a custom photo. Use **Carica** in the room configurator for lights, switches, appliances, sensors and other objects. Uploaded photos are resized and stored under `/local/casa_dashboard_community/uploads/`; if no photo is set, the normal automatic V2 visual remains active.
+The selected language is stored locally. Custom room and Home Assistant entity names are preserved.
 
 ## 📱 Responsive
 
-Casa V1 and Casa V2 are designed for desktop and mobile.
+Casa Dashboard 4.0 is designed for desktop and mobile.
 
 ## 📦 HACS installation
 
@@ -180,9 +139,7 @@ Copy `custom_components/casa_dashboard_community` into `/config/custom_component
 
 ## ℹ️ Notes
 
-Casa Dashboard Community is an advanced template. Devices, sensors, automations, solar, EV and Wallbox are optional.
-
-Functions that are not configured are hidden automatically.
+Devices, sensors, automations, solar, EV and Wallbox are optional. Unconfigured functions are hidden automatically.
 
 ## ☕ Support
 
