@@ -1,30 +1,4 @@
-nter;min-height:180px;border:1px solid rgba(255,255,255,.07);border-radius:22px;padding:18px;background:rgba(255,255,255,.015)}
-      .community-awning-scene{position:relative;width:220px;height:135px;border-radius:16px;overflow:hidden;background:linear-gradient(180deg,#29485a,#182b36)}
-      .community-awning-box{position:absolute;left:18px;right:18px;top:14px;height:18px;background:#89939a;border-radius:6px}
-      .community-awning-fabric{position:absolute;left:34px;right:34px;top:32px;max-height:82px;background:repeating-linear-gradient(90deg,#e7ddc9 0 14px,#738899 14px 28px);clip-path:polygon(0 0,100% 0,88% 100%,12% 100%)}
-      .community-awning-arm{position:absolute;top:48px;width:3px;height:68px;background:#9aa6ae;transform-origin:top}
-      .community-awning-arm.left{left:44px;transform:rotate(-15deg)}
-      .community-awning-arm.right{right:44px;transform:rotate(15deg)}
-      .community-awning-info span{display:block;font-size:9px;letter-spacing:.16em;color:#8da6bd;text-transform:uppercase}
-      .community-awning-info strong{display:block;font-size:28px;margin-top:7px}
-      .community-awning-info small{display:block;color:var(--secondary-text-color);margin-top:4px}
-      .community-awning-manage{height:44px;padding:0 15px;border-radius:13px;border:1px solid rgba(103,184,255,.3);background:rgba(103,184,255,.05);color:#67b8ff;font-weight:800;cursor:pointer}
-      .app-shell.theme-light .community-awning-card{background:linear-gradient(180deg,#fff,#f5f9fd);border-color:rgba(15,23,42,.09)}
-      .app-shell.theme-light .community-awning-scene{background:linear-gradient(180deg,#d9eff9,#c6dde8)}
-      .app-shell.theme-light .community-awning-info span{color:#587292}
-      @media(max-width:900px){.community-awning-card{grid-template-columns:180px 1fr}.community-awning-manage{grid-column:1/-1}.community-awning-scene{width:180px}}
-      @media(max-width:620px){.community-awning-card{grid-template-columns:1fr}.community-awning-scene{width:100%}}
-
-
-      /* v4.1.0 - reusable room modules */
-      .room-shared-modules{grid-column:1/-1;margin-top:8px;padding:11px;border:1px solid rgba(103,184,255,.14);border-radius:12px;background:rgba(103,184,255,.025)}
-      .room-shared-modules>span{display:block;font-size:8px;letter-spacing:.15em;color:#8da6bd;font-weight:900;margin-bottom:8px}
-      .room-shared-modules-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
-      .room-shared-module{min-height:40px;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:7px 9px;display:flex;align-items:center;gap:7px;cursor:pointer}
-      .room-shared-module input{accent-color:#67b8ff}.room-shared-module ha-icon{--mdc-icon-size:17px;color:#67b8ff}.room-shared-module b{font-size:9px}.room-shared-modules small{display:block;margin-top:7px;color:var(--secondary-text-color);font-size:9px}
-      .room-modules-stack{display:flex;flex-direction:column;gap:18px}
-      .room-module{border:1px solid rgba(255,255,255,.07);border-radius:22px;background:linear-gradient(145deg,rgba(255,255,255,.022),rgba(103,184,255,.018));padding:16px}
-      .room-module-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.room-module-head>div{display:flex;align-items:center;gap:9px}.room-module-head ha-icon{--mdc-icon-size:21px;color:#67b8ff}.room-module-head strong{font-size:16px}.room-module-head small{font-size:9px;color:var(--secondary-text-color)}
+d>div{display:flex;align-items:center;gap:9px}.room-module-head ha-icon{--mdc-icon-size:21px;color:#67b8ff}.room-module-head strong{font-size:16px}.room-module-head small{font-size:9px;color:var(--secondary-text-color)}
       .room-module-grid{gap:10px}
       .room-module-metric{min-height:96px;padding:12px;border:1px solid rgba(255,255,255,.06);border-radius:15px;background:rgba(255,255,255,.018);display:grid;grid-template-columns:44px 1fr;gap:10px;align-items:center}
       .room-module-icon{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:#142632;color:#67b8ff}.room-module-icon ha-icon{--mdc-icon-size:22px}
@@ -34,7 +8,7 @@ nter;min-height:180px;border:1px solid rgba(255,255,255,.07);border-radius:22px;
       @media(max-width:900px){.room-shared-modules-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:650px){.room-shared-modules-grid{grid-template-columns:1fr}.room-alarm-panel{grid-template-columns:54px 1fr}.room-alarm-panel button{grid-column:1/-1}}
 
 
-      /* v4.1.0 - persistent shared-module selector state */
+      /* v4.1.1 - persistent shared-module selector state */
       .room-shared-module.active{
         border-color:rgba(103,184,255,.36);
         background:rgba(103,184,255,.09);
@@ -42,7 +16,7 @@ nter;min-height:180px;border:1px solid rgba(255,255,255,.07);border-radius:22px;
       .room-shared-module.active ha-icon{color:#67b8ff}
 
 
-      /* v4.1.0 - Solar room module uses the exact Overview advanced renderer */
+      /* v4.1.1 - Solar room module uses the exact Overview advanced renderer */
       .room-shared-solar-advanced{
         width:100%;
         margin-top:6px;
@@ -55,7 +29,7 @@ nter;min-height:180px;border:1px solid rgba(255,255,255,.07);border-radius:22px;
       }
 
 
-      /* v4.1.0 - Weather module / Overview visual parity */
+      /* v4.1.1 - Weather module / Overview visual parity */
       .room-shared-weather-overview{
         width:100%;
         margin-top:8px;
@@ -166,7 +140,7 @@ nter;min-height:180px;border:1px solid rgba(255,255,255,.07);border-radius:22px;
       }
 
 
-      /* v4.1.0 - EV + Wallbox room module parity */
+      /* v4.1.1 - EV + Wallbox room module parity */
       .community-daze-console{
         display:grid;
         grid-template-columns:465px minmax(0,1fr);
@@ -299,7 +273,7 @@ nter;min-height:180px;border:1px solid rgba(255,255,255,.07);border-radius:22px;
       }
 
 
-      /* v4.1.0 - EV vehicle card inside rooms using EV + Wallbox */
+      /* v4.1.1 - EV vehicle card inside rooms using EV + Wallbox */
       .room-vehicle-card{
         display:grid;
         grid-template-columns:280px minmax(0,1fr);
@@ -379,7 +353,7 @@ nter;min-height:180px;border:1px solid rgba(255,255,255,.07);border-radius:22px;
 
 
 
-      /* v4.1.0 - tester improvements */
+      /* v4.1.1 - tester improvements */
       .nav-bar{max-width:1480px;margin:auto;display:grid;grid-template-columns:auto auto minmax(0,1fr) auto auto;align-items:stretch;padding:0 18px;gap:6px}
       .nav-bar .nav-scroller{min-width:0;margin:0;padding:0;overflow-x:auto}
       .nav-fixed,.nav-arrow{border:0;background:transparent;color:var(--secondary-text-color);min-height:44px;display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;font-weight:760;white-space:nowrap}
@@ -442,7 +416,7 @@ nter;min-height:180px;border:1px solid rgba(255,255,255,.07);border-radius:22px;
 
 
 
-      /* v4.1.0 SAFE TEST REV2 */
+      /* v4.1.1 SAFE TEST REV2 */
       .room-entity-size-field>span{display:block;font-size:8px;font-weight:850;letter-spacing:.1em;color:var(--secondary-text-color);margin-bottom:5px}
       .room-entity-size-field select{width:100%;height:38px;border:1px solid var(--divider-color);border-radius:9px;background:var(--secondary-background-color);color:var(--primary-text-color);padding:0 9px}
 
@@ -489,6 +463,35 @@ nter;min-height:180px;border:1px solid rgba(255,255,255,.07);border-radius:22px;
       @media(max-width:480px){
         .entity-size-compact,.entity-size-normal,.entity-size-wide,.entity-size-full{grid-column:1/-1!important}
       }
+
+
+
+      /* v4.1.1 */
+      .background-choice-fields{display:grid;grid-template-columns:repeat(4,minmax(90px,1fr));gap:8px;align-items:end}
+      .background-choice-fields input[type="color"],.room-background-fields input[type="color"]{width:100%;height:38px;padding:3px;border:1px solid var(--divider-color);border-radius:9px;background:var(--secondary-background-color)}
+      .room-background-fields{grid-template-columns:140px 110px 110px 110px 100px}
+      .app-shell.custom-photo-background #content{position:relative;isolation:isolate}
+      .app-shell.custom-photo-background #content::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:rgba(6,10,14,.42);backdrop-filter:blur(1.5px)}
+      .app-shell.theme-light.custom-photo-background #content::before{background:rgba(255,255,255,.38)}
+      .app-shell.custom-photo-background .card,
+      .app-shell.custom-photo-background .metric-card,
+      .app-shell.custom-photo-background .universal-device-card,
+      .app-shell.custom-photo-background .community-awning-card,
+      .app-shell.custom-photo-background .kitchen-blind-card,
+      .app-shell.custom-photo-background .light-visual-card,
+      .app-shell.custom-photo-background .robot-room-card,
+      .app-shell.custom-photo-background .robot-overview-card,
+      .app-shell.custom-photo-background .vehicle-overview-card,
+      .app-shell.custom-photo-background .solar-production-card,
+      .app-shell.custom-photo-background .solar-battery-card,
+      .app-shell.custom-photo-background .energy-flow-row,
+      .app-shell.custom-photo-background .weather-strip,
+      .app-shell.custom-photo-background .hero-card{
+        background:color-mix(in srgb,var(--card-background-color) 92%,transparent)!important;
+        backdrop-filter:blur(10px)
+      }
+      .robot-room-card.mower .robot-room-visual{color:#62c679;background:color-mix(in srgb,#62c679 10%,var(--secondary-background-color))}
+      @media(max-width:760px){.background-choice-fields,.room-background-fields{grid-template-columns:1fr 1fr}}
 
     `;
   }
@@ -632,4 +635,39 @@ nter;min-height:180px;border:1px solid rgba(255,255,255,.07);border-radius:22px;
   }
   _setRoomEntityIcon(roomId,entity,value){
     const room=this._roomsDraft.find(r=>r.id===roomId);
-    if(!room) retu
+    if(!room) return;
+    room.entity_icons=(room.entity_icons && typeof room.entity_icons==="object") ? {...room.entity_icons} : {};
+    const clean=String(value||"").trim();
+    if(clean) room.entity_icons[entity]=clean;
+    else delete room.entity_icons[entity];
+
+    // Keep the draft object reference fresh so save/normalization paths
+    // cannot miss the icon change.
+    this._roomsDraft=[...this._roomsDraft];
+  }
+  _activeRoomEntityIcon(entity){
+    if(this._uiTheme!=="v2") return "";
+    return this._roomEntityIcon(entity,this._roomById(this._active));
+  }
+  _roomEntitySize(entity,room=null){
+    const value=room?.entity_sizes && typeof room.entity_sizes==="object"
+      ? String(room.entity_sizes[entity]||"auto").trim().toLowerCase()
+      : "auto";
+    return ["auto","compact","normal","wide","full"].includes(value)?value:"auto";
+  }
+  _setRoomEntitySize(roomId,entity,value){
+    const room=this._roomsDraft.find(r=>r.id===roomId);
+    if(!room) return;
+    room.entity_sizes=(room.entity_sizes && typeof room.entity_sizes==="object")?{...room.entity_sizes}:{};
+    const clean=String(value||"auto").trim().toLowerCase();
+    if(clean && clean!=="auto") room.entity_sizes[entity]=clean;
+    else delete room.entity_sizes[entity];
+    this._roomsDraft=[...this._roomsDraft];
+  }
+  _activeRoomEntitySize(entity){
+    if(this._uiTheme!=="v2") return "auto";
+    return this._roomEntitySize(entity,this._roomById(this._active));
+  }
+  _entitySizeClass(entity){
+    const size=this._activeRoomEntitySize(entity);
+    return 

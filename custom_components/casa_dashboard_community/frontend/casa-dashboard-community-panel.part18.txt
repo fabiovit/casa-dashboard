@@ -1,4 +1,4 @@
-iv>`:""}${hasLightning?`<div class="weather-chip"><div class="k">Fulmini</div><div class="v">${lightning?"⚡ ≤5 km":lightningCount>0?"⚡ Lontani":"✅ Nessuno"}</div></div>`:""}</div></div>`:""}
+iv class="k">Sole</div><div class="v">${this._luxLabel("sensor.weather_solar_lux")} · ${this._fmtLuxCompact("sensor.weather_solar_lux")}</div></div>`:""}${hasLightning?`<div class="weather-chip"><div class="k">Fulmini</div><div class="v">${lightning?"⚡ ≤5 km":lightningCount>0?"⚡ Lontani":"✅ Nessuno"}</div></div>`:""}</div></div>`:""}
     ${hasBalconyControls?this._section(hasBlinds?"Tende, luci e dispositivi":"Luci e dispositivi",hasBlinds?"Controlli configurati":"Dispositivi configurati"):""}<div class="grid">
       ${this._control("input_boolean.blinds_manual_mode","Modalità manuale tende","mdi:hand-back-right-outline",manual?"Automazioni tende sospese":"Gestione automatica attiva","toggle",12)}
       ${hasBlinds&&hasWeather?`<div class="decision-card ${discesaLevel} span-6"><div class="eyebrow">↓ DISCESA TENDE</div><strong>${manual?"Modalità manuale attiva":discesa}</strong><p>Dopo le 14:00 · almeno 1h dal tramonto · ≥40.000 lx · ≥350 W/m² · raffica &lt;15 · vento &lt;10 · nessuna pioggia/fulmini · blocco vento scaduto.</p></div><div class="decision-card ${risalitaLevel} span-6"><div class="eyebrow">↑ RISALITA TENDE</div><strong>${manual?"Modalità manuale attiva":risalita}</strong><p>Pioggia · raffica ≥24 · vento ≥18 · fulmini ≤5 km · luce bassa · prevenzione temporale · risalita garantita 10 min prima del tramonto.</p></div>`:""}
@@ -224,7 +224,7 @@ iv>`:""}${hasLightning?`<div class="weather-chip"><div class="k">Fulmini</div><d
   }
 
   _handleClick(ev) {
-    const target=ev.target.closest?.("[data-action],[data-nav],[data-nav-scroll],[data-toggle],[data-more],[data-cover-toggle],[data-climate],[data-climate-temp],[data-vacuum],[data-vacuum-service],[data-alarm],[data-alarm-service],[data-lock-action],[data-humidity-delta],[data-script],[data-ui-theme],[data-room-entity-add],[data-room-entity-remove]"); if(!target) return;
+    const target=ev.target.closest?.("[data-action],[data-nav],[data-nav-scroll],[data-toggle],[data-more],[data-cover-toggle],[data-climate],[data-climate-temp],[data-vacuum],[data-vacuum-service],[data-mower-service],[data-alarm],[data-alarm-service],[data-lock-action],[data-humidity-delta],[data-script],[data-ui-theme],[data-room-entity-add],[data-room-entity-remove]"); if(!target) return;
     if(target.dataset.action==="ha-menu") { this.dispatchEvent(new CustomEvent("hass-toggle-menu",{bubbles:true,composed:true})); return; }
     if(target.dataset.uiTheme){ this._setUiTheme(target.dataset.uiTheme); return; }
     if(target.dataset.action==="room-add"){ this._addRoomDraft(); return; }
@@ -300,6 +300,10 @@ iv>`:""}${hasLightning?`<div class="weather-chip"><div class="k">Fulmini</div><d
     if(target.dataset.vacuumService){
       const eid=target.dataset.vacuumEntity; if(!eid) return;
       this._hass.callService("vacuum",target.dataset.vacuumService,{entity_id:eid}); return;
+    }
+    if(target.dataset.mowerService){
+      const eid=target.dataset.mowerEntity; if(!eid) return;
+      this._hass.callService("lawn_mower",target.dataset.mowerService,{entity_id:eid}); return;
     }
     if(target.dataset.vacuum){ const eid=this._eid("vacuum.robot_vacuum"); if(!eid) return; this._hass.callService("vacuum",target.dataset.vacuum,{entity_id:eid}); return; }
     if(target.dataset.lockAction){

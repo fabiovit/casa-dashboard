@@ -1,4 +1,33 @@
-idle'} span-${span}${entity?this._entitySizeClass(entity):""}" data-more="${entity}">
+
+             <div class="window-sash left"></div>
+             <div class="window-sash right"></div>
+             <div class="window-handle"></div>
+           </div>`:
+          `<div class="cabinet-frame">
+             <div class="cabinet-door left"></div>
+             <div class="cabinet-door right"></div>
+             <div class="cabinet-handle left"></div>
+             <div class="cabinet-handle right"></div>
+           </div>`
+        }
+      </div>
+      <div class="opening-copy">
+        <span>${label}</span>
+        <strong>${isOpen?'Aperta':'Chiusa'}</strong>
+        <small>${subtitle||'Stato sensore'}</small>
+      </div>
+      <div class="opening-state ${isOpen?'warn':'good'}"><ha-icon icon="${icon}"></ha-icon></div>
+    </button>`;
+  }
+
+  _activityVisual(entity,label,type="motion",span=3,subtitle=""){
+    const active=this._on(entity);
+    const cfg={
+      motion:{icon:"mdi:motion-sensor",on:"Rilevato",off:"Assente",scene:"motion"},
+      occupancy:{icon:"mdi:account-check",on:"Occupato",off:"Libero",scene:"occupancy"},
+      vibration:{icon:"mdi:vibrate",on:"Rilevata",off:"Assente",scene:"vibration"}
+    }[type];
+    return `<button class="activity-card ${cfg.scene} ${active?'active':'idle'} span-${span}${entity?this._entitySizeClass(entity):""}" data-more="${entity}">
       <div class="activity-visual ${cfg.scene}">
         ${cfg.scene==="motion"?
           `<div class="motion-person"><i class="head"></i><i class="body"></i><i class="arm a"></i><i class="arm b"></i><i class="leg a"></i><i class="leg b"></i></div><div class="motion-waves"><i></i><i></i><i></i></div>`:
@@ -442,20 +471,4 @@ idle'} span-${span}${entity?this._entitySizeClass(entity):""}" data-more="${enti
     if(today!=="—") dailyParts.push(`${today} ${this._language==="en"?"today":"oggi"}`);
     const radEntity=this._eid("sensor.weather_solar_radiation");
     if(radEntity){
-      const rv=parseFloat(this._state(radEntity,""));
-      const ru=this._attr(radEntity,"unit_of_measurement","W/m²");
-      if(Number.isFinite(rv)) dailyParts.push(`${Math.round(rv)} ${ru}`);
-    }
-
-    const batteryPills=[
-      [this._language==="en"?"Charged today":"Carica oggi",chargeToday],
-      [this._language==="en"?"Discharged today":"Scarica oggi",dischargeToday],
-      [this._language==="en"?"Losses":"Perdite",losses]
-    ].filter(([,value])=>value!=="—");
-
-    const pvRows=[
-      pv1!==null?`<div class="solar-pv-line">
-        <div class="solar-pv-meta"><span>${this._esc(pv1Label)}</span><strong>${this._energyFmtKW(pv1,true)}</strong><small>${[pv1Volt,pv1Current].filter(v=>v!=="—").join(" · ")}</small></div>
-        <div class="solar-pv-track"><div class="solar-pv-fill" style="width:${Math.min(100,(Math.abs(pv1)/pvMax)*100)}%"></div></div>
-      </div>`:"",
-      pv2!==null?`<d
+      const rv=parseFloat(this._state(radEnti

@@ -1,21 +1,14 @@
-ns">
-        <ha-icon icon="mdi:floor-plan"></ha-icon>
-        <div><strong>Struttura della casa</strong><span>Crea, rinomina e riordina gli ambienti. Qui gestisci solo la struttura e la foto principale della stanza.</span></div>
-        <button class="room-add room-add-primary" data-action="room-add" type="button"><ha-icon icon="mdi:plus"></ha-icon><span>Aggiungi stanza</span></button>
-      </div>
-      <div class="room-list room-list-page">${this._roomsDraft.map((r,i)=>`<div class="room-edit-row room-edit-row-page" data-room-id="${r.id}">
-        <span class="room-order">${i+1}</span>
-        <div class="room-main-fields">
-          <input data-room-name="${r.id}" value="${this._esc(r.name||"")}" placeholder="Nome stanza">
-          <select data-room-type="${r.id}">${this._roomTypes().map(([v,l])=>`<option value="${v}" ${r.type===v?"selected":""}>${l}</option>`).join("")}</select>
-          <input data-room-icon="${r.id}" value="${this._esc(r.icon||this._roomIcon(r.type))}" placeholder="mdi:icona">
+esc(r.icon||this._roomIcon(r.type))}" placeholder="mdi:icona">
         </div>
         <div class="room-image-field"><span>FOTO STANZA</span><div class="photo-config-line"><input data-room-image="${r.id}" value="${this._esc(r.image||"")}" placeholder="/local/... oppure carica foto"><label class="photo-upload-btn native-photo-picker"><ha-icon icon="mdi:image-plus"></ha-icon><span>Carica</span><input type="file" data-room-photo-file="${r.id}" accept="image/*,.jpg,.jpeg,.png,.webp,.heic,.heif"></label>${r.image?`<button class="photo-clear-btn" type="button" data-clear-room-image="${r.id}" title="Rimuovi foto"><ha-icon icon="mdi:image-remove-outline"></ha-icon></button>`:""}</div>${r.image?`<div class="photo-preview room-photo-preview"><img src="${this._esc(r.image)}" alt=""></div>`:""}
           <div class="room-background-fields">
             <label><span>SFONDO</span><select data-room-background-mode="${r.id}">
               ${[["auto","Automatico"],["color","Colore"],["gradient","Sfumatura"],["image","Foto stanza"]].map(([v,l])=>`<option value="${v}" ${(r.background_mode||"auto")===v?"selected":""}>${l}</option>`).join("")}
             </select></label>
-            <label><span>VALORE</span><input data-room-background-value="${r.id}" value="${this._esc(r.background_value||"")}" placeholder="#101820 o linear-gradient(...)"></label>
+            <label><span>COLORE</span><input type="color" data-room-background-color="${r.id}" value="${this._esc(r.background_color||"#101820")}"></label>
+            <label><span>COLORE 1</span><input type="color" data-room-background-gradient-a="${r.id}" value="${this._esc(r.background_gradient_a||"#101820")}"></label>
+            <label><span>COLORE 2</span><input type="color" data-room-background-gradient-b="${r.id}" value="${this._esc(r.background_gradient_b||"#183040")}"></label>
+            <label><span>ANGOLO</span><input type="number" min="0" max="360" step="5" data-room-background-gradient-angle="${r.id}" value="${Number(r.background_gradient_angle||135)}"></label>
           </div>
         </div>
         <div class="room-shared-modules">
@@ -124,7 +117,10 @@ ns">
       entity_icons:{...(r.entity_icons||{})},
       entity_sizes:{...(r.entity_sizes||{})},
       background_mode:r.background_mode||"auto",
-      background_value:r.background_value||""
+      background_color:r.background_color||"#101820",
+      background_gradient_a:r.background_gradient_a||"#101820",
+      background_gradient_b:r.background_gradient_b||"#183040",
+      background_gradient_angle:Number(r.background_gradient_angle||135)
     }));
     this._roomsDraft=savedRooms.length
       ? savedRooms
@@ -174,7 +170,10 @@ ns">
         const ic=layer.querySelector(`[data-room-icon="${r.id}"]`); if(ic) r.icon=ic.value.trim()||this._roomIcon(r.type);
         const im=layer.querySelector(`[data-room-image="${r.id}"]`); if(im) r.image=im.value.trim();
         const bm=layer.querySelector(`[data-room-background-mode="${r.id}"]`); if(bm) r.background_mode=bm.value||"auto";
-        const bv=layer.querySelector(`[data-room-background-value="${r.id}"]`); if(bv) r.background_value=bv.value.trim();
+        const bc=layer.querySelector(`[data-room-background-color="${r.id}"]`); if(bc) r.background_color=bc.value||"#101820";
+        const ba=layer.querySelector(`[data-room-background-gradient-a="${r.id}"]`); if(ba) r.background_gradient_a=ba.value||"#101820";
+        const bb=layer.querySelector(`[data-room-background-gradient-b="${r.id}"]`); if(bb) r.background_gradient_b=bb.value||"#183040";
+        const bang=layer.querySelector(`[data-room-background-gradient-angle="${r.id}"]`); if(bang) r.background_gradient_angle=Number(bang.value||135);
 
         // Modules are part of the room itself. Capture every visible checkbox
         // before any rerender/tab switch/save.
@@ -190,7 +189,19 @@ ns">
     const syncVisibleMappingFields=()=>{
       layer.querySelectorAll("[data-config-key]").forEach(input=>{ this._configDraft[input.dataset.configKey]=input.value; });
       layer.querySelectorAll("[data-config-label]").forEach(input=>{ this._configLabelDraft[input.dataset.configLabel]=input.value; });
-      layer.querySelectorAll("[data-overview-key]").forEach(input=>{
+      const bgColor=layer.querySelector("[data-bg-color]");
+    const bgA=layer.querySelector("[data-bg-gradient-a]");
+    const bgB=layer.querySelector("[data-bg-gradient-b]");
+    const bgAngle=layer.querySelector("[data-bg-gradient-angle]");
+    const syncBgDraft=()=>{
+      if(bgColor) this._overviewDraft.dashboard_background_color=bgColor.value||"#101820";
+      if(bgA) this._overviewDraft.dashboard_background_gradient_a=bgA.value||"#101820";
+      if(bgB) this._overviewDraft.dashboard_background_gradient_b=bgB.value||"#183040";
+      if(bgAngle) this._overviewDraft.dashboard_background_gradient_angle=Number(bgAngle.value||135);
+    };
+    [bgColor,bgA,bgB,bgAngle].filter(Boolean).forEach(input=>input.addEventListener("change",syncBgDraft));
+
+    layer.querySelectorAll("[data-overview-key]").forEach(input=>{
         if((input.type==="radio" || input.type==="checkbox") && !input.checked) return;
         this._overviewDraft[input.dataset.overviewKey]=input.value;
       });
@@ -228,7 +239,7 @@ ns">
       });
     });
 
-    layer.querySelectorAll("[data-room-name],[data-room-type],[data-room-icon],[data-room-image],[data-room-background-mode],[data-room-background-value]").forEach(el=>el.addEventListener("change",syncRooms));
+    layer.querySelectorAll("[data-room-name],[data-room-type],[data-room-icon],[data-room-image],[data-room-background-mode],[data-room-background-color],[data-room-background-gradient-a],[data-room-background-gradient-b],[data-room-background-gradient-angle]").forEach(el=>el.addEventListener("change",syncRooms));
 
     layer.querySelectorAll("[data-room-module-room]").forEach(input=>{
       input.addEventListener("change",()=>{
@@ -544,16 +555,4 @@ ns">
   }
   _radLabel(id){
     const n=this._num(id,null); if(n===null) return "—";
-    return n>=350?"Radiazione forte":n>=150?"Radiazione moderata":n>=30?"Radiazione bassa":"Radiazione minima";
-  }
-  _radTone(id){
-    const n=this._num(id,null); if(n===null) return "state-off";
-    return n>=350?"state-good":n>=150?"state-active":n>=30?"state-warn":"state-off";
-  }
-  _fmtAcPowerFromCurrent(currentId, voltageId, digits=2){
-    const a=this._num(currentId,null), v=this._num(voltageId,null);
-    if(a===null || v===null) return "—";
-    return `${((a*v)/1000).toFixed(digits)} kW`;
-  }
-  _esc(v) { return String(v ?? "").replace(/[&<>'"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c])); }
-  _icon(icon, cls="") { return `<div class="iconbox ${cls}"><ha-icon icon="${icon}"></ha-ic
+    return n>=350?"Radiazione 

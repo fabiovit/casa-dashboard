@@ -1,5 +1,14 @@
 # Changelog
 
+## 4.1.1 - 2026-08-28
+
+- Added real color pickers for solid dashboard and room backgrounds.
+- Added two-color gradient controls with configurable angle.
+- Improved readability over photographic backgrounds.
+- Fixed room backgrounds so the Overview background no longer leaks through while scrolling.
+- Added Home Assistant `lawn_mower` support with start and dock controls.
+- Preserved all v4.1.0 improvements.
+
 ## 4.1.0 - 2026-08-28
 
 - Added per-entity size controls.

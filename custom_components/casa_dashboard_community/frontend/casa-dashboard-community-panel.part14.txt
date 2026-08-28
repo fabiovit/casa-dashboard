@@ -1,4 +1,16 @@
-on></div>`; }
+forte":n>=150?"Radiazione moderata":n>=30?"Radiazione bassa":"Radiazione minima";
+  }
+  _radTone(id){
+    const n=this._num(id,null); if(n===null) return "state-off";
+    return n>=350?"state-good":n>=150?"state-active":n>=30?"state-warn":"state-off";
+  }
+  _fmtAcPowerFromCurrent(currentId, voltageId, digits=2){
+    const a=this._num(currentId,null), v=this._num(voltageId,null);
+    if(a===null || v===null) return "—";
+    return `${((a*v)/1000).toFixed(digits)} kW`;
+  }
+  _esc(v) { return String(v ?? "").replace(/[&<>'"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c])); }
+  _icon(icon, cls="") { return `<div class="iconbox ${cls}"><ha-icon icon="${icon}"></ha-icon></div>`; }
   _setOptimistic(id,state){ this._optimistic.set(id,{state,at:Date.now()}); this._renderPage(false); }
   _syncOptimistic(){
     const now=Date.now();
@@ -222,7 +234,7 @@ on></div>`; }
       "Pagina non disponibile":"Page unavailable","Dashboard pronta":"Dashboard ready","Versione":"Version","Piattaforma":"Platform",
       "Dettagli e personalizzazione di Casa Dashboard Community.":"Casa Dashboard Community details and customization.",
       "Dashboard app-like, adattiva e configurabile per Home Assistant.":"An app-like, adaptive and configurable dashboard for Home Assistant.",
-      "In uso":"Active","Grafica originale di Casa Dashboard Community v4.1.0.":"Original Casa Dashboard Community interface.",
+      "In uso":"Active","Grafica originale di Casa Dashboard Community v4.1.1.":"Original Casa Dashboard Community interface.",
       "Nuova grafica derivata da Casa Dashboard v4.3.54, con visual dedicati per luci, sensori, clima, dispositivi e aperture.":"New dynamic interface with dedicated visuals for lights, sensors, climate, devices and openings.",
       "La scelta viene salvata sul browser/dispositivo e non modifica entità o automazioni.":"Your choice is saved on this browser/device and does not change entities or automations.",
       "SUPPORTA IL PROGETTO":"SUPPORT THE PROJECT","Casa Dashboard Community è gratuita":"Casa Dashboard Community is free","Se ti piace, puoi supportarne lo sviluppo.":"If you like it, you can support its development.",
@@ -273,41 +285,58 @@ on></div>`; }
   }
 
 
-  _safeBackgroundCss(mode,value,image=""){
-    const m=String(mode||"auto").toLowerCase();
+  _safeColor(value,fallback="#101820"){
     const v=String(value||"").trim();
+    return /^#[0-9a-f]{6}$/i.test(v)?v:fallback;
+  }
+  _safeBackgroundCss(mode,opts={}){
+    const m=String(mode||"auto").toLowerCase();
     if(m==="image"){
-      const src=String(image||v||"").trim();
+      const src=String(opts.image||"").trim();
       if(!src || !(src.startsWith("/local/") || /^https?:\/\//i.test(src) || src.startsWith("data:image/"))) return "";
       return `url("${src.replace(/["\\]/g,"")}") center / cover fixed no-repeat`;
     }
     if(m==="gradient"){
-      if(!/^(linear-gradient|radial-gradient|conic-gradient)\(/i.test(v)) return "";
-      return v.replace(/[;{}]/g,"");
+      const a=this._safeColor(opts.gradientA,"#101820");
+      const b=this._safeColor(opts.gradientB,"#183040");
+      const angle=Math.max(0,Math.min(360,Number(opts.angle||135)));
+      return `linear-gradient(${angle}deg,${a},${b})`;
     }
-    if(m==="color"){
-      if(!v || /[;{}]/.test(v)) return "";
-      return v;
-    }
+    if(m==="color") return this._safeColor(opts.color,"#101820");
     return "";
   }
   _applyCustomBackground(room=null){
     const shell=this.shadowRoot?.querySelector(".app-shell");
     const host=this.shadowRoot?.querySelector("#content");
     if(!shell || !host) return;
+
     const gm=this._overviewText("dashboard_background_mode","auto");
-    const gv=this._overviewText("dashboard_background_value","");
-    const gi=this._overviewText("dashboard_background_image","");
-    const globalBg=this._safeBackgroundCss(gm,gv,gi);
-    shell.style.background=globalBg || "";
-    shell.classList.toggle("custom-dashboard-background",!!globalBg);
+    const globalBg=this._safeBackgroundCss(gm,{
+      image:this._overviewText("dashboard_background_image",""),
+      color:this._overviewText("dashboard_background_color","#101820"),
+      gradientA:this._overviewText("dashboard_background_gradient_a","#101820"),
+      gradientB:this._overviewText("dashboard_background_gradient_b","#183040"),
+      angle:Number(this._overviewText("dashboard_background_gradient_angle","135"))
+    });
 
     const rm=room?.background_mode||"auto";
-    const rv=room?.background_value||"";
-    const ri=room?.image||"";
-    const roomBg=this._safeBackgroundCss(rm,rv,ri);
-    host.style.background=roomBg || "";
-    host.style.backgroundAttachment=roomBg && rm==="image" ? "fixed" : "";
+    const roomBg=this._safeBackgroundCss(rm,{
+      image:room?.image||"",
+      color:room?.background_color||"#101820",
+      gradientA:room?.background_gradient_a||"#101820",
+      gradientB:room?.background_gradient_b||"#183040",
+      angle:Number(room?.background_gradient_angle||135)
+    });
+
+    const mode=roomBg?rm:gm;
+    const activeBg=roomBg||globalBg;
+    shell.style.background=activeBg||"";
+    shell.style.backgroundAttachment=activeBg && mode==="image" ? "fixed" : "";
+    shell.style.backgroundSize=activeBg && mode==="image" ? "cover" : "";
+    shell.classList.toggle("custom-dashboard-background",!!activeBg);
+    shell.classList.toggle("custom-photo-background",!!activeBg && mode==="image");
+    host.style.background="transparent";
+    host.style.backgroundAttachment="";
     host.classList.toggle("custom-room-background",!!roomBg);
   }
 
@@ -346,12 +375,12 @@ on></div>`; }
   _info(){
     const selected=this._uiTheme;
     return `<div class="page">${this._hero("Informazioni","Dettagli e personalizzazione di Casa Dashboard Community.",{level:"good",text:"Dashboard pronta"},[
-      {label:"Versione",value:"4.1.0",small:"Casa Dashboard Community"},
+      {label:"Versione",value:"4.1.1",small:"Casa Dashboard Community"},
       {label:"Piattaforma",value:"Home Assistant",small:"Custom integration"}
     ])}<div class="info-card"><div class="info-icon"><ha-icon icon="mdi:home-heart"></ha-icon></div><h2>Casa Dashboard Community</h2>
     <p>Dashboard app-like, adattiva e configurabile per Home Assistant.</p>
     <div class="style-picker">
-      <button class="style-option ${selected==="v1"?"active":""}" data-ui-theme="v1" type="button">${selected==="v1"?'<span class="selected">In uso</span>':""}<div class="style-head"><ha-icon icon="mdi:home-variant-outline"></ha-icon><strong>Casa V1</strong></div><p>Grafica originale di Casa Dashboard Community v4.1.0.</p></button>
+      <button class="style-option ${selected==="v1"?"active":""}" data-ui-theme="v1" type="button">${selected==="v1"?'<span class="selected">In uso</span>':""}<div class="style-head"><ha-icon icon="mdi:home-variant-outline"></ha-icon><strong>Casa V1</strong></div><p>Grafica originale di Casa Dashboard Community v4.1.1.</p></button>
       <button class="style-option ${selected==="v2"?"active":""}" data-ui-theme="v2" type="button">${selected==="v2"?'<span class="selected">In uso</span>':""}<div class="style-head"><ha-icon icon="mdi:vector-square"></ha-icon><strong>Casa V2</strong></div><p>Nuova grafica derivata da Casa Dashboard v4.3.54, con visual dedicati per luci, sensori, clima, dispositivi e aperture.</p></button>
     </div>
     <div class="style-note">La scelta viene salvata sul browser/dispositivo e non modifica entità o automazioni.</div>
@@ -437,32 +466,3 @@ on></div>`; }
         ${visualClass==="window"?
           `<div class="window-frame">
              <div class="window-sky"></div>
-             <div class="window-sash left"></div>
-             <div class="window-sash right"></div>
-             <div class="window-handle"></div>
-           </div>`:
-          `<div class="cabinet-frame">
-             <div class="cabinet-door left"></div>
-             <div class="cabinet-door right"></div>
-             <div class="cabinet-handle left"></div>
-             <div class="cabinet-handle right"></div>
-           </div>`
-        }
-      </div>
-      <div class="opening-copy">
-        <span>${label}</span>
-        <strong>${isOpen?'Aperta':'Chiusa'}</strong>
-        <small>${subtitle||'Stato sensore'}</small>
-      </div>
-      <div class="opening-state ${isOpen?'warn':'good'}"><ha-icon icon="${icon}"></ha-icon></div>
-    </button>`;
-  }
-
-  _activityVisual(entity,label,type="motion",span=3,subtitle=""){
-    const active=this._on(entity);
-    const cfg={
-      motion:{icon:"mdi:motion-sensor",on:"Rilevato",off:"Assente",scene:"motion"},
-      occupancy:{icon:"mdi:account-check",on:"Occupato",off:"Libero",scene:"occupancy"},
-      vibration:{icon:"mdi:vibrate",on:"Rilevata",off:"Assente",scene:"vibration"}
-    }[type];
-    return `<button class="activity-card ${cfg.scene} ${active?'active':'

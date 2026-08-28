@@ -1,36 +1,4 @@
-custom-object-photo{width:132px;height:118px;border-radius:16px}
-      .sensor-visual-card>.custom-object-photo,.environment-card>.custom-object-photo{width:130px;height:112px;border-radius:15px}
-      .has-custom-photo .custom-object-photo:after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)}
-      @media(max-width:620px){.light-visual-card>.custom-object-photo,.device-visual-card>.custom-object-photo,.universal-device-card>.custom-object-photo,.sensor-visual-card>.custom-object-photo,.environment-card>.custom-object-photo{width:105px;height:96px}}
-
-      /* v4.1.0 - paged configurator */
-      .config-dialog-tabs{
-        width:min(1180px,calc(100vw - 28px))!important;
-        height:min(94vh,980px)!important;
-        max-height:min(94vh,980px)!important;
-        display:grid!important;
-        grid-template-rows:auto auto minmax(0,1fr) auto!important;
-        overflow:hidden!important;
-      }
-      .config-tabs{
-        display:flex;align-items:center;gap:4px;padding:8px 14px;border-top:1px solid var(--divider-color);border-bottom:1px solid var(--divider-color);
-        overflow-x:auto;overflow-y:hidden;scrollbar-width:none;background:color-mix(in srgb,var(--card-background-color) 96%,var(--primary-color) 4%)
-      }
-      .config-tabs::-webkit-scrollbar{display:none}
-      .config-tab{
-        flex:none;height:42px;padding:0 13px;border:0;border-radius:11px;background:transparent;color:var(--secondary-text-color);
-        display:inline-flex;align-items:center;gap:7px;font:inherit;font-size:11px;font-weight:850;cursor:pointer;white-space:nowrap
-      }
-      .config-tab ha-icon{--mdc-icon-size:18px}
-      .config-tab:hover{background:var(--secondary-background-color);color:var(--primary-text-color)}
-      .config-tab.active{background:color-mix(in srgb,var(--primary-color) 11%,var(--card-background-color));color:var(--primary-color)}
-      .config-page-host{min-height:0;overflow:hidden}
-      .config-page{height:100%;min-height:0;overflow-y:auto;overflow-x:hidden;padding:18px 18px 28px;box-sizing:border-box;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
-      .config-page-intro{
-        display:flex;align-items:flex-start;gap:12px;padding:14px 15px;margin-bottom:15px;border-radius:16px;
-        border:1px solid color-mix(in srgb,var(--primary-color) 14%,var(--divider-color));background:color-mix(in srgb,var(--primary-color) 4%,var(--card-background-color))
-      }
-      .config-page-intro>ha-icon{--mdc-icon-size:25px;color:var(--primary-color);margin-top:1px}
+ntro>ha-icon{--mdc-icon-size:25px;color:var(--primary-color);margin-top:1px}
       .config-page-intro strong{display:block;font-size:15px}
       .config-page-intro span{display:block;margin-top:3px;font-size:10px;line-height:1.45;color:var(--secondary-text-color)}
       .config-page-note{display:flex;align-items:center;gap:9px;margin-top:14px;padding:11px 12px;border-radius:13px;background:var(--secondary-background-color);color:var(--secondary-text-color);font-size:10px}
@@ -80,7 +48,7 @@ custom-object-photo{width:132px;height:118px;border-radius:16px}
         .room-main-fields>input:last-child{grid-column:auto}
       }
 
-      /* v4.1.0 - Advanced Energy View */
+      /* v4.1.1 - Advanced Energy View */
       .energy-view-config{margin:0 0 18px;padding:16px;border:1px solid color-mix(in srgb,#ffb45c 22%,var(--divider-color));border-radius:18px;background:linear-gradient(145deg,color-mix(in srgb,var(--card-background-color) 97%,#ffb45c 3%),color-mix(in srgb,var(--secondary-background-color) 96%,#ffb45c 4%))}
       .energy-view-config-head{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:13px}
       .energy-view-config-head strong{display:block;font-size:14px}.energy-view-config-head span{display:block;margin-top:3px;color:var(--secondary-text-color);font-size:10px}.energy-view-config-head ha-icon{color:#ffb45c;--mdc-icon-size:26px}
@@ -145,7 +113,7 @@ custom-object-photo{width:132px;height:118px;border-radius:16px}
         .community-advanced-energy .solar-prod-copy strong{font-size:46px}
       }
 
-      /* v4.1.0 - reliable image persistence + preview */
+      /* v4.1.1 - reliable image persistence + preview */
       .photo-preview{margin-top:8px;overflow:hidden;border-radius:11px;border:1px solid var(--divider-color);background:var(--secondary-background-color)}
       .photo-preview img{display:block;width:100%;height:100%;object-fit:cover}
       .room-photo-preview{width:min(260px,100%);height:116px}
@@ -170,7 +138,7 @@ custom-object-photo{width:132px;height:118px;border-radius:16px}
         .config-page-intro-actions .room-add-primary{grid-column:1/-1;width:100%;justify-content:center;margin:4px 0 0}
       }
 
-      /* Community v4.1.0 - Security & Access */
+      /* Community v4.1.1 - Security & Access */
       .community-security-alert{margin:18px 0 4px}
       .community-security-grid{display:grid;grid-template-columns:minmax(360px,.8fr) minmax(520px,1.2fr);gap:18px;margin-bottom:28px}
       .community-security-card{min-height:260px;border:1px solid rgba(255,255,255,.08);border-radius:26px;background:radial-gradient(circle at 100% 100%,rgba(84,211,174,.08),transparent 38%),linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.012));display:grid;overflow:hidden}
@@ -244,4 +212,19 @@ custom-object-photo{width:132px;height:118px;border-radius:16px}
       /* ===== v4.3.75 sensori ambiente visuali ===== */
       .environment-card{width:100%;min-height:150px;border:1px solid rgba(255,255,255,.07);border-radius:var(--r-md);background:linear-gradient(180deg,rgba(255,255,255,.025),rgba(255,255,255,.012));padding:14px;display:grid;grid-template-columns:130px 1fr 42px;align-items:center;gap:16px;color:inherit;text-align:left;cursor:pointer;contain:layout paint}
       .environment-visual{height:112px;border-radius:15px;display:grid;place-items:center;position:relative;overflow:hidden;background:linear-gradient(180deg,#172631,#101820);border:1px solid rgba(255,255,255,.06)}
-      .environment-copy span{display:block;font-size:9px;letter-spacing:.16em;text-transform:upperca
+      .environment-copy span{display:block;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#8da6bd}.environment-copy strong{display:block;font-size:26px;margin-top:7px}.environment-copy small{display:block;color:var(--secondary-text-color);margin-top:4px}
+      .environment-state{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.04);color:#67b8ff}
+      .thermometer{position:relative;width:34px;height:84px}.thermo-tube{position:absolute;left:11px;top:4px;width:12px;height:62px;border:3px solid #7890a4;border-radius:9px;overflow:hidden}.thermo-tube i{position:absolute;left:2px;right:2px;bottom:2px;background:#67b8ff;border-radius:8px}.thermo-bulb{position:absolute;left:5px;bottom:0;width:24px;height:24px;border-radius:50%;background:#67b8ff;border:3px solid #7890a4}.environment-card.hot .thermo-tube i,.environment-card.hot .thermo-bulb{background:#ff8a5b}.environment-card.cold .thermo-tube i,.environment-card.cold .thermo-bulb{background:#67b8ff}
+      .humidity-drop{width:58px;height:74px;position:relative;overflow:hidden;clip-path:polygon(50% 0,68% 25%,82% 43%,88% 58%,86% 71%,78% 84%,66% 93%,50% 97%,34% 93%,22% 84%,14% 71%,12% 58%,18% 43%,32% 25%);background:#273845;border:2px solid #63829a}.humidity-fill{position:absolute;left:0;right:0;bottom:0;background:#55e6ad}.environment-card.humid .humidity-fill{background:#67b8ff}.environment-card.dry .humidity-fill{background:#86b6d0}
+      .sun-meter{position:relative;width:74px;height:74px}.sun-core{position:absolute;left:22px;top:22px;width:30px;height:30px;border-radius:50%;background:#ffb45c;box-shadow:0 0 20px rgba(255,180,92,.22)}.sun-meter i{position:absolute;left:35px;top:2px;width:4px;height:14px;border-radius:4px;background:#7c91a2;transform-origin:2px 35px}.environment-card.bright .sun-meter i,.environment-card.bright .sun-core{background:#ffb45c}.environment-card.low .sun-core{background:#8ea3b5;box-shadow:none}
+      .app-shell.theme-light .environment-card{background:linear-gradient(180deg,#fff,#f5f9fd);border-color:rgba(15,23,42,.10)}.app-shell.theme-light .environment-visual{background:linear-gradient(180deg,#edf5fa,#ddeaf2)}.app-shell.theme-light .environment-copy span{color:#587292}
+      .environment-card,.environment-card *{transition:none!important;animation:none!important}
+      @media(max-width:620px){.environment-card{grid-template-columns:105px 1fr 34px}.environment-visual{height:96px}.environment-copy strong{font-size:21px}}
+
+
+      /* v4.1.1 - Security parity with Casa v5.4.0 */
+      .community-security-grid.two{grid-template-columns:minmax(360px,.82fr) minmax(520px,1.18fr)}
+      .community-security-grid.single{grid-template-columns:minmax(0,1fr)}
+      .community-security-grid.single .community-security-card{width:100%}
+      .community-security-grid.single .alarm-security{grid-template-columns:minmax(0,1fr) 210px}
+      .community-security-grid.single .door-security

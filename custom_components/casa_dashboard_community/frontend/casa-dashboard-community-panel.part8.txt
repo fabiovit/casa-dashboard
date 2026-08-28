@@ -1,19 +1,4 @@
-se;color:#8da6bd}.environment-copy strong{display:block;font-size:26px;margin-top:7px}.environment-copy small{display:block;color:var(--secondary-text-color);margin-top:4px}
-      .environment-state{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.04);color:#67b8ff}
-      .thermometer{position:relative;width:34px;height:84px}.thermo-tube{position:absolute;left:11px;top:4px;width:12px;height:62px;border:3px solid #7890a4;border-radius:9px;overflow:hidden}.thermo-tube i{position:absolute;left:2px;right:2px;bottom:2px;background:#67b8ff;border-radius:8px}.thermo-bulb{position:absolute;left:5px;bottom:0;width:24px;height:24px;border-radius:50%;background:#67b8ff;border:3px solid #7890a4}.environment-card.hot .thermo-tube i,.environment-card.hot .thermo-bulb{background:#ff8a5b}.environment-card.cold .thermo-tube i,.environment-card.cold .thermo-bulb{background:#67b8ff}
-      .humidity-drop{width:58px;height:74px;position:relative;overflow:hidden;clip-path:polygon(50% 0,68% 25%,82% 43%,88% 58%,86% 71%,78% 84%,66% 93%,50% 97%,34% 93%,22% 84%,14% 71%,12% 58%,18% 43%,32% 25%);background:#273845;border:2px solid #63829a}.humidity-fill{position:absolute;left:0;right:0;bottom:0;background:#55e6ad}.environment-card.humid .humidity-fill{background:#67b8ff}.environment-card.dry .humidity-fill{background:#86b6d0}
-      .sun-meter{position:relative;width:74px;height:74px}.sun-core{position:absolute;left:22px;top:22px;width:30px;height:30px;border-radius:50%;background:#ffb45c;box-shadow:0 0 20px rgba(255,180,92,.22)}.sun-meter i{position:absolute;left:35px;top:2px;width:4px;height:14px;border-radius:4px;background:#7c91a2;transform-origin:2px 35px}.environment-card.bright .sun-meter i,.environment-card.bright .sun-core{background:#ffb45c}.environment-card.low .sun-core{background:#8ea3b5;box-shadow:none}
-      .app-shell.theme-light .environment-card{background:linear-gradient(180deg,#fff,#f5f9fd);border-color:rgba(15,23,42,.10)}.app-shell.theme-light .environment-visual{background:linear-gradient(180deg,#edf5fa,#ddeaf2)}.app-shell.theme-light .environment-copy span{color:#587292}
-      .environment-card,.environment-card *{transition:none!important;animation:none!important}
-      @media(max-width:620px){.environment-card{grid-template-columns:105px 1fr 34px}.environment-visual{height:96px}.environment-copy strong{font-size:21px}}
-
-
-      /* v4.1.0 - Security parity with Casa v5.4.0 */
-      .community-security-grid.two{grid-template-columns:minmax(360px,.82fr) minmax(520px,1.18fr)}
-      .community-security-grid.single{grid-template-columns:minmax(0,1fr)}
-      .community-security-grid.single .community-security-card{width:100%}
-      .community-security-grid.single .alarm-security{grid-template-columns:minmax(0,1fr) 210px}
-      .community-security-grid.single .door-security{grid-template-columns:190px 1fr}
+{grid-template-columns:190px 1fr}
       .community-security-card{min-height:285px}
       .door-security{padding:28px}
       .security-door-visual{height:225px}
@@ -88,7 +73,7 @@ se;color:#8da6bd}.environment-copy strong{display:block;font-size:26px;margin-to
 
       /* ===== v4.3.75 Bagno - Crocchette Nila ===== */
 
-      /* v4.1.0 - Dynamic Kitchen parity */
+      /* v4.1.1 - Dynamic Kitchen parity */
       .kitchen-dyn-hero{grid-template-columns:minmax(340px,.9fr) minmax(520px,1.25fr)}
       .kitchen-dyn-showcase{display:grid;grid-template-columns:minmax(300px,1.15fr) minmax(210px,.85fr);gap:18px;align-items:center;min-height:250px;padding:20px;border-radius:var(--r-lg);border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(103,184,255,.045))}
       .kitchen-dyn-scene{height:210px;border-radius:var(--r-md);position:relative;overflow:hidden;background:linear-gradient(180deg,#141a20,#0d1116)}
@@ -105,7 +90,7 @@ se;color:#8da6bd}.environment-copy strong{display:block;font-size:26px;margin-to
       @media(max-width:620px){.kitchen-heat-info{grid-template-columns:1fr}.kitchen-heat-info button{grid-column:auto}}
 
 
-      /* v4.1.0 - Dynamic Kitchen blind section */
+      /* v4.1.1 - Dynamic Kitchen blind section */
       .kitchen-blind-card{min-height:190px;padding:18px;border-radius:22px;border:1px solid rgba(255,255,255,.07);background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(103,184,255,.025));display:grid;grid-template-columns:220px 1fr auto;gap:22px;align-items:center}
       .kitchen-blind-scene{height:150px;border-radius:16px;display:grid;place-items:center;background:linear-gradient(180deg,#172631,#101820);border:1px solid rgba(255,255,255,.06);overflow:hidden}
       .kitchen-blind-window{position:relative;width:150px;height:112px;border:5px solid #596773;background:#24465a;overflow:hidden}
@@ -119,7 +104,7 @@ se;color:#8da6bd}.environment-copy strong{display:block;font-size:26px;margin-to
       @media(max-width:520px){.kitchen-blind-card{grid-template-columns:1fr}.kitchen-blind-scene{height:145px}}
 
 
-      /* v4.1.0 - Kitchen Comfort & Climate parity */
+      /* v4.1.1 - Kitchen Comfort & Climate parity */
       .kitchen-climate-real{min-height:300px;border-radius:26px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(103,184,255,.022));display:grid;grid-template-columns:320px 1fr;gap:28px;align-items:center;padding:24px 26px}
       .kitchen-climate-ring-wrap{display:grid;place-items:center}
       .kitchen-climate-ring{width:245px;height:245px;border-radius:50%;display:grid;place-items:center;align-content:center;text-align:center;background:
@@ -149,7 +134,7 @@ se;color:#8da6bd}.environment-copy strong{display:block;font-size:26px;margin-to
       @media(max-width:620px){.kitchen-climate-real{padding:18px}.kitchen-climate-stats{grid-template-columns:1fr}.kitchen-climate-ring{width:190px;height:190px}.kitchen-climate-ring strong{font-size:36px}}
 
 
-      /* v4.1.0 - Kitchen semantic appliance icons */
+      /* v4.1.1 - Kitchen semantic appliance icons */
       .kitchen-semantic-icon{width:86px;height:86px;border-radius:18px;display:grid;place-items:center;background:#132633;border:1px solid rgba(103,184,255,.24);color:#67b8ff}
       .kitchen-semantic-icon ha-icon{--mdc-icon-size:42px}
       .kitchen-semantic-icon.off{color:#8294a3;background:#14222c;border-color:rgba(130,148,163,.18)}
@@ -169,7 +154,7 @@ se;color:#8da6bd}.environment-copy strong{display:block;font-size:26px;margin-to
       .app-shell.theme-light .kitchen-semantic-icon{background:#eef6fb;border-color:rgba(46,140,200,.18)}
 
 
-      /* v4.1.0 - Mario feedback */
+      /* v4.1.1 - Mario feedback */
       .topbar-tools{display:flex;align-items:center;gap:10px;margin-left:auto}
       .topbar-config-btn{height:34px;padding:0 11px;border-radius:10px;border:1px solid rgba(103,184,255,.22);background:rgba(103,184,255,.05);color:var(--primary-text-color);display:flex;align-items:center;gap:6px;cursor:pointer;font-size:10px;font-weight:850}
       .topbar-config-btn ha-icon{--mdc-icon-size:17px;color:#67b8ff}
@@ -202,7 +187,7 @@ se;color:#8da6bd}.environment-copy strong{display:block;font-size:26px;margin-to
       }
 
 
-      /* v4.1.0 FIXED - safe Community climate polish */
+      /* v4.1.1 FIXED - safe Community climate polish */
       .kitchen-climate-real{grid-column:1/-1}
       .kitchen-climate-ring strong{font-size:44px;letter-spacing:-.045em}
       .kitchen-climate-status strong{font-size:20px}
@@ -213,7 +198,7 @@ se;color:#8da6bd}.environment-copy strong{display:block;font-size:26px;margin-to
       }
 
 
-      /* v4.1.0 - Dynamic Hallway / Disimpegno */
+      /* v4.1.1 - Dynamic Hallway / Disimpegno */
       .hallway-dyn-hero{grid-template-columns:minmax(360px,.9fr) minmax(560px,1.25fr)}
       .hallway-hero-showcase{display:grid;grid-template-columns:minmax(360px,1.2fr) minmax(220px,.8fr);gap:18px;align-items:stretch;min-height:250px;padding:20px;border-radius:26px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(71,180,140,.035))}
       .hallway-scene{min-height:210px;position:relative;overflow:hidden;border-radius:18px;background:linear-gradient(180deg,#18212a,#0d1217)}
@@ -247,7 +232,7 @@ se;color:#8da6bd}.environment-copy strong{display:block;font-size:26px;margin-to
       @media(max-width:650px){.hallway-appliance-card{grid-template-columns:86px 1fr}.hallway-appliance-toggle{grid-column:1/-1;justify-content:center}.hallway-appliance-icon{width:76px;height:76px}}
 
 
-      /* v4.1.0 - Overview Climate / Weather parity */
+      /* v4.1.1 - Overview Climate / Weather parity */
       .overview-room-climate-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:12px 0 28px}
       .overview-room-climate-card{min-height:92px;padding:14px;border-radius:16px;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.018);display:flex;flex-direction:column;justify-content:center}
       .overview-room-climate-card span{font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:#8da6bd;font-weight:900}
@@ -267,7 +252,7 @@ se;color:#8da6bd}.environment-copy strong{display:block;font-size:26px;margin-to
       @media(max-width:650px){.overview-room-climate-grid{grid-template-columns:1fr 1fr}.overview-weather-grid{grid-template-columns:1fr}.overview-weather-card{border-right:0}}
 
 
-      /* v4.1.0 - Physical fan / extractor visual */
+      /* v4.1.1 - Physical fan / extractor visual */
       .room-fan-card{
         min-height:164px;
         border-radius:20px;
@@ -371,7 +356,7 @@ se;color:#8da6bd}.environment-copy strong{display:block;font-size:26px;margin-to
       }
 
 
-      /* v4.1.0 - Smart auto mapping */
+      /* v4.1.1 - Smart auto mapping */
       .auto-map-toolbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:12px 0 4px;padding:12px 14px;border:1px solid rgba(103,184,255,.18);border-radius:14px;background:rgba(103,184,255,.035)}
       .auto-map-btn{height:38px;padding:0 14px;border-radius:11px;border:1px solid rgba(103,184,255,.32);background:rgba(103,184,255,.08);color:#67b8ff;font-weight:850;cursor:pointer;display:flex;align-items:center;gap:7px}
       .auto-map-btn ha-icon{--mdc-icon-size:18px}
@@ -380,5 +365,31 @@ se;color:#8da6bd}.environment-copy strong{display:block;font-size:26px;margin-to
       @media(max-width:650px){.auto-map-toolbar{align-items:stretch;flex-direction:column}.auto-map-btn{justify-content:center;width:100%}}
 
 
-      /* v4.1.0 - Dedicated awning / tenda visual */
-      .community-awning-card{display:grid;grid-template-columns:220px minmax(0,1fr) auto;gap:20px;align-items:ce
+      /* v4.1.1 - Dedicated awning / tenda visual */
+      .community-awning-card{display:grid;grid-template-columns:220px minmax(0,1fr) auto;gap:20px;align-items:center;min-height:180px;border:1px solid rgba(255,255,255,.07);border-radius:22px;padding:18px;background:rgba(255,255,255,.015)}
+      .community-awning-scene{position:relative;width:220px;height:135px;border-radius:16px;overflow:hidden;background:linear-gradient(180deg,#29485a,#182b36)}
+      .community-awning-box{position:absolute;left:18px;right:18px;top:14px;height:18px;background:#89939a;border-radius:6px}
+      .community-awning-fabric{position:absolute;left:34px;right:34px;top:32px;max-height:82px;background:repeating-linear-gradient(90deg,#e7ddc9 0 14px,#738899 14px 28px);clip-path:polygon(0 0,100% 0,88% 100%,12% 100%)}
+      .community-awning-arm{position:absolute;top:48px;width:3px;height:68px;background:#9aa6ae;transform-origin:top}
+      .community-awning-arm.left{left:44px;transform:rotate(-15deg)}
+      .community-awning-arm.right{right:44px;transform:rotate(15deg)}
+      .community-awning-info span{display:block;font-size:9px;letter-spacing:.16em;color:#8da6bd;text-transform:uppercase}
+      .community-awning-info strong{display:block;font-size:28px;margin-top:7px}
+      .community-awning-info small{display:block;color:var(--secondary-text-color);margin-top:4px}
+      .community-awning-manage{height:44px;padding:0 15px;border-radius:13px;border:1px solid rgba(103,184,255,.3);background:rgba(103,184,255,.05);color:#67b8ff;font-weight:800;cursor:pointer}
+      .app-shell.theme-light .community-awning-card{background:linear-gradient(180deg,#fff,#f5f9fd);border-color:rgba(15,23,42,.09)}
+      .app-shell.theme-light .community-awning-scene{background:linear-gradient(180deg,#d9eff9,#c6dde8)}
+      .app-shell.theme-light .community-awning-info span{color:#587292}
+      @media(max-width:900px){.community-awning-card{grid-template-columns:180px 1fr}.community-awning-manage{grid-column:1/-1}.community-awning-scene{width:180px}}
+      @media(max-width:620px){.community-awning-card{grid-template-columns:1fr}.community-awning-scene{width:100%}}
+
+
+      /* v4.1.1 - reusable room modules */
+      .room-shared-modules{grid-column:1/-1;margin-top:8px;padding:11px;border:1px solid rgba(103,184,255,.14);border-radius:12px;background:rgba(103,184,255,.025)}
+      .room-shared-modules>span{display:block;font-size:8px;letter-spacing:.15em;color:#8da6bd;font-weight:900;margin-bottom:8px}
+      .room-shared-modules-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+      .room-shared-module{min-height:40px;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:7px 9px;display:flex;align-items:center;gap:7px;cursor:pointer}
+      .room-shared-module input{accent-color:#67b8ff}.room-shared-module ha-icon{--mdc-icon-size:17px;color:#67b8ff}.room-shared-module b{font-size:9px}.room-shared-modules small{display:block;margin-top:7px;color:var(--secondary-text-color);font-size:9px}
+      .room-modules-stack{display:flex;flex-direction:column;gap:18px}
+      .room-module{border:1px solid rgba(255,255,255,.07);border-radius:22px;background:linear-gradient(145deg,rgba(255,255,255,.022),rgba(103,184,255,.018));padding:16px}
+      .room-module-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.room-module-hea

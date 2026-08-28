@@ -1,4 +1,20 @@
-iv class="solar-pv-line">
+ty,""));
+      const ru=this._attr(radEntity,"unit_of_measurement","W/m²");
+      if(Number.isFinite(rv)) dailyParts.push(`${Math.round(rv)} ${ru}`);
+    }
+
+    const batteryPills=[
+      [this._language==="en"?"Charged today":"Carica oggi",chargeToday],
+      [this._language==="en"?"Discharged today":"Scarica oggi",dischargeToday],
+      [this._language==="en"?"Losses":"Perdite",losses]
+    ].filter(([,value])=>value!=="—");
+
+    const pvRows=[
+      pv1!==null?`<div class="solar-pv-line">
+        <div class="solar-pv-meta"><span>${this._esc(pv1Label)}</span><strong>${this._energyFmtKW(pv1,true)}</strong><small>${[pv1Volt,pv1Current].filter(v=>v!=="—").join(" · ")}</small></div>
+        <div class="solar-pv-track"><div class="solar-pv-fill" style="width:${Math.min(100,(Math.abs(pv1)/pvMax)*100)}%"></div></div>
+      </div>`:"",
+      pv2!==null?`<div class="solar-pv-line">
         <div class="solar-pv-meta"><span>${this._esc(pv2Label)}</span><strong>${this._energyFmtKW(pv2,true)}</strong><small>${[pv2Volt,pv2Current].filter(v=>v!=="—").join(" · ")}</small></div>
         <div class="solar-pv-track"><div class="solar-pv-fill west" style="width:${Math.min(100,(Math.abs(pv2)/pvMax)*100)}%"></div></div>
       </div>`:""
@@ -501,7 +517,4 @@ iv class="solar-pv-line">
     const m=ROOM_META[room], s=this._roomStatus(room);
     const requirements={
       esterno:{"Cancellino":["input_boolean.pedestrian_gate"],"Stato":["input_boolean.pedestrian_gate"]},
-      scale:{"Luce":["light.stairs"],"Portoncino":["input_boolean.main_gate"]},
-      ingresso:{"Porta":["binary_sensor.entry_door","input_boolean.entry_door_unlock"],"Allarme":["alarm_control_panel.home_alarm"],"Luminosità":["sensor.entry_illuminance"],"Presenza":["binary_sensor.entry_occupancy","binary_sensor.entry_motion"]},
-      cucina:{"Temperatura":["sensor.kitchen_temperature"],"Umidità":["sensor.kitchen_humidity"],"Clima":["climate.kitchen"],"Finestra":["binary_sensor.kitchen_door_window"]},
-      disimpegno:{"Movimento":["binary_sensor.hallway_motion"],"
+      scale:{"Luce":["light.stairs"],"Portoncino":["input_boolean.m
