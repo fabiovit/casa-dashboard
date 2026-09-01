@@ -1,4 +1,4 @@
-readmill")?'Tapis ON':'Tapis OFF'}</span>`:""}</div>
+"switch.garage_treadmill")?'active':''}">🏃 ${this._on("switch.garage_treadmill")?'Tapis ON':'Tapis OFF'}</span>`:""}</div>
     </section>`:"";
 
     const securityVisible=alarmConfigured || leakConfigured || tankConfigured;
@@ -312,4 +312,4 @@ readmill")?'Tapis ON':'Tapis OFF'}</span>`:""}</div>
     const discesaLevel=manual?"warn":(rain||lightning||gust>=24||wind>=18)?"bad":(gust>=15||wind>=10||block)?"warn":(tempoOk&&lux>=40000&&rad>=350)?"good":"warn";
     const risalitaLevel=manual?"warn":(rain||lightning||gust>=24||wind>=18)?"bad":(preTramonto||luceBassa||prevenzioneTemporale)?"warn":"good";
     const balconyHeroMetrics=[
-      {label:"Temperatura",value:this._configured("sensor.weather_outdoo
+      {label:"Temperatura",value:this

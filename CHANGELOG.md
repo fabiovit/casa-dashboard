@@ -1,5 +1,13 @@
 # Changelog
 
+## 4.2.7 - 2026-09-01
+
+- Upgraded `?kiosk=1` to use Home Assistant native kiosk mode.
+- Kiosk now hides the Home Assistant sidebar/menu in addition to Casa Dashboard configuration and language controls.
+- Kiosk state is restored automatically when leaving the panel.
+- Hid the dashboard Home Assistant menu button while kiosk mode is active.
+- Minor frontend cleanup and version consistency pass.
+
 ## 4.2.6 - 2026-09-01
 
 ### Release Candidate - cleanup and consolidated responsive layer

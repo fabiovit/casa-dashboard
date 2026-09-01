@@ -1,7 +1,4 @@
-"checked":""}><span>Mostra sottotitolo</span></label>
-          <input data-room-subtitle="${r.id}" value="${this._esc(r.subtitle||"")}" placeholder="Sottotitolo opzionale">
-        </div>
-        <div class="room-image-field"><span>FOTO STANZA</span><div class="photo-config-line"><input data-room-image="${r.id}" value="${this._esc(r.image||"")}" placeholder="/local/... oppure carica foto"><label class="photo-upload-btn native-photo-picker"><ha-icon icon="mdi:image-plus"></ha-icon><span>Carica</span><input type="file" data-room-photo-file="${r.id}" accept="image/*,.jpg,.jpeg,.png,.webp,.heic,.heif"></label>${r.image?`<button class="photo-clear-btn" type="button" data-clear-room-image="${r.id}" title="Rimuovi foto"><ha-icon icon="mdi:image-remove-outline"></ha-icon></button>`:""}</div>${r.image?`<div class="photo-preview room-photo-preview"><img src="${this._esc(r.image)}" alt=""></div>`:""}
+put data-room-image="${r.id}" value="${this._esc(r.image||"")}" placeholder="/local/... oppure carica foto"><label class="photo-upload-btn native-photo-picker"><ha-icon icon="mdi:image-plus"></ha-icon><span>Carica</span><input type="file" data-room-photo-file="${r.id}" accept="image/*,.jpg,.jpeg,.png,.webp,.heic,.heif"></label>${r.image?`<button class="photo-clear-btn" type="button" data-clear-room-image="${r.id}" title="Rimuovi foto"><ha-icon icon="mdi:image-remove-outline"></ha-icon></button>`:""}</div>${r.image?`<div class="photo-preview room-photo-preview"><img src="${this._esc(r.image)}" alt=""></div>`:""}
           <div class="room-background-fields">
             <label><span>SFONDO</span><select data-room-background-mode="${r.id}">
               ${[["auto","Automatico"],["color","Colore"],["gradient","Sfumatura"],["image","Foto stanza"]].map(([v,l])=>`<option value="${v}" ${(r.background_mode||"auto")===v?"selected":""}>${l}</option>`).join("")}
@@ -584,4 +581,14 @@
       this._renderConfigLayer();
       this._renderPage(false);
     } catch(err) {
-      saveButtons.forEach(save=>{ save.disabled=false; save.innerHTML='<ha-icon icon="mdi:alert-circle-outline"></ha-icon> 
+      saveButtons.forEach(save=>{ save.disabled=false; save.innerHTML='<ha-icon icon="mdi:alert-circle-outline"></ha-icon> Riprova'; });
+      alert(`Impossibile salvare la configurazione: ${err?.message || err}`);
+    }
+  }
+
+
+  _localizedState(entity,raw=null){
+    const state=String(raw ?? this._state(entity,"—")).trim();
+    const low=state.toLowerCase();
+    const it={
+      off:"Spento",on:"Acceso",idle:"In attesa",standby:"In attesa"

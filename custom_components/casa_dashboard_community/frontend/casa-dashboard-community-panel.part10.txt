@@ -1,6 +1,4 @@
-dia player"],
-      ["mdi:fridge-outline","Frigorifero"],["mdi:dishwasher","Lavastoviglie"],["mdi:washing-machine","Lavatrice"],["mdi:tumble-dryer","Asciugatrice"],
-      ["mdi:microwave","Microonde"],["mdi:stove","Forno"],["mdi:coffee-maker-outline","Macchina caffè"],["mdi:range-hood","Cappa"],
+rowave","Microonde"],["mdi:stove","Forno"],["mdi:coffee-maker-outline","Macchina caffè"],["mdi:range-hood","Cappa"],
       ["mdi:pot-steam-outline","Robot cucina"],["mdi:robot-vacuum","Robot aspirapolvere"],["mdi:robot-vacuum-variant","Robot lavapavimenti"],
       ["mdi:air-fryer","Airfryer"],["mdi:power-plug-outline","Presa"],["mdi:cctv","Videocamera"],
       ["mdi:lock-outline","Serratura"],["mdi:shield-home-outline","Allarme"],["mdi:car-electric","Auto elettrica"],["mdi:ev-station","Wallbox"],
@@ -771,3 +769,8 @@ dia player"],
       {id:"balcone",name:"Balcone",type:"balcone",icon:"mdi:balcony"},
       {id:"garage",name:"Garage",type:"garage",icon:"mdi:garage-variant"}
     ];
+  }
+  _roomTypes(){
+    return [
+      ["generico","Ambiente generico","mdi:home-outline"],["soggiorno","Soggiorno","mdi:sofa-outline"],
+      ["cucina","Cucina","mdi:chef-hat"],["camera","Camera","mdi:bed-king-out

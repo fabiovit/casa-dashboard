@@ -204,6 +204,7 @@ Per aprire direttamente Casa Dashboard Community su un tablet o in un browser de
 http://homeassistant.local:8123/casa-dashboard-community?kiosk=1
 ```
 
-Sostituisci `homeassistant.local:8123` con l'indirizzo del tuo Home Assistant. Con `?kiosk=1` vengono nascosti **Configura** e i controlli lingua.
+Sostituisci `homeassistant.local:8123` con l'indirizzo del tuo Home Assistant. Con `?kiosk=1` viene attivata la modalità kiosk nativa di Home Assistant: vengono nascosti la sidebar/menu di Home Assistant, **Configura**, il selettore IT/EN e il pulsante menu HA della dashboard. Rimuovendo `?kiosk=1` torna l'interfaccia normale di Home Assistant.
 
 La dashboard predefinita dell'app/browser va invece scelta dalle impostazioni o dal profilo di Home Assistant.
+

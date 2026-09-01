@@ -1,4 +1,5 @@
-active":""}" data-ui-theme="v2" type="button">${selected==="v2"?'<span class="selected">In uso</span>':""}<div class="style-head"><ha-icon icon="mdi:vector-square"></ha-icon><strong>Casa V2</strong></div><p>Nuova grafica derivata da Casa Dashboard v4.3.54, con visual dedicati per luci, sensori, clima, dispositivi e aperture.</p></button>
+V1</strong></div><p>Grafica originale di Casa Dashboard Community v4.2.7.</p></button>
+      <button class="style-option ${selected==="v2"?"active":""}" data-ui-theme="v2" type="button">${selected==="v2"?'<span class="selected">In uso</span>':""}<div class="style-head"><ha-icon icon="mdi:vector-square"></ha-icon><strong>Casa V2</strong></div><p>Nuova grafica derivata da Casa Dashboard v4.3.54, con visual dedicati per luci, sensori, clima, dispositivi e aperture.</p></button>
     </div>
     <div class="style-note">La scelta viene salvata sul browser/dispositivo e non modifica entità o automazioni.</div>
     <div class="info-config-box"><div><span>CONFIGURAZIONE</span><strong>Personalizza Casa Dashboard</strong><p>Stanze, dispositivi, energia, mobilità, foto e nomi.</p></div><button data-action="entity-config" type="button"><ha-icon icon="mdi:tune-variant"></ha-icon> Configura</button></div>
@@ -464,6 +465,4 @@ active":""}" data-ui-theme="v2" type="button">${selected==="v2"?'<span class="se
     const n=entity?parseFloat(this._hass?.states?.[entity]?.state):NaN;
     return Number.isFinite(n)?n:null;
   }
-  _energyFmtKW(value,abs=false){
-    if(value===null || !Number.isFinite(value)) return "—";
-    const n=abs?Math.abs
+  _energyFmt

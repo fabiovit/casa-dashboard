@@ -253,6 +253,7 @@ class CasaDashboardPanel extends HTMLElement {
     this._rooms = [];
     this._roomsDraft = [];
     this._lastStateFingerprint = "";
+    this._haKioskEnabled = false;
     try {
       const saved=localStorage.getItem("casa_dashboard_community_style");
       const migrated=saved==="community"?"v1":saved==="casa4354"?"v2":saved;
@@ -296,7 +297,12 @@ class CasaDashboardPanel extends HTMLElement {
     this._upgradeProperty("hass");
     if (!this._rendered) this._renderShell();
     this._loadEntityConfig();
+    this._syncHaKioskMode();
     this._renderPage();
+  }
+
+  disconnectedCallback() {
+    this._setHaKioskMode(false);
   }
 
   _renderShell() {
@@ -310,7 +316,7 @@ class CasaDashboardPanel extends HTMLElement {
             <div class="app-identity">
               <div class="app-icon"><ha-icon icon="mdi:home-assistant"></ha-icon></div>
               <div class="brand">
-                <div class="brand-line"><div class="brand-title">Casa</div><span class="version-badge">4.2.6 Community</span></div>
+                <div class="brand-line"><div class="brand-title">Casa</div><span class="version-badge">4.2.7 Community</span></div>
                 <div class="brand-subtitle">Home Assistant · Community Dashboard</div>
               </div>
             </div>
@@ -325,7 +331,7 @@ class CasaDashboardPanel extends HTMLElement {
           </div>
         </header>
         <main id="content"><div class="loading">Caricamento Casa Dashboard…</div></main>
-        <footer><span>Casa Dashboard Community · v4.2.6 · Realizzato da Fabio Vittori</span><a class="coffee-link" href="https://ko-fi.com/fabvittori" target="_blank" rel="noopener noreferrer">☕ Offrimi un caffè</a></footer>
+        <footer><span>Casa Dashboard Community · v4.2.7 · Realizzato da Fabio Vittori</span><a class="coffee-link" href="https://ko-fi.com/fabvittori" target="_blank" rel="noopener noreferrer">☕ Offrimi un caffè</a></footer>
       </div>
     `;
     this.shadowRoot.addEventListener("click", (ev) => this._handleClick(ev));
@@ -371,5 +377,4 @@ class CasaDashboardPanel extends HTMLElement {
       .config-global-fields{display:grid;grid-template-columns:minmax(0,1fr) minmax(180px,.62fr);gap:9px;align-items:end}
       .config-display-name{display:block;min-width:0}
       .config-display-name span{display:block;margin:0 0 5px;font-size:8px;letter-spacing:.1em;font-weight:900;color:var(--secondary-text-color)}
-      .config-display-name input{width:100%;height:38px;box-sizing:border-box;border:1px solid var(--divider-color);border-radius:10px;background:var(--secondary-background-color);color:var(--primary-text-color);padding:0 10px;outline:0;font:inherit;font-size:12px}
-      .config-
+      .config-display-name input{width:100%;height:38px;box-sizing:border-box;border:1px solid var(--divider-color);border-radius:10px;background:var(--secondary-background-color);color:v

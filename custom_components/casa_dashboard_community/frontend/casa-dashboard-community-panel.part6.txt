@@ -1,4 +1,4 @@
-original-room-meta span{display:block;font-size:9px;letter-spacing:.2em;font-weight:850;color:#8da6bd}.original-room-meta strong{display:block;font-size:30px;letter-spacing:-.04em;margin-top:7px}.original-room-meta small{display:block;color:var(--secondary-text-color);margin-top:4px}.original-room-divider{height:1px;background:linear-gradient(90deg,rgba(84,180,255,.85),transparent)}
+t:850;color:#8da6bd}.original-room-meta strong{display:block;font-size:30px;letter-spacing:-.04em;margin-top:7px}.original-room-meta small{display:block;color:var(--secondary-text-color);margin-top:4px}.original-room-divider{height:1px;background:linear-gradient(90deg,rgba(84,180,255,.85),transparent)}
       .community-original-scene{height:220px!important;border-radius:20px!important;overflow:hidden!important}
       .living-scene,.office-scene,.laundry-scene,.hobby-scene,.generic-home-scene{position:relative;height:220px;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#17242d,#0d141a)}
       .living-wall,.office-wall,.laundry-wall,.hobby-wall,.generic-room-wall{position:absolute;inset:0;background:linear-gradient(180deg,#27343d,#151c22)}
@@ -401,3 +401,5 @@ original-room-meta span{display:block;font-size:9px;letter-spacing:.2em;font-wei
       .room-add-primary{margin-left:auto;display:inline-flex;align-items:center;gap:6px;flex:none;cursor:pointer}
       .room-add-primary ha-icon,.room-add-footer .room-add ha-icon{--mdc-icon-size:18px}
       .room-add-footer{display:flex;justify-content:center;padding:16px 0 2px}
+      .room-add-footer .room-add{display:inline-flex;align-items:center;gap:7px;cursor:pointer;padding:10px 15px}
+  

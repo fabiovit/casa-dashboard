@@ -1,4 +1,4 @@
-:rgba(255,255,255,.02)}.vehicle-overview-stats span{font-size:8px;color:#8da6bd;text-transform:uppercase;letter-spacing:.12em}.vehicle-overview-stats strong{display:block;margin-top:5px;font-size:17px}
+rong{display:block;margin-top:5px;font-size:17px}
       .dynamic-room-page .scene-title-row .scene-icon,.kitchen-dynamic-page .scene-title-row .scene-icon{display:none!important}
       @media(max-width:650px){
         .topbar-config-btn span{display:none}.topbar-config-btn{width:34px;padding:0;justify-content:center}
@@ -647,4 +647,8 @@
 
       @media(max-width:720px){
         .entity-size-compact,.entity-size-normal{grid-column:span 6!important}
-        .entity-size-wide,.entity-size-full{grid-column:1/-1!i
+        .entity-size-wide,.entity-size-full{grid-column:1/-1!important}
+
+        /* Solar / battery: much denser on phones */
+        .overview-solar-grid,.solar-hero-grid{grid-template-columns:1fr!important;gap:10px!important}
+        .solar-showca

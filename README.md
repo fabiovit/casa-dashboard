@@ -204,6 +204,7 @@ To open Casa Dashboard Community directly on a dedicated tablet/browser (Silk / 
 http://homeassistant.local:8123/casa-dashboard-community?kiosk=1
 ```
 
-Replace `homeassistant.local:8123` with your Home Assistant address. `?kiosk=1` hides **Configure** and language controls.
+Replace `homeassistant.local:8123` with your Home Assistant address. `?kiosk=1` enables Home Assistant native kiosk mode, hiding the Home Assistant sidebar/menu as well as **Configure**, the language switch and the dashboard HA menu button. Remove `?kiosk=1` to restore the normal Home Assistant interface.
 
 The default Home Assistant dashboard is selected from Home Assistant settings/profile.
+

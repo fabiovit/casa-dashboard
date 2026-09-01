@@ -1,9 +1,4 @@
-
-  }
-  _roomTypes(){
-    return [
-      ["generico","Ambiente generico","mdi:home-outline"],["soggiorno","Soggiorno","mdi:sofa-outline"],
-      ["cucina","Cucina","mdi:chef-hat"],["camera","Camera","mdi:bed-king-outline"],
+line"],
       ["bagno","Bagno","mdi:shower"],["studio","Studio","mdi:desk"],
       ["lavanderia","Lavanderia","mdi:washing-machine"],["taverna","Taverna / Sala hobby","mdi:glass-mug-variant"],
       ["disimpegno","Corridoio / Disimpegno","mdi:walk"],["ingresso","Ingresso","mdi:door"],
@@ -622,4 +617,8 @@
         <div class="scene-kicker">CASA · LIVE</div>
         <div class="scene-title-row"><h1>${this._esc(room.name||"Disimpegno")}</h1></div>
         <div class="scene-sub">Passaggio e presenza</div>
-        <div class="scene-status ${activeCount
+        <div class="scene-status ${activeCount?'warn':'good'}"><span></span>${motionOn?"Passaggio rilevato":activeCount?`${activeCount} stati attivi`:"Passaggio libero"}</div>
+      </div>
+      <div class="hallway-hero-showcase">
+        <div class="hallway-scene ${motionOn?'active':''}">
+     

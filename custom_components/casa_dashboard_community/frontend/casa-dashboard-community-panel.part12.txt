@@ -1,8 +1,4 @@
-?'warn':'good'}"><span></span>${motionOn?"Passaggio rilevato":activeCount?`${activeCount} stati attivi`:"Passaggio libero"}</div>
-      </div>
-      <div class="hallway-hero-showcase">
-        <div class="hallway-scene ${motionOn?'active':''}">
-          <div class="hallway-frame left"></div>
+     <div class="hallway-frame left"></div>
           <div class="hallway-frame right"></div>
           <div class="hallway-cone left"></div>
           <div class="hallway-cone right"></div>
@@ -632,4 +628,7 @@
           <select data-room-type="${r.id}">${this._roomTypes().map(([v,l])=>`<option value="${v}" ${r.type===v?"selected":""}>${l}</option>`).join("")}</select>
           <input data-room-icon="${r.id}" value="${this._esc(r.icon||this._roomIcon(r.type))}" placeholder="mdi:icona">
           <select data-room-title-size="${r.id}" title="Dimensione titolo">${[["compact","Titolo compatto"],["normal","Titolo normale"],["large","Titolo grande"]].map(([v,l])=>`<option value="${v}" ${(r.title_size||"normal")===v?"selected":""}>${l}</option>`).join("")}</select>
-          <label class="room-subtitle-toggle"><input type="checkbox" data-room-show-subtitle="${r.id}" ${r.show_subtitle!==false?
+          <label class="room-subtitle-toggle"><input type="checkbox" data-room-show-subtitle="${r.id}" ${r.show_subtitle!==false?"checked":""}><span>Mostra sottotitolo</span></label>
+          <input data-room-subtitle="${r.id}" value="${this._esc(r.subtitle||"")}" placeholder="Sottotitolo opzionale">
+        </div>
+        <div class="room-image-field"><span>FOTO STANZA</span><div class="photo-config-line"><in

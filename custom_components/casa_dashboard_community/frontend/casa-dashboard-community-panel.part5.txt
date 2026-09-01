@@ -1,4 +1,4 @@
-und:#c3ccd1!important;border-top-color:#a9b5bc!important}
+important}
       .app-shell.theme-light .gate-v2-leaf{background:#8f999f!important;border-color:#7e8b92!important}
       .app-shell.theme-light .gate-v2-leaf i{background:#6f7c83!important}
       .app-shell.theme-light .gate-v2-handle{background:#6d6252!important}
@@ -218,4 +218,4 @@ und:#c3ccd1!important;border-top-color:#a9b5bc!important}
       /* v2.0.0 - Casa V2 room heroes aligned with personal Casa 4.3.54 */
       .ui-v2 .original-room-hero{grid-template-columns:minmax(360px,.95fr) minmax(560px,1.35fr)!important;min-height:350px!important}
       .original-room-hero-card{display:grid;grid-template-columns:minmax(340px,1.2fr) minmax(230px,.8fr);gap:18px;align-items:center;min-height:260px;padding:20px;border-radius:26px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(72,151,255,.045))}
-      .original-room-visual{min-width:0}.original-room-side{display:flex;flex-direction:column;gap:14px;padding:6px}.
+      .original-room-visual{min-width:0}.original-room-side{display:flex;flex-direction:column;gap:14px;padding:6px}.original-room-meta span{display:block;font-size:9px;letter-spacing:.2em;font-weigh

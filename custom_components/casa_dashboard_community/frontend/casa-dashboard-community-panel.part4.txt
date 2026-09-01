@@ -1,4 +1,4 @@
-eight:150px;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.08);background:#1e3a4b}
+border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.08);background:#1e3a4b}
       .blind-window{position:absolute;inset:10px;background:linear-gradient(180deg,#315d76,#203d4e);border:3px solid #56636d}
       .blind-copy span{display:block;font-size:9px;letter-spacing:.18em;color:#8da6bd}.blind-copy strong{display:block;font-size:30px;margin-top:7px}.blind-copy small{display:block;color:var(--secondary-text-color);margin-top:4px}
       .blind-card button{height:46px;padding:0 16px;border-radius:14px;border:1px solid rgba(90,188,255,.35);background:rgba(90,188,255,.05);color:#72c8ff;font-weight:800;cursor:pointer}
@@ -275,4 +275,4 @@ eight:150px;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255
       .app-shell.theme-light .gate-v2-sky{background:linear-gradient(180deg,rgba(190,219,237,.34),rgba(235,244,248,.08))!important}
       .app-shell.theme-light .gate-v2-ground{background:linear-gradient(180deg,#e4ebe4,#d7dfd8)!important}
       .app-shell.theme-light .gate-v2-wall{background:#d9dfe2!important;border-top-color:#bcc6cc!important}
-      .app-shell.theme-light .gate-v2-pillar{backgro
+      .app-shell.theme-light .gate-v2-pillar{background:#c3ccd1!important;border-top-color:#a9b5bc!

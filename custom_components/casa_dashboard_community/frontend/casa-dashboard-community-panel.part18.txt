@@ -1,4 +1,4 @@
-r_temperature")?this._fmt("sensor.weather_outdoor_temperature",1,"°C"):"—",small:this._configured("sensor.weather_outdoor_humidity")?`Umidità ${this._fmt("sensor.weather_outdoor_humidity",0,"%")}`:"",show:this._configured("sensor.weather_outdoor_temperature")||this._configured("sensor.weather_outdoor_humidity")},
+._configured("sensor.weather_outdoor_temperature")?this._fmt("sensor.weather_outdoor_temperature",1,"°C"):"—",small:this._configured("sensor.weather_outdoor_humidity")?`Umidità ${this._fmt("sensor.weather_outdoor_humidity",0,"%")}`:"",show:this._configured("sensor.weather_outdoor_temperature")||this._configured("sensor.weather_outdoor_humidity")},
       {label:"Sole",value:this._configured("sensor.weather_solar_lux")?this._fmtLuxCompact("sensor.weather_solar_lux"):"—",small:this._configured("sensor.weather_solar_radiation")?this._fmt("sensor.weather_solar_radiation",0,"W/m²"):"",show:hasSun},
       {label:"Vento",value:this._configured("sensor.weather_wind_speed")?this._fmt("sensor.weather_wind_speed",1,"km/h"):"—",small:this._configured("sensor.weather_wind_gust")?`Raffica ${this._fmt("sensor.weather_wind_gust",1,"km/h")}`:"",show:hasWind}
     ];

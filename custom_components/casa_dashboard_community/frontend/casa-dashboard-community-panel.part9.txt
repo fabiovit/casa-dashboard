@@ -1,8 +1,4 @@
-mportant}
-
-        /* Solar / battery: much denser on phones */
-        .overview-solar-grid,.solar-hero-grid{grid-template-columns:1fr!important;gap:10px!important}
-        .solar-showcase,.room-solar-showcase,.overview-solar-advanced{gap:10px!important}
+se,.room-solar-showcase,.overview-solar-advanced{gap:10px!important}
         .solar-production-card,.solar-battery-card,.battery-showcase,.energy-battery-card{
           min-height:0!important;
           padding:14px!important;
@@ -37,7 +33,7 @@ mportant}
 
 
 
-      /* v4.2.6 */
+      /* Core UI refinements */
       .background-choice-fields{display:grid;grid-template-columns:repeat(4,minmax(90px,1fr));gap:8px;align-items:end}
       .background-choice-fields input[type="color"],.room-background-fields input[type="color"]{width:100%;height:38px;padding:3px;border:1px solid var(--divider-color);border-radius:9px;background:var(--secondary-background-color)}
       .room-background-fields{grid-template-columns:140px 110px 110px 110px 100px}
@@ -83,7 +79,7 @@ mportant}
       .active-group-list{padding:10px}.active-group-row{display:grid;grid-template-columns:1fr auto;gap:8px;padding:7px 0;border-bottom:1px solid var(--divider-color)}.active-group-entity{border:0;background:transparent;text-align:left;color:var(--primary-text-color);padding:7px}.active-group-entity span{display:block;font-weight:800}.active-group-entity small{display:block;color:var(--secondary-text-color);margin-top:3px}.active-group-toggle{width:42px;border:1px solid var(--divider-color);border-radius:10px;background:var(--secondary-background-color);color:var(--primary-color)}
       .opening-card.has-custom-photo .custom-object-photo,.activity-card.has-custom-photo .custom-object-photo,.robot-room-card .custom-object-photo{width:120px;height:112px;margin:10px;border-radius:14px;overflow:hidden}.opening-card.has-custom-photo .custom-object-photo img,.activity-card.has-custom-photo .custom-object-photo img,.robot-room-card .custom-object-photo img,.robot-overview-visual.has-photo img{width:100%;height:100%;object-fit:cover;display:block}
       .robot-overview-card.compact{min-height:0}.overview-size-compact .chapter{margin-top:18px!important}.overview-size-compact .overview-key-grid,.overview-size-compact .overview-room-climate-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}.overview-size-compact .robot-overview-card,.overview-size-compact .vehicle-overview-card{min-height:0!important;padding:12px!important}
-      :host(.kiosk-mode) .topbar-config-btn,:host(.kiosk-mode) .info-config-box,:host(.kiosk-mode) .language-switch,:host(.kiosk-mode) .topbar-tools{display:none!important}
+      :host(.kiosk-mode) .menu-btn,:host(.kiosk-mode) .topbar-config-btn,:host(.kiosk-mode) .info-config-box,:host(.kiosk-mode) .language-switch,:host(.kiosk-mode) .topbar-tools{display:none!important}
       @media(max-width:720px){
         .topbar{min-height:62px!important}.brand-copy .subtitle{display:none!important}.brand-copy .title{font-size:19px!important}.brand-version{font-size:9px!important}
         .community-personal-overview{padding:14px!important}.community-personal-overview h1{font-size:clamp(30px,11vw,48px)!important;line-height:.96!important}.community-personal-overview .scene-sub{font-size:11px!important;margin-top:7px!important}.personal-overview-hero-card{min-height:128px!important}
@@ -102,7 +98,7 @@ mportant}
       
 
       /* ==========================================================
-         FINAL RESPONSIVE LAYER - Community 4.2.6
+         FINAL RESPONSIVE LAYER - Community 4.2.7
          One authoritative phone/tablet override block.
          ========================================================== */
 
@@ -544,4 +540,6 @@ mportant}
       ["mdi:motion-sensor","Movimento"],["mdi:account-eye-outline","Presenza"],["mdi:vibrate","Vibrazione"],
       ["mdi:thermometer","Temperatura"],["mdi:water-percent","Umidità"],["mdi:white-balance-sunny","Luminosità"],
       ["mdi:air-conditioner","Climatizzatore"],["mdi:radiator","Riscaldamento"],["mdi:water-boiler","Acqua calda"],
-      ["mdi:fan","Ventola"],["mdi:television","TV"],["mdi:speaker","Speaker"],["mdi:cast","Me
+      ["mdi:fan","Ventola"],["mdi:television","TV"],["mdi:speaker","Speaker"],["mdi:cast","Media player"],
+      ["mdi:fridge-outline","Frigorifero"],["mdi:dishwasher","Lavastoviglie"],["mdi:washing-machine","Lavatrice"],["mdi:tumble-dryer","Asciugatrice"],
+      ["mdi:mic

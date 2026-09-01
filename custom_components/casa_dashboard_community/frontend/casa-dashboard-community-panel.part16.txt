@@ -1,4 +1,6 @@
-(value):value;
+KW(value,abs=false){
+    if(value===null || !Number.isFinite(value)) return "—";
+    const n=abs?Math.abs(value):value;
     return `${new Intl.NumberFormat(this._language==="en"?"en-GB":"it-IT",{minimumFractionDigits:2,maximumFractionDigits:2}).format(n)} kW`;
   }
   _energyFmtLogical(logicalKey,digits=2,fallbackUnit=""){
@@ -554,4 +556,4 @@
       <div class="panel-title">Garage + EV + Wallbox</div>
       <div class="panel-big">${mobilityConfigured?(ev?this._fmtPowerAuto("sensor.wallbox_charging_power",2):'Pronta'):(garage?'Garage aperto':'Garage')}</div>
       <div class="panel-sub">${mobilityConfigured?`${ev?'Ricarica in corso':'Nessuna ricarica attiva'}${this._configured("sensor.wallbox_evse_status")?` · EVSE ${this._state("sensor.wallbox_evse_status","—")}`:""}`:'Accesso garage configurato'}</div>
-      <div class="mini-tags">${this._configured("binary_sensor.garage_door_contact")?`<span class="mini-tag ${garage?'warn':''}">🚗 ${garage?'Basculante aperto':'Garage chiuso'}</span>`:""}${treadmillConfigured?`<span class="mini-tag ${this._on("switch.garage_treadmill")?'active':''}">🏃 ${this._on("switch.garage_t
+      <div class="mini-tags">${this._configured("binary_sensor.garage_door_contact")?`<span class="mini-tag ${garage?'warn':''}">🚗 ${garage?'Basculante aperto':'Garage chiuso'}</span>`:""}${treadmillConfigured?`<span class="mini-tag ${this._on(
