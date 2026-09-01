@@ -1,4 +1,89 @@
+active":""}" data-ui-theme="v2" type="button">${selected==="v2"?'<span class="selected">In uso</span>':""}<div class="style-head"><ha-icon icon="mdi:vector-square"></ha-icon><strong>Casa V2</strong></div><p>Nuova grafica derivata da Casa Dashboard v4.3.54, con visual dedicati per luci, sensori, clima, dispositivi e aperture.</p></button>
+    </div>
+    <div class="style-note">La scelta viene salvata sul browser/dispositivo e non modifica entità o automazioni.</div>
+    <div class="info-config-box"><div><span>CONFIGURAZIONE</span><strong>Personalizza Casa Dashboard</strong><p>Stanze, dispositivi, energia, mobilità, foto e nomi.</p></div><button data-action="entity-config" type="button"><ha-icon icon="mdi:tune-variant"></ha-icon> Configura</button></div>
+    <div class="community-support-box"><div><span>SUPPORTA IL PROGETTO</span><strong>Casa Dashboard Community è gratuita</strong><p>Se ti piace, puoi supportarne lo sviluppo.</p></div><a href="https://ko-fi.com/fabvittori" target="_blank" rel="noopener noreferrer">☕ Offrimi un caffè</a></div>
+    <p class="credit">Realizzato da Fabio Vittori</p></div></div>`;
+  }
 
+  _lightVisual(entity,title,icon="mdi:lightbulb",sub="",span=4){
+    const on=this._on(entity);
+    const isLed=/led|retroillumin/i.test(`${entity} ${title} ${icon}`);
+    const isBulb=/lightbulb|lampadina|bulb/i.test(`${title} ${icon}`);
+    const isLamp=/lampada|lamp\b|floor-lamp|desk-lamp|wall-sconce|outdoor-lamp/i.test(`${title} ${icon}`);
+    const scene=isLed?"led":isBulb?"bulb":isLamp?"lamp":"ceiling";
+    const customPhoto=this._customObjectVisual(entity,"light");
+    return `<div class="light-visual-card ${scene} ${on?'on':'off'} span-${span}${entity?this._entitySizeClass(entity):""} ${customPhoto?'has-custom-photo':''}">
+      ${customPhoto || `<div class="light-fixture ${scene}">
+        ${scene==="led"?
+          `<div class="led-strip">${Array.from({length:8},()=>'<i></i>').join("")}</div>`:
+          scene==="bulb"?
+          `<div class="bulb-wire"></div><div class="bulb-glass"></div><div class="bulb-base"></div><div class="bulb-glow"></div>`:
+          scene==="lamp"?
+          `<div class="lamp-shade"></div><div class="lamp-stem"></div><div class="lamp-base"></div>`:
+          `<div class="ceiling-wire"></div><div class="ceiling-cap"></div><div class="ceiling-glow"></div>`
+        }
+      </div>`}
+      <div class="light-visual-copy clickable" data-more="${entity}">
+        <span>${this._esc(title)}</span><strong>${on?"Accesa":"Spenta"}</strong><small>${this._esc(sub || (isLed?"Illuminazione LED":"Illuminazione"))}</small>
+      </div>
+      <button class="light-visual-toggle ${on?'active':''}" data-toggle="${entity}" type="button"><ha-icon icon="${icon}"></ha-icon><span>${this._language==="en"?(on?'ON':'OFF'):(on?'ACCESO':'SPENTO')}</span></button>
+    </div>`;
+  }
+
+  _deviceVisual(entity,title,type="fan",sub="",span=4){
+    const on=this._on(entity);
+    const customPhoto=this._customObjectVisual(entity,"device");
+    return `<div class="device-visual-card ${type} ${on?'on':'off'} span-${span}${entity?this._entitySizeClass(entity):""} ${customPhoto?'has-custom-photo':''}">
+      ${customPhoto || `<div class="device-visual ${type}">
+        ${type==="fan"?`<div class="fan-hub"></div><div class="fan-blade b1"></div><div class="fan-blade b2"></div><div class="fan-blade b3"></div><div class="fan-blade b4"></div>`:`<div class="generic-sensor"><ha-icon icon="mdi:power-plug"></ha-icon></div>`}
+      </div>`}
+      <div class="device-visual-copy clickable" data-more="${entity}"><span>${this._esc(title)}</span><strong>${on?"Attivo":"Spento"}</strong><small>${this._esc(sub || (type==="fan"?"Ventilazione":"Dispositivo"))}</small></div>
+      <button class="device-visual-toggle ${on?'active':''}" data-toggle="${entity}" type="button"><ha-icon icon="${type==="fan"?"mdi:fan":"mdi:power"}"></ha-icon><span>${this._language==="en"?(on?'ON':'OFF'):(on?'ACCESO':'SPENTO')}</span></button>
+    </div>`;
+  }
+
+  _sensorVisual(icon,label,value,foot="",span=3,entity="",tone=""){
+    const l=String(label||"").toLowerCase(), i=String(icon||"").toLowerCase(); let type="generic";
+    if(l.includes("vento")||l.includes("raffica")||i.includes("weather-windy")||i.includes("tornado")) type="wind";
+    else if(l.includes("pioggia")||l.includes("rain")||i.includes("weather-rain")) type="rain";
+    else if(l==="vpd"||l.includes("vapour pressure")) type="vpd";
+    else if(l.includes("radiazione")||i.includes("solar-power")) type="radiation";
+    else if(l.includes("indice uv")||l.includes("sole e uv")||i.includes("sunny-alert")) type="uv";
+    else if(l.includes("pressione")||i.includes("gauge")) type="pressure";
+    else if(l.includes("direzione")||i.includes("compass")) type="compass";
+    else if(l.includes("fulmini")||l.includes("temporali")||i.includes("lightning")) type="lightning";
+    else if(l.includes("blocco")||i.includes("timer")) type="timer";
+    else if(l.includes("livello acqua")||l.includes("serbatoio")||i.includes("cup-water")) type="water";
+    const customPhoto=entity?this._customObjectVisual(entity,"sensor"):"";
+    return `<div class="sensor-visual-card ${type} span-${span}${entity?this._entitySizeClass(entity):""} ${tone||''} ${customPhoto?'has-custom-photo':''}" ${entity?`data-more="${entity}"`:""}>
+      ${customPhoto || `<div class="sensor-visual ${type}">
+        ${type==="wind"?`<div class="wind-lines"><i></i><i></i><i></i></div><div class="wind-vane"><span></span></div>`:
+          type==="rain"?`<div class="rain-cloud"></div><div class="rain-drops"><i></i><i></i><i></i><i></i></div>`:
+          type==="vpd"?`<div class="vpd-leaf"></div><div class="vpd-air"><i></i><i></i><i></i></div>`:
+          type==="radiation"?`<div class="solar-disc"></div><div class="solar-rays">${Array.from({length:8},(_,n)=>`<i class="r${n+1}"></i>`).join("")}</div>`:
+          type==="uv"?`<div class="uv-sun"></div><div class="uv-shield">UV</div>`:
+          type==="pressure"?`<div class="pressure-dial"><i></i><span></span></div>`:
+          type==="compass"?`<div class="compass-ring"><i></i><b>N</b></div>`:
+          type==="lightning"?`<div class="storm-cloud"></div><div class="bolt"></div>`:
+          type==="timer"?`<div class="timer-ring"><i></i><span></span></div>`:
+          type==="water"?`<div class="water-tank"><div></div></div>`:
+          `<div class="generic-sensor"><ha-icon icon="${icon}"></ha-icon></div>`}
+      </div>`}
+      <div class="sensor-visual-copy"><span>${this._esc(label)}</span><strong>${this._esc(value)}</strong>${foot?`<small>${this._esc(foot)}</small>`:""}</div><div class="sensor-visual-icon"><ha-icon icon="${icon}"></ha-icon></div>
+    </div>`;
+  }
+
+  _openingVisual(entity,label,type="window",span=3,subtitle=""){
+    const isOpen=this._on(entity);
+    const customPhoto=this._customObjectVisual(entity,"opening");
+    const visualClass=type==="cabinet"?"cabinet":"window";
+    const icon=type==="cabinet"?(isOpen?"mdi:door-open":"mdi:door-closed"):(isOpen?"mdi:window-open-variant":"mdi:window-closed-variant");
+    return `<button class="opening-card ${visualClass} ${isOpen?'open':'closed'} span-${span}${entity?this._entitySizeClass(entity):""} ${customPhoto?'has-custom-photo':''}" data-more="${entity}">
+      ${customPhoto || `<div class="opening-scene ${visualClass}">
+        ${visualClass==="window"?
+          `<div class="window-frame">
+             <div class="window-sky"></div>
              <div class="window-sash left"></div>
              <div class="window-sash right"></div>
              <div class="window-handle"></div>
@@ -10,7 +95,7 @@
              <div class="cabinet-handle right"></div>
            </div>`
         }
-      </div>
+      </div>`}
       <div class="opening-copy">
         <span>${label}</span>
         <strong>${isOpen?'Aperta':'Chiusa'}</strong>
@@ -22,20 +107,21 @@
 
   _activityVisual(entity,label,type="motion",span=3,subtitle=""){
     const active=this._on(entity);
+    const customPhoto=this._customObjectVisual(entity,"activity");
     const cfg={
       motion:{icon:"mdi:motion-sensor",on:"Rilevato",off:"Assente",scene:"motion"},
       occupancy:{icon:"mdi:account-check",on:"Occupato",off:"Libero",scene:"occupancy"},
       vibration:{icon:"mdi:vibrate",on:"Rilevata",off:"Assente",scene:"vibration"}
     }[type];
-    return `<button class="activity-card ${cfg.scene} ${active?'active':'idle'} span-${span}${entity?this._entitySizeClass(entity):""}" data-more="${entity}">
-      <div class="activity-visual ${cfg.scene}">
+    return `<button class="activity-card ${cfg.scene} ${active?'active':'idle'} span-${span}${entity?this._entitySizeClass(entity):""} ${customPhoto?'has-custom-photo':''}" data-more="${entity}">
+      ${customPhoto || `<div class="activity-visual ${cfg.scene}">
         ${cfg.scene==="motion"?
           `<div class="motion-person"><i class="head"></i><i class="body"></i><i class="arm a"></i><i class="arm b"></i><i class="leg a"></i><i class="leg b"></i></div><div class="motion-waves"><i></i><i></i><i></i></div>`:
           cfg.scene==="occupancy"?
           `<div class="occupancy-room"><div class="occupancy-person one"></div><div class="occupancy-person two"></div><div class="occupancy-floor"></div></div>`:
           `<div class="vibration-object"><div class="vibration-window"></div></div><div class="vibration-lines left"><i></i><i></i></div><div class="vibration-lines right"><i></i><i></i></div>`
         }
-      </div>
+      </div>`}
       <div class="activity-copy"><span>${label}</span><strong>${active?cfg.on:cfg.off}</strong><small>${subtitle}</small></div>
       <div class="activity-state ${active?'warn':'good'}"><ha-icon icon="${cfg.icon}"></ha-icon></div>
     </button>`;
@@ -123,7 +209,7 @@
       actionText=actionText||"DETTAGLI";
     } else {
       actionAttr=`data-toggle="${entity}"`;
-      actionText=actionText||(on?"ON":"OFF");
+      actionText=actionText||(this._language==="en"?(on?"ON":"OFF"):(on?"ACCESO":"SPENTO"));
     }
     const customPhoto=this._customObjectVisual(entity,"universal");
     return `<div class="universal-device-card ${type} ${visualActive?'active':'inactive'} span-${span}${entity?this._entitySizeClass(entity):""} ${customPhoto?'has-custom-photo':''}">${customPhoto || `<div class="universal-device-scene">${visual}</div>`}<div class="universal-device-copy clickable" data-more="${entity}"><span>${this._esc(title)}</span><strong>${this._esc(status)}</strong><small>${this._esc(subtitle)}</small></div><button class="universal-device-action ${actionClass}" ${actionAttr} type="button"><ha-icon icon="${icon}"></ha-icon>${actionText?`<span>${this._esc(actionText)}</span>`:""}</button></div>`;
@@ -195,15 +281,17 @@
 
   _hero(title, subtitle, status, metrics=[], sceneKey="", roomConfig=null) {
     const level=status.level||"good";
+    const roomTitleSize=roomConfig?.title_size||"normal";
+    const roomSubtitle=roomConfig?.show_subtitle===false?"":(String(roomConfig?.subtitle||"").trim()||subtitle);
     const heroIcon=level==='bad'?'mdi:alert-decagram':level==='warn'?'mdi:shield-alert-outline':level==='blue'?'mdi:home-lightning-bolt-outline':'mdi:home-heart';
     const visibleMetrics=metrics.filter(m=>m.show!==false && String(m.value??"").trim() && String(m.value).trim()!=="—");
     if(this._uiTheme==="v2" && sceneKey){
       const side=visibleMetrics.slice(0,3);
-      return `<section class="scene-hero scene-${level} original-room-hero v2-room-${sceneKey}">
+      return `<section class="scene-hero scene-${level} original-room-hero v2-room-${sceneKey} room-title-${roomTitleSize}">
         <div class="scene-copy">
           <div class="scene-kicker">CASA · LIVE</div>
           <div class="scene-title-row"><h1>${title}</h1></div>
-          <div class="scene-sub">${subtitle}</div>
+          ${roomSubtitle?`<div class="scene-sub">${this._esc(roomSubtitle)}</div>`:""}
           <div class="scene-status ${level}"><span class="pulse"></span><strong>${this._esc(status.title||status.text)}</strong>${status.title&&status.text?`<span>${this._esc(status.text)}</span>`:""}</div>
         </div>
         <div class="original-room-hero-card">
@@ -253,7 +341,7 @@
     const st=this._state(entity,"off");
     const on=this._on(entity)||["open","cool","heat","heating","cooling"].includes(st);
     const cls=this._controlTone(entity,on);
-    return `<div class="command-strip span-${span}${entity?this._entitySizeClass(entity):""} ${cls}"><div class="command-symbol ${on?'active':''}"><ha-icon icon="${icon}"></ha-icon></div><div class="command-copy clickable" data-more="${entity}"><div class="command-title">${title}</div><div class="command-sub">${sub||this._esc(st)}</div></div>${mode==='toggle'?`<button class="command-action ${on?'active':''}" data-toggle="${entity}" type="button"><span>${on?'ON':'OFF'}</span><i></i></button>`:""}</div>`;
+    return `<div class="command-strip span-${span}${entity?this._entitySizeClass(entity):""} ${cls}"><div class="command-symbol ${on?'active':''}"><ha-icon icon="${icon}"></ha-icon></div><div class="command-copy clickable" data-more="${entity}"><div class="command-title">${title}</div><div class="command-sub">${sub||this._esc(st)}</div></div>${mode==='toggle'?`<button class="command-action ${on?'active':''}" data-toggle="${entity}" type="button"><span>${this._language==="en"?(on?'ON':'OFF'):(on?'ACCESO':'SPENTO')}</span><i></i></button>`:""}</div>`;
   }
   _coverControl(entity,title,inverted=false,span=6,subPrefix="Posizione"){
     const configured=this._configured(entity); if(!configured) return "";
@@ -378,97 +466,4 @@
   }
   _energyFmtKW(value,abs=false){
     if(value===null || !Number.isFinite(value)) return "—";
-    const n=abs?Math.abs(value):value;
-    return `${new Intl.NumberFormat(this._language==="en"?"en-GB":"it-IT",{minimumFractionDigits:2,maximumFractionDigits:2}).format(n)} kW`;
-  }
-  _energyFmtLogical(logicalKey,digits=2,fallbackUnit=""){
-    const entity=this._eid(logicalKey);
-    if(!entity || !this._hass?.states?.[entity]) return "—";
-    const obj=this._hass.states[entity], n=parseFloat(obj.state);
-    const unit=String(obj.attributes?.unit_of_measurement||fallbackUnit||"").trim();
-    if(!Number.isFinite(n)) return this._esc(obj.state);
-    return `${new Intl.NumberFormat(this._language==="en"?"en-GB":"it-IT",{minimumFractionDigits:digits,maximumFractionDigits:digits}).format(n)}${unit?` ${unit}`:""}`;
-  }
-  _energySetting(key,fallback){
-    const raw=String(this._overviewConfig?.[key]||"").trim();
-    return raw||fallback;
-  }
-  _advancedEnergySection(){
-    const pvTotalDirect=this._energyPowerKW("sensor.solar_pv_power");
-    const pv1=this._energyPowerKW("sensor.solar_pv1_power");
-    const pv2=this._energyPowerKW("sensor.solar_pv2_power");
-    const pvTotal=pvTotalDirect!==null?pvTotalDirect:
-      ((pv1!==null || pv2!==null)?((pv1||0)+(pv2||0)):null);
-    const load=this._energyPowerKW("sensor.solar_load_power");
-    const grid=this._energyPowerKW("sensor.solar_grid_power");
-    const battPower=this._energyPowerKW("sensor.solar_battery_power");
-    const soc=this._energyNumber("sensor.solar_battery_soc");
-
-    const hasEnergy=[pvTotal,pv1,pv2,load,grid,battPower,soc].some(v=>v!==null);
-    if(!hasEnergy) return "";
-
-    const pv1Volt=this._energyFmtLogical("sensor.solar_pv1_voltage",0);
-    const pv1Current=this._energyFmtLogical("sensor.solar_pv1_current",2);
-    const pv2Volt=this._energyFmtLogical("sensor.solar_pv2_voltage",0);
-    const pv2Current=this._energyFmtLogical("sensor.solar_pv2_current",2);
-    const today=this._energyFmtLogical("sensor.solar_energy_today",2);
-
-    const chargeToday=this._energyFmtLogical("sensor.solar_battery_charged_today",2);
-    const dischargeToday=this._energyFmtLogical("sensor.solar_battery_discharged_today",2);
-    const losses=this._energyFmtLogical("sensor.solar_battery_losses_today",2);
-    const modeEntity=this._eid("sensor.solar_battery_mode");
-    const battMode=modeEntity?String(this._state(modeEntity,"")||"").toLowerCase():"";
-
-    const batteryPositive=this._energySetting("battery_positive","charge");
-    let battDirection="idle";
-    if(battPower!==null && Math.abs(battPower)>0.0005){
-      const positive=battPower>0;
-      battDirection=(positive && batteryPositive==="charge") || (!positive && batteryPositive==="discharge") ? "charge" : "discharge";
-    }else if(/charge|caric/.test(battMode) && !/discharge|scaric/.test(battMode)){
-      battDirection="charge";
-    }else if(/discharge|scaric/.test(battMode)){
-      battDirection="discharge";
-    }
-    const battFlowLabel=battDirection==="charge"
-      ? (this._language==="en"?"Charging":"Carica in corso")
-      : battDirection==="discharge"
-      ? (this._language==="en"?"Discharging":"Scarica in corso")
-      : (this._language==="en"?"Battery standby":"Batteria in standby");
-    const battDesc=battDirection==="charge"
-      ? (this._language==="en"?"Energy flowing to storage":"Energia diretta verso l’accumulo")
-      : battDirection==="discharge"
-      ? (this._language==="en"?"Energy flowing to the home":"Energia diretta verso la casa")
-      : (this._language==="en"?"Battery ready":"Accumulo disponibile");
-    const battTone=battDirection==="charge"?"good":battDirection==="discharge"?"bad":"active";
-
-    const gridPositive=this._energySetting("grid_positive","import");
-    let gridDirection="idle";
-    if(grid!==null && Math.abs(grid)>0.0005){
-      const positive=grid>0;
-      gridDirection=(positive && gridPositive==="import") || (!positive && gridPositive==="export") ? "import" : "export";
-    }
-    const gridLabel=gridDirection==="import"
-      ? (this._language==="en"?"Grid import":"Prelievo dalla rete")
-      : gridDirection==="export"
-      ? (this._language==="en"?"Grid export":"Export in rete")
-      : (this._language==="en"?"No grid exchange":"Scambio nullo");
-    const gridTone=gridDirection==="import"?"warn":gridDirection==="export"?"good":"active";
-
-    const pvMax=Math.max(Math.abs(pv1||0),Math.abs(pv2||0),0.1);
-    const socPct=soc===null?0:Math.max(0,Math.min(100,soc));
-    const socText=soc===null?"—":`${Math.round(soc)}%`;
-
-    const sectionTitle=this._overviewText("solar_label",this._language==="en"?"Solar & Battery":"Fotovoltaico & batteria");
-    const prodLabel=this._energySetting("energy_production_label",this._language==="en"?"Live production":"Produzione live");
-    const pv1Label=this._energySetting("energy_pv1_label",this._language==="en"?"PV1":"Falda 1");
-    const pv2Label=this._energySetting("energy_pv2_label",this._language==="en"?"PV2":"Falda 2");
-    const houseLabel=this._energySetting("energy_house_label",this._language==="en"?"Home":"Casa");
-    const inverterLabel=this._energySetting("energy_inverter_label","Inverter");
-    const batteryLabel=this._energySetting("energy_battery_label",this._language==="en"?"Battery":"Batteria");
-    const gridNodeLabel=this._energySetting("energy_grid_label",this._language==="en"?"Grid":"Rete");
-
-    const dailyParts=[];
-    if(today!=="—") dailyParts.push(`${today} ${this._language==="en"?"today":"oggi"}`);
-    const radEntity=this._eid("sensor.weather_solar_radiation");
-    if(radEntity){
-      const rv=parseFloat(this._state(radEnti
+    const n=abs?Math.abs

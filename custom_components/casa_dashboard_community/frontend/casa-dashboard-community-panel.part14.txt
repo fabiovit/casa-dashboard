@@ -1,4 +1,182 @@
-forte":n>=150?"Radiazione moderata":n>=30?"Radiazione bassa":"Radiazione minima";
+Riprova'; });
+      alert(`Impossibile salvare la configurazione: ${err?.message || err}`);
+    }
+  }
+
+
+  _localizedState(entity,raw=null){
+    const state=String(raw ?? this._state(entity,"—")).trim();
+    const low=state.toLowerCase();
+    const it={
+      off:"Spento",on:"Acceso",idle:"In attesa",standby:"In attesa",
+      docked:"Alla base",cleaning:"In pulizia",returning:"Ritorno alla base",
+      paused:"In pausa",mowing:"Falciatura",starting:"Avvio",error:"Errore",
+      unavailable:"Non disponibile",unknown:"Sconosciuto",
+      open:"Aperto",closed:"Chiuso",opening:"Apertura",closing:"Chiusura",
+      locked:"Bloccata",unlocked:"Sbloccata",locking:"Blocco in corso",
+      unlocking:"Sblocco in corso",jammed:"Bloccata",
+      playing:"In riproduzione",buffering:"Caricamento",
+      heat:"Riscaldamento",heating:"Riscaldamento",
+      cool:"Raffrescamento",cooling:"Raffrescamento",
+      dry:"Deumidificazione",drying:"Deumidificazione",
+      fan_only:"Ventilazione",auto:"Automatico",
+      home:"A casa",not_home:"Fuori casa",
+      disarmed:"Non armato",arming:"Inserimento…",pending:"In attesa…",
+      triggered:"ALLARME",armed_home:"Armato casa",armed_away:"Armato fuori casa",
+      armed_night:"Armato notte",armed_vacation:"Armato vacanza"
+    };
+    if(this._language==="it" && it[low]) return it[low];
+    return state.replaceAll("_"," ");
+  }
+  _roomEntityTypePriority(entity){
+    const domain=String(entity||"").split(".")[0];
+    const dc=String(this._hass?.states?.[entity]?.attributes?.device_class||"").toLowerCase();
+    if(domain==="light") return 10;
+    if(domain==="climate") return 20;
+    if(domain==="cover") return 30;
+    if(["switch","fan","humidifier","input_boolean","media_player"].includes(domain)) return 40;
+    if(["vacuum","lawn_mower"].includes(domain)) return 50;
+    if(["lock","alarm_control_panel"].includes(domain)) return 60;
+    if(domain==="binary_sensor" && ["door","window","opening","garage_door"].includes(dc)) return 70;
+    if(domain==="sensor" && dc==="illuminance") return 80;
+    if(domain==="sensor" && dc==="temperature") return 90;
+    if(domain==="sensor" && dc==="humidity") return 100;
+    if(domain==="binary_sensor" && ["motion","occupancy","presence","vibration"].includes(dc)) return 110;
+    if(["sensor","binary_sensor"].includes(domain)) return 120;
+    return 200;
+  }
+  _orderedRoomEntities(room){
+    const entities=Array.isArray(room?.entities)?[...room.entities]:[];
+    const custom=Array.isArray(room?.entity_order)?room.entity_order.filter(e=>entities.includes(e)):[];
+    if(custom.length) return [...custom,...entities.filter(e=>!custom.includes(e))];
+    return entities.sort((a,b)=>{
+      const pa=this._roomEntityTypePriority(a),pb=this._roomEntityTypePriority(b);
+      if(pa!==pb) return pa-pb;
+      return this._roomEntityDisplay(a,room).localeCompare(this._roomEntityDisplay(b,room),this._language==="en"?"en":"it",{sensitivity:"base"});
+    });
+  }
+  _overviewSectionSetting(id){
+    const show=String(this._overviewConfig?.[`section_${id}_show`] ?? "1")!=="0";
+    const size=String(this._overviewConfig?.[`section_${id}_size`]||"normal").toLowerCase();
+    return {show,size:["compact","normal","large"].includes(size)?size:"normal"};
+  }
+  _overviewSectionWrap(id,html){
+    if(!html) return "";
+    const cfg=this._overviewSectionSetting(id);
+    return cfg.show?`<div class="overview-config-section overview-size-${cfg.size}" data-overview-section="${id}">${html}</div>`:"";
+  }
+  _isKioskMode(){
+    try{
+      const q=new URLSearchParams(window.location.search);
+      return ["1","true","yes"].includes(String(q.get("kiosk")||"").toLowerCase());
+    }catch(_err){ return false; }
+  }
+  _activeGroups(){
+    const entities=this._configuredEntitiesForOverview();
+    const byDomain=d=>entities.filter(e=>e.startsWith(d+"."));
+    const binaries=byDomain("binary_sensor");
+    return {
+      lights:byDomain("light").filter(e=>this._on(e)),
+      openings:binaries.filter(e=>["door","window","garage_door","opening"].includes(String(this._attr(e,"device_class","")).toLowerCase())&&this._on(e)),
+      covers:byDomain("cover").filter(e=>{
+        const s=String(this._state(e,"closed")).toLowerCase();
+        const pos=Number(this._attr(e,"current_position",0));
+        return ["open","opening"].includes(s) || (Number.isFinite(pos) && pos>0);
+      }),
+      devices:[...byDomain("switch").filter(e=>this._on(e)),...byDomain("fan").filter(e=>this._on(e)),...byDomain("humidifier").filter(e=>this._on(e)),...byDomain("climate").filter(e=>this._climateActive(e))],
+      presence:binaries.filter(e=>["motion","occupancy","presence","vibration"].includes(String(this._attr(e,"device_class","")).toLowerCase())&&this._on(e))
+    };
+  }
+  _showActiveGroup(group){
+    const groups=this._activeGroups();
+    const items=groups[group]||[];
+    const labels={lights:"Luci",openings:"Aperture",covers:"Tapparelle e tende",devices:"Dispositivi",presence:"Presenze"};
+    this.shadowRoot.querySelector(".active-group-modal")?.remove();
+    const modal=document.createElement("div");
+    modal.className="active-group-modal";
+    modal.dataset.group=group;
+    modal.innerHTML=`<div class="active-group-backdrop" data-active-close></div><div class="active-group-dialog">
+      <div class="active-group-head"><div><span>STATI ATTIVI</span><strong>${labels[group]||group}</strong></div><button data-active-close type="button"><ha-icon icon="mdi:close"></ha-icon></button></div>
+      <div class="active-group-list">${items.length?items.map(e=>{
+        const domain=e.split(".")[0],toggle=["light","switch","fan","humidifier"].includes(domain);
+        return `<div class="active-group-row"><button class="active-group-entity" data-more="${this._esc(e)}" type="button"><span>${this._esc(this._overviewLabelForEntity(e))}</span><small>${this._esc(this._localizedState(e))}</small></button>${toggle?`<button class="active-group-toggle" data-toggle="${this._esc(e)}" type="button"><ha-icon icon="mdi:power"></ha-icon></button>`:""}</div>`;
+      }).join(""):`<div class="active-group-empty">Nessuna entità attiva</div>`}</div></div>`;
+    this.shadowRoot.appendChild(modal);
+    modal.addEventListener("click",ev=>{
+      if(ev.target.closest?.("[data-active-close]")){modal.remove();return;}
+      const t=ev.target.closest?.("[data-toggle],[data-more]"); if(!t)return;
+      if(t.dataset.toggle){
+        const eid=t.dataset.toggle;
+        const row=t.closest(".active-group-row");
+        row?.classList.add("command-pending");
+        const small=row?.querySelector("small");
+        if(small) small.textContent="Comando inviato…";
+        this._hass.callService(eid.split(".")[0],"toggle",{entity_id:eid});
+        return;
+      }
+      if(t.dataset.more)this._showMoreInfo(t.dataset.more);
+    });
+  }
+
+  _refreshActiveGroupModal(){
+    const modal=this.shadowRoot?.querySelector(".active-group-modal");
+    if(!modal) return;
+    const group=modal.dataset.group;
+    if(!group) return;
+    const items=(this._activeGroups()[group]||[]);
+    const list=modal.querySelector(".active-group-list");
+    if(!list) return;
+    list.innerHTML=items.length?items.map(e=>{
+      const domain=e.split(".")[0];
+      const toggle=["light","switch","fan","humidifier"].includes(domain);
+      return `<div class="active-group-row">
+        <button class="active-group-entity" data-more="${this._esc(e)}" type="button">
+          <span>${this._esc(this._overviewLabelForEntity(e))}</span>
+          <small>${this._esc(this._localizedState(e))}</small>
+        </button>
+        ${toggle?`<button class="active-group-toggle" data-toggle="${this._esc(e)}" type="button"><ha-icon icon="mdi:power"></ha-icon></button>`:""}
+      </div>`;
+    }).join(""):`<div class="active-group-empty">Nessuna entità attiva</div>`;
+  }
+
+  _state(id, fallback="—") {
+    const pending=this._optimistic.get(id);
+    if(pending && Date.now()-pending.at < 3500) return pending.state;
+    const s=this._s(id)?.state;
+    return (!s || ["unknown","unavailable","none",""].includes(s)) ? fallback : s;
+  }
+  _on(id) { return this._state(id,"off") === "on"; }
+  _num(id, fallback=null) { const v=parseFloat(this._state(id,"")); return Number.isFinite(v)?v:fallback; }
+  _attr(id, key, fallback=null) { const v=this._s(id)?.attributes?.[key]; return v ?? fallback; }
+  _fmt(id, digits=1, unit=null) {
+    const n=this._num(id,null); if(n===null) return "—";
+    const u=unit ?? this._attr(id,"unit_of_measurement","");
+    return `${n.toFixed(digits)}${u ? ` ${u}` : ""}`;
+  }
+  _fmtLuxCompact(id, digits=1){
+    const n=this._num(id,null); if(n===null) return "—";
+    if(Math.abs(n) >= 1000) return `${(n/1000).toFixed(digits)} klx`;
+    return `${n.toFixed(0)} lx`;
+  }
+  _fmtLuxExact(id){
+    const n=this._num(id,null); if(n===null) return "—";
+    return `${new Intl.NumberFormat('it-IT',{maximumFractionDigits:0}).format(n)} lx`;
+  }
+  _luxLabel(id){
+    const n=this._num(id,null); if(n===null) return "—";
+    const outdoor=id==="sensor.weather_solar_lux";
+    if(outdoor) return n>=40000?"Luce forte":n>=20000?"Luce buona":"Luce bassa";
+    return n>=500?"Luce forte":n>=100?"Luce buona":"Luce bassa";
+  }
+  _luxTone(id){
+    const n=this._num(id,null); if(n===null) return "state-off";
+    const outdoor=id==="sensor.weather_solar_lux";
+    if(outdoor) return n>=40000?"state-good":n>=20000?"state-active":"state-off";
+    return n>=500?"state-good":n>=100?"state-active":"state-off";
+  }
+  _radLabel(id){
+    const n=this._num(id,null); if(n===null) return "—";
+    return n>=350?"Radiazione forte":n>=150?"Radiazione moderata":n>=30?"Radiazione bassa":"Radiazione minima";
   }
   _radTone(id){
     const n=this._num(id,null); if(n===null) return "state-off";
@@ -234,7 +412,7 @@ forte":n>=150?"Radiazione moderata":n>=30?"Radiazione bassa":"Radiazione minima"
       "Pagina non disponibile":"Page unavailable","Dashboard pronta":"Dashboard ready","Versione":"Version","Piattaforma":"Platform",
       "Dettagli e personalizzazione di Casa Dashboard Community.":"Casa Dashboard Community details and customization.",
       "Dashboard app-like, adattiva e configurabile per Home Assistant.":"An app-like, adaptive and configurable dashboard for Home Assistant.",
-      "In uso":"Active","Grafica originale di Casa Dashboard Community v4.1.1.":"Original Casa Dashboard Community interface.",
+      "In uso":"Active","Grafica originale di Casa Dashboard Community v4.2.6.":"Original Casa Dashboard Community interface.",
       "Nuova grafica derivata da Casa Dashboard v4.3.54, con visual dedicati per luci, sensori, clima, dispositivi e aperture.":"New dynamic interface with dedicated visuals for lights, sensors, climate, devices and openings.",
       "La scelta viene salvata sul browser/dispositivo e non modifica entità o automazioni.":"Your choice is saved on this browser/device and does not change entities or automations.",
       "SUPPORTA IL PROGETTO":"SUPPORT THE PROJECT","Casa Dashboard Community è gratuita":"Casa Dashboard Community is free","Se ti piace, puoi supportarne lo sviluppo.":"If you like it, you can support its development.",
@@ -342,6 +520,7 @@ forte":n>=150?"Radiazione moderata":n>=30?"Radiazione bassa":"Radiazione minima"
 
   _renderPage(forceNav=false) {
     if(!this._hass || !this.shadowRoot) return;
+    this.classList.toggle("kiosk-mode",this._isKioskMode());
     this._renderNav(forceNav); this._renderHeader(); this._applyThemeMode();
     const shell=this.shadowRoot.querySelector(".app-shell"); if(shell){ shell.classList.toggle("ui-v1",this._uiTheme==="v1"); shell.classList.toggle("ui-v2",this._uiTheme==="v2"); shell.dataset.page=this._active; }
     const host=this.shadowRoot.querySelector("#content"); if(!host) return;
@@ -375,94 +554,10 @@ forte":n>=150?"Radiazione moderata":n>=30?"Radiazione bassa":"Radiazione minima"
   _info(){
     const selected=this._uiTheme;
     return `<div class="page">${this._hero("Informazioni","Dettagli e personalizzazione di Casa Dashboard Community.",{level:"good",text:"Dashboard pronta"},[
-      {label:"Versione",value:"4.1.1",small:"Casa Dashboard Community"},
+      {label:"Versione",value:"4.2.6",small:"Casa Dashboard Community"},
       {label:"Piattaforma",value:"Home Assistant",small:"Custom integration"}
     ])}<div class="info-card"><div class="info-icon"><ha-icon icon="mdi:home-heart"></ha-icon></div><h2>Casa Dashboard Community</h2>
     <p>Dashboard app-like, adattiva e configurabile per Home Assistant.</p>
     <div class="style-picker">
-      <button class="style-option ${selected==="v1"?"active":""}" data-ui-theme="v1" type="button">${selected==="v1"?'<span class="selected">In uso</span>':""}<div class="style-head"><ha-icon icon="mdi:home-variant-outline"></ha-icon><strong>Casa V1</strong></div><p>Grafica originale di Casa Dashboard Community v4.1.1.</p></button>
-      <button class="style-option ${selected==="v2"?"active":""}" data-ui-theme="v2" type="button">${selected==="v2"?'<span class="selected">In uso</span>':""}<div class="style-head"><ha-icon icon="mdi:vector-square"></ha-icon><strong>Casa V2</strong></div><p>Nuova grafica derivata da Casa Dashboard v4.3.54, con visual dedicati per luci, sensori, clima, dispositivi e aperture.</p></button>
-    </div>
-    <div class="style-note">La scelta viene salvata sul browser/dispositivo e non modifica entità o automazioni.</div>
-    <div class="info-config-box"><div><span>CONFIGURAZIONE</span><strong>Personalizza Casa Dashboard</strong><p>Stanze, dispositivi, energia, mobilità, foto e nomi.</p></div><button data-action="entity-config" type="button"><ha-icon icon="mdi:tune-variant"></ha-icon> Configura</button></div>
-    <div class="community-support-box"><div><span>SUPPORTA IL PROGETTO</span><strong>Casa Dashboard Community è gratuita</strong><p>Se ti piace, puoi supportarne lo sviluppo.</p></div><a href="https://ko-fi.com/fabvittori" target="_blank" rel="noopener noreferrer">☕ Offrimi un caffè</a></div>
-    <p class="credit">Realizzato da Fabio Vittori</p></div></div>`;
-  }
-
-  _lightVisual(entity,title,icon="mdi:lightbulb",sub="",span=4){
-    const on=this._on(entity);
-    const isLed=/led|retroillumin/i.test(`${entity} ${title} ${icon}`);
-    const isBulb=/lightbulb|lampadina|bulb/i.test(`${title} ${icon}`);
-    const isLamp=/lampada|lamp\b|floor-lamp|desk-lamp|wall-sconce|outdoor-lamp/i.test(`${title} ${icon}`);
-    const scene=isLed?"led":isBulb?"bulb":isLamp?"lamp":"ceiling";
-    const customPhoto=this._customObjectVisual(entity,"light");
-    return `<div class="light-visual-card ${scene} ${on?'on':'off'} span-${span}${entity?this._entitySizeClass(entity):""} ${customPhoto?'has-custom-photo':''}">
-      ${customPhoto || `<div class="light-fixture ${scene}">
-        ${scene==="led"?
-          `<div class="led-strip">${Array.from({length:8},()=>'<i></i>').join("")}</div>`:
-          scene==="bulb"?
-          `<div class="bulb-wire"></div><div class="bulb-glass"></div><div class="bulb-base"></div><div class="bulb-glow"></div>`:
-          scene==="lamp"?
-          `<div class="lamp-shade"></div><div class="lamp-stem"></div><div class="lamp-base"></div>`:
-          `<div class="ceiling-wire"></div><div class="ceiling-cap"></div><div class="ceiling-glow"></div>`
-        }
-      </div>`}
-      <div class="light-visual-copy clickable" data-more="${entity}">
-        <span>${this._esc(title)}</span><strong>${on?"Accesa":"Spenta"}</strong><small>${this._esc(sub || (isLed?"Illuminazione LED":"Illuminazione"))}</small>
-      </div>
-      <button class="light-visual-toggle ${on?'active':''}" data-toggle="${entity}" type="button"><ha-icon icon="${icon}"></ha-icon><span>${on?'ON':'OFF'}</span></button>
-    </div>`;
-  }
-
-  _deviceVisual(entity,title,type="fan",sub="",span=4){
-    const on=this._on(entity);
-    const customPhoto=this._customObjectVisual(entity,"device");
-    return `<div class="device-visual-card ${type} ${on?'on':'off'} span-${span}${entity?this._entitySizeClass(entity):""} ${customPhoto?'has-custom-photo':''}">
-      ${customPhoto || `<div class="device-visual ${type}">
-        ${type==="fan"?`<div class="fan-hub"></div><div class="fan-blade b1"></div><div class="fan-blade b2"></div><div class="fan-blade b3"></div><div class="fan-blade b4"></div>`:`<div class="generic-sensor"><ha-icon icon="mdi:power-plug"></ha-icon></div>`}
-      </div>`}
-      <div class="device-visual-copy clickable" data-more="${entity}"><span>${this._esc(title)}</span><strong>${on?"Attivo":"Spento"}</strong><small>${this._esc(sub || (type==="fan"?"Ventilazione":"Dispositivo"))}</small></div>
-      <button class="device-visual-toggle ${on?'active':''}" data-toggle="${entity}" type="button"><ha-icon icon="${type==="fan"?"mdi:fan":"mdi:power"}"></ha-icon><span>${on?'ON':'OFF'}</span></button>
-    </div>`;
-  }
-
-  _sensorVisual(icon,label,value,foot="",span=3,entity="",tone=""){
-    const l=String(label||"").toLowerCase(), i=String(icon||"").toLowerCase(); let type="generic";
-    if(l.includes("vento")||l.includes("raffica")||i.includes("weather-windy")||i.includes("tornado")) type="wind";
-    else if(l.includes("pioggia")||l.includes("rain")||i.includes("weather-rain")) type="rain";
-    else if(l==="vpd"||l.includes("vapour pressure")) type="vpd";
-    else if(l.includes("radiazione")||i.includes("solar-power")) type="radiation";
-    else if(l.includes("indice uv")||l.includes("sole e uv")||i.includes("sunny-alert")) type="uv";
-    else if(l.includes("pressione")||i.includes("gauge")) type="pressure";
-    else if(l.includes("direzione")||i.includes("compass")) type="compass";
-    else if(l.includes("fulmini")||l.includes("temporali")||i.includes("lightning")) type="lightning";
-    else if(l.includes("blocco")||i.includes("timer")) type="timer";
-    else if(l.includes("livello acqua")||l.includes("serbatoio")||i.includes("cup-water")) type="water";
-    const customPhoto=entity?this._customObjectVisual(entity,"sensor"):"";
-    return `<div class="sensor-visual-card ${type} span-${span}${entity?this._entitySizeClass(entity):""} ${tone||''} ${customPhoto?'has-custom-photo':''}" ${entity?`data-more="${entity}"`:""}>
-      ${customPhoto || `<div class="sensor-visual ${type}">
-        ${type==="wind"?`<div class="wind-lines"><i></i><i></i><i></i></div><div class="wind-vane"><span></span></div>`:
-          type==="rain"?`<div class="rain-cloud"></div><div class="rain-drops"><i></i><i></i><i></i><i></i></div>`:
-          type==="vpd"?`<div class="vpd-leaf"></div><div class="vpd-air"><i></i><i></i><i></i></div>`:
-          type==="radiation"?`<div class="solar-disc"></div><div class="solar-rays">${Array.from({length:8},(_,n)=>`<i class="r${n+1}"></i>`).join("")}</div>`:
-          type==="uv"?`<div class="uv-sun"></div><div class="uv-shield">UV</div>`:
-          type==="pressure"?`<div class="pressure-dial"><i></i><span></span></div>`:
-          type==="compass"?`<div class="compass-ring"><i></i><b>N</b></div>`:
-          type==="lightning"?`<div class="storm-cloud"></div><div class="bolt"></div>`:
-          type==="timer"?`<div class="timer-ring"><i></i><span></span></div>`:
-          type==="water"?`<div class="water-tank"><div></div></div>`:
-          `<div class="generic-sensor"><ha-icon icon="${icon}"></ha-icon></div>`}
-      </div>`}
-      <div class="sensor-visual-copy"><span>${this._esc(label)}</span><strong>${this._esc(value)}</strong>${foot?`<small>${this._esc(foot)}</small>`:""}</div><div class="sensor-visual-icon"><ha-icon icon="${icon}"></ha-icon></div>
-    </div>`;
-  }
-
-  _openingVisual(entity,label,type="window",span=3,subtitle=""){
-    const isOpen=this._on(entity);
-    const visualClass=type==="cabinet"?"cabinet":"window";
-    const icon=type==="cabinet"?(isOpen?"mdi:door-open":"mdi:door-closed"):(isOpen?"mdi:window-open-variant":"mdi:window-closed-variant");
-    return `<button class="opening-card ${visualClass} ${isOpen?'open':'closed'} span-${span}${entity?this._entitySizeClass(entity):""}" data-more="${entity}">
-      <div class="opening-scene ${visualClass}">
-        ${visualClass==="window"?
-          `<div class="window-frame">
-             <div class="window-sky"></div>
+      <button class="style-option ${selected==="v1"?"active":""}" data-ui-theme="v1" type="button">${selected==="v1"?'<span class="selected">In uso</span>':""}<div class="style-head"><ha-icon icon="mdi:home-variant-outline"></ha-icon><strong>Casa V1</strong></div><p>Grafica originale di Casa Dashboard Community v4.2.6.</p></button>
+      <button class="style-option ${selected==="v2"?"

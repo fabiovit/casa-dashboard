@@ -1,433 +1,4 @@
-d>div{display:flex;align-items:center;gap:9px}.room-module-head ha-icon{--mdc-icon-size:21px;color:#67b8ff}.room-module-head strong{font-size:16px}.room-module-head small{font-size:9px;color:var(--secondary-text-color)}
-      .room-module-grid{gap:10px}
-      .room-module-metric{min-height:96px;padding:12px;border:1px solid rgba(255,255,255,.06);border-radius:15px;background:rgba(255,255,255,.018);display:grid;grid-template-columns:44px 1fr;gap:10px;align-items:center}
-      .room-module-icon{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:#142632;color:#67b8ff}.room-module-icon ha-icon{--mdc-icon-size:22px}
-      .room-module-metric span{display:block;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:#8da6bd;font-weight:850}.room-module-metric strong{display:block;font-size:20px;margin-top:5px}.room-module-metric small{display:block;margin-top:3px;color:var(--secondary-text-color);font-size:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-      .room-alarm-panel{min-height:128px;border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:16px;display:grid;grid-template-columns:62px 1fr auto;gap:14px;align-items:center;background:rgba(255,255,255,.018)}
-      .room-alarm-orb{width:58px;height:58px;border-radius:16px;display:grid;place-items:center;background:rgba(255,180,92,.10);color:#ffb45c}.room-alarm-orb ha-icon{--mdc-icon-size:28px}.room-alarm-panel span{display:block;font-size:8px;letter-spacing:.15em;color:#8da6bd}.room-alarm-panel strong{display:block;font-size:23px;margin-top:5px}.room-alarm-panel small{display:block;color:var(--secondary-text-color);margin-top:3px}.room-alarm-panel button{height:42px;padding:0 13px;border-radius:12px;border:1px solid rgba(103,184,255,.28);background:rgba(103,184,255,.05);color:#67b8ff;font-weight:800}
-      @media(max-width:900px){.room-shared-modules-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:650px){.room-shared-modules-grid{grid-template-columns:1fr}.room-alarm-panel{grid-template-columns:54px 1fr}.room-alarm-panel button{grid-column:1/-1}}
-
-
-      /* v4.1.1 - persistent shared-module selector state */
-      .room-shared-module.active{
-        border-color:rgba(103,184,255,.36);
-        background:rgba(103,184,255,.09);
-      }
-      .room-shared-module.active ha-icon{color:#67b8ff}
-
-
-      /* v4.1.1 - Solar room module uses the exact Overview advanced renderer */
-      .room-shared-solar-advanced{
-        width:100%;
-        margin-top:6px;
-      }
-      .room-shared-solar-advanced .section-title{
-        margin-top:0;
-      }
-      .room-shared-solar-advanced .solar-showcase.community-advanced-energy{
-        margin-bottom:8px;
-      }
-
-
-      /* v4.1.1 - Weather module / Overview visual parity */
-      .room-shared-weather-overview{
-        width:100%;
-        margin-top:8px;
-      }
-      .room-shared-weather-overview .section-title{
-        margin-top:0;
-      }
-
-      .overview-weather-grid{
-        position:relative;
-        overflow:hidden;
-        display:grid!important;
-        grid-template-columns:repeat(5,minmax(0,1fr))!important;
-        gap:0!important;
-        padding:0!important;
-        border:1px solid rgba(103,184,255,.14)!important;
-        border-radius:24px!important;
-        background:
-          radial-gradient(circle at 8% 20%,rgba(52,174,255,.09),transparent 26%),
-          linear-gradient(145deg,rgba(255,255,255,.025),rgba(71,138,195,.025))!important;
-        margin-bottom:28px!important;
-      }
-
-      .overview-weather-card{
-        min-height:126px!important;
-        padding:18px 16px!important;
-        border:0!important;
-        border-right:1px solid rgba(255,255,255,.065)!important;
-        border-radius:0!important;
-        background:transparent!important;
-        display:grid!important;
-        grid-template-columns:54px minmax(0,1fr)!important;
-        gap:12px!important;
-        align-items:center!important;
-      }
-      .overview-weather-card:last-child{
-        border-right:0!important;
-      }
-
-      .overview-weather-icon{
-        width:50px!important;
-        height:50px!important;
-        border-radius:16px!important;
-        display:grid!important;
-        place-items:center!important;
-        background:linear-gradient(145deg,#173041,#10212c)!important;
-        color:#63c9ff!important;
-        border:1px solid rgba(99,201,255,.18)!important;
-        box-shadow:0 8px 24px rgba(0,0,0,.12)!important;
-      }
-      .overview-weather-icon ha-icon{
-        --mdc-icon-size:27px!important;
-      }
-
-      .overview-weather-card span{
-        display:block!important;
-        font-size:8px!important;
-        letter-spacing:.17em!important;
-        text-transform:uppercase!important;
-        color:#8da6bd!important;
-        font-weight:900!important;
-      }
-      .overview-weather-card strong{
-        display:block!important;
-        margin-top:6px!important;
-        font-size:22px!important;
-        line-height:1.05!important;
-        letter-spacing:-.03em!important;
-      }
-      .overview-weather-card small{
-        display:block!important;
-        margin-top:5px!important;
-        color:var(--secondary-text-color)!important;
-        font-size:9px!important;
-        line-height:1.35!important;
-      }
-
-      .app-shell.theme-light .overview-weather-grid{
-        background:
-          radial-gradient(circle at 8% 20%,rgba(52,174,255,.08),transparent 28%),
-          linear-gradient(145deg,#fff,#f5f9fc)!important;
-        border-color:rgba(15,23,42,.10)!important;
-      }
-      .app-shell.theme-light .overview-weather-card{
-        border-right-color:rgba(15,23,42,.07)!important;
-      }
-      .app-shell.theme-light .overview-weather-icon{
-        background:linear-gradient(145deg,#eef7fb,#e3f0f6)!important;
-        color:#1689c7!important;
-        border-color:rgba(22,137,199,.16)!important;
-      }
-
-      @media(max-width:1100px){
-        .overview-weather-grid{
-          grid-template-columns:repeat(2,minmax(0,1fr))!important;
-        }
-        .overview-weather-card{
-          border-bottom:1px solid rgba(255,255,255,.06)!important;
-        }
-      }
-      @media(max-width:650px){
-        .overview-weather-grid{
-          grid-template-columns:1fr!important;
-        }
-        .overview-weather-card{
-          border-right:0!important;
-        }
-      }
-
-
-      /* v4.1.1 - EV + Wallbox room module parity */
-      .community-daze-console{
-        display:grid;
-        grid-template-columns:465px minmax(0,1fr);
-        gap:16px;
-        align-items:stretch;
-        margin-bottom:12px;
-      }
-      .community-daze-visual{
-        min-height:282px;
-        position:relative;
-        overflow:hidden;
-        border-radius:22px;
-        border:1px solid rgba(103,184,255,.15);
-        background:linear-gradient(180deg,#10232e,#0b1820);
-      }
-      .community-daze-car{
-        position:absolute;
-        left:28px;
-        bottom:72px;
-        width:210px;
-        height:100px;
-      }
-      .community-daze-car-body{
-        position:absolute;
-        left:0;right:0;bottom:20px;height:52px;
-        border-radius:40px 55px 18px 18px;
-        background:linear-gradient(180deg,#aab4bc,#7f8b95);
-      }
-      .community-daze-car-glass{
-        position:absolute;
-        left:60px;top:0;width:92px;height:48px;
-        border-radius:38px 38px 8px 8px;
-        background:#29404f;
-      }
-      .community-daze-wheel{
-        position:absolute;
-        bottom:0;width:31px;height:31px;border-radius:50%;
-        background:#12181c;border:6px solid #58646c;
-      }
-      .community-daze-wheel.left{left:32px}
-      .community-daze-wheel.right{right:32px}
-      .community-daze-wallbox{
-        position:absolute;
-        right:28px;bottom:52px;
-        width:72px;height:148px;border-radius:30px 30px 18px 18px;
-        background:linear-gradient(180deg,#e8ebed,#9da6ad);
-        box-shadow:0 12px 25px rgba(0,0,0,.25);
-      }
-      .community-daze-screen{
-        position:absolute;left:19px;top:19px;width:34px;height:52px;
-        border-radius:6px;background:#111b21;
-      }
-      .community-daze-led{
-        position:absolute;left:28px;top:81px;width:16px;height:16px;border-radius:50%;
-        background:#48555f;
-      }
-      .community-daze-led.active{
-        background:#55e6ad;
-        box-shadow:0 0 14px rgba(85,230,173,.6);
-      }
-      .community-daze-cable{
-        position:absolute;left:52px;top:104px;width:84px;height:75px;
-        border:6px solid #20272c;border-left:0;border-top:0;border-radius:0 0 70px 0;
-      }
-      .community-daze-status{
-        position:absolute;left:26px;bottom:20px;
-        font-size:14px;font-weight:850;color:#9aabba;
-      }
-      .community-daze-status span{
-        display:inline-block;width:10px;height:10px;border-radius:50%;
-        background:#5b6872;margin-right:8px;
-      }
-      .community-daze-status.active{color:#55e6ad}
-      .community-daze-status.active span{background:#55e6ad}
-
-      .community-daze-data{
-        display:grid;
-        grid-template-columns:repeat(3,minmax(0,1fr));
-        gap:12px;
-      }
-      .community-daze-data-card{
-        min-height:128px;
-        border:1px solid rgba(255,255,255,.07);
-        border-radius:18px;
-        padding:15px;
-        background:rgba(255,255,255,.016);
-      }
-      .community-daze-data-card.primary{
-        border-color:rgba(103,184,255,.25);
-        background:rgba(103,184,255,.035);
-      }
-      .community-daze-data-card span{
-        display:block;font-size:8px;letter-spacing:.15em;color:#8da6bd;
-      }
-      .community-daze-data-card strong{
-        display:block;font-size:27px;margin-top:11px;letter-spacing:-.04em;
-      }
-      .community-daze-data-card small{
-        display:block;color:var(--secondary-text-color);margin-top:7px;
-      }
-      .community-daze-diagnostics{
-        display:grid;
-        grid-template-columns:repeat(3,minmax(0,1fr));
-        gap:12px;
-        margin:12px 0 28px;
-      }
-
-      .app-shell.theme-light .community-daze-visual,
-      .app-shell.theme-light .community-daze-data-card{
-        background:linear-gradient(180deg,#fff,#f5f9fd);
-        border-color:rgba(15,23,42,.09);
-      }
-      .app-shell.theme-light .community-daze-visual{
-        background:linear-gradient(180deg,#edf4f8,#dce7ee);
-      }
-      .app-shell.theme-light .community-daze-data-card span{
-        color:#587292;
-      }
-
-      @media(max-width:1050px){
-        .community-daze-console{grid-template-columns:1fr}
-        .community-daze-data{grid-template-columns:repeat(3,minmax(0,1fr))}
-      }
-      @media(max-width:700px){
-        .community-daze-data,
-        .community-daze-diagnostics{grid-template-columns:1fr}
-        .community-daze-visual{min-height:240px}
-        .community-daze-car{transform:scale(.82);transform-origin:left bottom}
-        .community-daze-wallbox{transform:scale(.82);transform-origin:right bottom}
-      }
-
-
-      /* v4.1.1 - EV vehicle card inside rooms using EV + Wallbox */
-      .room-vehicle-card{
-        display:grid;
-        grid-template-columns:280px minmax(0,1fr);
-        gap:18px;
-        align-items:center;
-        margin:12px 0 28px;
-        padding:18px;
-        border:1px solid rgba(103,184,255,.14);
-        border-radius:22px;
-        background:linear-gradient(145deg,rgba(255,255,255,.02),rgba(103,184,255,.02));
-      }
-      .room-vehicle-visual{
-        height:175px;
-        border-radius:18px;
-        display:grid;
-        place-items:center;
-        background:linear-gradient(180deg,#10222d,#0d1820);
-        color:#67b8ff;
-      }
-      .room-vehicle-visual ha-icon{--mdc-icon-size:82px}
-      .room-vehicle-head span{
-        display:block;
-        font-size:8px;
-        letter-spacing:.16em;
-        color:#8da6bd;
-        font-weight:900;
-      }
-      .room-vehicle-head strong{
-        display:block;
-        font-size:28px;
-        margin-top:7px;
-      }
-      .room-vehicle-head small{
-        display:block;
-        margin-top:4px;
-        color:var(--secondary-text-color);
-      }
-      .room-vehicle-stats{
-        display:grid;
-        grid-template-columns:repeat(3,minmax(0,1fr));
-        gap:10px;
-        margin-top:16px;
-      }
-      .room-vehicle-stats>div{
-        min-height:72px;
-        padding:11px;
-        border:1px solid rgba(255,255,255,.06);
-        border-radius:13px;
-        background:rgba(255,255,255,.018);
-      }
-      .room-vehicle-stats span{
-        display:block;
-        font-size:8px;
-        letter-spacing:.13em;
-        color:#8da6bd;
-      }
-      .room-vehicle-stats strong{
-        display:block;
-        font-size:18px;
-        margin-top:6px;
-      }
-      .app-shell.theme-light .room-vehicle-card,
-      .app-shell.theme-light .room-vehicle-stats>div{
-        background:#fff;
-        border-color:rgba(15,23,42,.08);
-      }
-      .app-shell.theme-light .room-vehicle-visual{
-        background:linear-gradient(180deg,#eef5fa,#dce8ef);
-      }
-      @media(max-width:850px){
-        .room-vehicle-card{grid-template-columns:1fr}
-        .room-vehicle-visual{height:145px}
-      }
-      @media(max-width:650px){
-        .room-vehicle-stats{grid-template-columns:1fr}
-      }
-
-
-
-      /* v4.1.1 - tester improvements */
-      .nav-bar{max-width:1480px;margin:auto;display:grid;grid-template-columns:auto auto minmax(0,1fr) auto auto;align-items:stretch;padding:0 18px;gap:6px}
-      .nav-bar .nav-scroller{min-width:0;margin:0;padding:0;overflow-x:auto}
-      .nav-fixed,.nav-arrow{border:0;background:transparent;color:var(--secondary-text-color);min-height:44px;display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;font-weight:760;white-space:nowrap}
-      .nav-fixed{position:relative;padding:10px 8px 12px}
-      .nav-fixed ha-icon{--mdc-icon-size:18px}
-      .nav-fixed.active{color:var(--casa-accent);font-weight:900}
-      .nav-fixed.active:after{content:"";position:absolute;left:6px;right:6px;bottom:0;height:3px;border-radius:3px;background:var(--casa-accent)}
-      .nav-arrow{width:30px;justify-content:center;border-radius:9px}
-      .nav-arrow:hover{background:var(--secondary-background-color);color:var(--primary-text-color)}
-      .nav-arrow ha-icon{--mdc-icon-size:19px}
-      @media(max-width:720px){.nav-info-fixed span,.nav-home-fixed span{display:none}.nav-bar{padding:0 8px;gap:2px}.nav-arrow{width:28px}}
-
-      .device-room-filter{display:flex;align-items:center;gap:10px;margin:0 0 14px;padding:11px 13px;border:1px solid var(--divider-color);border-radius:14px;background:var(--card-background-color)}
-      .device-room-filter>ha-icon{color:var(--primary-color);--mdc-icon-size:20px}
-      .device-room-filter label{display:flex;align-items:center;gap:10px;min-width:0}
-      .device-room-filter label span{font-size:9px;font-weight:850;letter-spacing:.11em;color:var(--secondary-text-color)}
-      .device-room-filter select{height:36px;min-width:220px;border:1px solid var(--divider-color);border-radius:9px;background:var(--secondary-background-color);color:var(--primary-text-color);padding:0 9px}
-
-      .background-config-panel{margin-top:13px;padding:14px;border:1px solid var(--divider-color);border-radius:15px;background:var(--card-background-color);display:grid;grid-template-columns:minmax(220px,1fr) minmax(180px,.45fr) minmax(280px,1fr);gap:12px;align-items:end}
-      .background-config-panel>div strong{display:block}.background-config-panel>div span{display:block;margin-top:4px;font-size:10px;color:var(--secondary-text-color)}
-      .background-config-panel label span,.room-background-fields label span{display:block;font-size:8px;font-weight:850;letter-spacing:.1em;color:var(--secondary-text-color);margin-bottom:5px}
-      .background-config-panel input,.background-config-panel select,.room-background-fields input,.room-background-fields select{width:100%;height:38px;border:1px solid var(--divider-color);border-radius:9px;background:var(--secondary-background-color);color:var(--primary-text-color);padding:0 9px}
-      .room-background-fields{display:grid;grid-template-columns:130px minmax(180px,1fr);gap:8px;margin-top:8px}
-      @media(max-width:760px){.background-config-panel{grid-template-columns:1fr}.room-background-fields{grid-template-columns:1fr}}
-
-      #content.custom-room-background{max-width:none;width:100%;padding-left:max(22px,calc((100vw - 1480px)/2 + 22px));padding-right:max(22px,calc((100vw - 1480px)/2 + 22px));border-radius:0}
-      .app-shell.custom-dashboard-background{background-attachment:fixed!important;background-size:cover!important}
-      .app-shell.custom-dashboard-background .topbar{background:color-mix(in srgb,var(--primary-background-color) 88%,transparent)}
-
-      .light-visual-card.on .light-visual-toggle,.light-visual-card.on .light-fixture{color:#ffd35a}
-      .light-visual-card.on .light-visual-toggle ha-icon{color:#ffd35a}
-      .light-fixture.bulb{position:relative;width:110px;height:105px;margin:auto}
-      .bulb-wire{position:absolute;left:50%;top:0;width:2px;height:25px;background:#91a0ad}
-      .bulb-glass{position:absolute;left:50%;top:24px;transform:translateX(-50%);width:52px;height:54px;border-radius:50% 50% 44% 44%;background:#8293a2}
-      .bulb-base{position:absolute;left:50%;top:70px;transform:translateX(-50%);width:29px;height:24px;border-radius:4px;background:#60717f}
-      .bulb-glow{position:absolute;left:50%;top:28px;transform:translateX(-50%);width:42px;height:42px;border-radius:50%;background:transparent}
-      .light-visual-card.on .bulb-glass{background:#ffe083}
-      .light-visual-card.on .bulb-glow{background:#ffd45a;filter:blur(18px);opacity:.75}
-
-      .community-awning-card>.custom-object-photo,.kitchen-blind-card>.custom-object-photo{width:190px;height:135px;border-radius:16px;margin:14px}
-      .universal-device-card.blinds>.custom-object-photo{width:132px;height:118px;border-radius:16px}
-
-      .vehicle-showcase{border-color:color-mix(in srgb,var(--primary-color) 28%,var(--divider-color));box-shadow:0 14px 38px color-mix(in srgb,var(--primary-color) 7%,transparent)}
-      .vehicle-battery-gauge{position:absolute;left:16px;right:16px;bottom:14px;height:24px;border-radius:999px;background:rgba(0,0,0,.48);overflow:hidden;border:1px solid rgba(255,255,255,.12)}
-      .vehicle-battery-gauge i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,#20c997,#5bbcff)}
-      .vehicle-battery-gauge strong{position:relative;z-index:2;height:100%;display:grid;place-items:center;color:#fff;font-size:11px}
-      .vehicle-overview-visual{position:relative}
-
-      .robot-room-card{grid-column:span 6;min-height:150px;border:1px solid var(--divider-color);border-radius:18px;background:var(--card-background-color);display:grid;grid-template-columns:125px 1fr auto;gap:15px;align-items:center;padding:14px}
-      .robot-room-visual{height:112px;border-radius:15px;background:color-mix(in srgb,var(--primary-color) 10%,var(--secondary-background-color));display:grid;place-items:center;color:var(--primary-color);position:relative}
-      .robot-room-visual ha-icon{--mdc-icon-size:58px}.robot-room-card.active .robot-room-visual ha-icon{animation:robotPulse 1.4s ease-in-out infinite}
-      @keyframes robotPulse{50%{transform:scale(1.08)}}
-      .robot-room-copy span,.robot-overview-copy span{display:block;font-size:8px;letter-spacing:.14em;color:var(--secondary-text-color);font-weight:850}.robot-room-copy strong{display:block;font-size:20px;margin-top:5px}.robot-room-copy small{display:block;margin-top:4px;color:var(--secondary-text-color)}
-      .robot-room-actions{display:flex;gap:7px}.robot-room-actions button{width:38px;height:38px;border:1px solid var(--divider-color);border-radius:10px;background:var(--secondary-background-color);color:var(--primary-color);cursor:pointer}
-      .robot-overview-card{display:grid;grid-template-columns:150px minmax(180px,.65fr) 1fr;gap:18px;align-items:center;padding:18px;border:1px solid var(--divider-color);border-radius:22px;background:var(--card-background-color)}
-      .robot-overview-visual{height:130px;border-radius:17px;background:color-mix(in srgb,var(--primary-color) 10%,var(--secondary-background-color));display:grid;place-items:center;color:var(--primary-color)}
-      .robot-overview-visual ha-icon{--mdc-icon-size:72px}.robot-overview-copy strong{display:block;font-size:24px;margin-top:5px}.robot-overview-copy small{display:block;color:var(--secondary-text-color);margin-top:4px}
-      .robot-overview-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.robot-overview-stats>div{padding:12px;border:1px solid var(--divider-color);border-radius:12px}.robot-overview-stats span{display:block;font-size:8px;letter-spacing:.12em;color:var(--secondary-text-color)}.robot-overview-stats strong{display:block;margin-top:5px;font-size:16px}
-      @media(max-width:760px){.robot-room-card{grid-column:span 12;grid-template-columns:90px 1fr}.robot-room-actions{grid-column:1/-1}.robot-overview-card{grid-template-columns:1fr}.robot-overview-stats{grid-template-columns:1fr}}
-
-
-
-      /* v4.1.1 SAFE TEST REV2 */
-      .room-entity-size-field>span{display:block;font-size:8px;font-weight:850;letter-spacing:.1em;color:var(--secondary-text-color);margin-bottom:5px}
-      .room-entity-size-field select{width:100%;height:38px;border:1px solid var(--divider-color);border-radius:9px;background:var(--secondary-background-color);color:var(--primary-text-color);padding:0 9px}
-
-      .entity-size-compact{grid-column:span 3!important}
-      .entity-size-normal{grid-column:span 4!important}
-      .entity-size-wide{grid-column:span 8!important}
-      .entity-size-full{grid-column:1/-1!important}
-
-      @media(max-width:720px){
-        .entity-size-compact,.entity-size-normal{grid-column:span 6!important}
-        .entity-size-wide,.entity-size-full{grid-column:1/-1!important}
+mportant}
 
         /* Solar / battery: much denser on phones */
         .overview-solar-grid,.solar-hero-grid{grid-template-columns:1fr!important;gap:10px!important}
@@ -466,7 +37,7 @@ d>div{display:flex;align-items:center;gap:9px}.room-module-head ha-icon{--mdc-ic
 
 
 
-      /* v4.1.1 */
+      /* v4.2.6 */
       .background-choice-fields{display:grid;grid-template-columns:repeat(4,minmax(90px,1fr));gap:8px;align-items:end}
       .background-choice-fields input[type="color"],.room-background-fields input[type="color"]{width:100%;height:38px;padding:3px;border:1px solid var(--divider-color);border-radius:9px;background:var(--secondary-background-color)}
       .room-background-fields{grid-template-columns:140px 110px 110px 110px 100px}
@@ -493,6 +64,350 @@ d>div{display:flex;align-items:center;gap:9px}.room-module-head ha-icon{--mdc-ic
       .robot-room-card.mower .robot-room-visual{color:#62c679;background:color-mix(in srgb,#62c679 10%,var(--secondary-background-color))}
       @media(max-width:760px){.background-choice-fields,.room-background-fields{grid-template-columns:1fr 1fr}}
 
+
+
+      /* Legacy responsive base */
+      .room-title-compact h1{font-size:clamp(32px,5vw,54px)!important}.room-title-large h1{font-size:clamp(54px,7vw,82px)!important}
+      .overview-title-compact h1{font-size:clamp(28px,5vw,50px)!important}.overview-title-large h1{font-size:clamp(52px,7vw,80px)!important}
+      .overview-layout-config{margin:14px 0;padding:14px;border:1px solid var(--divider-color);border-radius:16px;background:var(--card-background-color)}
+      .config-subsection-title strong{display:block}.config-subsection-title span{display:block;margin-top:3px;font-size:10px;color:var(--secondary-text-color)}
+      .overview-section-config-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
+      .overview-section-config-row{display:grid;grid-template-columns:1fr auto 120px;gap:8px;align-items:center;padding:9px;border:1px solid var(--divider-color);border-radius:10px}
+      .active-category-config{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;padding-top:10px;border-top:1px solid var(--divider-color)}.active-category-config strong{width:100%}
+      .icon-select-preview{display:grid;grid-template-columns:38px 1fr;gap:7px;align-items:center}.icon-select-preview>ha-icon{width:36px;height:36px;border:1px solid var(--divider-color);border-radius:9px;padding:7px;color:var(--primary-color)}
+      .room-entity-order-actions{display:flex;align-items:center;gap:5px}.room-entity-order-actions>span{font-size:8px;text-transform:uppercase;color:var(--secondary-text-color);margin-right:auto}.room-entity-order-actions button,.room-entity-sortbar button{border:1px solid var(--divider-color);border-radius:8px;background:var(--secondary-background-color);color:var(--primary-text-color);height:32px}
+      .room-entity-sortbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding:7px 9px;background:var(--secondary-background-color);border-radius:10px}
+      .overview-active-chip.group{border:1px solid var(--divider-color);cursor:pointer}.overview-active-chip.group strong{margin-left:5px;padding:2px 7px;border-radius:999px;background:var(--secondary-background-color)}
+      .active-group-modal{position:fixed;inset:0;z-index:1005;display:grid;place-items:center;padding:18px}.active-group-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(4px)}.active-group-dialog{position:relative;width:min(560px,96vw);max-height:78vh;overflow:auto;background:var(--card-background-color);border:1px solid var(--divider-color);border-radius:20px;box-shadow:0 24px 80px rgba(0,0,0,.4)}
+      .active-group-head{display:flex;justify-content:space-between;align-items:center;padding:15px 16px;border-bottom:1px solid var(--divider-color)}.active-group-head span{display:block;font-size:8px;letter-spacing:.13em;color:var(--secondary-text-color)}.active-group-head strong{font-size:20px}.active-group-head button{width:36px;height:36px;border:0;border-radius:10px;background:var(--secondary-background-color)}
+      .active-group-list{padding:10px}.active-group-row{display:grid;grid-template-columns:1fr auto;gap:8px;padding:7px 0;border-bottom:1px solid var(--divider-color)}.active-group-entity{border:0;background:transparent;text-align:left;color:var(--primary-text-color);padding:7px}.active-group-entity span{display:block;font-weight:800}.active-group-entity small{display:block;color:var(--secondary-text-color);margin-top:3px}.active-group-toggle{width:42px;border:1px solid var(--divider-color);border-radius:10px;background:var(--secondary-background-color);color:var(--primary-color)}
+      .opening-card.has-custom-photo .custom-object-photo,.activity-card.has-custom-photo .custom-object-photo,.robot-room-card .custom-object-photo{width:120px;height:112px;margin:10px;border-radius:14px;overflow:hidden}.opening-card.has-custom-photo .custom-object-photo img,.activity-card.has-custom-photo .custom-object-photo img,.robot-room-card .custom-object-photo img,.robot-overview-visual.has-photo img{width:100%;height:100%;object-fit:cover;display:block}
+      .robot-overview-card.compact{min-height:0}.overview-size-compact .chapter{margin-top:18px!important}.overview-size-compact .overview-key-grid,.overview-size-compact .overview-room-climate-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}.overview-size-compact .robot-overview-card,.overview-size-compact .vehicle-overview-card{min-height:0!important;padding:12px!important}
+      :host(.kiosk-mode) .topbar-config-btn,:host(.kiosk-mode) .info-config-box,:host(.kiosk-mode) .language-switch,:host(.kiosk-mode) .topbar-tools{display:none!important}
+      @media(max-width:720px){
+        .topbar{min-height:62px!important}.brand-copy .subtitle{display:none!important}.brand-copy .title{font-size:19px!important}.brand-version{font-size:9px!important}
+        .community-personal-overview{padding:14px!important}.community-personal-overview h1{font-size:clamp(30px,11vw,48px)!important;line-height:.96!important}.community-personal-overview .scene-sub{font-size:11px!important;margin-top:7px!important}.personal-overview-hero-card{min-height:128px!important}
+        .chapter{margin:18px 0 8px!important;padding:7px 9px!important;border:1px solid color-mix(in srgb,var(--divider-color) 85%,transparent);border-radius:12px;background:color-mix(in srgb,var(--card-background-color) 90%,transparent)}.chapter-line{display:none!important}.chapter-title{font-size:10px!important}.chapter-sub{font-size:9px!important}
+        .overview-section-config-grid{grid-template-columns:1fr}.overview-section-config-row{grid-template-columns:1fr auto 110px}
+        .overview-size-compact .overview-key-grid,.overview-size-compact .overview-room-climate-grid,.overview-key-grid,.overview-room-climate-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+        .overview-size-compact .solar-production-card,.overview-size-compact .solar-battery-card,.overview-size-compact .energy-flow-row{min-height:0!important;padding:10px!important}
+        .overview-size-compact .vehicle-overview-card{grid-template-columns:95px 1fr!important;gap:10px!important}.overview-size-compact .vehicle-overview-stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+        .overview-size-compact .robot-overview-card{grid-template-columns:82px 1fr!important;gap:10px!important}.overview-size-compact .robot-overview-stats{grid-column:1/-1;grid-template-columns:repeat(3,minmax(0,1fr))!important}
+        .vehicle-overview-card{padding:12px!important}.vehicle-overview-visual{min-height:110px!important}.vehicle-overview-head strong{font-size:22px!important}.robot-overview-card{padding:12px!important}.robot-overview-visual{height:100px!important}.robot-overview-copy strong{font-size:20px!important}
+        .room-title-large h1,.room-title-normal h1,.room-title-compact h1{font-size:clamp(34px,11vw,52px)!important}
+      }
+
+
+
+      
+
+      /* ==========================================================
+         FINAL RESPONSIVE LAYER - Community 4.2.6
+         One authoritative phone/tablet override block.
+         ========================================================== */
+
+      /* Readable Overview containers over custom backgrounds. */
+      .overview-config-section[data-overview-section="active"],
+      .overview-config-section[data-overview-section="vehicle"]{
+        margin:14px 0 22px!important;
+        padding:12px!important;
+        border:1px solid var(--divider-color)!important;
+        border-radius:18px!important;
+        background:color-mix(in srgb,var(--card-background-color) 96%,transparent)!important;
+        box-shadow:0 10px 28px color-mix(in srgb,#000 8%,transparent)!important;
+        overflow:hidden!important;
+        box-sizing:border-box!important;
+      }
+
+      /* Section title: never reserve a hidden decorative column. */
+      .overview-config-section>.chapter,
+      .ui-v2 .overview-config-section>.chapter{
+        display:block!important;
+        width:100%!important;
+        max-width:100%!important;
+        min-width:0!important;
+        box-sizing:border-box!important;
+      }
+      .overview-config-section>.chapter .chapter-line{display:none!important}
+      .overview-config-section>.chapter .chapter-copy{
+        display:block!important;width:100%!important;max-width:none!important;min-width:0!important
+      }
+      .overview-config-section>.chapter .chapter-title,
+      .overview-config-section>.chapter .chapter-sub{
+        display:block!important;width:100%!important;max-width:none!important;
+        word-break:normal!important;overflow-wrap:normal!important;white-space:normal!important
+      }
+
+      /* Active-state popup reports the real HA state after the command. */
+      .active-group-row.command-pending{opacity:.58}
+      .active-group-row.command-pending .active-group-toggle{pointer-events:none}
+
+      /* One sizing model for the security renderer. */
+      .community-security-grid.entity-aware{
+        display:grid!important;grid-template-columns:repeat(12,minmax(0,1fr))!important;
+        gap:14px!important;align-items:stretch!important
+      }
+      .community-security-grid.entity-aware .community-security-card{
+        min-width:0!important;border-radius:20px!important;overflow:hidden!important
+      }
+      .community-security-grid.entity-aware .span-6{grid-column:span 6}
+      .community-security-grid.entity-aware .span-12{grid-column:1/-1}
+      .community-security-grid.entity-aware .entity-size-compact{grid-column:span 3!important}
+      .community-security-grid.entity-aware .entity-size-normal{grid-column:span 4!important}
+      .community-security-grid.entity-aware .entity-size-wide{grid-column:span 8!important}
+      .community-security-grid.entity-aware .entity-size-full{grid-column:1/-1!important}
+
+      .smart-lock-card{
+        grid-template-columns:minmax(110px,180px) minmax(0,1fr)!important;
+        gap:16px!important;align-items:center!important;padding:16px!important;overflow:hidden!important
+      }
+      .security-lock-photo{
+        width:100%!important;min-width:0!important;height:190px!important;
+        border-radius:16px!important;overflow:hidden!important;background:var(--secondary-background-color)!important
+      }
+      .security-lock-photo img{width:100%!important;height:100%!important;object-fit:cover!important;display:block!important}
+      .smart-lock-card .security-card-copy{min-width:0!important}
+
+      /* Common visual-media bounds. */
+      .opening-card,.activity-card,.environment-card,.sensor-visual-card,
+      .robot-room-card,.robot-overview-card,.universal-device-card{
+        min-width:0!important;max-width:100%!important;box-sizing:border-box!important;overflow:hidden!important
+      }
+      .custom-object-photo img,.robot-overview-visual img,.security-lock-photo img{
+        width:100%!important;height:100%!important;object-fit:cover!important;display:block!important
+      }
+      .universal-device-card.has-custom-photo>.custom-object-photo{
+        width:100%!important;height:112px!important;min-width:0!important;margin:0!important;
+        border-radius:15px!important;overflow:hidden!important
+      }
+      .robot-overview-visual.has-photo{
+        width:100%!important;max-width:150px!important;height:120px!important;
+        overflow:hidden!important;box-sizing:border-box!important;border-radius:15px!important
+      }
+
+      /* Desktop/tablet solar is already smaller than the original oversized renderer. */
+      .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-sun{
+        width:54px!important;height:54px!important;border-radius:16px!important
+      }
+      .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-sun ha-icon{--mdc-icon-size:30px!important}
+      .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-node-orb{
+        width:54px!important;height:54px!important
+      }
+      .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-node-orb ha-icon{--mdc-icon-size:30px!important}
+
+      @media(max-width:900px){
+        /* Tablet: avoid desktop assumptions while retaining two-column cards where useful. */
+        .overview-config-section[data-overview-section="solar"] .solar-showcase.community-advanced-energy{
+          grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important
+        }
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-flow-card{grid-column:1/-1!important}
+      }
+
+      @media(max-width:720px){
+        /* ---------- HEADER: physically compact on every phone ---------- */
+        .ui-v2 .community-personal-overview,
+        .ui-v2 .original-room-hero{
+          display:block!important;grid-template-columns:minmax(0,1fr)!important;
+          min-height:0!important;height:auto!important;padding:12px 14px!important;gap:0!important;
+          border-radius:20px!important;align-items:start!important
+        }
+        .ui-v2 .community-personal-overview .personal-overview-hero-card,
+        .ui-v2 .original-room-hero .original-room-hero-card{display:none!important}
+        .ui-v2 .community-personal-overview .scene-copy,
+        .ui-v2 .original-room-hero .scene-copy{width:100%!important;min-width:0!important;padding:0!important;margin:0!important}
+        .ui-v2 .community-personal-overview .scene-kicker,
+        .ui-v2 .original-room-hero .scene-kicker{
+          font-size:9px!important;line-height:1!important;margin:0 0 8px!important;letter-spacing:.18em!important
+        }
+        .ui-v2 .community-personal-overview .scene-title-row,
+        .ui-v2 .original-room-hero .scene-title-row{
+          display:flex!important;align-items:center!important;gap:8px!important;margin:0!important
+        }
+        .ui-v2 .community-personal-overview h1,
+        .ui-v2 .original-room-hero h1{
+          margin:0!important;line-height:.98!important;max-width:100%!important;overflow-wrap:anywhere!important
+        }
+        .ui-v2 .community-personal-overview.overview-title-compact h1,
+        .ui-v2 .original-room-hero.room-title-compact h1{font-size:28px!important}
+        .ui-v2 .community-personal-overview.overview-title-normal h1,
+        .ui-v2 .original-room-hero.room-title-normal h1{font-size:34px!important}
+        .ui-v2 .community-personal-overview.overview-title-large h1,
+        .ui-v2 .original-room-hero.room-title-large h1{font-size:40px!important}
+        .ui-v2 .community-personal-overview .scene-icon{display:none!important}
+        .ui-v2 .community-personal-overview .scene-sub,
+        .ui-v2 .original-room-hero .scene-sub{margin:5px 0 0!important;font-size:9px!important;line-height:1.25!important}
+        .ui-v2 .community-personal-overview .scene-status,
+        .ui-v2 .original-room-hero .scene-status{
+          margin:10px 0 0!important;min-height:0!important;padding:0!important;font-size:12px!important;line-height:1.2!important
+        }
+
+        /* ---------- SECTION TITLES: horizontal, clean, consistent ---------- */
+        .overview-config-section>.chapter,
+        .ui-v2 .overview-config-section>.chapter{
+          display:block!important;width:100%!important;min-height:0!important;
+          margin:12px 0 7px!important;padding:9px 11px!important;
+          border-radius:12px!important;box-sizing:border-box!important
+        }
+        .overview-config-section>.chapter .chapter-title{
+          font-size:10px!important;line-height:1.15!important;letter-spacing:.10em!important;
+          white-space:normal!important;word-break:normal!important;overflow-wrap:normal!important
+        }
+        .overview-config-section>.chapter .chapter-sub{
+          font-size:9px!important;line-height:1.25!important;margin-top:4px!important;
+          white-space:normal!important;word-break:normal!important;overflow-wrap:normal!important
+        }
+        .overview-config-section[data-overview-section="active"]>.chapter,
+        .overview-config-section[data-overview-section="vehicle"]>.chapter{
+          padding:0 0 8px!important;margin:0 0 9px!important;border-radius:0!important;
+          border-width:0 0 1px 0!important;background:transparent!important
+        }
+
+        /* ---------- ACTIVE STATES ---------- */
+        .overview-config-section[data-overview-section="active"]{
+          display:block!important;width:100%!important;box-sizing:border-box!important;padding:10px!important
+        }
+        .overview-active-strip.grouped{
+          display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+          gap:8px!important;width:100%!important;margin:0!important;padding:0!important;border:0!important;background:transparent!important
+        }
+        .overview-active-chip.group{
+          min-width:0!important;width:100%!important;padding:10px 8px!important;font-size:11px!important
+        }
+        .overview-active-chip.group span{
+          min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important
+        }
+
+        /* ---------- ALL ROOM DEVICES: usable phone width ---------- */
+        .room-grid>.entity-size-compact,.room-grid>.entity-size-normal,
+        .room-grid>.entity-size-wide,.room-grid>.entity-size-full,
+        .community-security-grid.entity-aware>.entity-size-compact,
+        .community-security-grid.entity-aware>.entity-size-normal,
+        .community-security-grid.entity-aware>.entity-size-wide,
+        .community-security-grid.entity-aware>.entity-size-full{
+          grid-column:1/-1!important;width:100%!important;max-width:none!important
+        }
+        .community-security-grid.entity-aware{display:block!important;width:100%!important}
+        .community-security-grid.entity-aware>.community-security-card{
+          width:100%!important;max-width:100%!important;margin:0 0 10px!important;box-sizing:border-box!important
+        }
+
+        /* Smart lock is a normal full-width phone card. */
+        .smart-lock-card{
+          display:grid!important;grid-template-columns:84px minmax(0,1fr)!important;
+          width:100%!important;min-height:108px!important;gap:10px!important;
+          padding:10px!important;border-radius:16px!important;overflow:hidden!important;box-sizing:border-box!important
+        }
+        .smart-lock-card .security-lock-photo{width:76px!important;height:86px!important;border-radius:11px!important}
+        .smart-lock-card .security-card-copy{width:100%!important;min-width:0!important}
+        .smart-lock-card .security-card-copy>strong{
+          font-size:21px!important;line-height:1.05!important;overflow-wrap:normal!important;word-break:normal!important
+        }
+        .smart-lock-card .security-actions{display:flex!important;flex-wrap:wrap!important;gap:6px!important;margin-top:8px!important}
+        .smart-lock-card .security-btn{width:auto!important;min-width:92px!important;height:32px!important;padding:0 10px!important}
+
+        /* Photos: same bounded geometry for sensors, Alexa/media, robot and mower. */
+        .opening-card.has-custom-photo,.activity-card.has-custom-photo,
+        .environment-card.has-custom-photo,.sensor-visual-card.has-custom-photo,
+        .robot-room-card,.universal-device-card.has-custom-photo{
+          display:grid!important;grid-template-columns:82px minmax(0,1fr) auto!important;
+          gap:9px!important;align-items:center!important;padding:10px!important;width:100%!important;
+          max-width:100%!important;box-sizing:border-box!important;overflow:hidden!important;border-radius:16px!important
+        }
+        .opening-card.has-custom-photo>.custom-object-photo,
+        .activity-card.has-custom-photo>.custom-object-photo,
+        .environment-card.has-custom-photo>.custom-object-photo,
+        .sensor-visual-card.has-custom-photo>.custom-object-photo,
+        .robot-room-card>.custom-object-photo,
+        .universal-device-card.has-custom-photo>.custom-object-photo{
+          width:74px!important;max-width:74px!important;min-width:74px!important;height:82px!important;
+          margin:0!important;border-radius:11px!important;overflow:hidden!important
+        }
+        .robot-room-actions{display:flex!important;flex-direction:column!important;gap:5px!important;align-self:center!important}
+        .robot-room-actions button{width:34px!important;height:34px!important;flex:0 0 34px!important}
+
+        /* ---------- SOLAR: one compact column on phone ---------- */
+        .overview-config-section[data-overview-section="solar"]{
+          width:100%!important;min-width:0!important;overflow:hidden!important
+        }
+        .overview-config-section[data-overview-section="solar"] .solar-showcase.community-advanced-energy{
+          display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:8px!important;
+          width:100%!important;min-width:0!important;margin:6px 0 14px!important
+        }
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-panel{
+          grid-column:1!important;width:100%!important;min-width:0!important;max-width:100%!important;
+          margin:0!important;box-sizing:border-box!important;overflow:hidden!important;border-radius:14px!important
+        }
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-prod-card{
+          min-height:0!important;padding:11px!important;display:grid!important;
+          grid-template-columns:52px minmax(0,1fr)!important;gap:8px!important
+        }
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-prod-top{
+          grid-column:1!important;grid-row:1!important;display:grid!important;place-items:center!important;min-height:0!important
+        }
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-prod-copy{
+          grid-column:2!important;grid-row:1!important;align-self:center!important;min-width:0!important
+        }
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-prod-copy strong{
+          font-size:27px!important;line-height:1!important;margin-top:4px!important
+        }
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-sun{
+          width:42px!important;height:42px!important;border-radius:12px!important
+        }
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-sun ha-icon{--mdc-icon-size:23px!important}
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-pv-bars{
+          grid-column:1/-1!important;margin-top:2px!important;gap:7px!important
+        }
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-pv-line{
+          grid-template-columns:95px minmax(0,1fr)!important;gap:7px!important
+        }
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-battery-hero{
+          display:grid!important;grid-template-columns:58px minmax(0,1fr)!important;
+          gap:9px!important;min-height:0!important;padding:11px!important;align-items:center!important
+        }
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-battery-visual{
+          width:58px!important;min-width:58px!important;height:86px!important;min-height:86px!important;
+          display:grid!important;place-items:center!important;overflow:hidden!important
+        }
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-battery-shell{
+          transform:scale(.34)!important;transform-origin:center!important;margin:-62px!important
+        }
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-battery-copy{min-width:0!important}
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-battery-copy .power{
+          font-size:25px!important;line-height:1!important
+        }
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-energy-pills{
+          grid-column:1/-1!important;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+          gap:5px!important;margin-top:4px!important
+        }
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-flow-card{
+          min-height:0!important;padding:10px!important
+        }
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-flow-grid{
+          grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:6px!important
+        }
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-node{
+          min-width:0!important;min-height:0!important;padding:7px 4px!important
+        }
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-node-orb{
+          width:36px!important;height:36px!important
+        }
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-node-orb ha-icon{--mdc-icon-size:20px!important}
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-node strong{font-size:16px!important}
+
+        /* Overview robot/mower image stays inside the panel. */
+        .robot-overview-card{
+          display:grid!important;grid-template-columns:82px minmax(0,1fr)!important;
+          width:100%!important;max-width:100%!important;gap:9px!important;
+          padding:10px!important;overflow:hidden!important;box-sizing:border-box!important
+        }
+        .robot-overview-visual.has-photo{
+          width:74px!important;max-width:74px!important;min-width:74px!important;height:82px!important;
+          border-radius:11px!important;overflow:hidden!important
+        }
+        .robot-overview-copy{min-width:0!important}
+        .robot-overview-stats{grid-column:1/-1!important;width:100%!important;min-width:0!important}
+      }
+
     `;
   }
 
@@ -516,7 +431,12 @@ d>div{display:flex;align-items:center;gap:9px}.room-module-head ha-icon{--mdc-ic
             modules:Array.isArray(room?.modules)?[...room.modules]:[],
             entity_labels:(room?.entity_labels && typeof room.entity_labels==="object")?{...room.entity_labels}:{},
             entity_images:(room?.entity_images && typeof room.entity_images==="object")?{...room.entity_images}:{},
-            entity_icons:(room?.entity_icons && typeof room.entity_icons==="object")?{...room.entity_icons}:{}
+            entity_icons:(room?.entity_icons && typeof room.entity_icons==="object")?{...room.entity_icons}:{},
+            entity_sizes:(room?.entity_sizes && typeof room.entity_sizes==="object")?{...room.entity_sizes}:{},
+            entity_order:Array.isArray(room?.entity_order)?[...room.entity_order]:[],
+            title_size:room?.title_size||"normal",
+            show_subtitle:room?.show_subtitle!==false,
+            subtitle:room?.subtitle||""
           }));
         } catch(_wsErr) { /* fallback below */ }
       }
@@ -533,7 +453,12 @@ d>div{display:flex;align-items:center;gap:9px}.room-module-head ha-icon{--mdc-ic
             modules:Array.isArray(room?.modules)?[...room.modules]:[],
             entity_labels:(room?.entity_labels && typeof room.entity_labels==="object")?{...room.entity_labels}:{},
             entity_images:(room?.entity_images && typeof room.entity_images==="object")?{...room.entity_images}:{},
-            entity_icons:(room?.entity_icons && typeof room.entity_icons==="object")?{...room.entity_icons}:{}
+            entity_icons:(room?.entity_icons && typeof room.entity_icons==="object")?{...room.entity_icons}:{},
+            entity_sizes:(room?.entity_sizes && typeof room.entity_sizes==="object")?{...room.entity_sizes}:{},
+            entity_order:Array.isArray(room?.entity_order)?[...room.entity_order]:[],
+            title_size:room?.title_size||"normal",
+            show_subtitle:room?.show_subtitle!==false,
+            subtitle:room?.subtitle||""
           }));
         }
       }
@@ -619,55 +544,4 @@ d>div{display:flex;align-items:center;gap:9px}.room-module-head ha-icon{--mdc-ic
       ["mdi:motion-sensor","Movimento"],["mdi:account-eye-outline","Presenza"],["mdi:vibrate","Vibrazione"],
       ["mdi:thermometer","Temperatura"],["mdi:water-percent","Umidità"],["mdi:white-balance-sunny","Luminosità"],
       ["mdi:air-conditioner","Climatizzatore"],["mdi:radiator","Riscaldamento"],["mdi:water-boiler","Acqua calda"],
-      ["mdi:fan","Ventola"],["mdi:television","TV"],["mdi:speaker","Speaker"],["mdi:cast","Media player"],
-      ["mdi:fridge-outline","Frigorifero"],["mdi:dishwasher","Lavastoviglie"],["mdi:washing-machine","Lavatrice"],["mdi:tumble-dryer","Asciugatrice"],
-      ["mdi:microwave","Microonde"],["mdi:stove","Forno"],["mdi:coffee-maker-outline","Macchina caffè"],["mdi:range-hood","Cappa"],
-      ["mdi:pot-steam-outline","Robot cucina"],["mdi:robot-vacuum","Robot aspirapolvere"],["mdi:robot-vacuum-variant","Robot lavapavimenti"],
-      ["mdi:air-fryer","Airfryer"],["mdi:power-plug-outline","Presa"],["mdi:cctv","Videocamera"],
-      ["mdi:lock-outline","Serratura"],["mdi:shield-home-outline","Allarme"],["mdi:car-electric","Auto elettrica"],["mdi:ev-station","Wallbox"],
-      ["mdi:battery-high","Batteria"],["mdi:solar-power","Fotovoltaico"],["mdi:weather-partly-cloudy","Meteo"],["mdi:home-assistant","Home Assistant"]
-    ];
-  }
-  _roomEntityIcon(entity,room=null){
-    return room?.entity_icons && typeof room.entity_icons==="object"
-      ? String(room.entity_icons[entity]||"").trim()
-      : "";
-  }
-  _setRoomEntityIcon(roomId,entity,value){
-    const room=this._roomsDraft.find(r=>r.id===roomId);
-    if(!room) return;
-    room.entity_icons=(room.entity_icons && typeof room.entity_icons==="object") ? {...room.entity_icons} : {};
-    const clean=String(value||"").trim();
-    if(clean) room.entity_icons[entity]=clean;
-    else delete room.entity_icons[entity];
-
-    // Keep the draft object reference fresh so save/normalization paths
-    // cannot miss the icon change.
-    this._roomsDraft=[...this._roomsDraft];
-  }
-  _activeRoomEntityIcon(entity){
-    if(this._uiTheme!=="v2") return "";
-    return this._roomEntityIcon(entity,this._roomById(this._active));
-  }
-  _roomEntitySize(entity,room=null){
-    const value=room?.entity_sizes && typeof room.entity_sizes==="object"
-      ? String(room.entity_sizes[entity]||"auto").trim().toLowerCase()
-      : "auto";
-    return ["auto","compact","normal","wide","full"].includes(value)?value:"auto";
-  }
-  _setRoomEntitySize(roomId,entity,value){
-    const room=this._roomsDraft.find(r=>r.id===roomId);
-    if(!room) return;
-    room.entity_sizes=(room.entity_sizes && typeof room.entity_sizes==="object")?{...room.entity_sizes}:{};
-    const clean=String(value||"auto").trim().toLowerCase();
-    if(clean && clean!=="auto") room.entity_sizes[entity]=clean;
-    else delete room.entity_sizes[entity];
-    this._roomsDraft=[...this._roomsDraft];
-  }
-  _activeRoomEntitySize(entity){
-    if(this._uiTheme!=="v2") return "auto";
-    return this._roomEntitySize(entity,this._roomById(this._active));
-  }
-  _entitySizeClass(entity){
-    const size=this._activeRoomEntitySize(entity);
-    return 
+      ["mdi:fan","Ventola"],["mdi:television","TV"],["mdi:speaker","Speaker"],["mdi:cast","Me

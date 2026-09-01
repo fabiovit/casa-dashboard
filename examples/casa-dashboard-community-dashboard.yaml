@@ -1,0 +1,9 @@
+title: Casa Dashboard Community
+views:
+  - title: Casa
+    path: casa
+    panel: true
+    cards:
+      - type: iframe
+        url: /casa-dashboard-community
+        aspect_ratio: 100%

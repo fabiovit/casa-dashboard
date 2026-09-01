@@ -1,83 +1,4 @@
-sition:absolute;left:43px;top:3px;width:64px;height:28px;border-radius:28px 28px 4px 4px;background:#263744}
-      .ui-v2 .v2-room-garage .car-wheel{position:absolute;bottom:0;width:24px;height:24px;border-radius:50%;background:#111;border:5px solid #3a4045}
-      .ui-v2 .v2-room-garage .car-wheel.left{left:24px}.ui-v2 .v2-room-garage .car-wheel.right{right:24px}
-      .ui-v2 .v2-room-garage .garage-charge-dot{position:absolute;right:17px;top:17px;width:16px;height:16px;border-radius:50%;background:#55616c}
-
-      .room-manager{margin:0 0 18px;padding:16px;border:1px solid var(--divider-color);border-radius:18px;background:color-mix(in srgb,var(--card-background-color) 94%,transparent)}.room-manager-head{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:12px}.room-manager-head strong{display:block;font-size:16px}.room-manager-head span{display:block;margin-top:4px;color:var(--secondary-text-color);font-size:11px}.room-add{border:1px solid color-mix(in srgb,var(--primary-color) 40%,var(--divider-color));background:color-mix(in srgb,var(--primary-color) 8%,var(--card-background-color));color:var(--primary-color);border-radius:12px;padding:9px 12px;font-weight:800}.room-edit-row{display:grid;grid-template-columns:28px minmax(130px,1fr) minmax(150px,1fr) minmax(130px,.8fr) minmax(220px,1.4fr) auto;gap:8px;align-items:center;padding:9px 0;border-top:1px solid var(--divider-color)}.room-edit-row input,.room-edit-row select{min-width:0;border:1px solid var(--divider-color);border-radius:10px;padding:9px;background:var(--primary-background-color);color:var(--primary-text-color)}.room-order{font-weight:900;color:var(--secondary-text-color);text-align:center}.room-row-actions{display:flex;gap:4px}.room-row-actions button{width:34px;height:34px;border:1px solid var(--divider-color);border-radius:9px;background:var(--card-background-color);color:var(--primary-text-color)}.room-empty{display:flex;flex-direction:column;align-items:center;text-align:center;padding:24px;color:var(--secondary-text-color);gap:5px}.room-empty ha-icon{--mdc-icon-size:36px;color:var(--primary-color)}.dynamic-room-scene{height:235px;position:relative;overflow:hidden;border-radius:20px;background:radial-gradient(circle at 50% 35%,rgba(47,196,255,.15),transparent 34%),linear-gradient(145deg,#15232d,#0b1217)}.dynamic-room-icon{position:absolute;left:50%;top:50%;transform:translate(-50%,-54%);width:112px;height:112px;border-radius:30px;display:grid;place-items:center;border:1px solid rgba(90,205,255,.25);background:rgba(21,42,55,.72);box-shadow:0 20px 55px rgba(0,0,0,.25)}.dynamic-room-icon ha-icon{--mdc-icon-size:58px;color:#65d1ff}.dynamic-room-orbit{position:absolute;left:50%;top:50%;border:1px solid rgba(101,209,255,.16);border-radius:50%;transform:translate(-50%,-50%)}.dynamic-room-orbit.a{width:180px;height:180px}.dynamic-room-orbit.b{width:260px;height:260px}.dynamic-room-floor{position:absolute;left:12%;right:12%;bottom:22px;height:1px;background:linear-gradient(90deg,transparent,#65d1ff,transparent)}@media(max-width:900px){.room-edit-row{grid-template-columns:28px 1fr 1fr}.room-edit-row [data-room-icon],.room-edit-row [data-room-entities]{grid-column:2/-1}.room-row-actions{grid-column:2/-1}.room-manager-head{align-items:flex-start;flex-direction:column}}
-
-      .room-friendly-hint{display:flex;align-items:flex-start;gap:8px;margin-top:12px;padding:10px 12px;border-radius:12px;background:color-mix(in srgb,var(--primary-color) 6%,var(--card-background-color));color:var(--secondary-text-color);font-size:10px;line-height:1.45}
-      .room-friendly-hint ha-icon{--mdc-icon-size:16px;color:var(--primary-color);flex:0 0 auto;margin-top:1px}.room-friendly-hint b{color:var(--primary-text-color)}
-
-      .room-edit-row{grid-template-columns:28px minmax(130px,.8fr) minmax(145px,.8fr) minmax(125px,.72fr) minmax(320px,1.65fr) auto!important;align-items:start!important}
-      .room-entity-picker{min-width:0}.room-entity-chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:6px}.room-entity-chip{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:7px;position:relative;padding:6px 29px 6px 9px;border:1px solid color-mix(in srgb,var(--primary-color) 26%,var(--divider-color));border-radius:10px;background:color-mix(in srgb,var(--primary-color) 6%,var(--card-background-color));min-width:145px;max-width:100%}.room-entity-chip>span{font-size:11px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.room-entity-chip small{grid-column:1;color:var(--secondary-text-color);font-size:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.room-entity-chip button{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:24px;height:24px;border:0;background:transparent;color:var(--secondary-text-color);padding:0}.room-entity-chip button ha-icon{--mdc-icon-size:15px}
-      .room-entity-search-wrap{position:relative;display:flex;align-items:center;border:1px solid var(--divider-color);border-radius:10px;background:var(--primary-background-color)}.room-entity-search-wrap>ha-icon{margin-left:9px;color:var(--secondary-text-color);--mdc-icon-size:16px}.room-entity-search{width:100%;border:0!important;background:transparent!important;padding:9px 10px!important;outline:none;color:var(--primary-text-color)}.room-entity-suggestions{position:absolute;z-index:80;left:-1px;right:-1px;top:calc(100% + 5px);max-height:300px;overflow:auto;padding:6px;border:1px solid color-mix(in srgb,var(--primary-color) 25%,var(--divider-color));border-radius:12px;background:var(--card-background-color);box-shadow:0 18px 45px rgba(0,0,0,.36)}.room-entity-suggestion{display:flex;width:100%;flex-direction:column;align-items:flex-start;border:0;border-radius:8px;padding:8px 9px;background:transparent;color:var(--primary-text-color);text-align:left;cursor:pointer}.room-entity-suggestion:hover{background:color-mix(in srgb,var(--primary-color) 9%,transparent)}.room-entity-suggestion span{font-size:11px;font-weight:800}.room-entity-suggestion small{font-size:9px;color:var(--secondary-text-color);margin-top:2px}.room-entity-noresult{padding:12px;color:var(--secondary-text-color);font-size:10px}
-      @media(max-width:1050px){.room-edit-row{grid-template-columns:28px 1fr 1fr!important}.room-entity-picker{grid-column:2/-1}.room-row-actions{grid-column:2/-1}}
-
-      /* v2.0.0 - room entity picker popover fix */
-      .room-manager,.room-list,.room-edit-row,.room-entity-picker{overflow:visible!important}
-      .room-edit-row{position:relative}
-      .room-entity-search-wrap{z-index:20}
-      .room-entity-search-wrap:focus-within{z-index:120}
-      .room-entity-suggestions{z-index:999!important;max-height:min(320px,42vh)!important}
-      .room-entity-suggestions.flip-up{top:auto!important;bottom:calc(100% + 5px)!important}
-      .config-dialog{overflow:hidden}
-      .config-scroll{position:relative;z-index:1}
-      .room-manager{position:relative;z-index:30}
-      .config-toolbar{position:relative;z-index:2}
-
-      /* v2.0.0 - unlimited dynamic rooms / independent room scrolling */
-      .room-manager{display:flex;flex-direction:column;max-height:min(52vh,620px)!important}
-      .room-manager-head{flex:0 0 auto}
-      .room-list{flex:1 1 auto;min-height:0;max-height:min(40vh,470px)!important;overflow-y:auto!important;overflow-x:visible!important;padding-right:5px;scrollbar-gutter:stable}
-      .room-friendly-hint{flex:0 0 auto}
-      .room-edit-row{min-width:0}
-      .room-list::-webkit-scrollbar{width:8px}.room-list::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--secondary-text-color) 35%,transparent);border-radius:999px}
-      @media(max-width:900px){
-        .room-manager{max-height:min(58vh,650px)!important}
-        .room-list{max-height:min(46vh,520px)!important}
-      }
-
-      /* v2.0.0 - quick save inside Rooms manager */
-      .room-manager-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-      .room-save{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:1px solid color-mix(in srgb,#00a9df 58%,var(--divider-color));background:#00a9df;color:#fff;border-radius:12px;padding:9px 13px;font-weight:900;cursor:pointer}
-      .room-save ha-icon{--mdc-icon-size:17px}
-      .room-save:hover{filter:brightness(1.05)}
-      .room-save:disabled{opacity:.6;cursor:wait}
-      @media(max-width:760px){
-        .room-manager-actions{width:100%}
-        .room-manager-actions .room-add,.room-manager-actions .room-save{flex:1 1 180px}
-      }
-
-      /* v2.0.0 - Casa V2 overview aligned with personal Casa 4.3.54 */
-      .ui-v2 .community-personal-overview{grid-template-columns:minmax(360px,.78fr) minmax(650px,1.55fr)!important;min-height:340px!important}
-      .personal-overview-hero-card{display:grid;grid-template-columns:minmax(420px,1.25fr) minmax(250px,.75fr);gap:18px;align-items:stretch;min-height:255px;padding:18px;border-radius:26px;border:1px solid rgba(255,255,255,.075);background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(61,174,233,.04))}
-      .personal-overview-house{position:relative;min-height:220px;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#173143 0 48%,#182329 48%);display:grid;place-items:center}.personal-overview-house .house-v2-building{transform:scale(.9);transform-origin:center bottom}
-      .personal-overview-side{display:grid;grid-template-columns:1fr 1fr;gap:10px}.personal-overview-meta{padding:14px;border:1px solid rgba(255,255,255,.065);border-radius:16px;background:rgba(255,255,255,.025)}.personal-overview-meta span{display:block;font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:#8da6bd;font-weight:900}.personal-overview-meta strong{display:block;margin-top:7px;font-size:22px;line-height:1.05}.personal-overview-meta small{display:block;margin-top:6px;color:var(--secondary-text-color);font-size:9px;line-height:1.35}
-      .overview-active-strip{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0 28px}.overview-active-chip{display:flex;align-items:center;gap:8px;padding:11px 14px;border:1px solid rgba(72,191,255,.28);border-radius:14px;background:rgba(72,191,255,.045);color:#66ceff;font-weight:850;font-size:12px}.overview-active-chip.warn{border-color:rgba(255,175,74,.34);background:rgba(255,175,74,.055);color:#ffbd69}.overview-active-chip ha-icon{--mdc-icon-size:18px}
-      .overview-climate-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:12px 0 28px}.overview-climate-card{padding:16px 14px;border:1px solid rgba(255,255,255,.075);border-radius:18px;background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(58,178,235,.025))}.overview-climate-card span{display:block;font-size:8px;letter-spacing:.17em;text-transform:uppercase;color:#8da6bd;font-weight:900}.overview-climate-card strong{display:block;margin-top:8px;font-size:24px}.overview-climate-card small{display:block;margin-top:4px;color:var(--secondary-text-color);font-size:10px}
-      .overview-weather-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;padding:12px;border:1px solid rgba(255,255,255,.065);border-radius:22px;background:rgba(255,255,255,.015);margin-bottom:28px}.overview-weather-card{padding:14px;border-radius:16px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.025)}.overview-weather-card span{display:block;font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:#8da6bd;font-weight:900}.overview-weather-card strong{display:block;margin-top:7px;font-size:20px}.overview-weather-card small{display:block;margin-top:4px;color:var(--secondary-text-color);font-size:9px}
-      @media(max-width:1100px){.ui-v2 .community-personal-overview{grid-template-columns:1fr!important}.personal-overview-hero-card{grid-template-columns:1fr}.overview-climate-grid,.overview-weather-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-      @media(max-width:650px){.personal-overview-side{grid-template-columns:1fr 1fr}.overview-climate-grid,.overview-weather-grid{grid-template-columns:1fr 1fr}.personal-overview-house{min-height:180px}}
-
-      /* v2.0.0 - V2 overview summary only */
-      .ui-v2 .community-personal-overview.compact{grid-template-columns:minmax(380px,.85fr) minmax(520px,1.15fr)!important;min-height:285px!important}
-      .personal-overview-hero-card.compact{display:block!important;min-height:220px!important;padding:14px!important}
-      .personal-overview-hero-card.compact .personal-overview-house{min-height:220px}
-      .overview-key-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:12px 0 28px}
-      .overview-key-card{padding:15px 14px;border:1px solid rgba(255,255,255,.07);border-radius:18px;background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(65,178,235,.022))}
-      .overview-key-card span{display:block;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:#8da6bd;font-weight:900;line-height:1.35}
-      .overview-key-card strong{display:block;margin-top:8px;font-size:23px;line-height:1.1}
-      .overview-key-card small{display:block;margin-top:5px;color:var(--secondary-text-color);font-size:9px}
-      .overview-key-card.solar{background:linear-gradient(145deg,rgba(255,255,255,.02),rgba(255,190,65,.035))}
-      .overview-key-card.wallbox{background:linear-gradient(145deg,rgba(255,255,255,.02),rgba(61,200,255,.035))}
-      .overview-key-card.external{background:linear-gradient(145deg,rgba(255,255,255,.02),rgba(92,175,255,.025))}
-      @media(max-width:1100px){.overview-key-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-      @media(max-width:650px){.overview-key-grid{grid-template-columns:1fr 1fr}.ui-v2 .community-personal-overview.compact{grid-template-columns:1fr!important}}
-
-      /* v2.0.0 - Casa V2 room heroes aligned with personal Casa 4.3.54 */
-      .ui-v2 .original-room-hero{grid-template-columns:minmax(360px,.95fr) minmax(560px,1.35fr)!important;min-height:350px!important}
-      .original-room-hero-card{display:grid;grid-template-columns:minmax(340px,1.2fr) minmax(230px,.8fr);gap:18px;align-items:center;min-height:260px;padding:20px;border-radius:26px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(72,151,255,.045))}
-      .original-room-visual{min-width:0}.original-room-side{display:flex;flex-direction:column;gap:14px;padding:6px}.original-room-meta span{display:block;font-size:9px;letter-spacing:.2em;font-weight:850;color:#8da6bd}.original-room-meta strong{display:block;font-size:30px;letter-spacing:-.04em;margin-top:7px}.original-room-meta small{display:block;color:var(--secondary-text-color);margin-top:4px}.original-room-divider{height:1px;background:linear-gradient(90deg,rgba(84,180,255,.85),transparent)}
+original-room-meta span{display:block;font-size:9px;letter-spacing:.2em;font-weight:850;color:#8da6bd}.original-room-meta strong{display:block;font-size:30px;letter-spacing:-.04em;margin-top:7px}.original-room-meta small{display:block;color:var(--secondary-text-color);margin-top:4px}.original-room-divider{height:1px;background:linear-gradient(90deg,rgba(84,180,255,.85),transparent)}
       .community-original-scene{height:220px!important;border-radius:20px!important;overflow:hidden!important}
       .living-scene,.office-scene,.laundry-scene,.hobby-scene,.generic-home-scene{position:relative;height:220px;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#17242d,#0d141a)}
       .living-wall,.office-wall,.laundry-wall,.hobby-wall,.generic-room-wall{position:absolute;inset:0;background:linear-gradient(180deg,#27343d,#151c22)}
@@ -123,7 +44,7 @@ sition:absolute;left:43px;top:3px;width:64px;height:28px;border-radius:28px 28px
       .uv-airfryer-heat i{width:3px;height:13px;border-radius:999px;background:#ffb454;box-shadow:0 0 9px rgba(255,180,84,.45)}
 
 
-      /* v4.1.1 - balanced configurator scrolling */
+      /* balanced configurator scrolling */
       .config-dialog{
         width:min(1120px,calc(100vw - 28px)) !important;
         height:min(94vh,980px) !important;
@@ -224,7 +145,7 @@ sition:absolute;left:43px;top:3px;width:64px;height:28px;border-radius:28px 28px
         }
       }
 
-      /* v4.1.1 - adaptive Community overview */
+      /* adaptive Community overview */
       .alert.info{border-color:color-mix(in srgb,var(--primary-color) 22%,var(--divider-color));background:color-mix(in srgb,var(--primary-color) 5%,var(--card-background-color))}
       .alert.info ha-icon{color:var(--primary-color)}
       .alert.info .config-open-btn{border-color:color-mix(in srgb,var(--primary-color) 34%,var(--divider-color));background:color-mix(in srgb,var(--primary-color) 8%,var(--card-background-color))}
@@ -275,7 +196,7 @@ sition:absolute;left:43px;top:3px;width:64px;height:28px;border-radius:28px 28px
         .overview-key-card{min-height:94px}
       }
 
-      /* v4.1.1 - full visual customization */
+      /* full visual customization */
       .overview-config-panel{
         flex:0 0 auto;margin:14px 16px 10px;padding:14px 16px;border-radius:18px;
         border:1px solid color-mix(in srgb,var(--primary-color) 20%,var(--divider-color));
@@ -300,7 +221,7 @@ sition:absolute;left:43px;top:3px;width:64px;height:28px;border-radius:28px 28px
       @media(max-width:980px){.overview-config-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.room-image-field{grid-column:auto}}
       @media(max-width:620px){.overview-config-grid{grid-template-columns:1fr}.custom-room-photo{height:185px}}
 
-      /* v4.1.1 - direct photo upload for rooms and individual objects */
+      /* direct photo upload for rooms and individual objects */
       .photo-config-line{display:flex;align-items:center;gap:6px;min-width:0}
       .photo-config-line>input{min-width:0;flex:1}
       .photo-upload-btn,.photo-clear-btn{height:37px;display:inline-flex;align-items:center;justify-content:center;gap:5px;flex:none;border:1px solid color-mix(in srgb,var(--primary-color) 28%,var(--divider-color));border-radius:9px;background:color-mix(in srgb,var(--primary-color) 7%,var(--card-background-color));color:var(--primary-text-color);font-size:10px;font-weight:850;padding:0 9px;cursor:pointer}
@@ -319,7 +240,7 @@ sition:absolute;left:43px;top:3px;width:64px;height:28px;border-radius:28px 28px
       .has-custom-photo .custom-object-photo:after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)}
       @media(max-width:620px){.light-visual-card>.custom-object-photo,.device-visual-card>.custom-object-photo,.universal-device-card>.custom-object-photo,.sensor-visual-card>.custom-object-photo,.environment-card>.custom-object-photo{width:105px;height:96px}}
 
-      /* v4.1.1 - paged configurator */
+      /* paged configurator */
       .config-dialog-tabs{
         width:min(1180px,calc(100vw - 28px))!important;
         height:min(94vh,980px)!important;
@@ -346,4 +267,137 @@ sition:absolute;left:43px;top:3px;width:64px;height:28px;border-radius:28px 28px
         display:flex;align-items:flex-start;gap:12px;padding:14px 15px;margin-bottom:15px;border-radius:16px;
         border:1px solid color-mix(in srgb,var(--primary-color) 14%,var(--divider-color));background:color-mix(in srgb,var(--primary-color) 4%,var(--card-background-color))
       }
-      .config-page-i
+      .config-page-intro>ha-icon{--mdc-icon-size:25px;color:var(--primary-color);margin-top:1px}
+      .config-page-intro strong{display:block;font-size:15px}
+      .config-page-intro span{display:block;margin-top:3px;font-size:10px;line-height:1.45;color:var(--secondary-text-color)}
+      .config-page-note{display:flex;align-items:center;gap:9px;margin-top:14px;padding:11px 12px;border-radius:13px;background:var(--secondary-background-color);color:var(--secondary-text-color);font-size:10px}
+      .config-page-note ha-icon{--mdc-icon-size:17px;color:var(--primary-color)}
+      .overview-config-grid-page{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+      .overview-config-grid-page input{height:44px;font-size:12px}
+      .room-list-page{display:flex;flex-direction:column;gap:12px;max-height:none!important;overflow:visible!important;padding:0!important}
+      .room-edit-row-page{
+        display:grid!important;
+        grid-template-columns:28px minmax(0,1fr) minmax(320px,.8fr) auto!important;
+        gap:12px!important;align-items:center;padding:13px!important;border:1px solid var(--divider-color);border-radius:16px;background:color-mix(in srgb,var(--secondary-background-color) 72%,transparent)
+      }
+      .room-main-fields{display:grid;grid-template-columns:minmax(140px,.8fr) minmax(150px,.8fr) minmax(150px,.8fr);gap:8px}
+      .room-main-fields>input,.room-main-fields>select{width:100%;height:40px;box-sizing:border-box}
+      .room-edit-row-page .room-image-field{grid-column:auto!important}
+      .device-room-list{display:flex;flex-direction:column;gap:12px}
+      .device-room-card{padding:14px;border:1px solid var(--divider-color);border-radius:17px;background:color-mix(in srgb,var(--secondary-background-color) 68%,transparent)}
+      .device-room-card-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
+      .device-room-card-head>div{display:flex;align-items:center;gap:8px}
+      .device-room-card-head strong{font-size:14px}
+      .device-room-card-head>span{font-size:9px;color:var(--secondary-text-color);font-weight:800}
+      .device-room-card .room-entity-picker{max-width:none}
+      .device-room-card .room-entity-chips{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+      .device-room-card .room-entity-chip-wrap{min-width:0!important;max-width:none!important;padding:10px;border:1px solid var(--divider-color);border-radius:13px;background:var(--card-background-color)}
+      .config-toolbar-page{padding:0 0 12px!important}
+      .config-scroll-page{max-height:none!important;min-height:0!important;overflow:visible!important;padding:0 0 20px!important}
+      .config-page .config-group{margin-bottom:18px}
+      .config-page .config-group-title{position:sticky;top:-18px;z-index:3;background:var(--card-background-color);padding-top:10px}
+      .config-dialog-tabs .config-dialog-foot{position:relative!important;z-index:20}
+      @media(max-width:900px){
+        .room-edit-row-page{grid-template-columns:28px 1fr auto!important}
+        .room-edit-row-page .room-image-field{grid-column:2/3!important}
+        .room-main-fields{grid-template-columns:1fr 1fr}
+        .room-main-fields>input:last-child{grid-column:1/-1}
+        .device-room-card .room-entity-chips{grid-template-columns:1fr}
+      }
+      @media(max-width:650px){
+        .config-dialog-tabs{width:100vw!important;height:100dvh!important;max-height:100dvh!important;border-radius:0!important}
+        .config-tab{height:40px;padding:0 11px}
+        .config-tab span{font-size:10px}
+        .config-page{padding:12px 10px 22px}
+        .overview-config-grid-page{grid-template-columns:1fr}
+        .room-edit-row-page{grid-template-columns:24px 1fr!important}
+        .room-row-actions{grid-column:2;justify-self:start}
+        .room-edit-row-page .room-image-field{grid-column:2!important}
+        .room-main-fields{grid-template-columns:1fr}
+        .room-main-fields>input:last-child{grid-column:auto}
+      }
+
+      /* Advanced Energy View */
+      .energy-view-config{margin:0 0 18px;padding:16px;border:1px solid color-mix(in srgb,#ffb45c 22%,var(--divider-color));border-radius:18px;background:linear-gradient(145deg,color-mix(in srgb,var(--card-background-color) 97%,#ffb45c 3%),color-mix(in srgb,var(--secondary-background-color) 96%,#ffb45c 4%))}
+      .energy-view-config-head{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:13px}
+      .energy-view-config-head strong{display:block;font-size:14px}.energy-view-config-head span{display:block;margin-top:3px;color:var(--secondary-text-color);font-size:10px}.energy-view-config-head ha-icon{color:#ffb45c;--mdc-icon-size:26px}
+      .energy-view-choice{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+      .energy-view-choice>label{position:relative;display:flex;align-items:center;gap:11px;padding:13px;border:1px solid var(--divider-color);border-radius:14px;background:var(--card-background-color);cursor:pointer}
+      .energy-view-choice>label.selected{border-color:color-mix(in srgb,var(--primary-color) 42%,var(--divider-color));box-shadow:0 0 0 2px color-mix(in srgb,var(--primary-color) 8%,transparent)}
+      .energy-view-choice input{position:absolute;opacity:0;pointer-events:none}.energy-view-choice ha-icon{--mdc-icon-size:24px;color:var(--primary-color)}
+      .energy-view-choice strong{display:block;font-size:12px}.energy-view-choice span{display:block;margin-top:3px;color:var(--secondary-text-color);font-size:9px;line-height:1.35}
+      .energy-view-fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:12px}
+      .energy-view-fields label>span{display:block;margin-bottom:5px;font-size:8px;letter-spacing:.1em;font-weight:900;color:var(--secondary-text-color)}
+      .energy-view-fields input,.energy-view-fields select{width:100%;height:38px;box-sizing:border-box;border:1px solid var(--divider-color);border-radius:10px;background:var(--secondary-background-color);color:var(--primary-text-color);padding:0 9px;outline:0;font:inherit;font-size:10px}
+
+      .solar-showcase.community-advanced-energy{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px;margin:10px 0 30px}
+      .community-advanced-energy .solar-panel{position:relative;overflow:hidden;border-radius:28px;border:1px solid color-mix(in srgb,var(--primary-text-color) 8%,transparent);background:linear-gradient(145deg,color-mix(in srgb,var(--card-background-color) 97%,var(--primary-color) 3%),color-mix(in srgb,var(--secondary-background-color) 98%,transparent));box-shadow:0 18px 40px color-mix(in srgb,#000 12%,transparent)}
+      .community-advanced-energy .solar-panel:before{content:"";position:absolute;left:-20px;bottom:-40px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--primary-color) 18%,transparent),transparent 65%);pointer-events:none}
+      .community-advanced-energy .solar-prod-card{grid-column:span 5;padding:24px 28px;min-height:340px;display:flex;flex-direction:column;justify-content:space-between}
+      .community-advanced-energy .solar-prod-top{display:flex;justify-content:space-between;align-items:flex-start}
+      .community-advanced-energy .solar-sun{width:74px;height:74px;border-radius:22px;display:grid;place-items:center;background:radial-gradient(circle,rgba(255,180,92,.24),rgba(255,180,92,.06) 60%,transparent 62%);color:#ffb45c}
+      .community-advanced-energy .solar-sun ha-icon{--mdc-icon-size:42px}
+      .community-advanced-energy .solar-prod-copy span,.community-advanced-energy .solar-pv-meta span,.community-advanced-energy .solar-node-label,.community-advanced-energy .solar-energy-pill span{font-size:9px;letter-spacing:.17em;font-weight:850;color:#87a0bb;text-transform:uppercase}
+      .community-advanced-energy .solar-prod-copy strong{display:block;font-size:58px;letter-spacing:-.06em;line-height:.95;margin-top:12px}
+      .community-advanced-energy .solar-prod-copy small{display:block;color:var(--secondary-text-color);margin-top:10px;font-size:10px}
+      .community-advanced-energy .solar-pv-bars{margin-top:18px;display:grid;gap:18px}
+      .community-advanced-energy .solar-pv-line{display:grid;grid-template-columns:176px minmax(0,1fr);gap:18px;align-items:center}
+      .community-advanced-energy .solar-pv-meta strong{display:block;font-size:21px;letter-spacing:-.04em;margin-top:7px}.community-advanced-energy .solar-pv-meta small{display:block;color:var(--secondary-text-color);margin-top:4px;font-size:10px}
+      .community-advanced-energy .solar-pv-track{position:relative;height:12px;border-radius:999px;background:color-mix(in srgb,var(--primary-text-color) 8%,transparent);overflow:hidden}
+      .community-advanced-energy .solar-pv-fill{position:absolute;inset:0 auto 0 0;border-radius:999px;background:linear-gradient(90deg,#f4e88b,#f0c447)}.community-advanced-energy .solar-pv-fill.west{background:linear-gradient(90deg,#ffb45c,#ff9a5a)}
+
+      .community-advanced-energy .solar-battery-hero{grid-column:span 7;display:grid;grid-template-columns:240px 1fr;gap:24px;padding:28px 30px;align-items:center;min-height:340px}
+      .community-advanced-energy .solar-battery-shell{position:relative;width:150px;height:250px;border-radius:30px;border:6px solid color-mix(in srgb,var(--primary-text-color) 76%,transparent);margin:0 auto;background:color-mix(in srgb,var(--card-background-color) 94%,#000 6%)}
+      .community-advanced-energy .solar-battery-shell:before{content:"";position:absolute;top:-20px;left:50%;transform:translateX(-50%);width:62px;height:18px;border-radius:8px 8px 2px 2px;background:color-mix(in srgb,var(--primary-text-color) 78%,transparent)}
+      .community-advanced-energy .solar-battery-fill{position:absolute;left:14px;right:14px;bottom:14px;border-radius:18px;background:linear-gradient(180deg,#67ffb6,#45d48c);box-shadow:0 0 34px rgba(103,255,182,.22)}
+      .community-advanced-energy .solar-battery-fill.bad{background:linear-gradient(180deg,#ff8c8c,#ff5f67);box-shadow:0 0 30px rgba(255,95,103,.20)}
+      .community-advanced-energy .solar-battery-soc{position:absolute;inset:0;z-index:3;display:grid;place-items:center;text-align:center}.community-advanced-energy .solar-battery-soc>div{padding:10px 14px;border-radius:16px;background:rgba(7,14,25,.68);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(8px)}
+      .community-advanced-energy .solar-battery-soc span{font-size:10px;letter-spacing:.18em;font-weight:850;color:#87a0bb}.community-advanced-energy .solar-battery-soc strong{display:block;font-size:52px;letter-spacing:-.06em;color:#fff;margin-top:6px}
+      .community-advanced-energy .solar-battery-copy .eyebrow{font-size:11px;letter-spacing:.22em;font-weight:900;text-transform:uppercase;color:#67b8ff}.community-advanced-energy .solar-battery-copy .eyebrow.good{color:#55e6ad}.community-advanced-energy .solar-battery-copy .eyebrow.bad{color:#ff6f6f}
+      .community-advanced-energy .solar-battery-copy .power{font-size:64px;line-height:.95;font-weight:880;letter-spacing:-.065em;margin-top:10px}.community-advanced-energy .solar-battery-copy .power.good{color:#55e6ad}.community-advanced-energy .solar-battery-copy .power.bad{color:#ff6f6f}
+      .community-advanced-energy .solar-battery-copy .desc{margin-top:10px;font-size:14px;color:var(--secondary-text-color)}
+      .community-advanced-energy .solar-energy-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}.community-advanced-energy .solar-energy-pill{padding:9px 12px;border-radius:999px;border:1px solid var(--divider-color);background:color-mix(in srgb,var(--card-background-color) 94%,var(--primary-color) 6%)}.community-advanced-energy .solar-energy-pill strong{font-size:12px;margin-left:6px}
+
+      .community-advanced-energy .solar-flow-card{grid-column:span 12;padding:24px 28px 26px}.community-advanced-energy .solar-flow-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;align-items:flex-start}.community-advanced-energy .solar-flow-grid.energy-nodes-3{grid-template-columns:repeat(3,minmax(0,1fr))}.community-advanced-energy .solar-flow-grid.energy-nodes-2{grid-template-columns:repeat(2,minmax(0,1fr))}.community-advanced-energy .solar-flow-grid.energy-nodes-1{grid-template-columns:1fr}
+      .community-advanced-energy .solar-node{text-align:center;padding-top:4px}.community-advanced-energy .solar-node-orb{width:84px;height:84px;margin:0 auto;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,color-mix(in srgb,var(--primary-color) 20%,transparent),color-mix(in srgb,var(--primary-color) 3%,transparent) 62%,transparent 64%);border:1px solid color-mix(in srgb,var(--primary-color) 20%,transparent);box-shadow:0 0 30px color-mix(in srgb,var(--primary-color) 10%,transparent)}
+      .community-advanced-energy .solar-node-orb ha-icon{--mdc-icon-size:34px;color:#67b8ff}.community-advanced-energy .solar-node.house .solar-node-orb ha-icon,.community-advanced-energy .solar-node.battery .solar-node-orb ha-icon{color:#55e6ad}.community-advanced-energy .solar-node.network .solar-node-orb ha-icon{color:#ffb45c}
+      .community-advanced-energy .solar-node strong{display:block;font-size:32px;line-height:1;letter-spacing:-.05em;margin-top:15px}.community-advanced-energy .solar-node strong.good{color:#55e6ad}.community-advanced-energy .solar-node strong.bad{color:#ff6f6f}.community-advanced-energy .solar-node small{display:block;color:var(--secondary-text-color);margin-top:6px;line-height:1.4;font-size:10px}
+      .community-advanced-energy .solar-node-chip{display:inline-flex;margin-top:11px;padding:7px 11px;border-radius:999px;background:color-mix(in srgb,var(--card-background-color) 94%,var(--primary-color) 6%);border:1px solid var(--divider-color);font-size:10px;font-weight:800}.community-advanced-energy .solar-node-chip.good{color:#55e6ad;background:rgba(76,175,80,.10)}.community-advanced-energy .solar-node-chip.warn{color:#ffb45c;background:rgba(255,180,92,.10)}.community-advanced-energy .solar-node-chip.bad{color:#ff6f6f;background:rgba(255,111,111,.10)}.community-advanced-energy .solar-node-chip.active{color:#67b8ff}
+      .theme-light .community-advanced-energy .solar-panel{box-shadow:0 14px 34px rgba(35,60,90,.08)}
+
+      @media(max-width:1000px){
+        .community-advanced-energy .solar-prod-card,.community-advanced-energy .solar-battery-hero{grid-column:span 12}
+        .community-advanced-energy .solar-battery-hero{grid-template-columns:200px 1fr}
+        .energy-view-fields{grid-template-columns:repeat(2,minmax(0,1fr))}
+      }
+      @media(max-width:720px){
+        .energy-view-choice,.energy-view-fields{grid-template-columns:1fr}
+        .community-advanced-energy .solar-battery-hero{grid-template-columns:1fr;text-align:center;padding:24px 18px}
+        .community-advanced-energy .solar-battery-copy .power{font-size:52px}
+        .community-advanced-energy .solar-pv-line{grid-template-columns:1fr;gap:8px}
+        .community-advanced-energy .solar-flow-grid,.community-advanced-energy .solar-flow-grid.energy-nodes-3,.community-advanced-energy .solar-flow-grid.energy-nodes-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+      }
+      @media(max-width:480px){
+        .community-advanced-energy .solar-flow-grid,.community-advanced-energy .solar-flow-grid.energy-nodes-3,.community-advanced-energy .solar-flow-grid.energy-nodes-2{grid-template-columns:1fr}
+        .community-advanced-energy .solar-prod-copy strong{font-size:46px}
+      }
+
+      /* reliable image persistence + preview */
+      .photo-preview{margin-top:8px;overflow:hidden;border-radius:11px;border:1px solid var(--divider-color);background:var(--secondary-background-color)}
+      .photo-preview img{display:block;width:100%;height:100%;object-fit:cover}
+      .room-photo-preview{width:min(260px,100%);height:116px}
+      .object-photo-preview{width:118px;height:82px}
+      .room-entity-photo .object-photo-preview{margin-top:7px}
+
+      .native-photo-picker{position:relative;overflow:hidden;cursor:pointer}
+      .native-photo-picker>input[type="file"]{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:100px}
+      .native-photo-picker.loading{opacity:.65;pointer-events:none}
+
+      .config-hint span{display:inline-flex;align-items:center;min-height:20px}
+      .config-hint span:not(:empty){font-weight:750}
+
+      .config-page-intro-actions{align-items:center}
+      .config-page-intro-actions>div{min-width:0;flex:1}
+      .room-add-primary{margin-left:auto;display:inline-flex;align-items:center;gap:6px;flex:none;cursor:pointer}
+      .room-add-primary ha-icon,.room-add-footer .room-add ha-icon{--mdc-icon-size:18px}
+      .room-add-footer{display:flex;justify-content:center;padding:16px 0 2px}

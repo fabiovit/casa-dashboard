@@ -1,144 +1,11 @@
-ntro>ha-icon{--mdc-icon-size:25px;color:var(--primary-color);margin-top:1px}
-      .config-page-intro strong{display:block;font-size:15px}
-      .config-page-intro span{display:block;margin-top:3px;font-size:10px;line-height:1.45;color:var(--secondary-text-color)}
-      .config-page-note{display:flex;align-items:center;gap:9px;margin-top:14px;padding:11px 12px;border-radius:13px;background:var(--secondary-background-color);color:var(--secondary-text-color);font-size:10px}
-      .config-page-note ha-icon{--mdc-icon-size:17px;color:var(--primary-color)}
-      .overview-config-grid-page{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-      .overview-config-grid-page input{height:44px;font-size:12px}
-      .room-list-page{display:flex;flex-direction:column;gap:12px;max-height:none!important;overflow:visible!important;padding:0!important}
-      .room-edit-row-page{
-        display:grid!important;
-        grid-template-columns:28px minmax(0,1fr) minmax(320px,.8fr) auto!important;
-        gap:12px!important;align-items:center;padding:13px!important;border:1px solid var(--divider-color);border-radius:16px;background:color-mix(in srgb,var(--secondary-background-color) 72%,transparent)
-      }
-      .room-main-fields{display:grid;grid-template-columns:minmax(140px,.8fr) minmax(150px,.8fr) minmax(150px,.8fr);gap:8px}
-      .room-main-fields>input,.room-main-fields>select{width:100%;height:40px;box-sizing:border-box}
-      .room-edit-row-page .room-image-field{grid-column:auto!important}
-      .device-room-list{display:flex;flex-direction:column;gap:12px}
-      .device-room-card{padding:14px;border:1px solid var(--divider-color);border-radius:17px;background:color-mix(in srgb,var(--secondary-background-color) 68%,transparent)}
-      .device-room-card-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
-      .device-room-card-head>div{display:flex;align-items:center;gap:8px}
-      .device-room-card-head strong{font-size:14px}
-      .device-room-card-head>span{font-size:9px;color:var(--secondary-text-color);font-weight:800}
-      .device-room-card .room-entity-picker{max-width:none}
-      .device-room-card .room-entity-chips{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-      .device-room-card .room-entity-chip-wrap{min-width:0!important;max-width:none!important;padding:10px;border:1px solid var(--divider-color);border-radius:13px;background:var(--card-background-color)}
-      .config-toolbar-page{padding:0 0 12px!important}
-      .config-scroll-page{max-height:none!important;min-height:0!important;overflow:visible!important;padding:0 0 20px!important}
-      .config-page .config-group{margin-bottom:18px}
-      .config-page .config-group-title{position:sticky;top:-18px;z-index:3;background:var(--card-background-color);padding-top:10px}
-      .config-dialog-tabs .config-dialog-foot{position:relative!important;z-index:20}
-      @media(max-width:900px){
-        .room-edit-row-page{grid-template-columns:28px 1fr auto!important}
-        .room-edit-row-page .room-image-field{grid-column:2/3!important}
-        .room-main-fields{grid-template-columns:1fr 1fr}
-        .room-main-fields>input:last-child{grid-column:1/-1}
-        .device-room-card .room-entity-chips{grid-template-columns:1fr}
-      }
-      @media(max-width:650px){
-        .config-dialog-tabs{width:100vw!important;height:100dvh!important;max-height:100dvh!important;border-radius:0!important}
-        .config-tab{height:40px;padding:0 11px}
-        .config-tab span{font-size:10px}
-        .config-page{padding:12px 10px 22px}
-        .overview-config-grid-page{grid-template-columns:1fr}
-        .room-edit-row-page{grid-template-columns:24px 1fr!important}
-        .room-row-actions{grid-column:2;justify-self:start}
-        .room-edit-row-page .room-image-field{grid-column:2!important}
-        .room-main-fields{grid-template-columns:1fr}
-        .room-main-fields>input:last-child{grid-column:auto}
-      }
 
-      /* v4.1.1 - Advanced Energy View */
-      .energy-view-config{margin:0 0 18px;padding:16px;border:1px solid color-mix(in srgb,#ffb45c 22%,var(--divider-color));border-radius:18px;background:linear-gradient(145deg,color-mix(in srgb,var(--card-background-color) 97%,#ffb45c 3%),color-mix(in srgb,var(--secondary-background-color) 96%,#ffb45c 4%))}
-      .energy-view-config-head{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:13px}
-      .energy-view-config-head strong{display:block;font-size:14px}.energy-view-config-head span{display:block;margin-top:3px;color:var(--secondary-text-color);font-size:10px}.energy-view-config-head ha-icon{color:#ffb45c;--mdc-icon-size:26px}
-      .energy-view-choice{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-      .energy-view-choice>label{position:relative;display:flex;align-items:center;gap:11px;padding:13px;border:1px solid var(--divider-color);border-radius:14px;background:var(--card-background-color);cursor:pointer}
-      .energy-view-choice>label.selected{border-color:color-mix(in srgb,var(--primary-color) 42%,var(--divider-color));box-shadow:0 0 0 2px color-mix(in srgb,var(--primary-color) 8%,transparent)}
-      .energy-view-choice input{position:absolute;opacity:0;pointer-events:none}.energy-view-choice ha-icon{--mdc-icon-size:24px;color:var(--primary-color)}
-      .energy-view-choice strong{display:block;font-size:12px}.energy-view-choice span{display:block;margin-top:3px;color:var(--secondary-text-color);font-size:9px;line-height:1.35}
-      .energy-view-fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:12px}
-      .energy-view-fields label>span{display:block;margin-bottom:5px;font-size:8px;letter-spacing:.1em;font-weight:900;color:var(--secondary-text-color)}
-      .energy-view-fields input,.energy-view-fields select{width:100%;height:38px;box-sizing:border-box;border:1px solid var(--divider-color);border-radius:10px;background:var(--secondary-background-color);color:var(--primary-text-color);padding:0 9px;outline:0;font:inherit;font-size:10px}
-
-      .solar-showcase.community-advanced-energy{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px;margin:10px 0 30px}
-      .community-advanced-energy .solar-panel{position:relative;overflow:hidden;border-radius:28px;border:1px solid color-mix(in srgb,var(--primary-text-color) 8%,transparent);background:linear-gradient(145deg,color-mix(in srgb,var(--card-background-color) 97%,var(--primary-color) 3%),color-mix(in srgb,var(--secondary-background-color) 98%,transparent));box-shadow:0 18px 40px color-mix(in srgb,#000 12%,transparent)}
-      .community-advanced-energy .solar-panel:before{content:"";position:absolute;left:-20px;bottom:-40px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--primary-color) 18%,transparent),transparent 65%);pointer-events:none}
-      .community-advanced-energy .solar-prod-card{grid-column:span 5;padding:24px 28px;min-height:340px;display:flex;flex-direction:column;justify-content:space-between}
-      .community-advanced-energy .solar-prod-top{display:flex;justify-content:space-between;align-items:flex-start}
-      .community-advanced-energy .solar-sun{width:74px;height:74px;border-radius:22px;display:grid;place-items:center;background:radial-gradient(circle,rgba(255,180,92,.24),rgba(255,180,92,.06) 60%,transparent 62%);color:#ffb45c}
-      .community-advanced-energy .solar-sun ha-icon{--mdc-icon-size:42px}
-      .community-advanced-energy .solar-prod-copy span,.community-advanced-energy .solar-pv-meta span,.community-advanced-energy .solar-node-label,.community-advanced-energy .solar-energy-pill span{font-size:9px;letter-spacing:.17em;font-weight:850;color:#87a0bb;text-transform:uppercase}
-      .community-advanced-energy .solar-prod-copy strong{display:block;font-size:58px;letter-spacing:-.06em;line-height:.95;margin-top:12px}
-      .community-advanced-energy .solar-prod-copy small{display:block;color:var(--secondary-text-color);margin-top:10px;font-size:10px}
-      .community-advanced-energy .solar-pv-bars{margin-top:18px;display:grid;gap:18px}
-      .community-advanced-energy .solar-pv-line{display:grid;grid-template-columns:176px minmax(0,1fr);gap:18px;align-items:center}
-      .community-advanced-energy .solar-pv-meta strong{display:block;font-size:21px;letter-spacing:-.04em;margin-top:7px}.community-advanced-energy .solar-pv-meta small{display:block;color:var(--secondary-text-color);margin-top:4px;font-size:10px}
-      .community-advanced-energy .solar-pv-track{position:relative;height:12px;border-radius:999px;background:color-mix(in srgb,var(--primary-text-color) 8%,transparent);overflow:hidden}
-      .community-advanced-energy .solar-pv-fill{position:absolute;inset:0 auto 0 0;border-radius:999px;background:linear-gradient(90deg,#f4e88b,#f0c447)}.community-advanced-energy .solar-pv-fill.west{background:linear-gradient(90deg,#ffb45c,#ff9a5a)}
-
-      .community-advanced-energy .solar-battery-hero{grid-column:span 7;display:grid;grid-template-columns:240px 1fr;gap:24px;padding:28px 30px;align-items:center;min-height:340px}
-      .community-advanced-energy .solar-battery-shell{position:relative;width:150px;height:250px;border-radius:30px;border:6px solid color-mix(in srgb,var(--primary-text-color) 76%,transparent);margin:0 auto;background:color-mix(in srgb,var(--card-background-color) 94%,#000 6%)}
-      .community-advanced-energy .solar-battery-shell:before{content:"";position:absolute;top:-20px;left:50%;transform:translateX(-50%);width:62px;height:18px;border-radius:8px 8px 2px 2px;background:color-mix(in srgb,var(--primary-text-color) 78%,transparent)}
-      .community-advanced-energy .solar-battery-fill{position:absolute;left:14px;right:14px;bottom:14px;border-radius:18px;background:linear-gradient(180deg,#67ffb6,#45d48c);box-shadow:0 0 34px rgba(103,255,182,.22)}
-      .community-advanced-energy .solar-battery-fill.bad{background:linear-gradient(180deg,#ff8c8c,#ff5f67);box-shadow:0 0 30px rgba(255,95,103,.20)}
-      .community-advanced-energy .solar-battery-soc{position:absolute;inset:0;z-index:3;display:grid;place-items:center;text-align:center}.community-advanced-energy .solar-battery-soc>div{padding:10px 14px;border-radius:16px;background:rgba(7,14,25,.68);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(8px)}
-      .community-advanced-energy .solar-battery-soc span{font-size:10px;letter-spacing:.18em;font-weight:850;color:#87a0bb}.community-advanced-energy .solar-battery-soc strong{display:block;font-size:52px;letter-spacing:-.06em;color:#fff;margin-top:6px}
-      .community-advanced-energy .solar-battery-copy .eyebrow{font-size:11px;letter-spacing:.22em;font-weight:900;text-transform:uppercase;color:#67b8ff}.community-advanced-energy .solar-battery-copy .eyebrow.good{color:#55e6ad}.community-advanced-energy .solar-battery-copy .eyebrow.bad{color:#ff6f6f}
-      .community-advanced-energy .solar-battery-copy .power{font-size:64px;line-height:.95;font-weight:880;letter-spacing:-.065em;margin-top:10px}.community-advanced-energy .solar-battery-copy .power.good{color:#55e6ad}.community-advanced-energy .solar-battery-copy .power.bad{color:#ff6f6f}
-      .community-advanced-energy .solar-battery-copy .desc{margin-top:10px;font-size:14px;color:var(--secondary-text-color)}
-      .community-advanced-energy .solar-energy-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}.community-advanced-energy .solar-energy-pill{padding:9px 12px;border-radius:999px;border:1px solid var(--divider-color);background:color-mix(in srgb,var(--card-background-color) 94%,var(--primary-color) 6%)}.community-advanced-energy .solar-energy-pill strong{font-size:12px;margin-left:6px}
-
-      .community-advanced-energy .solar-flow-card{grid-column:span 12;padding:24px 28px 26px}.community-advanced-energy .solar-flow-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;align-items:flex-start}.community-advanced-energy .solar-flow-grid.energy-nodes-3{grid-template-columns:repeat(3,minmax(0,1fr))}.community-advanced-energy .solar-flow-grid.energy-nodes-2{grid-template-columns:repeat(2,minmax(0,1fr))}.community-advanced-energy .solar-flow-grid.energy-nodes-1{grid-template-columns:1fr}
-      .community-advanced-energy .solar-node{text-align:center;padding-top:4px}.community-advanced-energy .solar-node-orb{width:84px;height:84px;margin:0 auto;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,color-mix(in srgb,var(--primary-color) 20%,transparent),color-mix(in srgb,var(--primary-color) 3%,transparent) 62%,transparent 64%);border:1px solid color-mix(in srgb,var(--primary-color) 20%,transparent);box-shadow:0 0 30px color-mix(in srgb,var(--primary-color) 10%,transparent)}
-      .community-advanced-energy .solar-node-orb ha-icon{--mdc-icon-size:34px;color:#67b8ff}.community-advanced-energy .solar-node.house .solar-node-orb ha-icon,.community-advanced-energy .solar-node.battery .solar-node-orb ha-icon{color:#55e6ad}.community-advanced-energy .solar-node.network .solar-node-orb ha-icon{color:#ffb45c}
-      .community-advanced-energy .solar-node strong{display:block;font-size:32px;line-height:1;letter-spacing:-.05em;margin-top:15px}.community-advanced-energy .solar-node strong.good{color:#55e6ad}.community-advanced-energy .solar-node strong.bad{color:#ff6f6f}.community-advanced-energy .solar-node small{display:block;color:var(--secondary-text-color);margin-top:6px;line-height:1.4;font-size:10px}
-      .community-advanced-energy .solar-node-chip{display:inline-flex;margin-top:11px;padding:7px 11px;border-radius:999px;background:color-mix(in srgb,var(--card-background-color) 94%,var(--primary-color) 6%);border:1px solid var(--divider-color);font-size:10px;font-weight:800}.community-advanced-energy .solar-node-chip.good{color:#55e6ad;background:rgba(76,175,80,.10)}.community-advanced-energy .solar-node-chip.warn{color:#ffb45c;background:rgba(255,180,92,.10)}.community-advanced-energy .solar-node-chip.bad{color:#ff6f6f;background:rgba(255,111,111,.10)}.community-advanced-energy .solar-node-chip.active{color:#67b8ff}
-      .theme-light .community-advanced-energy .solar-panel{box-shadow:0 14px 34px rgba(35,60,90,.08)}
-
-      @media(max-width:1000px){
-        .community-advanced-energy .solar-prod-card,.community-advanced-energy .solar-battery-hero{grid-column:span 12}
-        .community-advanced-energy .solar-battery-hero{grid-template-columns:200px 1fr}
-        .energy-view-fields{grid-template-columns:repeat(2,minmax(0,1fr))}
-      }
-      @media(max-width:720px){
-        .energy-view-choice,.energy-view-fields{grid-template-columns:1fr}
-        .community-advanced-energy .solar-battery-hero{grid-template-columns:1fr;text-align:center;padding:24px 18px}
-        .community-advanced-energy .solar-battery-copy .power{font-size:52px}
-        .community-advanced-energy .solar-pv-line{grid-template-columns:1fr;gap:8px}
-        .community-advanced-energy .solar-flow-grid,.community-advanced-energy .solar-flow-grid.energy-nodes-3,.community-advanced-energy .solar-flow-grid.energy-nodes-2{grid-template-columns:repeat(2,minmax(0,1fr))}
-      }
-      @media(max-width:480px){
-        .community-advanced-energy .solar-flow-grid,.community-advanced-energy .solar-flow-grid.energy-nodes-3,.community-advanced-energy .solar-flow-grid.energy-nodes-2{grid-template-columns:1fr}
-        .community-advanced-energy .solar-prod-copy strong{font-size:46px}
-      }
-
-      /* v4.1.1 - reliable image persistence + preview */
-      .photo-preview{margin-top:8px;overflow:hidden;border-radius:11px;border:1px solid var(--divider-color);background:var(--secondary-background-color)}
-      .photo-preview img{display:block;width:100%;height:100%;object-fit:cover}
-      .room-photo-preview{width:min(260px,100%);height:116px}
-      .object-photo-preview{width:118px;height:82px}
-      .room-entity-photo .object-photo-preview{margin-top:7px}
-
-      .native-photo-picker{position:relative;overflow:hidden;cursor:pointer}
-      .native-photo-picker>input[type="file"]{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:100px}
-      .native-photo-picker.loading{opacity:.65;pointer-events:none}
-
-      .config-hint span{display:inline-flex;align-items:center;min-height:20px}
-      .config-hint span:not(:empty){font-weight:750}
-
-      .config-page-intro-actions{align-items:center}
-      .config-page-intro-actions>div{min-width:0;flex:1}
-      .room-add-primary{margin-left:auto;display:inline-flex;align-items:center;gap:6px;flex:none;cursor:pointer}
-      .room-add-primary ha-icon,.room-add-footer .room-add ha-icon{--mdc-icon-size:18px}
-      .room-add-footer{display:flex;justify-content:center;padding:16px 0 2px}
       .room-add-footer .room-add{display:inline-flex;align-items:center;gap:7px;cursor:pointer;padding:10px 15px}
       @media(max-width:650px){
         .config-page-intro-actions{display:grid;grid-template-columns:auto 1fr}
         .config-page-intro-actions .room-add-primary{grid-column:1/-1;width:100%;justify-content:center;margin:4px 0 0}
       }
 
-      /* Community v4.1.1 - Security & Access */
+      /* Security & Access */
       .community-security-alert{margin:18px 0 4px}
       .community-security-grid{display:grid;grid-template-columns:minmax(360px,.8fr) minmax(520px,1.2fr);gap:18px;margin-bottom:28px}
       .community-security-card{min-height:260px;border:1px solid rgba(255,255,255,.08);border-radius:26px;background:radial-gradient(circle at 100% 100%,rgba(84,211,174,.08),transparent 38%),linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.012));display:grid;overflow:hidden}
@@ -222,9 +89,183 @@ ntro>ha-icon{--mdc-icon-size:25px;color:var(--primary-color);margin-top:1px}
       @media(max-width:620px){.environment-card{grid-template-columns:105px 1fr 34px}.environment-visual{height:96px}.environment-copy strong{font-size:21px}}
 
 
-      /* v4.1.1 - Security parity with Casa v5.4.0 */
+      /* Security parity with Casa v5.4.0 */
       .community-security-grid.two{grid-template-columns:minmax(360px,.82fr) minmax(520px,1.18fr)}
       .community-security-grid.single{grid-template-columns:minmax(0,1fr)}
       .community-security-grid.single .community-security-card{width:100%}
       .community-security-grid.single .alarm-security{grid-template-columns:minmax(0,1fr) 210px}
-      .community-security-grid.single .door-security
+      .community-security-grid.single .door-security{grid-template-columns:190px 1fr}
+      .community-security-card{min-height:285px}
+      .door-security{padding:28px}
+      .security-door-visual{height:225px}
+      .alarm-security{padding:28px}
+      .alarm-card-main{min-width:0}
+      @media(max-width:1000px){
+        .community-security-grid.two,.community-security-grid.single{grid-template-columns:1fr}
+      }
+      @media(max-width:650px){
+        .community-security-grid.single .alarm-security,
+        .community-security-grid.single .door-security{grid-template-columns:1fr}
+      }
+
+
+      .kitchen-appliance-card{
+        min-height:165px;border:1px solid rgba(255,255,255,.07);border-radius:var(--r-md);padding:14px;
+        display:grid;grid-template-columns:130px 1fr auto;align-items:center;gap:15px;
+        background:linear-gradient(180deg,rgba(255,255,255,.025),rgba(255,255,255,.012))
+      }
+      .kitchen-appliance-visual{
+        height:118px;border-radius:15px;background:linear-gradient(180deg,#17242d,#10171d);
+        border:1px solid rgba(255,255,255,.06);display:grid;place-items:center;position:relative;overflow:hidden
+      }
+      .kitchen-appliance-copy span{display:block;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:#8da6bd}
+      .kitchen-appliance-copy strong{display:block;font-size:24px;margin-top:7px}
+      .kitchen-appliance-copy small{display:block;color:var(--secondary-text-color);margin-top:4px}
+      .kitchen-appliance-toggle{
+        min-width:64px;height:46px;border-radius:14px;border:1px solid rgba(255,255,255,.08);
+        background:rgba(255,255,255,.025);color:#8797a4;font-weight:850;display:flex;align-items:center;justify-content:center;gap:6px
+      }
+      .kitchen-appliance-toggle.active{color:#55e6ad;border-color:rgba(85,230,173,.28);background:rgba(85,230,173,.07)}
+
+      .kitchen-hood{position:relative;width:95px;height:90px}.hood-chimney{position:absolute;left:35px;top:3px;width:25px;height:45px;background:#737e86}.hood-body{position:absolute;left:10px;right:10px;top:40px;height:30px;clip-path:polygon(18% 0,82% 0,100% 100%,0 100%);background:#8b959c}.hood-light{position:absolute;left:28px;right:28px;top:68px;height:7px;border-radius:6px;background:#4a555d}.hood-light.on{background:#ffb45c;box-shadow:0 0 14px rgba(255,180,92,.45)}
+
+      .kitchen-thermomix{position:relative;width:90px;height:100px}.tm-bowl{position:absolute;left:22px;top:2px;width:47px;height:58px;border-radius:7px 7px 22px 22px;background:linear-gradient(90deg,#9aa5ac,#d4dadd,#929da5)}.tm-base{position:absolute;left:10px;right:10px;bottom:5px;height:45px;border-radius:17px;background:#78848c}.tm-screen{position:absolute;left:21px;top:8px;width:28px;height:18px;border-radius:5px;background:#1b252b}.tm-screen.on{background:#67b8ff;box-shadow:0 0 13px rgba(103,184,255,.35)}
+
+      .kitchen-airfryer{position:relative;width:80px;height:100px}.af-body{position:absolute;inset:4px 10px;border-radius:24px 24px 16px 16px;background:linear-gradient(180deg,#30383d,#171d21);border:3px solid #59636a}.af-screen{position:absolute;left:18px;right:18px;top:15px;height:18px;border-radius:7px;background:#0d1215}.af-screen.on{background:#67b8ff;box-shadow:0 0 12px rgba(103,184,255,.30)}.af-handle{position:absolute;left:22px;right:22px;top:48px;height:7px;border-radius:7px;background:#8d989f}.af-basket{position:absolute;left:15px;right:15px;bottom:12px;height:28px;border-radius:7px;background:#252c31}
+
+      .kitchen-tv{position:relative;width:100px;height:85px}.tv-screen{position:absolute;left:5px;right:5px;top:5px;height:58px;border-radius:8px;border:5px solid #526069;background:#11181c;display:grid;place-items:center;color:#566570}.tv-screen.on{background:linear-gradient(135deg,#1c4b6f,#3189be);color:#8edbff;box-shadow:0 0 18px rgba(103,184,255,.16)}.tv-screen ha-icon{--mdc-icon-size:28px}.tv-stand{position:absolute;left:42px;bottom:3px;width:16px;height:16px;border-bottom:5px solid #65727a}.app-shell.theme-light .kitchen-appliance-card{background:linear-gradient(180deg,#fff,#f5f9fd);border-color:rgba(15,23,42,.10)}.app-shell.theme-light .kitchen-appliance-visual{background:linear-gradient(180deg,#edf5fa,#dde8ef)}.app-shell.theme-light .kitchen-appliance-copy span{color:#587292}.kitchen-appliance-card,.kitchen-appliance-card *{transition:none!important;animation:none!important}
+
+      @media(max-width:800px){
+      }
+      @media(max-width:620px){
+        .kitchen-appliance-card{grid-template-columns:100px 1fr auto;min-height:140px}
+        .kitchen-appliance-visual{height:96px}
+      }
+
+      @media(max-width:1100px){
+      }
+      @media(max-width:620px){
+      }
+
+
+      /* ===== v4.3.75 Ambiente cucina standard ===== */
+      .kitchen-environment-standard{
+        align-items:stretch;
+      }
+      @media(max-width:900px){
+        .kitchen-environment-standard{
+          grid-template-columns:repeat(2,minmax(0,1fr));
+        }
+        .kitchen-environment-standard .environment-card{
+          grid-column:span 1!important;
+        }
+      }
+      @media(max-width:620px){
+        .kitchen-environment-standard{
+          grid-template-columns:1fr;
+        }
+      }
+
+
+      /* ===== v4.3.75 Bagno - Crocchette Nila ===== */
+
+      /* Dynamic Kitchen parity */
+      .kitchen-dyn-hero{grid-template-columns:minmax(340px,.9fr) minmax(520px,1.25fr)}
+      .kitchen-dyn-showcase{display:grid;grid-template-columns:minmax(300px,1.15fr) minmax(210px,.85fr);gap:18px;align-items:center;min-height:250px;padding:20px;border-radius:var(--r-lg);border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(103,184,255,.045))}
+      .kitchen-dyn-scene{height:210px;border-radius:var(--r-md);position:relative;overflow:hidden;background:linear-gradient(180deg,#141a20,#0d1116)}
+      .kitchen-dyn-window{position:absolute;left:34px;top:24px;width:145px;height:112px;border:5px solid #47525d;background:#1e3a4b}
+      .kitchen-dyn-counter{position:absolute;left:24px;right:24px;bottom:26px;height:44px;background:linear-gradient(180deg,#343d45,#22292f);border-top:6px solid #5a646c}
+      .kitchen-dyn-lamp{position:absolute;right:68px;top:20px}.kitchen-dyn-lamp:before{content:"";display:block;width:2px;height:34px;background:#747f87;margin:auto}.kitchen-dyn-lamp i{display:block;width:48px;height:22px;border-radius:50% 50% 10px 10px;background:#606b73}.kitchen-dyn-lamp.on i{background:#ffb45c;box-shadow:0 14px 34px rgba(255,180,92,.28)}
+      .kitchen-dyn-meta{display:flex;flex-direction:column;gap:5px}.kitchen-dyn-meta>span{font-size:9px;letter-spacing:.18em;color:#8da6bd;font-weight:850}.kitchen-dyn-meta>strong{font-size:28px;letter-spacing:-.04em}.kitchen-dyn-meta>small{color:var(--secondary-text-color)}.kitchen-dyn-meta>div{height:1px;background:linear-gradient(90deg,rgba(103,184,255,.8),transparent);margin:10px 0}
+      .kitchen-heating-main{min-height:210px;padding:20px;border:1px solid rgba(255,255,255,.07);border-radius:22px;background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(255,180,92,.035));display:grid;grid-template-columns:160px 1fr;gap:18px;align-items:center}
+      .kitchen-heat-ring{width:145px;height:145px;border-radius:50%;display:grid;place-items:center;align-content:center;background:radial-gradient(circle at center,var(--card-background-color) 0 66%,transparent 67%),conic-gradient(from 220deg,#ffb45c 0 58%,#3b464f 58% 80%,#263139 80%);text-align:center}.kitchen-heat-ring span{font-size:8px;letter-spacing:.16em;color:#8da6bd}.kitchen-heat-ring strong{font-size:30px;margin-top:5px}.kitchen-heat-ring small{font-size:9px;color:var(--secondary-text-color);margin-top:3px}
+      .kitchen-heat-info{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.kitchen-heat-info>div{padding:12px;border-radius:14px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.025)}.kitchen-heat-info span{font-size:8px;letter-spacing:.14em;color:#8da6bd}.kitchen-heat-info strong{display:block;font-size:17px;margin-top:5px}.kitchen-heat-info button{grid-column:1/-1;height:42px;border-radius:12px;border:1px solid rgba(255,180,92,.32);background:rgba(255,180,92,.05);color:#ffb45c;font-weight:850;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+      .app-shell.theme-light .kitchen-dyn-showcase,.app-shell.theme-light .kitchen-heating-main{background:linear-gradient(145deg,#fff,#f4f8fb);border-color:rgba(15,23,42,.09)}
+      .app-shell.theme-light .kitchen-dyn-scene{background:linear-gradient(180deg,#eef3f7,#dce5ec)}
+      @media(max-width:900px){.kitchen-dyn-hero{grid-template-columns:1fr}.kitchen-dyn-showcase{grid-template-columns:1fr}.kitchen-heating-main{grid-template-columns:1fr}.kitchen-heat-ring{margin:auto}}
+      @media(max-width:620px){.kitchen-heat-info{grid-template-columns:1fr}.kitchen-heat-info button{grid-column:auto}}
+
+
+      /* Dynamic Kitchen blind section */
+      .kitchen-blind-card{min-height:190px;padding:18px;border-radius:22px;border:1px solid rgba(255,255,255,.07);background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(103,184,255,.025));display:grid;grid-template-columns:220px 1fr auto;gap:22px;align-items:center}
+      .kitchen-blind-scene{height:150px;border-radius:16px;display:grid;place-items:center;background:linear-gradient(180deg,#172631,#101820);border:1px solid rgba(255,255,255,.06);overflow:hidden}
+      .kitchen-blind-window{position:relative;width:150px;height:112px;border:5px solid #596773;background:#24465a;overflow:hidden}
+      .kitchen-blind-sky{position:absolute;inset:4px;background:linear-gradient(180deg,#467f9f,#27495d)}
+      .kitchen-blind-sheet{position:absolute;left:5px;right:5px;top:5px;min-height:8px;background:repeating-linear-gradient(0deg,#a6afb6 0 7px,#939da5 7px 14px);transition:none}
+      .kitchen-blind-bar{position:absolute;left:4px;right:4px;height:6px;background:#66727c;transform:translateY(-3px)}
+      .kitchen-blind-copy span{display:block;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#8da6bd}.kitchen-blind-copy strong{display:block;font-size:28px;margin-top:7px}.kitchen-blind-copy small{display:block;color:var(--secondary-text-color);margin-top:4px}
+      .kitchen-blind-action{height:46px;padding:0 16px;border-radius:14px;border:1px solid rgba(103,184,255,.35);background:rgba(103,184,255,.05);color:#67b8ff;font-weight:850;cursor:pointer;display:flex;align-items:center;gap:7px}
+      .app-shell.theme-light .kitchen-blind-card{background:linear-gradient(145deg,#fff,#f4f8fb);border-color:rgba(15,23,42,.09)}.app-shell.theme-light .kitchen-blind-scene{background:linear-gradient(180deg,#edf5fa,#ddeaf2)}
+      @media(max-width:760px){.kitchen-blind-card{grid-template-columns:170px 1fr}.kitchen-blind-action{grid-column:1/-1;justify-content:center}.kitchen-blind-scene{height:130px}}
+      @media(max-width:520px){.kitchen-blind-card{grid-template-columns:1fr}.kitchen-blind-scene{height:145px}}
+
+
+      /* Kitchen Comfort & Climate parity */
+      .kitchen-climate-real{min-height:300px;border-radius:26px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(103,184,255,.022));display:grid;grid-template-columns:320px 1fr;gap:28px;align-items:center;padding:24px 26px}
+      .kitchen-climate-ring-wrap{display:grid;place-items:center}
+      .kitchen-climate-ring{width:245px;height:245px;border-radius:50%;display:grid;place-items:center;align-content:center;text-align:center;background:
+        radial-gradient(circle at center,var(--card-background-color) 0 73%,transparent 74%),
+        conic-gradient(from 220deg,#314757 0 62%,#4f5d67 62% 73%,#26333d 73% 100%)}
+      .kitchen-climate-ring.active{background:
+        radial-gradient(circle at center,var(--card-background-color) 0 73%,transparent 74%),
+        conic-gradient(from 220deg,#4c8cac 0 62%,#6ab4d6 62% 73%,#26333d 73% 100%)}
+      .kitchen-climate-ring span{font-size:10px;letter-spacing:.17em;color:#8da6bd;font-weight:850}
+      .kitchen-climate-ring strong{font-size:44px;line-height:1;margin-top:12px;letter-spacing:-.045em}
+      .kitchen-climate-ring small{font-size:13px;color:var(--secondary-text-color);margin-top:12px}
+      .kitchen-climate-main{display:grid;grid-template-rows:auto auto auto;gap:16px}
+      .kitchen-climate-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+      .kitchen-climate-stats>div{min-height:76px;padding:16px;border-radius:16px;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.018);display:flex;flex-direction:column;justify-content:center}
+      .kitchen-climate-stats span,.kitchen-climate-status span{font-size:9px;letter-spacing:.16em;color:#8da6bd;font-weight:850}
+      .kitchen-climate-stats strong{font-size:24px;margin-top:7px}
+      .kitchen-climate-status{min-height:82px;border-radius:16px;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.018);display:flex;align-items:center;gap:16px;padding:14px 18px;cursor:pointer}
+      .kitchen-climate-status-icon{width:34px;height:34px;display:grid;place-items:center;color:#8da6bd}
+      .kitchen-climate-status-icon ha-icon{--mdc-icon-size:26px}
+      .kitchen-climate-status strong{display:block;font-size:20px;margin-top:4px}
+      .kitchen-climate-status small{display:block;color:var(--secondary-text-color);font-size:11px;margin-top:2px}
+      .kitchen-climate-open{height:54px;border-radius:15px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.018);color:var(--primary-text-color);font-weight:850;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px}
+      .kitchen-climate-open:hover{border-color:rgba(103,184,255,.35);background:rgba(103,184,255,.04)}
+      .app-shell.theme-light .kitchen-climate-real{background:linear-gradient(145deg,#fff,#f5f8fa);border-color:rgba(15,23,42,.09)}
+      .app-shell.theme-light .kitchen-climate-stats>div,.app-shell.theme-light .kitchen-climate-status,.app-shell.theme-light .kitchen-climate-open{background:#f7f9fb;border-color:rgba(15,23,42,.08)}
+      @media(max-width:900px){.kitchen-climate-real{grid-template-columns:1fr}.kitchen-climate-ring{width:220px;height:220px}.kitchen-climate-stats{grid-template-columns:1fr 1fr 1fr}}
+      @media(max-width:620px){.kitchen-climate-real{padding:18px}.kitchen-climate-stats{grid-template-columns:1fr}.kitchen-climate-ring{width:190px;height:190px}.kitchen-climate-ring strong{font-size:36px}}
+
+
+      /* Kitchen semantic appliance icons */
+      .kitchen-semantic-icon{width:86px;height:86px;border-radius:18px;display:grid;place-items:center;background:#132633;border:1px solid rgba(103,184,255,.24);color:#67b8ff}
+      .kitchen-semantic-icon ha-icon{--mdc-icon-size:42px}
+      .kitchen-semantic-icon.off{color:#8294a3;background:#14222c;border-color:rgba(130,148,163,.18)}
+      .kitchen-semantic-icon.fridge ha-icon{--mdc-icon-size:39px}
+      .kitchen-semantic-icon.dishwasher ha-icon{--mdc-icon-size:41px}
+      .kitchen-semantic-icon.microwave ha-icon{--mdc-icon-size:42px}
+      .kitchen-semantic-icon.oven ha-icon{--mdc-icon-size:43px}
+      .kitchen-semantic-icon.coffee ha-icon{--mdc-icon-size:43px}
+      .kitchen-semantic-icon.computer ha-icon{--mdc-icon-size:42px}
+      .kitchen-semantic-icon.monitor ha-icon{--mdc-icon-size:44px}
+      .kitchen-semantic-icon.camera ha-icon{--mdc-icon-size:42px}
+      .kitchen-semantic-icon.usb ha-icon{--mdc-icon-size:40px}
+      .kitchen-semantic-icon.homeassistant ha-icon{--mdc-icon-size:43px}
+      .kitchen-semantic-icon.hub ha-icon{--mdc-icon-size:43px}
+      .kitchen-semantic-icon.siren ha-icon{--mdc-icon-size:42px}
+      .kitchen-semantic-icon.plug ha-icon{--mdc-icon-size:40px}
+      .app-shell.theme-light .kitchen-semantic-icon{background:#eef6fb;border-color:rgba(46,140,200,.18)}
+
+
+      /* Mario feedback */
+      .topbar-tools{display:flex;align-items:center;gap:10px;margin-left:auto}
+      .topbar-config-btn{height:34px;padding:0 11px;border-radius:10px;border:1px solid rgba(103,184,255,.22);background:rgba(103,184,255,.05);color:var(--primary-text-color);display:flex;align-items:center;gap:6px;cursor:pointer;font-size:10px;font-weight:850}
+      .topbar-config-btn ha-icon{--mdc-icon-size:17px;color:#67b8ff}
+      .info-config-box{margin:18px 0;padding:16px;border:1px solid rgba(103,184,255,.18);border-radius:18px;display:flex;align-items:center;justify-content:space-between;gap:16px;background:rgba(103,184,255,.035)}
+      .info-config-box span{font-size:8px;letter-spacing:.16em;color:#8da6bd;font-weight:900}.info-config-box strong{display:block;margin-top:5px;font-size:18px}.info-config-box p{margin:5px 0 0;color:var(--secondary-text-color)}
+      .info-config-box button{height:40px;padding:0 14px;border-radius:11px;border:1px solid rgba(103,184,255,.3);background:rgba(103,184,255,.06);color:#67b8ff;font-weight:850;display:flex;align-items:center;gap:6px;cursor:pointer}
+      .overview-photo-config-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+      .overview-image-field{padding:14px;border:1px solid var(--divider-color);border-radius:14px;background:var(--secondary-background-color)}
+      .overview-image-field>span{display:block;font-size:9px;font-weight:900}.overview-image-field>small{display:block;margin:4px 0 9px;color:var(--secondary-text-color)}
+      .overview-photo-preview{height:140px;margin-top:10px}.overview-photo-preview img{width:100%;height:100%;object-fit:cover;border-radius:12px}
+      .overview-house-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+      .personal-overview-house.has-overview-photo:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(0,0,0,.16));pointer-events:none}
+      .room-entity-icon-field{display:block}.room-entity-icon-field>span{display:block;margin-bottom:5px;font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:var(--secondary-text-color);font-weight:800}
+      .room-entity-icon-field select{width:100%;height:32px;border-radius:8px;border:1px solid var(--divider-color);background:var(--secondary-background-color);color:var(--primary-text-color);padding:0 8px;font-size:9px}
+      .vehicle-overview-card{display:grid;grid-template-columns:300px 1fr;gap:18px;min-height:230px;margin:12px 0 28px;padding:18px;border:1px solid rgba(103,184,255,.11);border-radius:24px;background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(57,180,240,.035))}
+      .vehicle-overview-visual{border-radius:18px;overflow:hidden;background:#101820;display:grid;place-items:center;min-height:190px}.vehicle-overview-visual ha-icon{--mdc-icon-size:90px;color:#67b8ff}.vehicle-overview-visual img{width:100%;height:100%;object-fit:cover}
+      .vehicle-overview-main{display:flex;flex-direction:column;justify-content:center}.vehicle-overview-head span{font-size:8px;letter-spacing:.17em;color:#8da6bd;font-weight:900}.vehicle-overview-head strong{display:block;font-size:28px;margin-top:6px}.vehicle-overview-head small{display:block;margin-top:5px;color:var(--secondary-text-color)}
+      .vehicle-overview-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:18px}.vehicle-overview-stats>div{padding:12px;border:1px solid rgba(255,255,255,.06);border-radius:14px;background

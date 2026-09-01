@@ -2,7 +2,7 @@
 
 🇬🇧 **English** | [🇮🇹 Italiano](README.it.md)
 
-[![Release](https://img.shields.io/badge/release-v4.1.1-blue)](https://github.com/fabiovit/casa-dashboard/releases)
+[![Release](https://img.shields.io/badge/release-v4.1.2-blue)](https://github.com/fabiovit/casa-dashboard/releases)
 [![HACS](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz/)
 [![Validate](https://img.shields.io/github/actions/workflow/status/fabiovit/casa-dashboard/hacs.yml?branch=main&label=Validate)](https://github.com/fabiovit/casa-dashboard/actions/workflows/hacs.yml)
 [![Hassfest](https://img.shields.io/github/actions/workflow/status/fabiovit/casa-dashboard/hassfest.yml?branch=main&label=Hassfest)](https://github.com/fabiovit/casa-dashboard/actions/workflows/hassfest.yml)
@@ -12,7 +12,7 @@
 
 Casa Dashboard Community is a complete app-like dashboard for **Home Assistant**, designed to adapt to different homes without relying on traditional Lovelace cards.
 
-**v4.1.1** is a consolidation release: the project has been cleaned up, versioning is now consistent across backend and frontend, and the mature features introduced in the 2.x generation are retained in a cleaner package.
+**v4.1.2** is a consolidation release: the project has been cleaned up, versioning is now consistent across backend and frontend, and the mature features introduced in the 2.x generation are retained in a cleaner package.
 
 **Created by Fabio Vittori** · [☕ Buy me a coffee](https://ko-fi.com/fabvittori)
 
@@ -187,3 +187,23 @@ Functions that are not configured are hidden automatically.
 ## ☕ Support
 
 If you enjoy the project: **[Buy me a coffee on Ko-fi](https://ko-fi.com/fabvittori)**.
+
+
+## 📱 Dashboard predefinita / Default dashboard
+
+Casa Dashboard Community include `examples/casa-dashboard-community-dashboard.yaml`, una plancia Lovelace bridge che richiama il pannello Community. Dopo averla aggiunta in **Impostazioni → Dashboard**, Home Assistant permette di impostarla come dashboard predefinita per tutti gli utenti o dal profilo del singolo utente. Nell'app Companion sarà quindi la dashboard aperta all'avvio.
+
+> Home Assistant non espone un servizio ufficiale che consenta a una custom integration di cambiare automaticamente la dashboard predefinita dell'utente: la scelta finale va effettuata nelle impostazioni di Home Assistant.
+
+
+## 📱 Tablet / kiosk mode
+
+To open Casa Dashboard Community directly on a dedicated tablet/browser (Silk / Fully Kiosk), use:
+
+```text
+http://homeassistant.local:8123/casa-dashboard-community?kiosk=1
+```
+
+Replace `homeassistant.local:8123` with your Home Assistant address. `?kiosk=1` hides **Configure** and language controls.
+
+The default Home Assistant dashboard is selected from Home Assistant settings/profile.

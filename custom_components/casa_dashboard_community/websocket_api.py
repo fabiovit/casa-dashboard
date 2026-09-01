@@ -184,6 +184,10 @@ def _save_config(
                 "type": str(room.get("type", "generico")).strip() or "generico",
                 "icon": str(room.get("icon", "mdi:home-outline")).strip() or "mdi:home-outline",
                 "image": str(room.get("image", "")).strip(),
+                "title_size": str(room.get("title_size", "normal")).strip() or "normal",
+                "show_subtitle": bool(room.get("show_subtitle", True)),
+                "subtitle": str(room.get("subtitle", "")).strip(),
+                "entity_order": [str(e).strip() for e in (room.get("entity_order") or []) if str(e).strip() in clean_entities],
                 "background_mode": str(room.get("background_mode", "auto")).strip() or "auto",
                 "background_color": str(room.get("background_color", "#101820")).strip() or "#101820",
                 "background_gradient_a": str(room.get("background_gradient_a", "#101820")).strip() or "#101820",
@@ -202,7 +206,9 @@ def _save_config(
         output["overview"] = {
             str(key).strip(): str(value).strip()
             for key, value in supplied_overview.items()
-            if str(key).strip() and isinstance(value, str) and value.strip()
+            if str(key).strip()
+            and isinstance(value, (str, int, float))
+            and str(value).strip()
         }
     elif not isinstance(output.get("overview"), dict):
         output["overview"] = {}

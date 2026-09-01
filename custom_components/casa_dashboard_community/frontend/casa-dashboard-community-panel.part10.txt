@@ -1,4 +1,55 @@
-size==="auto"?"":` entity-size-${size}`;
+dia player"],
+      ["mdi:fridge-outline","Frigorifero"],["mdi:dishwasher","Lavastoviglie"],["mdi:washing-machine","Lavatrice"],["mdi:tumble-dryer","Asciugatrice"],
+      ["mdi:microwave","Microonde"],["mdi:stove","Forno"],["mdi:coffee-maker-outline","Macchina caffè"],["mdi:range-hood","Cappa"],
+      ["mdi:pot-steam-outline","Robot cucina"],["mdi:robot-vacuum","Robot aspirapolvere"],["mdi:robot-vacuum-variant","Robot lavapavimenti"],
+      ["mdi:air-fryer","Airfryer"],["mdi:power-plug-outline","Presa"],["mdi:cctv","Videocamera"],
+      ["mdi:lock-outline","Serratura"],["mdi:shield-home-outline","Allarme"],["mdi:car-electric","Auto elettrica"],["mdi:ev-station","Wallbox"],
+      ["mdi:battery-high","Batteria"],["mdi:solar-power","Fotovoltaico"],["mdi:weather-partly-cloudy","Meteo"],["mdi:home-assistant","Home Assistant"]
+    ];
+  }
+  _roomEntityIcon(entity,room=null){
+    return room?.entity_icons && typeof room.entity_icons==="object"
+      ? String(room.entity_icons[entity]||"").trim()
+      : "";
+  }
+  _setRoomEntityIcon(roomId,entity,value){
+    const room=this._roomsDraft.find(r=>r.id===roomId);
+    if(!room) return;
+    room.entity_icons=(room.entity_icons && typeof room.entity_icons==="object") ? {...room.entity_icons} : {};
+    const clean=String(value||"").trim();
+    if(clean) room.entity_icons[entity]=clean;
+    else delete room.entity_icons[entity];
+
+    // Keep the draft object reference fresh so save/normalization paths
+    // cannot miss the icon change.
+    this._roomsDraft=[...this._roomsDraft];
+  }
+  _activeRoomEntityIcon(entity){
+    if(this._uiTheme!=="v2") return "";
+    return this._roomEntityIcon(entity,this._roomById(this._active));
+  }
+  _roomEntitySize(entity,room=null){
+    const value=room?.entity_sizes && typeof room.entity_sizes==="object"
+      ? String(room.entity_sizes[entity]||"auto").trim().toLowerCase()
+      : "auto";
+    return ["auto","compact","normal","wide","full"].includes(value)?value:"auto";
+  }
+  _setRoomEntitySize(roomId,entity,value){
+    const room=this._roomsDraft.find(r=>r.id===roomId);
+    if(!room) return;
+    room.entity_sizes=(room.entity_sizes && typeof room.entity_sizes==="object")?{...room.entity_sizes}:{};
+    const clean=String(value||"auto").trim().toLowerCase();
+    if(clean && clean!=="auto") room.entity_sizes[entity]=clean;
+    else delete room.entity_sizes[entity];
+    this._roomsDraft=[...this._roomsDraft];
+  }
+  _activeRoomEntitySize(entity){
+    if(this._uiTheme!=="v2") return "auto";
+    return this._roomEntitySize(entity,this._roomById(this._active));
+  }
+  _entitySizeClass(entity){
+    const size=this._activeRoomEntitySize(entity);
+    return size==="auto"?"":` entity-size-${size}`;
   }
 
 
@@ -391,9 +442,11 @@ size==="auto"?"":` entity-size-${size}`;
 
   _roomEntityPicker(room){
     const entities=Array.isArray(room.entities)?room.entities:[];
+    const ordered=this._orderedRoomEntities(room);
     return `<div class="room-entity-picker" data-room-picker="${room.id}">
+      <div class="room-entity-sortbar"><span>Ordine visualizzazione</span><button type="button" data-room-sort-type="${room.id}"><ha-icon icon="mdi:sort-variant"></ha-icon> Per tipologia</button></div>
       <div class="room-entity-chips">
-        ${entities.map(e=>`<div class="room-entity-chip-wrap">
+        ${ordered.map(e=>`<div class="room-entity-chip-wrap">
           <span class="room-entity-chip" title="${this._esc(e)}">
             <span>${this._esc(this._roomEntityDisplay(e,room))}</span>
             <small>${this._esc(e)}</small>
@@ -407,10 +460,11 @@ size==="auto"?"":` entity-size-${size}`;
           </label>
           <label class="room-entity-icon-field">
             <span>Icona</span>
-            <select data-room-entity-icon-room="${room.id}" data-room-entity-icon-entity="${this._esc(e)}">
+            <div class="icon-select-preview"><ha-icon icon="${this._roomEntityIcon(e,room)||this._v1OriginalIcon(e,room.type,this._roomEntityDisplay(e,room))}"></ha-icon><select data-room-entity-icon-room="${room.id}" data-room-entity-icon-entity="${this._esc(e)}">
               ${this._entityIconChoices().map(([value,label])=>`<option value="${value}" ${this._roomEntityIcon(e,room)===value?"selected":""}>${label}</option>`).join("")}
-            </select>
+            </select></div>
           </label>
+          <div class="room-entity-order-actions"><span>Ordine</span><button type="button" data-room-entity-up="${room.id}" data-entity="${this._esc(e)}"><ha-icon icon="mdi:chevron-up"></ha-icon></button><button type="button" data-room-entity-down="${room.id}" data-entity="${this._esc(e)}"><ha-icon icon="mdi:chevron-down"></ha-icon></button></div>
           <label class="room-entity-size-field">
             <span>Dimensione</span>
             <select data-room-entity-size-room="${room.id}" data-room-entity-size-entity="${this._esc(e)}">
@@ -717,22 +771,3 @@ size==="auto"?"":` entity-size-${size}`;
       {id:"balcone",name:"Balcone",type:"balcone",icon:"mdi:balcony"},
       {id:"garage",name:"Garage",type:"garage",icon:"mdi:garage-variant"}
     ];
-  }
-  _roomTypes(){
-    return [
-      ["generico","Ambiente generico","mdi:home-outline"],["soggiorno","Soggiorno","mdi:sofa-outline"],
-      ["cucina","Cucina","mdi:chef-hat"],["camera","Camera","mdi:bed-king-outline"],
-      ["bagno","Bagno","mdi:shower"],["studio","Studio","mdi:desk"],
-      ["lavanderia","Lavanderia","mdi:washing-machine"],["taverna","Taverna / Sala hobby","mdi:glass-mug-variant"],
-      ["disimpegno","Corridoio / Disimpegno","mdi:walk"],["ingresso","Ingresso","mdi:door"],
-      ["scale","Scale","mdi:stairs"],["balcone","Balcone / Terrazzo","mdi:balcony"],
-      ["esterno","Giardino / Esterno","mdi:tree-outline"],["garage","Garage","mdi:garage-variant"]
-    ];
-  }
-  _effectiveRooms(){
-    if(Array.isArray(this._rooms) && this._rooms.length) return this._rooms;
-    return this._uiTheme==="v1"?this._defaultRooms():[];
-  }
-  _roomById(id){ return this._effectiveRooms().find(r=>r.id===id)||null; }
-  _roomIcon(type){ return this._roomTypes().find(x=>x[0]===type)?.[2]||"mdi:home-outline"; }
- 

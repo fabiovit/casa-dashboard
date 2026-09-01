@@ -1,5 +1,5 @@
 const base = "/casa-dashboard-community-static/";
-const version = "4.1.1";
+const version = "4.2.6";
 const parts = 19;
 const sources = await Promise.all(Array.from({length: parts}, (_, i) =>
   fetch(`${base}casa-dashboard-community-panel.part${i}.txt?v=${version}`, {cache: "no-store"}).then(r => {

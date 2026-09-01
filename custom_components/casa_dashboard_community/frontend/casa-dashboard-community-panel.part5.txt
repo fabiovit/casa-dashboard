@@ -1,185 +1,4 @@
-;letter-spacing:.15em;color:#8da6bd}.daze-data-card strong{display:block;font-size:27px;margin-top:11px;letter-spacing:-.04em}.daze-data-card small{display:block;color:var(--secondary-text-color);margin-top:7px}.daze-diagnostics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
-
-      .air-console,.dehum-console{display:grid;grid-template-columns:280px 1fr;gap:18px;align-items:center;border:1px solid rgba(255,255,255,.07);border-radius:24px;padding:20px;background:rgba(255,255,255,.015)}
-      .air-visual,.dehum-visual{height:220px;border-radius:18px;background:linear-gradient(180deg,#15232d,#0f171e);display:grid;place-items:center}.air-purifier-body{position:relative;width:120px;height:180px;border-radius:28px;background:linear-gradient(180deg,#d9dfe3,#89949c)}.air-display{position:absolute;left:28px;right:28px;top:24px;height:58px;border-radius:12px;background:#142028;display:grid;place-items:center;color:#8cd7ff}.air-display span{font-size:26px;font-weight:900}.air-display small{font-size:8px}.air-intake{position:absolute;left:16px;right:16px;bottom:18px;height:58px;border-radius:18px;background:repeating-linear-gradient(0deg,#59646d 0 4px,#354047 4px 8px)}.air-flow{position:absolute;right:-34px;top:38px}.air-flow i{display:block;width:28px;height:3px;background:#5f7b8d;margin:12px 0;border-radius:3px}.air-visual.active .air-flow i{background:#55d6ff}
-      .air-info>div:first-child span{display:block;font-size:9px;letter-spacing:.17em;color:#8da6bd}.air-info>div:first-child strong{display:block;font-size:32px;margin-top:7px}.air-info>div:first-child small{display:block;color:var(--secondary-text-color);margin-top:4px}.air-controls{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
-
-      .dehum-console.alert{border-color:rgba(255,91,91,.34)}.dehum-body{position:relative;width:150px;height:185px;border-radius:24px;background:linear-gradient(180deg,#e2e5e7,#9ea7ae)}.dehum-display{position:absolute;left:36px;right:36px;top:22px;height:50px;border-radius:10px;background:#142028;color:#70d0ff;display:grid;place-items:center}.dehum-display strong{font-size:24px}.dehum-display small{font-size:8px}.dehum-grille{position:absolute;left:24px;right:24px;top:88px;height:35px;background:repeating-linear-gradient(0deg,#69757e 0 4px,#4d585f 4px 8px)}.dehum-tank{position:absolute;left:18px;right:18px;bottom:13px;height:42px;border:2px solid #73818b;border-radius:8px;overflow:hidden}.dehum-tank div{position:absolute;left:0;right:0;bottom:0;height:20%;background:#5ecfff}.dehum-tank.full div{height:90%;background:#ff6b6b}
-      .dehum-top{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.dehum-top>div{padding:13px;border-radius:15px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02)}.dehum-top span{display:block;font-size:8px;letter-spacing:.15em;color:#8da6bd}.dehum-top strong{display:block;font-size:20px;margin-top:6px}.dehum-top strong.good{color:#59d99d}.dehum-top strong.bad{color:#ff7575}.dehum-controls{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}.dehum-target{display:grid;grid-template-columns:66px 1fr 66px;gap:10px;align-items:center;margin-top:12px}.dehum-target button,.dehum-target>div{height:52px;border-radius:14px;border:1px solid rgba(82,188,255,.23);background:rgba(82,188,255,.04);color:inherit}.dehum-target button{font-weight:900;font-size:18px}.dehum-target>div{display:grid;place-content:center;text-align:center}.dehum-target span{font-size:8px;letter-spacing:.14em;color:#8da6bd}.dehum-target strong{font-size:20px;margin-top:2px}
-
-      .app-shell.theme-light .garage-hero-card,.app-shell.theme-light .garage-door-card,.app-shell.theme-light .daze-visual,.app-shell.theme-light .daze-data-card,.app-shell.theme-light .air-console,.app-shell.theme-light .dehum-console{background:linear-gradient(180deg,#fff,#f5f9fd);border-color:rgba(15,23,42,.09)}
-      .app-shell.theme-light .garage-scene,.app-shell.theme-light .air-visual,.app-shell.theme-light .dehum-visual,.app-shell.theme-light .daze-visual{background:linear-gradient(180deg,#edf4f8,#dce7ee)}.app-shell.theme-light .garage-meta span,.app-shell.theme-light .garage-door-copy span,.app-shell.theme-light .daze-data-card span,.app-shell.theme-light .air-info span,.app-shell.theme-light .dehum-top span,.app-shell.theme-light .dehum-target span{color:#587292}
-
-      @media(max-width:1050px){.daze-console{grid-template-columns:1fr}.daze-data{grid-template-columns:repeat(3,1fr)}}
-      @media(max-width:900px){.garage-hero{grid-template-columns:1fr!important}.garage-hero-card,.garage-access-grid,.air-console,.dehum-console{grid-template-columns:1fr}.garage-controls{grid-template-columns:1fr 1fr}.daze-diagnostics{grid-template-columns:1fr 1fr 1fr}}
-      @media(max-width:620px){.garage-hero-card{padding:14px}.garage-controls,.daze-data,.air-controls,.dehum-top,.dehum-controls,.daze-diagnostics{grid-template-columns:1fr}.garage-door-card{grid-template-columns:1fr}.garage-door-mini{margin:auto}.daze-visual{min-height:240px}.daze-car{transform:scale(.82);transform-origin:left bottom}.daze-wallbox{transform:scale(.82);transform-origin:right bottom}.dehum-target{grid-template-columns:58px 1fr 58px}}
-
-
-/* ===== v4.3.54 Panoramica - nuova casa theme-aware ===== */
-      .overview-house-v2{
-        position:relative!important;
-        min-height:290px!important;
-        overflow:hidden!important;
-        border-radius:20px!important;
-        background:
-          radial-gradient(circle at 78% 20%,rgba(95,205,255,.07),transparent 28%),
-          linear-gradient(180deg,#142833 0%,#102029 64%,#182126 64%,#12191d 100%)!important;
-        border:1px solid rgba(255,255,255,.06)!important;
-      }
-
-      .house-v2-sky{
-        position:absolute;inset:0 0 36% 0;
-        background:linear-gradient(180deg,rgba(36,72,91,.28),rgba(18,39,49,.08));
-      }
-      .house-v2-ground{
-        position:absolute;left:0;right:0;bottom:0;height:36%;
-        background:linear-gradient(180deg,#1f2a2f,#172025);
-      }
-      .house-v2-building{
-        position:absolute;
-        left:50%;bottom:38px;
-        width:250px;height:165px;
-        transform:translateX(-50%);
-      }
-      .house-v2-roof{
-        position:absolute;
-        left:16px;right:16px;top:0;height:58px;
-        clip-path:polygon(50% 0,100% 78%,91% 78%,91% 100%,9% 100%,9% 78%,0 78%);
-        background:linear-gradient(180deg,#4c5961,#3c464c);
-      }
-      .house-v2-body{
-        position:absolute;
-        left:34px;right:34px;top:46px;bottom:0;
-        background:linear-gradient(180deg,#4b565d,#3b444a);
-        border-left:5px solid #66747c;
-        border-right:5px solid #66747c;
-      }
-      .house-v2-window{
-        position:absolute;
-        width:47px;height:40px;
-        top:22px;
-        background:#22343e;
-        border:5px solid #71818b;
-        display:grid;place-items:center;
-      }
-      .house-v2-window.left{left:20px}
-      .house-v2-window.right{right:20px}
-      .house-v2-window i{
-        display:block;width:100%;height:100%;
-        background:linear-gradient(90deg,#65c3fa 0 48%,#9bdbff 48% 100%);
-      }
-      .house-v2-door{
-        position:absolute;
-        left:24px;bottom:0;
-        width:38px;height:63px;
-        background:#92744f;
-        border:4px solid #73828b;
-      }
-      .house-v2-garage{
-        position:absolute;
-        right:18px;bottom:0;
-        width:73px;height:52px;
-        border:4px solid #73818a;
-        background:#4a555d;
-        display:flex;
-        flex-direction:column;
-        justify-content:space-evenly;
-        padding:4px 3px;
-        box-sizing:border-box;
-      }
-      .house-v2-garage i{
-        display:block!important;
-        height:2px!important;
-        width:100%!important;
-        background:rgba(255,255,255,.16)!important;
-      }
-
-      /* Tema chiaro vero: cambia palette, non usa più il riquadro blu scuro */
-      .app-shell.theme-light .overview-house-v2{
-        background:
-          radial-gradient(circle at 78% 20%,rgba(82,170,225,.08),transparent 30%),
-          linear-gradient(180deg,#f4f8fb 0%,#e9f1f6 64%,#e2e8e2 64%,#d8dfd9 100%)!important;
-        border-color:rgba(15,23,42,.08)!important;
-      }
-      .app-shell.theme-light .house-v2-sky{
-        background:linear-gradient(180deg,rgba(190,219,237,.38),rgba(233,242,247,.12))!important;
-      }
-      .app-shell.theme-light .house-v2-ground{
-        background:linear-gradient(180deg,#dde6dd,#cfd9d0)!important;
-      }
-      .app-shell.theme-light .house-v2-roof{
-        background:linear-gradient(180deg,#9daab2,#87969f)!important;
-      }
-      .app-shell.theme-light .house-v2-body{
-        background:linear-gradient(180deg,#d7e0e5,#c6d1d7)!important;
-        border-color:#9caab3!important;
-      }
-      .app-shell.theme-light .house-v2-window{
-        background:#d7edf8!important;
-        border-color:#97a7b0!important;
-      }
-      .app-shell.theme-light .house-v2-window i{
-        background:linear-gradient(90deg,#63bdf1 0 48%,#a8ddfa 48% 100%)!important;
-      }
-      .app-shell.theme-light .house-v2-door{
-        background:#b69066!important;
-        border-color:#9caab3!important;
-      }
-      .app-shell.theme-light .house-v2-garage{
-        background:#b9c4ca!important;
-        border-color:#94a2ab!important;
-      }
-      .app-shell.theme-light .house-v2-garage i{
-        background:rgba(50,67,77,.18)!important;
-      }
-
-      /* nessun pseudo-elemento o segnale decorativo */
-      .overview-house-v2::before,
-      .overview-house-v2::after,
-      .house-v2-building::before,
-      .house-v2-building::after{
-        content:none!important;
-        display:none!important;
-      }
-
-      @media(max-width:620px){
-        .overview-house-v2{min-height:230px!important}
-        .house-v2-building{transform:translateX(-50%) scale(.82);transform-origin:center bottom}
-      }
-
-
-/* ===== v4.3.54 Esterno + Balcone hero theme-aware ===== */
-
-      /* ESTERNO */
-      .gate-visual-v2{
-        position:relative!important;
-        overflow:hidden!important;
-        min-height:250px!important;
-        border-radius:18px!important;
-        background:linear-gradient(180deg,#172832 0%,#111d24 70%,#1a211f 70%,#121816 100%)!important;
-      }
-      .gate-v2-sky{position:absolute;inset:0 0 30% 0;background:linear-gradient(180deg,rgba(48,82,101,.24),rgba(21,39,48,.05))}
-      .gate-v2-ground{position:absolute;left:0;right:0;bottom:0;height:30%;background:linear-gradient(180deg,#202b28,#161d1b)}
-      .gate-v2-wall{position:absolute;bottom:58px;width:78px;height:92px;background:#555e62;border-top:8px solid #6e787d}
-      .gate-v2-wall.left{left:0}.gate-v2-wall.right{right:0}
-      .gate-v2-pillar{position:absolute;bottom:50px;width:22px;height:128px;background:#778188;border-top:7px solid #949da2}
-      .gate-v2-pillar.left{left:66px}.gate-v2-pillar.right{right:66px}
-      .gate-v2-leaf{
-        position:absolute;left:88px;right:88px;bottom:64px;height:98px;
-        border:6px solid #5f6b72;background:#323b40;display:flex;justify-content:space-around;
-        transform-origin:left center;perspective:500px
-      }
-      .gate-v2-leaf.open{transform:perspective(500px) rotateY(-46deg)}
-      .gate-v2-leaf i{display:block!important;width:5px!important;background:#707c83!important}
-      .gate-v2-handle{position:absolute;right:97px;bottom:106px;width:9px;height:9px;border-radius:50%;background:#d2c3a2}
-
-      .app-shell.theme-light .gate-visual-v2{
-        background:linear-gradient(180deg,#f4f8fb 0%,#e8f0f5 70%,#dfe7df 70%,#d4ddd5 100%)!important;
-      }
-      .app-shell.theme-light .gate-v2-sky{background:linear-gradient(180deg,rgba(190,219,237,.34),rgba(235,244,248,.08))!important}
-      .app-shell.theme-light .gate-v2-ground{background:linear-gradient(180deg,#e4ebe4,#d7dfd8)!important}
-      .app-shell.theme-light .gate-v2-wall{background:#d9dfe2!important;border-top-color:#bcc6cc!important}
-      .app-shell.theme-light .gate-v2-pillar{background:#c3ccd1!important;border-top-color:#a9b5bc!important}
+und:#c3ccd1!important;border-top-color:#a9b5bc!important}
       .app-shell.theme-light .gate-v2-leaf{background:#8f999f!important;border-color:#7e8b92!important}
       .app-shell.theme-light .gate-v2-leaf i{background:#6f7c83!important}
       .app-shell.theme-light .gate-v2-handle{background:#6d6252!important}
@@ -320,4 +139,83 @@
       .ui-v2 .v2-room-garage .garage-door-visual i{flex:1;border-bottom:2px solid #6b7881}
       .ui-v2 .v2-room-garage .garage-car{position:absolute;left:50%;bottom:6px;width:150px;height:60px;transform:translateX(-50%)}
       .ui-v2 .v2-room-garage .car-body{position:absolute;left:8px;right:8px;bottom:10px;height:34px;border-radius:38px 38px 12px 12px;background:linear-gradient(180deg,#8d98a3,#56616b)}
-      .ui-v2 .v2-room-garage .car-window{po
+      .ui-v2 .v2-room-garage .car-window{position:absolute;left:43px;top:3px;width:64px;height:28px;border-radius:28px 28px 4px 4px;background:#263744}
+      .ui-v2 .v2-room-garage .car-wheel{position:absolute;bottom:0;width:24px;height:24px;border-radius:50%;background:#111;border:5px solid #3a4045}
+      .ui-v2 .v2-room-garage .car-wheel.left{left:24px}.ui-v2 .v2-room-garage .car-wheel.right{right:24px}
+      .ui-v2 .v2-room-garage .garage-charge-dot{position:absolute;right:17px;top:17px;width:16px;height:16px;border-radius:50%;background:#55616c}
+
+      .room-manager{margin:0 0 18px;padding:16px;border:1px solid var(--divider-color);border-radius:18px;background:color-mix(in srgb,var(--card-background-color) 94%,transparent)}.room-manager-head{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:12px}.room-manager-head strong{display:block;font-size:16px}.room-manager-head span{display:block;margin-top:4px;color:var(--secondary-text-color);font-size:11px}.room-add{border:1px solid color-mix(in srgb,var(--primary-color) 40%,var(--divider-color));background:color-mix(in srgb,var(--primary-color) 8%,var(--card-background-color));color:var(--primary-color);border-radius:12px;padding:9px 12px;font-weight:800}.room-edit-row{display:grid;grid-template-columns:28px minmax(130px,1fr) minmax(150px,1fr) minmax(130px,.8fr) minmax(220px,1.4fr) auto;gap:8px;align-items:center;padding:9px 0;border-top:1px solid var(--divider-color)}.room-edit-row input,.room-edit-row select{min-width:0;border:1px solid var(--divider-color);border-radius:10px;padding:9px;background:var(--primary-background-color);color:var(--primary-text-color)}.room-order{font-weight:900;color:var(--secondary-text-color);text-align:center}.room-row-actions{display:flex;gap:4px}.room-row-actions button{width:34px;height:34px;border:1px solid var(--divider-color);border-radius:9px;background:var(--card-background-color);color:var(--primary-text-color)}.room-empty{display:flex;flex-direction:column;align-items:center;text-align:center;padding:24px;color:var(--secondary-text-color);gap:5px}.room-empty ha-icon{--mdc-icon-size:36px;color:var(--primary-color)}.dynamic-room-scene{height:235px;position:relative;overflow:hidden;border-radius:20px;background:radial-gradient(circle at 50% 35%,rgba(47,196,255,.15),transparent 34%),linear-gradient(145deg,#15232d,#0b1217)}.dynamic-room-icon{position:absolute;left:50%;top:50%;transform:translate(-50%,-54%);width:112px;height:112px;border-radius:30px;display:grid;place-items:center;border:1px solid rgba(90,205,255,.25);background:rgba(21,42,55,.72);box-shadow:0 20px 55px rgba(0,0,0,.25)}.dynamic-room-icon ha-icon{--mdc-icon-size:58px;color:#65d1ff}.dynamic-room-orbit{position:absolute;left:50%;top:50%;border:1px solid rgba(101,209,255,.16);border-radius:50%;transform:translate(-50%,-50%)}.dynamic-room-orbit.a{width:180px;height:180px}.dynamic-room-orbit.b{width:260px;height:260px}.dynamic-room-floor{position:absolute;left:12%;right:12%;bottom:22px;height:1px;background:linear-gradient(90deg,transparent,#65d1ff,transparent)}@media(max-width:900px){.room-edit-row{grid-template-columns:28px 1fr 1fr}.room-edit-row [data-room-icon],.room-edit-row [data-room-entities]{grid-column:2/-1}.room-row-actions{grid-column:2/-1}.room-manager-head{align-items:flex-start;flex-direction:column}}
+
+      .room-friendly-hint{display:flex;align-items:flex-start;gap:8px;margin-top:12px;padding:10px 12px;border-radius:12px;background:color-mix(in srgb,var(--primary-color) 6%,var(--card-background-color));color:var(--secondary-text-color);font-size:10px;line-height:1.45}
+      .room-friendly-hint ha-icon{--mdc-icon-size:16px;color:var(--primary-color);flex:0 0 auto;margin-top:1px}.room-friendly-hint b{color:var(--primary-text-color)}
+
+      .room-edit-row{grid-template-columns:28px minmax(130px,.8fr) minmax(145px,.8fr) minmax(125px,.72fr) minmax(320px,1.65fr) auto!important;align-items:start!important}
+      .room-entity-picker{min-width:0}.room-entity-chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:6px}.room-entity-chip{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:7px;position:relative;padding:6px 29px 6px 9px;border:1px solid color-mix(in srgb,var(--primary-color) 26%,var(--divider-color));border-radius:10px;background:color-mix(in srgb,var(--primary-color) 6%,var(--card-background-color));min-width:145px;max-width:100%}.room-entity-chip>span{font-size:11px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.room-entity-chip small{grid-column:1;color:var(--secondary-text-color);font-size:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.room-entity-chip button{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:24px;height:24px;border:0;background:transparent;color:var(--secondary-text-color);padding:0}.room-entity-chip button ha-icon{--mdc-icon-size:15px}
+      .room-entity-search-wrap{position:relative;display:flex;align-items:center;border:1px solid var(--divider-color);border-radius:10px;background:var(--primary-background-color)}.room-entity-search-wrap>ha-icon{margin-left:9px;color:var(--secondary-text-color);--mdc-icon-size:16px}.room-entity-search{width:100%;border:0!important;background:transparent!important;padding:9px 10px!important;outline:none;color:var(--primary-text-color)}.room-entity-suggestions{position:absolute;z-index:80;left:-1px;right:-1px;top:calc(100% + 5px);max-height:300px;overflow:auto;padding:6px;border:1px solid color-mix(in srgb,var(--primary-color) 25%,var(--divider-color));border-radius:12px;background:var(--card-background-color);box-shadow:0 18px 45px rgba(0,0,0,.36)}.room-entity-suggestion{display:flex;width:100%;flex-direction:column;align-items:flex-start;border:0;border-radius:8px;padding:8px 9px;background:transparent;color:var(--primary-text-color);text-align:left;cursor:pointer}.room-entity-suggestion:hover{background:color-mix(in srgb,var(--primary-color) 9%,transparent)}.room-entity-suggestion span{font-size:11px;font-weight:800}.room-entity-suggestion small{font-size:9px;color:var(--secondary-text-color);margin-top:2px}.room-entity-noresult{padding:12px;color:var(--secondary-text-color);font-size:10px}
+      @media(max-width:1050px){.room-edit-row{grid-template-columns:28px 1fr 1fr!important}.room-entity-picker{grid-column:2/-1}.room-row-actions{grid-column:2/-1}}
+
+      /* v2.0.0 - room entity picker popover fix */
+      .room-manager,.room-list,.room-edit-row,.room-entity-picker{overflow:visible!important}
+      .room-edit-row{position:relative}
+      .room-entity-search-wrap{z-index:20}
+      .room-entity-search-wrap:focus-within{z-index:120}
+      .room-entity-suggestions{z-index:999!important;max-height:min(320px,42vh)!important}
+      .room-entity-suggestions.flip-up{top:auto!important;bottom:calc(100% + 5px)!important}
+      .config-dialog{overflow:hidden}
+      .config-scroll{position:relative;z-index:1}
+      .room-manager{position:relative;z-index:30}
+      .config-toolbar{position:relative;z-index:2}
+
+      /* v2.0.0 - unlimited dynamic rooms / independent room scrolling */
+      .room-manager{display:flex;flex-direction:column;max-height:min(52vh,620px)!important}
+      .room-manager-head{flex:0 0 auto}
+      .room-list{flex:1 1 auto;min-height:0;max-height:min(40vh,470px)!important;overflow-y:auto!important;overflow-x:visible!important;padding-right:5px;scrollbar-gutter:stable}
+      .room-friendly-hint{flex:0 0 auto}
+      .room-edit-row{min-width:0}
+      .room-list::-webkit-scrollbar{width:8px}.room-list::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--secondary-text-color) 35%,transparent);border-radius:999px}
+      @media(max-width:900px){
+        .room-manager{max-height:min(58vh,650px)!important}
+        .room-list{max-height:min(46vh,520px)!important}
+      }
+
+      /* v2.0.0 - quick save inside Rooms manager */
+      .room-manager-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+      .room-save{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:1px solid color-mix(in srgb,#00a9df 58%,var(--divider-color));background:#00a9df;color:#fff;border-radius:12px;padding:9px 13px;font-weight:900;cursor:pointer}
+      .room-save ha-icon{--mdc-icon-size:17px}
+      .room-save:hover{filter:brightness(1.05)}
+      .room-save:disabled{opacity:.6;cursor:wait}
+      @media(max-width:760px){
+        .room-manager-actions{width:100%}
+        .room-manager-actions .room-add,.room-manager-actions .room-save{flex:1 1 180px}
+      }
+
+      /* v2.0.0 - Casa V2 overview aligned with personal Casa 4.3.54 */
+      .ui-v2 .community-personal-overview{grid-template-columns:minmax(360px,.78fr) minmax(650px,1.55fr)!important;min-height:340px!important}
+      .personal-overview-hero-card{display:grid;grid-template-columns:minmax(420px,1.25fr) minmax(250px,.75fr);gap:18px;align-items:stretch;min-height:255px;padding:18px;border-radius:26px;border:1px solid rgba(255,255,255,.075);background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(61,174,233,.04))}
+      .personal-overview-house{position:relative;min-height:220px;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#173143 0 48%,#182329 48%);display:grid;place-items:center}.personal-overview-house .house-v2-building{transform:scale(.9);transform-origin:center bottom}
+      .personal-overview-side{display:grid;grid-template-columns:1fr 1fr;gap:10px}.personal-overview-meta{padding:14px;border:1px solid rgba(255,255,255,.065);border-radius:16px;background:rgba(255,255,255,.025)}.personal-overview-meta span{display:block;font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:#8da6bd;font-weight:900}.personal-overview-meta strong{display:block;margin-top:7px;font-size:22px;line-height:1.05}.personal-overview-meta small{display:block;margin-top:6px;color:var(--secondary-text-color);font-size:9px;line-height:1.35}
+      .overview-active-strip{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0 28px}.overview-active-chip{display:flex;align-items:center;gap:8px;padding:11px 14px;border:1px solid rgba(72,191,255,.28);border-radius:14px;background:rgba(72,191,255,.045);color:#66ceff;font-weight:850;font-size:12px}.overview-active-chip.warn{border-color:rgba(255,175,74,.34);background:rgba(255,175,74,.055);color:#ffbd69}.overview-active-chip ha-icon{--mdc-icon-size:18px}
+      .overview-climate-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:12px 0 28px}.overview-climate-card{padding:16px 14px;border:1px solid rgba(255,255,255,.075);border-radius:18px;background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(58,178,235,.025))}.overview-climate-card span{display:block;font-size:8px;letter-spacing:.17em;text-transform:uppercase;color:#8da6bd;font-weight:900}.overview-climate-card strong{display:block;margin-top:8px;font-size:24px}.overview-climate-card small{display:block;margin-top:4px;color:var(--secondary-text-color);font-size:10px}
+      .overview-weather-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;padding:12px;border:1px solid rgba(255,255,255,.065);border-radius:22px;background:rgba(255,255,255,.015);margin-bottom:28px}.overview-weather-card{padding:14px;border-radius:16px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.025)}.overview-weather-card span{display:block;font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:#8da6bd;font-weight:900}.overview-weather-card strong{display:block;margin-top:7px;font-size:20px}.overview-weather-card small{display:block;margin-top:4px;color:var(--secondary-text-color);font-size:9px}
+      @media(max-width:1100px){.ui-v2 .community-personal-overview{grid-template-columns:1fr!important}.personal-overview-hero-card{grid-template-columns:1fr}.overview-climate-grid,.overview-weather-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+      @media(max-width:650px){.personal-overview-side{grid-template-columns:1fr 1fr}.overview-climate-grid,.overview-weather-grid{grid-template-columns:1fr 1fr}.personal-overview-house{min-height:180px}}
+
+      /* v2.0.0 - V2 overview summary only */
+      .ui-v2 .community-personal-overview.compact{grid-template-columns:minmax(380px,.85fr) minmax(520px,1.15fr)!important;min-height:285px!important}
+      .personal-overview-hero-card.compact{display:block!important;min-height:220px!important;padding:14px!important}
+      .personal-overview-hero-card.compact .personal-overview-house{min-height:220px}
+      .overview-key-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:12px 0 28px}
+      .overview-key-card{padding:15px 14px;border:1px solid rgba(255,255,255,.07);border-radius:18px;background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(65,178,235,.022))}
+      .overview-key-card span{display:block;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:#8da6bd;font-weight:900;line-height:1.35}
+      .overview-key-card strong{display:block;margin-top:8px;font-size:23px;line-height:1.1}
+      .overview-key-card small{display:block;margin-top:5px;color:var(--secondary-text-color);font-size:9px}
+      .overview-key-card.solar{background:linear-gradient(145deg,rgba(255,255,255,.02),rgba(255,190,65,.035))}
+      .overview-key-card.wallbox{background:linear-gradient(145deg,rgba(255,255,255,.02),rgba(61,200,255,.035))}
+      .overview-key-card.external{background:linear-gradient(145deg,rgba(255,255,255,.02),rgba(92,175,255,.025))}
+      @media(max-width:1100px){.overview-key-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+      @media(max-width:650px){.overview-key-grid{grid-template-columns:1fr 1fr}.ui-v2 .community-personal-overview.compact{grid-template-columns:1fr!important}}
+
+      /* v2.0.0 - Casa V2 room heroes aligned with personal Casa 4.3.54 */
+      .ui-v2 .original-room-hero{grid-template-columns:minmax(360px,.95fr) minmax(560px,1.35fr)!important;min-height:350px!important}
+      .original-room-hero-card{display:grid;grid-template-columns:minmax(340px,1.2fr) minmax(230px,.8fr);gap:18px;align-items:center;min-height:260px;padding:20px;border-radius:26px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(72,151,255,.045))}
+      .original-room-visual{min-width:0}.original-room-side{display:flex;flex-direction:column;gap:14px;padding:6px}.

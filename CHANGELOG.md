@@ -1,5 +1,92 @@
 # Changelog
 
+## 4.2.6 - 2026-09-01
+
+### Release Candidate - cleanup and consolidated responsive layer
+
+- Consolidated the accumulated late responsive overrides into one authoritative layer.
+- Fixed mobile chapter/title grid collapse.
+- Normalized phone-width cards and custom-photo geometry.
+- Kept one smart-lock renderer and preserved its Home Assistant control path.
+- Localized generic toggle labels in Italian mode.
+- Preserved tester-driven Overview controls, Active States groups, ordering, icon preview and kiosk mode.
+- Removed stale release notes and build debris.
+
+## 4.2.5 - 2026-09-01
+
+### SAFE TEST — real smartphone responsive pass
+
+- Fixed chapter grid after hiding its decorative line.
+- Rebuilt mobile header geometry instead of only reducing font size.
+- Forced room device cards to usable full width on smartphones.
+- Normalized smart-lock and specialist photo cards.
+- Reduced solar and battery visuals specifically for phone widths.
+- Improved Active States and Robot Overview mobile containment.
+
+## 4.2.4 - 2026-09-01
+
+### SAFE TEST — structural renderer fixes
+
+- Rebuilt from v4.2.2 instead of layering over v4.2.3.
+- Fixed smart-lock renderer without creating duplicate cards.
+- Added photo/size/localized-state support to the original lock card.
+- Normalized media_player/Alexa and climate cards.
+- Expanded Italian state translations.
+- Added actual-state refresh in Active States and covers group.
+- Reduced advanced solar renderer using exact classes.
+- Made Compact headers genuinely compact on smartphones.
+- Constrained sensor/robot/mower photos within card bounds.
+- Reworked Overview panels and mobile title formatting.
+
+## 4.2.2 - 2026-09-01
+
+### SAFE TEST
+
+- Reintroduced remaining tester requests on the stable v4.2.1 runtime.
+- Added configurable Overview visibility and sizing.
+- Added grouped Active States with popup controls.
+- Added room entity ordering and icon previews.
+- Extended custom photos and robot naming.
+- Added tablet/kiosk mode via `?kiosk=1`.
+- Kept the 19-part loader and no new background observers/timers.
+
+## 4.2.1 - 2026-08-31
+
+### Emergency stability hotfix
+
+- Rolled back the v4.2 frontend renderer to the stable v4.1.2 runtime.
+- Preserved v4.2 backend configuration compatibility.
+- Preserved saved room fields such as title size, subtitle and entity order.
+- Kept the stable 19-part frontend loader.
+- Prepared a stable base for reintroducing v4.2 features incrementally.
+
+## 4.2.0 - 2026-08-31
+
+### Community tester UX overhaul
+
+- Dedicated mobile density and smaller hero titles.
+- Per-room title size, optional subtitle and custom subtitle.
+- Overview sections can be hidden and assigned a visual size.
+- Section headings use readable surfaces over custom backgrounds.
+- Active states are grouped and actionable directly from Overview.
+- Common entity states are localized in Italian.
+- Custom photos extended to vacuum and lawn mower entities and hardened on mobile.
+- Room entity order can be changed; default ordering is grouped by entity type.
+- Custom light icons are now rendered in the light visual itself.
+- Background color/gradient persistence from 4.1.2 retained.
+- Robot overview naming respects configured/friendly names.
+- Added an official-style Lovelace bridge example so Casa Dashboard Community can be selected as Home Assistant's default dashboard.
+
+## 4.1.2 - 2026-08-28
+
+### Background persistence fix
+
+- Fixed solid background color values not being persisted correctly.
+- Fixed gradient Color 1 / Color 2 / Angle values not being saved.
+- Fixed room background controls not being copied during final save.
+- Improved background controls so selections survive tab changes.
+- Backend now safely preserves numeric overview configuration values.
+
 ## 4.1.1 - 2026-08-28
 
 - Added real color pickers for solid dashboard and room backgrounds.

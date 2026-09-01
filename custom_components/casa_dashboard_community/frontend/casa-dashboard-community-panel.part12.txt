@@ -1,31 +1,4 @@
-is._hass?.states?.[e]?.attributes?.friendly_name||e;
-
-    const lights=byDomain("light");
-    const switches=[...byDomain("switch"),...byDomain("fan"),...byDomain("humidifier"),...byDomain("input_boolean")];
-    const sensors=byDomain("sensor");
-    const binaries=byDomain("binary_sensor");
-
-    const motion=binaries.find(e=>{
-      const dc=String(this._attr(e,"device_class","")).toLowerCase();
-      return ["motion","occupancy","presence"].includes(dc);
-    })||null;
-    const occupancy=binaries.find(e=>{
-      const dc=String(this._attr(e,"device_class","")).toLowerCase();
-      return ["occupancy","presence"].includes(dc) && e!==motion;
-    })||null;
-
-    const motionOn=motion?this._on(motion):false;
-    const occupied=occupancy?this._on(occupancy):motionOn;
-    const lightOn=lights.filter(e=>this._on(e)).length;
-    const deviceOn=switches.filter(e=>this._on(e)).length;
-    const activeCount=lightOn+deviceOn+(motionOn?1:0);
-
-    const hero=`<section class="scene-hero hallway-dyn-hero">
-      <div class="scene-copy">
-        <div class="scene-kicker">CASA · LIVE</div>
-        <div class="scene-title-row"><h1>${this._esc(room.name||"Disimpegno")}</h1></div>
-        <div class="scene-sub">Passaggio e presenza</div>
-        <div class="scene-status ${activeCount?'warn':'good'}"><span></span>${motionOn?"Passaggio rilevato":activeCount?`${activeCount} stati attivi`:"Passaggio libero"}</div>
+?'warn':'good'}"><span></span>${motionOn?"Passaggio rilevato":activeCount?`${activeCount} stati attivi`:"Passaggio libero"}</div>
       </div>
       <div class="hallway-hero-showcase">
         <div class="hallway-scene ${motionOn?'active':''}">
@@ -118,7 +91,7 @@ is._hass?.states?.[e]?.attributes?.friendly_name||e;
 
       <button class="room-fan-toggle ${on?'active':''}" data-toggle="${entity}" type="button">
         <ha-icon icon="mdi:fan"></ha-icon>
-        <span>${on?'ON':'OFF'}</span>
+        <span>${this._language==="en"?(on?'ON':'OFF'):(on?'ACCESO':'SPENTO')}</span>
       </button>
     </div>`;
   }
@@ -163,11 +136,12 @@ is._hass?.states?.[e]?.attributes?.friendly_name||e;
 
   _mowerRoomCard(entity,title,span=6){
     const state=this._state(entity,"—");
+    const customPhoto=this._customObjectVisual(entity,"robot");
     const active=["mowing","starting","returning"].includes(String(state).toLowerCase());
     const battery=this._attr(entity,"battery_level",null);
     return `<div class="robot-room-card mower ${active?"active":"idle"} span-${span}${this._entitySizeClass(entity)}">
-      <div class="robot-room-visual"><ha-icon icon="mdi:robot-mower-outline"></ha-icon></div>
-      <div class="robot-room-copy clickable" data-more="${entity}"><span>${this._esc(title)}</span><strong>${active?"In attività":"A riposo"}</strong><small>${battery!==null?`Batteria ${battery}% · `:""}${this._esc(state)}</small></div>
+      ${customPhoto || `<div class="robot-room-visual"><ha-icon icon="mdi:robot-mower-outline"></ha-icon></div>`}
+      <div class="robot-room-copy clickable" data-more="${entity}"><span>${this._esc(title)}</span><strong>${active?"In attività":"A riposo"}</strong><small>${battery!==null?`Batteria ${battery}% · `:""}${this._esc(this._localizedState(entity,state))}</small></div>
       <div class="robot-room-actions">
         <button data-mower-entity="${entity}" data-mower-service="start_mowing" type="button"><ha-icon icon="mdi:play"></ha-icon></button>
         <button data-mower-entity="${entity}" data-mower-service="dock" type="button"><ha-icon icon="mdi:home-import-outline"></ha-icon></button>
@@ -177,11 +151,12 @@ is._hass?.states?.[e]?.attributes?.friendly_name||e;
 
   _vacuumRoomCard(entity,title,span=6){
     const state=this._state(entity,"—");
+    const customPhoto=this._customObjectVisual(entity,"robot");
     const active=["cleaning","returning","paused"].includes(String(state).toLowerCase());
     const battery=this._attr(entity,"battery_level",null);
     return `<div class="robot-room-card ${active?"active":"idle"} span-${span}${entity?this._entitySizeClass(entity):""}">
-      <div class="robot-room-visual"><ha-icon icon="mdi:robot-vacuum-variant"></ha-icon><i></i></div>
-      <div class="robot-room-copy clickable" data-more="${entity}"><span>${this._esc(title)}</span><strong>${active?"In attività":"A riposo"}</strong><small>${battery!==null?`Batteria ${battery}% · `:""}${this._esc(state)}</small></div>
+      ${customPhoto || `<div class="robot-room-visual"><ha-icon icon="mdi:robot-vacuum-variant"></ha-icon><i></i></div>`}
+      <div class="robot-room-copy clickable" data-more="${entity}"><span>${this._esc(title)}</span><strong>${active?"In attività":"A riposo"}</strong><small>${battery!==null?`Batteria ${battery}% · `:""}${this._esc(this._localizedState(entity,state))}</small></div>
       <div class="robot-room-actions">
         <button data-vacuum-entity="${entity}" data-vacuum-service="start" type="button"><ha-icon icon="mdi:play"></ha-icon></button>
         <button data-vacuum-entity="${entity}" data-vacuum-service="return_to_base" type="button"><ha-icon icon="mdi:home-import-outline"></ha-icon></button>
@@ -196,10 +171,13 @@ is._hass?.states?.[e]?.attributes?.friendly_name||e;
     const batt=this._attr(entity,"battery_level",null);
     const area=this._moduleEntity("sensor.robot_vacuum_cleaned_area");
     const duration=this._moduleEntity("sensor.robot_vacuum_cleaning_duration");
+    const name=this._overviewDisplayName("vacuum.robot_vacuum",entity);
+    const sourceRoom=(this._effectiveRooms()||[]).find(r=>(r.entities||[]).includes(entity));
+    const photo=sourceRoom?this._roomEntityImage(entity,sourceRoom):"";
     return `${this._section("Robot pulizia","Aspirazione e lavaggio")}
-      <div class="robot-overview-card">
-        <div class="robot-overview-visual"><ha-icon icon="mdi:robot-vacuum-variant"></ha-icon></div>
-        <div class="robot-overview-copy"><span>ROBOT</span><strong>${this._esc(this._hass?.states?.[entity]?.attributes?.friendly_name||"Robot aspirapolvere")}</strong><small>${this._esc(state)}</small></div>
+      <div class="robot-overview-card compact">
+        <div class="robot-overview-visual ${photo?'has-photo':''}">${photo?`<img src="${this._esc(photo)}" alt="${this._esc(name)}" loading="lazy">`:`<ha-icon icon="mdi:robot-vacuum-variant"></ha-icon>`}</div>
+        <div class="robot-overview-copy"><span>ROBOT</span><strong>${this._esc(name)}</strong><small>${this._esc(this._localizedState(entity,state))}</small></div>
         <div class="robot-overview-stats">
           ${batt!==null?`<div><span>BATTERIA</span><strong>${batt}%</strong></div>`:""}
           ${area?`<div><span>AREA</span><strong>${this._state(area,"—")} ${this._attr(area,"unit_of_measurement","")||""}</strong></div>`:""}
@@ -209,7 +187,7 @@ is._hass?.states?.[e]?.attributes?.friendly_name||e;
   }
 
   _dynamicRoom(room){
-    const entities=(room.entities||[]).filter(e=>this._hass?.states?.[e]);
+    const entities=this._orderedRoomEntities(room).filter(e=>this._hass?.states?.[e]);
     const display=e=>this._roomEntityDisplay(e,room);
     const byDomain=d=>entities.filter(e=>e.startsWith(d+"."));
     const lights=byDomain("light");
@@ -326,7 +304,7 @@ is._hass?.states?.[e]?.attributes?.friendly_name||e;
       }:null,
       firstDevice?{
         label:"Dispositivo",
-        value:firstDevice.startsWith("script.")||firstDevice.startsWith("button.")?"Disponibile":(this._on(firstDevice)?"Acceso":this._state(firstDevice,"Pronto")),
+        value:firstDevice.startsWith("script.")||firstDevice.startsWith("button.")?"Disponibile":this._localizedState(firstDevice,this._state(firstDevice,"Pronto")),
         small:display(firstDevice),
         show:true
       }:null
@@ -348,15 +326,19 @@ is._hass?.states?.[e]?.attributes?.friendly_name||e;
       ? this._alert("warn","mdi:lock-open-alert-outline","Porta chiusa ma sbloccata","La serratura risulta aperta anche se il contatto porta è chiuso.")
       : "";
 
-    const lockCard=roomLock?`<div class="community-security-card door-security">
-      <div class="security-door-visual">
-        <div class="security-door-frame"><div class="security-door-leaf"><i></i></div></div>
-        <span class="security-badge ${lockState==="locked"?"good":"warn"}">${lockState==="locked"?"BLOCCATA":lockState==="unlocked"?"SBLOCCATA":this._esc(lockState)}</span>
-      </div>
+    const lockPhoto=roomLock?this._activeRoomEntityImage(roomLock):"";
+    const lockStateLabel=roomLock?this._localizedState(roomLock,lockState):"—";
+    const lockCard=roomLock?`<div class="community-security-card door-security smart-lock-card span-6${this._entitySizeClass(roomLock)} ${lockPhoto?"has-custom-photo":""}">
+      ${lockPhoto
+        ? `<div class="security-lock-photo"><img src="${this._esc(lockPhoto)}" alt="${this._esc(display(roomLock))}" loading="lazy"></div>`
+        : `<div class="security-door-visual">
+            <div class="security-door-frame"><div class="security-door-leaf"><i></i></div></div>
+            <span class="security-badge ${lockState==="locked"?"good":"warn"}">${this._esc(lockStateLabel).toUpperCase()}</span>
+          </div>`}
       <div class="security-card-copy">
         <span>${this._esc(display(roomLock))}</span>
-        <strong>${opening?`${this._on(opening)?"Aperta":"Chiusa"} · `:""}${lockState==="locked"?"bloccata":lockState==="unlocked"?"sbloccata":this._esc(lockState)}</strong>
-        <small>${opening?"Stato porta + serratura":"Serratura"}</small>
+        <strong>${opening?`${this._on(opening)?"Aperta":"Chiusa"} · `:""}${this._esc(lockStateLabel)}</strong>
+        <small>${opening?"Stato porta + serratura":"Serratura smart"}</small>
         <div class="security-actions">
           <button class="security-btn primary" data-lock-action="${lockState==="locked"?"unlock":"lock"}" data-lock-entity="${roomLock}" type="button">${lockState==="locked"?"Sblocca porta":"Blocca porta"}</button>
           <button class="security-btn" data-more="${roomLock}" type="button">Dettagli</button>
@@ -364,7 +346,7 @@ is._hass?.states?.[e]?.attributes?.friendly_name||e;
       </div>
     </div>`:"";
 
-    const alarmCard=roomAlarm?`<div class="community-security-card alarm-security ${alarmState==="triggered"?"triggered":""}">
+    const alarmCard=roomAlarm?`<div class="community-security-card alarm-security ${roomLock?"span-6":"span-12"} ${alarmState==="triggered"?"triggered":""}">
       <div class="alarm-card-main">
         <div class="alarm-title-row">
           <div class="alarm-shield"><ha-icon icon="${alarmState==="triggered"?"mdi:alarm-light":"mdi:shield-home"}"></ha-icon></div>
@@ -400,7 +382,10 @@ is._hass?.states?.[e]?.attributes?.friendly_name||e;
             this._on(e)?"Acceso":"Spento",
             "toggle",6
           )),
-      ...media.map(e=>`<div class="command-strip span-6"><div class="command-symbol"><ha-icon icon="${this._v1OriginalIcon(e,room.type,display(e))}"></ha-icon></div><div class="command-copy clickable" data-more="${e}"><div class="command-title">${this._esc(display(e))}</div><div class="command-sub">${this._esc(this._state(e,"—"))}</div></div></div>`),
+      ...media.map(e=>this._universalDeviceVisual(
+        e,display(e),"generic",6,"",
+        {kind:"more",icon:this._v1OriginalIcon(e,room.type,display(e)),status:this._localizedState(e,this._state(e,"—")),actionText:"DETTAGLI"}
+      )),
       ...vacuums.map(e=>this._vacuumRoomCard(e,display(e),6)),
       ...mowers.map(e=>this._mowerRoomCard(e,display(e),6)),
       ...scripts.map(e=>`<div class="command-strip span-6"><div class="command-symbol"><ha-icon icon="${this._v1OriginalIcon(e,room.type,display(e))}"></ha-icon></div><div class="command-copy"><div class="command-title">${this._esc(display(e))}</div><div class="command-sub">Azione</div></div><button class="command-action" data-script="${e}" type="button"><span>ESEGUI</span><i></i></button></div>`),
@@ -469,7 +454,7 @@ is._hass?.states?.[e]?.attributes?.friendly_name||e;
       const raw=this._state(e,"—");
       const semantic=(dc==="door"||dc==="window"||dc==="opening")
         ? (this._on(e)?"Aperta":"Chiusa")
-        : raw;
+        : (Number.isFinite(Number(raw)) ? raw : this._localizedState(e,raw));
       return this._metric(icon,name,semantic,unit,4,e);
     }).join("");
 
@@ -481,7 +466,7 @@ is._hass?.states?.[e]?.attributes?.friendly_name||e;
       <div class="grid">${controlCards}${coverCards}${climateCards}</div>
       ${securityAlert?`<div class="community-security-alert">${securityAlert}</div>`:""}
       ${hasSecurity?this._section("Sicurezza e accesso"):""}
-      ${hasSecurity?`<div class="community-security-grid ${lockCard&&alarmCard?"two":"single"}">${lockCard}${alarmCard}</div>`:""}
+      ${hasSecurity?`<div class="community-security-grid entity-aware ${lockCard&&alarmCard?"two":"single"}">${lockCard}${alarmCard}</div>`:""}
       ${sensorCards?this._section(`Sensori ${this._esc(room.name)}`,"Stato dell'ambiente"):""}
       <div class="grid">${sensorCards}</div>
       ${this._renderRoomModules(room)}
@@ -601,6 +586,18 @@ is._hass?.states?.[e]?.attributes?.friendly_name||e;
           ["wallbox_name","Nome wallbox","Wallbox"]
         ].map(([key,label,placeholder])=>`<label><span>${label}</span><input data-overview-key="${key}" value="${this._esc(this._overviewDraft[key]||"")}" placeholder="${this._esc(placeholder)}"></label>`).join("")}
       </div>
+      <div class="overview-layout-config">
+        <div class="config-subsection-title"><strong>Panoramica e mobile</strong><span>Scegli cosa mostrare e quanto spazio deve occupare.</span></div>
+        <div class="overview-config-grid">
+          <label><span>SOTTOTITOLO</span><input data-overview-key="overview_subtitle" value="${this._esc(this._overviewDraft.overview_subtitle||"")}" placeholder="Solo ciò che conta davvero…"></label>
+          <label><span>MOSTRA SOTTOTITOLO</span><select data-overview-key="overview_show_subtitle"><option value="1" ${(this._overviewDraft.overview_show_subtitle??"1")!=="0"?"selected":""}>Sì</option><option value="0" ${(this._overviewDraft.overview_show_subtitle??"1")==="0"?"selected":""}>No</option></select></label>
+          <label><span>DIMENSIONE TITOLO</span><select data-overview-key="overview_title_size">${[["compact","Compatto"],["normal","Normale"],["large","Grande"]].map(([v,l])=>`<option value="${v}" ${(this._overviewDraft.overview_title_size||"normal")===v?"selected":""}>${l}</option>`).join("")}</select></label>
+        </div>
+        <div class="overview-section-config-grid">
+          ${[["active","Stati attivi"],["climate","Clima"],["weather","Meteo"],["solar","Fotovoltaico & batteria"],["wallbox","Wallbox & EV"],["vehicle","Auto elettrica"],["robot","Robot pulizia"]].map(([id,label])=>`<div class="overview-section-config-row"><strong>${label}</strong><label><input type="checkbox" data-overview-key="section_${id}_show" value="1" ${(this._overviewDraft[`section_${id}_show`]??"1")!=="0"?"checked":""}> Mostra</label><select data-overview-key="section_${id}_size">${[["compact","Compatta"],["normal","Normale"],["large","Grande"]].map(([v,l])=>`<option value="${v}" ${(this._overviewDraft[`section_${id}_size`]||"normal")===v?"selected":""}>${l}</option>`).join("")}</select></div>`).join("")}
+        </div>
+        <div class="active-category-config"><strong>Tipologie Stati attivi</strong>${[["lights","Luci"],["openings","Aperture"],["covers","Tapparelle / tende"],["devices","Dispositivi"],["presence","Presenze"]].map(([id,label])=>`<label><input type="checkbox" data-overview-key="active_${id}_show" value="1" ${(this._overviewDraft[`active_${id}_show`]??"1")!=="0"?"checked":""}> ${label}</label>`).join("")}</div>
+      </div>
       <div class="overview-photo-config-grid">
         ${this._overviewImageConfig("overview_image","Foto generale casa","Immagine mostrata nella Panoramica")}
         ${this._overviewImageConfig("vehicle_image","Foto auto","Immagine mostrata nella sezione Auto EV")}
@@ -633,4 +630,6 @@ is._hass?.states?.[e]?.attributes?.friendly_name||e;
         <div class="room-main-fields">
           <input data-room-name="${r.id}" value="${this._esc(r.name||"")}" placeholder="Nome stanza">
           <select data-room-type="${r.id}">${this._roomTypes().map(([v,l])=>`<option value="${v}" ${r.type===v?"selected":""}>${l}</option>`).join("")}</select>
-          <input data-room-icon="${r.id}" value="${this._
+          <input data-room-icon="${r.id}" value="${this._esc(r.icon||this._roomIcon(r.type))}" placeholder="mdi:icona">
+          <select data-room-title-size="${r.id}" title="Dimensione titolo">${[["compact","Titolo compatto"],["normal","Titolo normale"],["large","Titolo grande"]].map(([v,l])=>`<option value="${v}" ${(r.title_size||"normal")===v?"selected":""}>${l}</option>`).join("")}</select>
+          <label class="room-subtitle-toggle"><input type="checkbox" data-room-show-subtitle="${r.id}" ${r.show_subtitle!==false?

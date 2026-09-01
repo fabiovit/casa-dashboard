@@ -1,4 +1,97 @@
-ty,""));
+(value):value;
+    return `${new Intl.NumberFormat(this._language==="en"?"en-GB":"it-IT",{minimumFractionDigits:2,maximumFractionDigits:2}).format(n)} kW`;
+  }
+  _energyFmtLogical(logicalKey,digits=2,fallbackUnit=""){
+    const entity=this._eid(logicalKey);
+    if(!entity || !this._hass?.states?.[entity]) return "—";
+    const obj=this._hass.states[entity], n=parseFloat(obj.state);
+    const unit=String(obj.attributes?.unit_of_measurement||fallbackUnit||"").trim();
+    if(!Number.isFinite(n)) return this._esc(obj.state);
+    return `${new Intl.NumberFormat(this._language==="en"?"en-GB":"it-IT",{minimumFractionDigits:digits,maximumFractionDigits:digits}).format(n)}${unit?` ${unit}`:""}`;
+  }
+  _energySetting(key,fallback){
+    const raw=String(this._overviewConfig?.[key]||"").trim();
+    return raw||fallback;
+  }
+  _advancedEnergySection(){
+    const pvTotalDirect=this._energyPowerKW("sensor.solar_pv_power");
+    const pv1=this._energyPowerKW("sensor.solar_pv1_power");
+    const pv2=this._energyPowerKW("sensor.solar_pv2_power");
+    const pvTotal=pvTotalDirect!==null?pvTotalDirect:
+      ((pv1!==null || pv2!==null)?((pv1||0)+(pv2||0)):null);
+    const load=this._energyPowerKW("sensor.solar_load_power");
+    const grid=this._energyPowerKW("sensor.solar_grid_power");
+    const battPower=this._energyPowerKW("sensor.solar_battery_power");
+    const soc=this._energyNumber("sensor.solar_battery_soc");
+
+    const hasEnergy=[pvTotal,pv1,pv2,load,grid,battPower,soc].some(v=>v!==null);
+    if(!hasEnergy) return "";
+
+    const pv1Volt=this._energyFmtLogical("sensor.solar_pv1_voltage",0);
+    const pv1Current=this._energyFmtLogical("sensor.solar_pv1_current",2);
+    const pv2Volt=this._energyFmtLogical("sensor.solar_pv2_voltage",0);
+    const pv2Current=this._energyFmtLogical("sensor.solar_pv2_current",2);
+    const today=this._energyFmtLogical("sensor.solar_energy_today",2);
+
+    const chargeToday=this._energyFmtLogical("sensor.solar_battery_charged_today",2);
+    const dischargeToday=this._energyFmtLogical("sensor.solar_battery_discharged_today",2);
+    const losses=this._energyFmtLogical("sensor.solar_battery_losses_today",2);
+    const modeEntity=this._eid("sensor.solar_battery_mode");
+    const battMode=modeEntity?String(this._state(modeEntity,"")||"").toLowerCase():"";
+
+    const batteryPositive=this._energySetting("battery_positive","charge");
+    let battDirection="idle";
+    if(battPower!==null && Math.abs(battPower)>0.0005){
+      const positive=battPower>0;
+      battDirection=(positive && batteryPositive==="charge") || (!positive && batteryPositive==="discharge") ? "charge" : "discharge";
+    }else if(/charge|caric/.test(battMode) && !/discharge|scaric/.test(battMode)){
+      battDirection="charge";
+    }else if(/discharge|scaric/.test(battMode)){
+      battDirection="discharge";
+    }
+    const battFlowLabel=battDirection==="charge"
+      ? (this._language==="en"?"Charging":"Carica in corso")
+      : battDirection==="discharge"
+      ? (this._language==="en"?"Discharging":"Scarica in corso")
+      : (this._language==="en"?"Battery standby":"Batteria in standby");
+    const battDesc=battDirection==="charge"
+      ? (this._language==="en"?"Energy flowing to storage":"Energia diretta verso l’accumulo")
+      : battDirection==="discharge"
+      ? (this._language==="en"?"Energy flowing to the home":"Energia diretta verso la casa")
+      : (this._language==="en"?"Battery ready":"Accumulo disponibile");
+    const battTone=battDirection==="charge"?"good":battDirection==="discharge"?"bad":"active";
+
+    const gridPositive=this._energySetting("grid_positive","import");
+    let gridDirection="idle";
+    if(grid!==null && Math.abs(grid)>0.0005){
+      const positive=grid>0;
+      gridDirection=(positive && gridPositive==="import") || (!positive && gridPositive==="export") ? "import" : "export";
+    }
+    const gridLabel=gridDirection==="import"
+      ? (this._language==="en"?"Grid import":"Prelievo dalla rete")
+      : gridDirection==="export"
+      ? (this._language==="en"?"Grid export":"Export in rete")
+      : (this._language==="en"?"No grid exchange":"Scambio nullo");
+    const gridTone=gridDirection==="import"?"warn":gridDirection==="export"?"good":"active";
+
+    const pvMax=Math.max(Math.abs(pv1||0),Math.abs(pv2||0),0.1);
+    const socPct=soc===null?0:Math.max(0,Math.min(100,soc));
+    const socText=soc===null?"—":`${Math.round(soc)}%`;
+
+    const sectionTitle=this._overviewText("solar_label",this._language==="en"?"Solar & Battery":"Fotovoltaico & batteria");
+    const prodLabel=this._energySetting("energy_production_label",this._language==="en"?"Live production":"Produzione live");
+    const pv1Label=this._energySetting("energy_pv1_label",this._language==="en"?"PV1":"Falda 1");
+    const pv2Label=this._energySetting("energy_pv2_label",this._language==="en"?"PV2":"Falda 2");
+    const houseLabel=this._energySetting("energy_house_label",this._language==="en"?"Home":"Casa");
+    const inverterLabel=this._energySetting("energy_inverter_label","Inverter");
+    const batteryLabel=this._energySetting("energy_battery_label",this._language==="en"?"Battery":"Batteria");
+    const gridNodeLabel=this._energySetting("energy_grid_label",this._language==="en"?"Grid":"Rete");
+
+    const dailyParts=[];
+    if(today!=="—") dailyParts.push(`${today} ${this._language==="en"?"today":"oggi"}`);
+    const radEntity=this._eid("sensor.weather_solar_radiation");
+    if(radEntity){
+      const rv=parseFloat(this._state(radEntity,""));
       const ru=this._attr(radEntity,"unit_of_measurement","W/m²");
       if(Number.isFinite(rv)) dailyParts.push(`${Math.round(rv)} ${ru}`);
     }
@@ -327,11 +420,14 @@ ty,""));
 
     const wallboxSensors=entities.filter(e=>this._isOverviewWallboxEntity(e));
 
-    const hero=`<section class="scene-hero community-personal-overview compact">
+    const overviewSubtitle=String(this._overviewText("overview_subtitle","Solo ciò che conta davvero, in un colpo d'occhio"));
+    const showOverviewSubtitle=String(this._overviewConfig?.overview_show_subtitle??"1")!=="0";
+    const overviewTitleSize=["compact","normal","large"].includes(String(this._overviewConfig?.overview_title_size||"normal"))?String(this._overviewConfig?.overview_title_size||"normal"):"normal";
+    const hero=`<section class="scene-hero community-personal-overview compact overview-title-${overviewTitleSize}">
       <div class="scene-copy">
         <div class="scene-kicker">CASA · LIVE</div>
         <div class="scene-title-row"><h1>${this._esc(this._overviewText("overview_title","Panoramica"))}</h1><div class="scene-icon"><ha-icon icon="mdi:home-analytics"></ha-icon></div></div>
-        <div class="scene-sub">Solo ciò che conta davvero, in un colpo d'occhio</div>
+        ${showOverviewSubtitle&&overviewSubtitle?`<div class="scene-sub">${this._esc(overviewSubtitle)}</div>`:""}
         <div class="scene-status ${activeItems.length?"warn":"good"}"><span class="pulse"></span><strong>${activeItems.length?`${activeItems.length} stati attivi`:"Tutto tranquillo"}</strong></div>
       </div>
       <div class="personal-overview-hero-card compact">
@@ -347,9 +443,16 @@ ty,""));
       </div>
     </section>`;
 
-    const activeSection=activeItems.length
-      ? `${this._section(this._overviewText("active_label","Stati attivi"),"Solo ciò che in questo momento sta cambiando")}<div class="overview-active-strip">${activeItems.map(i=>`<div class="overview-active-chip ${i.tone}"><ha-icon icon="${i.icon}"></ha-icon><span>${this._esc(i.name)}</span></div>`).join("")}</div>`
-      : "";
+    const activeGroups=this._activeGroups();
+    const activeGroupMeta=[
+      ["lights","mdi:lightbulb-on-outline","Luci","blue"],
+      ["openings","mdi:door-open","Aperture","warn"],
+      ["covers","mdi:blinds-open","Tapparelle","warn"],
+      ["devices","mdi:power-plug-outline","Dispositivi","blue"],
+      ["presence","mdi:motion-sensor","Presenze","blue"]
+    ];
+    const activeGroupHtml=activeGroupMeta.filter(([id])=>String(this._overviewConfig?.[`active_${id}_show`]??"1")!=="0"&&(activeGroups[id]||[]).length).map(([id,icon,label,tone])=>`<button class="overview-active-chip group ${tone}" data-active-group="${id}" type="button"><ha-icon icon="${icon}"></ha-icon><span>${label}</span><strong>${activeGroups[id].length}</strong></button>`).join("");
+    const activeSection=activeGroupHtml?`${this._section(this._overviewText("active_label","Stati attivi"),"Tocca un gruppo per vedere e controllare i dispositivi")}<div class="overview-active-strip grouped">${activeGroupHtml}</div>`:"";
 
     const roomClimateCards=this._roomClimateSummaryCards();
     const tempSection=roomClimateCards
@@ -390,7 +493,7 @@ ty,""));
     const vehicleSection=this._vehicleOverviewSection();
     const robotSection=this._robotOverviewSection();
 
-    return `<div class="page overview-personal-v2 summary-only">${hero}${activeSection}${tempSection}${extSection}${solarSection}${wallboxSection}${vehicleSection}${robotSection}</div>`;
+    return `<div class="page overview-personal-v2 summary-only">${hero}${this._overviewSectionWrap("active",activeSection)}${this._overviewSectionWrap("climate",tempSection)}${this._overviewSectionWrap("weather",extSection)}${this._overviewSectionWrap("solar",solarSection)}${this._overviewSectionWrap("wallbox",wallboxSection)}${this._overviewSectionWrap("vehicle",vehicleSection)}${this._overviewSectionWrap("robot",robotSection)}</div>`;
   }
 
   _overview() {
@@ -451,70 +554,4 @@ ty,""));
       <div class="panel-title">Garage + EV + Wallbox</div>
       <div class="panel-big">${mobilityConfigured?(ev?this._fmtPowerAuto("sensor.wallbox_charging_power",2):'Pronta'):(garage?'Garage aperto':'Garage')}</div>
       <div class="panel-sub">${mobilityConfigured?`${ev?'Ricarica in corso':'Nessuna ricarica attiva'}${this._configured("sensor.wallbox_evse_status")?` · EVSE ${this._state("sensor.wallbox_evse_status","—")}`:""}`:'Accesso garage configurato'}</div>
-      <div class="mini-tags">${this._configured("binary_sensor.garage_door_contact")?`<span class="mini-tag ${garage?'warn':''}">🚗 ${garage?'Basculante aperto':'Garage chiuso'}</span>`:""}${treadmillConfigured?`<span class="mini-tag ${this._on("switch.garage_treadmill")?'active':''}">🏃 ${this._on("switch.garage_treadmill")?'Tapis ON':'Tapis OFF'}</span>`:""}</div>
-    </section>`:"";
-
-    const securityVisible=alarmConfigured || leakConfigured || tankConfigured;
-    const security=securityVisible?`<section class="card mini-panel security-panel span-4">
-      <div class="panel-eyebrow">SICUREZZA</div>
-      <div class="panel-title">Segnali importanti</div>
-      <div class="panel-big">${all.level==='bad'?'Attenzione':all.level==='warn'?'Da controllare':'Serena'}</div>
-      <div class="panel-sub">${[alarmConfigured?`Allarme ${alarm}`:"",leakConfigured?`Sensori acqua ${this._on("binary_sensor.bathroom_water_leak")?'ATTIVI':'OK'}`:""].filter(Boolean).join(" · ")}</div>
-      <div class="mini-tags">${leakConfigured?`<span class="mini-tag ${this._on("binary_sensor.bathroom_water_leak")?'warn':''}">💧 ${this._on("binary_sensor.bathroom_water_leak")?'Perdita':'Acqua OK'}</span>`:""}${tankConfigured?`<span class="mini-tag ${this._on("binary_sensor.garage_dehumidifier_tank_full")?'warn':''}">🪣 ${this._on("binary_sensor.garage_dehumidifier_tank_full")?'Serbatoio pieno':'Serbatoio OK'}</span>`:""}</div>
-    </section>`:"";
-
-    const overviewPanels=[mainSpotlight,atmosphere,energy,security].filter(Boolean);
-    const spotlight=overviewPanels.length?`<div class="dashboard-grid">${overviewPanels.join("")}</div>`:"";
-    return `<div class="page overview-page">${this._configNotice()}${hero}${spotlight}${this._section("Ambienti","Una mappa elegante delle zone principali")}<div class="grid room-mosaic">${roomCards}</div></div>`;
-  }
-
-  _roomCard(room) {
-    if(!this._roomConfigured(room)) return "";
-    const m=ROOM_META[room], s=this._roomStatus(room); let tags=[];
-    if(room==="bagno") {
-      if(this._configured("sensor.bathroom_temperature")) tags.push(`🌡️ ${this._fmt("sensor.bathroom_temperature",1,"°C")}`);
-      if(this._configured("sensor.bathroom_humidity")) tags.push(`💧 ${this._fmt("sensor.bathroom_humidity",0,"%")}`);
-    }
-    if(room==="cucina") {
-      if(this._configured("sensor.kitchen_temperature")) tags.push(`🌡️ ${this._fmt("sensor.kitchen_temperature",1,"°C")}`);
-      if(this._configured("sensor.kitchen_humidity")) tags.push(`💧 ${this._fmt("sensor.kitchen_humidity",0,"%")}`);
-    }
-    if(room==="camera") {
-      if(this._configured("sensor.bedroom_temperature")) tags.push(`🌡️ ${this._fmt("sensor.bedroom_temperature",1,"°C")}`);
-      if(this._configured("sensor.bedroom_humidity")) tags.push(`💧 ${this._fmt("sensor.bedroom_humidity",0,"%")}`);
-    }
-    if(room==="balcone") {
-      if(this._configured("sensor.weather_outdoor_temperature")) tags.push(`🌡️ ${this._fmt("sensor.weather_outdoor_temperature",1,"°C")}`);
-      if(this._configured("sensor.weather_wind_gust")) tags.push(`💨 ${this._fmt("sensor.weather_wind_gust",0,"km/h")}`);
-    }
-    if(room==="garage") {
-      if(this._configured("sensor.garage_temperature")) tags.push(`🌡️ ${this._fmt("sensor.garage_temperature",1,"°C")}`);
-      if(this._configured("binary_sensor.ev_charging_at_home") || this._configured("sensor.wallbox_evse_status")) tags.push(this._on("binary_sensor.ev_charging_at_home")?"🔌 In carica":"🚗 Wallbox pronta");
-    }
-    if(room==="ingresso") {
-      if(this._configured("alarm_control_panel.home_alarm")) tags.push(this._state("alarm_control_panel.home_alarm") === "disarmed"?"🔓 Allarme OFF":"🛡️ Allarme ON");
-      if(this._configured("light.entry_main")) tags.push(this._on("light.entry_main")?"💡 Luce ON":"💡 Luce OFF");
-    }
-    return `<article class="card room-card premium-room clickable span-4" data-nav="${room}">
-      <div class="room-heading">
-        <div class="room-orb ${s.level}"><ha-icon icon="${m.icon}"></ha-icon></div>
-        <div class="room-arrow"><ha-icon icon="mdi:arrow-top-right"></ha-icon></div>
-      </div>
-      <div class="room-copy">
-        <div class="room-eyebrow">${m.subtitle}</div>
-        <h3>${m.title}</h3>
-        <div class="room-status-line ${s.level}">${this._esc(s.text)}</div>
-      </div>
-      <div class="room-pills">
-        ${tags.map(t=>`<span class="room-pill">${t}</span>`).join("")}
-      </div>
-    </article>`;
-  }
-
-  _anyConfigured(keys){ return (keys||[]).some(key=>this._configured(key)); }
-
-  _zoneHero(room, metrics) {
-    const m=ROOM_META[room], s=this._roomStatus(room);
-    const requirements={
-      esterno:{"Cancellino":["input_boolean.pedestrian_gate"],"Stato":["input_boolean.pedestrian_gate"]},
-      scale:{"Luce":["light.stairs"],"Portoncino":["input_boolean.m
+      <div class="mini-tags">${this._configured("binary_sensor.garage_door_contact")?`<span class="mini-tag ${garage?'warn':''}">🚗 ${garage?'Basculante aperto':'Garage chiuso'}</span>`:""}${treadmillConfigured?`<span class="mini-tag ${this._on("switch.garage_treadmill")?'active':''}">🏃 ${this._on("switch.garage_t

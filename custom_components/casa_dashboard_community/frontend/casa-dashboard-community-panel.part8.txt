@@ -1,178 +1,4 @@
-{grid-template-columns:190px 1fr}
-      .community-security-card{min-height:285px}
-      .door-security{padding:28px}
-      .security-door-visual{height:225px}
-      .alarm-security{padding:28px}
-      .alarm-card-main{min-width:0}
-      @media(max-width:1000px){
-        .community-security-grid.two,.community-security-grid.single{grid-template-columns:1fr}
-      }
-      @media(max-width:650px){
-        .community-security-grid.single .alarm-security,
-        .community-security-grid.single .door-security{grid-template-columns:1fr}
-      }
-
-
-      .kitchen-appliance-card{
-        min-height:165px;border:1px solid rgba(255,255,255,.07);border-radius:var(--r-md);padding:14px;
-        display:grid;grid-template-columns:130px 1fr auto;align-items:center;gap:15px;
-        background:linear-gradient(180deg,rgba(255,255,255,.025),rgba(255,255,255,.012))
-      }
-      .kitchen-appliance-visual{
-        height:118px;border-radius:15px;background:linear-gradient(180deg,#17242d,#10171d);
-        border:1px solid rgba(255,255,255,.06);display:grid;place-items:center;position:relative;overflow:hidden
-      }
-      .kitchen-appliance-copy span{display:block;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:#8da6bd}
-      .kitchen-appliance-copy strong{display:block;font-size:24px;margin-top:7px}
-      .kitchen-appliance-copy small{display:block;color:var(--secondary-text-color);margin-top:4px}
-      .kitchen-appliance-toggle{
-        min-width:64px;height:46px;border-radius:14px;border:1px solid rgba(255,255,255,.08);
-        background:rgba(255,255,255,.025);color:#8797a4;font-weight:850;display:flex;align-items:center;justify-content:center;gap:6px
-      }
-      .kitchen-appliance-toggle.active{color:#55e6ad;border-color:rgba(85,230,173,.28);background:rgba(85,230,173,.07)}
-
-      .kitchen-hood{position:relative;width:95px;height:90px}.hood-chimney{position:absolute;left:35px;top:3px;width:25px;height:45px;background:#737e86}.hood-body{position:absolute;left:10px;right:10px;top:40px;height:30px;clip-path:polygon(18% 0,82% 0,100% 100%,0 100%);background:#8b959c}.hood-light{position:absolute;left:28px;right:28px;top:68px;height:7px;border-radius:6px;background:#4a555d}.hood-light.on{background:#ffb45c;box-shadow:0 0 14px rgba(255,180,92,.45)}
-
-      .kitchen-thermomix{position:relative;width:90px;height:100px}.tm-bowl{position:absolute;left:22px;top:2px;width:47px;height:58px;border-radius:7px 7px 22px 22px;background:linear-gradient(90deg,#9aa5ac,#d4dadd,#929da5)}.tm-base{position:absolute;left:10px;right:10px;bottom:5px;height:45px;border-radius:17px;background:#78848c}.tm-screen{position:absolute;left:21px;top:8px;width:28px;height:18px;border-radius:5px;background:#1b252b}.tm-screen.on{background:#67b8ff;box-shadow:0 0 13px rgba(103,184,255,.35)}
-
-      .kitchen-airfryer{position:relative;width:80px;height:100px}.af-body{position:absolute;inset:4px 10px;border-radius:24px 24px 16px 16px;background:linear-gradient(180deg,#30383d,#171d21);border:3px solid #59636a}.af-screen{position:absolute;left:18px;right:18px;top:15px;height:18px;border-radius:7px;background:#0d1215}.af-screen.on{background:#67b8ff;box-shadow:0 0 12px rgba(103,184,255,.30)}.af-handle{position:absolute;left:22px;right:22px;top:48px;height:7px;border-radius:7px;background:#8d989f}.af-basket{position:absolute;left:15px;right:15px;bottom:12px;height:28px;border-radius:7px;background:#252c31}
-
-      .kitchen-tv{position:relative;width:100px;height:85px}.tv-screen{position:absolute;left:5px;right:5px;top:5px;height:58px;border-radius:8px;border:5px solid #526069;background:#11181c;display:grid;place-items:center;color:#566570}.tv-screen.on{background:linear-gradient(135deg,#1c4b6f,#3189be);color:#8edbff;box-shadow:0 0 18px rgba(103,184,255,.16)}.tv-screen ha-icon{--mdc-icon-size:28px}.tv-stand{position:absolute;left:42px;bottom:3px;width:16px;height:16px;border-bottom:5px solid #65727a}.app-shell.theme-light .kitchen-appliance-card{background:linear-gradient(180deg,#fff,#f5f9fd);border-color:rgba(15,23,42,.10)}.app-shell.theme-light .kitchen-appliance-visual{background:linear-gradient(180deg,#edf5fa,#dde8ef)}.app-shell.theme-light .kitchen-appliance-copy span{color:#587292}.kitchen-appliance-card,.kitchen-appliance-card *{transition:none!important;animation:none!important}
-
-      @media(max-width:800px){
-      }
-      @media(max-width:620px){
-        .kitchen-appliance-card{grid-template-columns:100px 1fr auto;min-height:140px}
-        .kitchen-appliance-visual{height:96px}
-      }
-
-      @media(max-width:1100px){
-      }
-      @media(max-width:620px){
-      }
-
-
-      /* ===== v4.3.75 Ambiente cucina standard ===== */
-      .kitchen-environment-standard{
-        align-items:stretch;
-      }
-      @media(max-width:900px){
-        .kitchen-environment-standard{
-          grid-template-columns:repeat(2,minmax(0,1fr));
-        }
-        .kitchen-environment-standard .environment-card{
-          grid-column:span 1!important;
-        }
-      }
-      @media(max-width:620px){
-        .kitchen-environment-standard{
-          grid-template-columns:1fr;
-        }
-      }
-
-
-      /* ===== v4.3.75 Bagno - Crocchette Nila ===== */
-
-      /* v4.1.1 - Dynamic Kitchen parity */
-      .kitchen-dyn-hero{grid-template-columns:minmax(340px,.9fr) minmax(520px,1.25fr)}
-      .kitchen-dyn-showcase{display:grid;grid-template-columns:minmax(300px,1.15fr) minmax(210px,.85fr);gap:18px;align-items:center;min-height:250px;padding:20px;border-radius:var(--r-lg);border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(103,184,255,.045))}
-      .kitchen-dyn-scene{height:210px;border-radius:var(--r-md);position:relative;overflow:hidden;background:linear-gradient(180deg,#141a20,#0d1116)}
-      .kitchen-dyn-window{position:absolute;left:34px;top:24px;width:145px;height:112px;border:5px solid #47525d;background:#1e3a4b}
-      .kitchen-dyn-counter{position:absolute;left:24px;right:24px;bottom:26px;height:44px;background:linear-gradient(180deg,#343d45,#22292f);border-top:6px solid #5a646c}
-      .kitchen-dyn-lamp{position:absolute;right:68px;top:20px}.kitchen-dyn-lamp:before{content:"";display:block;width:2px;height:34px;background:#747f87;margin:auto}.kitchen-dyn-lamp i{display:block;width:48px;height:22px;border-radius:50% 50% 10px 10px;background:#606b73}.kitchen-dyn-lamp.on i{background:#ffb45c;box-shadow:0 14px 34px rgba(255,180,92,.28)}
-      .kitchen-dyn-meta{display:flex;flex-direction:column;gap:5px}.kitchen-dyn-meta>span{font-size:9px;letter-spacing:.18em;color:#8da6bd;font-weight:850}.kitchen-dyn-meta>strong{font-size:28px;letter-spacing:-.04em}.kitchen-dyn-meta>small{color:var(--secondary-text-color)}.kitchen-dyn-meta>div{height:1px;background:linear-gradient(90deg,rgba(103,184,255,.8),transparent);margin:10px 0}
-      .kitchen-heating-main{min-height:210px;padding:20px;border:1px solid rgba(255,255,255,.07);border-radius:22px;background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(255,180,92,.035));display:grid;grid-template-columns:160px 1fr;gap:18px;align-items:center}
-      .kitchen-heat-ring{width:145px;height:145px;border-radius:50%;display:grid;place-items:center;align-content:center;background:radial-gradient(circle at center,var(--card-background-color) 0 66%,transparent 67%),conic-gradient(from 220deg,#ffb45c 0 58%,#3b464f 58% 80%,#263139 80%);text-align:center}.kitchen-heat-ring span{font-size:8px;letter-spacing:.16em;color:#8da6bd}.kitchen-heat-ring strong{font-size:30px;margin-top:5px}.kitchen-heat-ring small{font-size:9px;color:var(--secondary-text-color);margin-top:3px}
-      .kitchen-heat-info{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.kitchen-heat-info>div{padding:12px;border-radius:14px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.025)}.kitchen-heat-info span{font-size:8px;letter-spacing:.14em;color:#8da6bd}.kitchen-heat-info strong{display:block;font-size:17px;margin-top:5px}.kitchen-heat-info button{grid-column:1/-1;height:42px;border-radius:12px;border:1px solid rgba(255,180,92,.32);background:rgba(255,180,92,.05);color:#ffb45c;font-weight:850;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
-      .app-shell.theme-light .kitchen-dyn-showcase,.app-shell.theme-light .kitchen-heating-main{background:linear-gradient(145deg,#fff,#f4f8fb);border-color:rgba(15,23,42,.09)}
-      .app-shell.theme-light .kitchen-dyn-scene{background:linear-gradient(180deg,#eef3f7,#dce5ec)}
-      @media(max-width:900px){.kitchen-dyn-hero{grid-template-columns:1fr}.kitchen-dyn-showcase{grid-template-columns:1fr}.kitchen-heating-main{grid-template-columns:1fr}.kitchen-heat-ring{margin:auto}}
-      @media(max-width:620px){.kitchen-heat-info{grid-template-columns:1fr}.kitchen-heat-info button{grid-column:auto}}
-
-
-      /* v4.1.1 - Dynamic Kitchen blind section */
-      .kitchen-blind-card{min-height:190px;padding:18px;border-radius:22px;border:1px solid rgba(255,255,255,.07);background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(103,184,255,.025));display:grid;grid-template-columns:220px 1fr auto;gap:22px;align-items:center}
-      .kitchen-blind-scene{height:150px;border-radius:16px;display:grid;place-items:center;background:linear-gradient(180deg,#172631,#101820);border:1px solid rgba(255,255,255,.06);overflow:hidden}
-      .kitchen-blind-window{position:relative;width:150px;height:112px;border:5px solid #596773;background:#24465a;overflow:hidden}
-      .kitchen-blind-sky{position:absolute;inset:4px;background:linear-gradient(180deg,#467f9f,#27495d)}
-      .kitchen-blind-sheet{position:absolute;left:5px;right:5px;top:5px;min-height:8px;background:repeating-linear-gradient(0deg,#a6afb6 0 7px,#939da5 7px 14px);transition:none}
-      .kitchen-blind-bar{position:absolute;left:4px;right:4px;height:6px;background:#66727c;transform:translateY(-3px)}
-      .kitchen-blind-copy span{display:block;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#8da6bd}.kitchen-blind-copy strong{display:block;font-size:28px;margin-top:7px}.kitchen-blind-copy small{display:block;color:var(--secondary-text-color);margin-top:4px}
-      .kitchen-blind-action{height:46px;padding:0 16px;border-radius:14px;border:1px solid rgba(103,184,255,.35);background:rgba(103,184,255,.05);color:#67b8ff;font-weight:850;cursor:pointer;display:flex;align-items:center;gap:7px}
-      .app-shell.theme-light .kitchen-blind-card{background:linear-gradient(145deg,#fff,#f4f8fb);border-color:rgba(15,23,42,.09)}.app-shell.theme-light .kitchen-blind-scene{background:linear-gradient(180deg,#edf5fa,#ddeaf2)}
-      @media(max-width:760px){.kitchen-blind-card{grid-template-columns:170px 1fr}.kitchen-blind-action{grid-column:1/-1;justify-content:center}.kitchen-blind-scene{height:130px}}
-      @media(max-width:520px){.kitchen-blind-card{grid-template-columns:1fr}.kitchen-blind-scene{height:145px}}
-
-
-      /* v4.1.1 - Kitchen Comfort & Climate parity */
-      .kitchen-climate-real{min-height:300px;border-radius:26px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(103,184,255,.022));display:grid;grid-template-columns:320px 1fr;gap:28px;align-items:center;padding:24px 26px}
-      .kitchen-climate-ring-wrap{display:grid;place-items:center}
-      .kitchen-climate-ring{width:245px;height:245px;border-radius:50%;display:grid;place-items:center;align-content:center;text-align:center;background:
-        radial-gradient(circle at center,var(--card-background-color) 0 73%,transparent 74%),
-        conic-gradient(from 220deg,#314757 0 62%,#4f5d67 62% 73%,#26333d 73% 100%)}
-      .kitchen-climate-ring.active{background:
-        radial-gradient(circle at center,var(--card-background-color) 0 73%,transparent 74%),
-        conic-gradient(from 220deg,#4c8cac 0 62%,#6ab4d6 62% 73%,#26333d 73% 100%)}
-      .kitchen-climate-ring span{font-size:10px;letter-spacing:.17em;color:#8da6bd;font-weight:850}
-      .kitchen-climate-ring strong{font-size:44px;line-height:1;margin-top:12px;letter-spacing:-.045em}
-      .kitchen-climate-ring small{font-size:13px;color:var(--secondary-text-color);margin-top:12px}
-      .kitchen-climate-main{display:grid;grid-template-rows:auto auto auto;gap:16px}
-      .kitchen-climate-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-      .kitchen-climate-stats>div{min-height:76px;padding:16px;border-radius:16px;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.018);display:flex;flex-direction:column;justify-content:center}
-      .kitchen-climate-stats span,.kitchen-climate-status span{font-size:9px;letter-spacing:.16em;color:#8da6bd;font-weight:850}
-      .kitchen-climate-stats strong{font-size:24px;margin-top:7px}
-      .kitchen-climate-status{min-height:82px;border-radius:16px;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.018);display:flex;align-items:center;gap:16px;padding:14px 18px;cursor:pointer}
-      .kitchen-climate-status-icon{width:34px;height:34px;display:grid;place-items:center;color:#8da6bd}
-      .kitchen-climate-status-icon ha-icon{--mdc-icon-size:26px}
-      .kitchen-climate-status strong{display:block;font-size:20px;margin-top:4px}
-      .kitchen-climate-status small{display:block;color:var(--secondary-text-color);font-size:11px;margin-top:2px}
-      .kitchen-climate-open{height:54px;border-radius:15px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.018);color:var(--primary-text-color);font-weight:850;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px}
-      .kitchen-climate-open:hover{border-color:rgba(103,184,255,.35);background:rgba(103,184,255,.04)}
-      .app-shell.theme-light .kitchen-climate-real{background:linear-gradient(145deg,#fff,#f5f8fa);border-color:rgba(15,23,42,.09)}
-      .app-shell.theme-light .kitchen-climate-stats>div,.app-shell.theme-light .kitchen-climate-status,.app-shell.theme-light .kitchen-climate-open{background:#f7f9fb;border-color:rgba(15,23,42,.08)}
-      @media(max-width:900px){.kitchen-climate-real{grid-template-columns:1fr}.kitchen-climate-ring{width:220px;height:220px}.kitchen-climate-stats{grid-template-columns:1fr 1fr 1fr}}
-      @media(max-width:620px){.kitchen-climate-real{padding:18px}.kitchen-climate-stats{grid-template-columns:1fr}.kitchen-climate-ring{width:190px;height:190px}.kitchen-climate-ring strong{font-size:36px}}
-
-
-      /* v4.1.1 - Kitchen semantic appliance icons */
-      .kitchen-semantic-icon{width:86px;height:86px;border-radius:18px;display:grid;place-items:center;background:#132633;border:1px solid rgba(103,184,255,.24);color:#67b8ff}
-      .kitchen-semantic-icon ha-icon{--mdc-icon-size:42px}
-      .kitchen-semantic-icon.off{color:#8294a3;background:#14222c;border-color:rgba(130,148,163,.18)}
-      .kitchen-semantic-icon.fridge ha-icon{--mdc-icon-size:39px}
-      .kitchen-semantic-icon.dishwasher ha-icon{--mdc-icon-size:41px}
-      .kitchen-semantic-icon.microwave ha-icon{--mdc-icon-size:42px}
-      .kitchen-semantic-icon.oven ha-icon{--mdc-icon-size:43px}
-      .kitchen-semantic-icon.coffee ha-icon{--mdc-icon-size:43px}
-      .kitchen-semantic-icon.computer ha-icon{--mdc-icon-size:42px}
-      .kitchen-semantic-icon.monitor ha-icon{--mdc-icon-size:44px}
-      .kitchen-semantic-icon.camera ha-icon{--mdc-icon-size:42px}
-      .kitchen-semantic-icon.usb ha-icon{--mdc-icon-size:40px}
-      .kitchen-semantic-icon.homeassistant ha-icon{--mdc-icon-size:43px}
-      .kitchen-semantic-icon.hub ha-icon{--mdc-icon-size:43px}
-      .kitchen-semantic-icon.siren ha-icon{--mdc-icon-size:42px}
-      .kitchen-semantic-icon.plug ha-icon{--mdc-icon-size:40px}
-      .app-shell.theme-light .kitchen-semantic-icon{background:#eef6fb;border-color:rgba(46,140,200,.18)}
-
-
-      /* v4.1.1 - Mario feedback */
-      .topbar-tools{display:flex;align-items:center;gap:10px;margin-left:auto}
-      .topbar-config-btn{height:34px;padding:0 11px;border-radius:10px;border:1px solid rgba(103,184,255,.22);background:rgba(103,184,255,.05);color:var(--primary-text-color);display:flex;align-items:center;gap:6px;cursor:pointer;font-size:10px;font-weight:850}
-      .topbar-config-btn ha-icon{--mdc-icon-size:17px;color:#67b8ff}
-      .info-config-box{margin:18px 0;padding:16px;border:1px solid rgba(103,184,255,.18);border-radius:18px;display:flex;align-items:center;justify-content:space-between;gap:16px;background:rgba(103,184,255,.035)}
-      .info-config-box span{font-size:8px;letter-spacing:.16em;color:#8da6bd;font-weight:900}.info-config-box strong{display:block;margin-top:5px;font-size:18px}.info-config-box p{margin:5px 0 0;color:var(--secondary-text-color)}
-      .info-config-box button{height:40px;padding:0 14px;border-radius:11px;border:1px solid rgba(103,184,255,.3);background:rgba(103,184,255,.06);color:#67b8ff;font-weight:850;display:flex;align-items:center;gap:6px;cursor:pointer}
-      .overview-photo-config-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
-      .overview-image-field{padding:14px;border:1px solid var(--divider-color);border-radius:14px;background:var(--secondary-background-color)}
-      .overview-image-field>span{display:block;font-size:9px;font-weight:900}.overview-image-field>small{display:block;margin:4px 0 9px;color:var(--secondary-text-color)}
-      .overview-photo-preview{height:140px;margin-top:10px}.overview-photo-preview img{width:100%;height:100%;object-fit:cover;border-radius:12px}
-      .overview-house-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-      .personal-overview-house.has-overview-photo:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(0,0,0,.16));pointer-events:none}
-      .room-entity-icon-field{display:block}.room-entity-icon-field>span{display:block;margin-bottom:5px;font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:var(--secondary-text-color);font-weight:800}
-      .room-entity-icon-field select{width:100%;height:32px;border-radius:8px;border:1px solid var(--divider-color);background:var(--secondary-background-color);color:var(--primary-text-color);padding:0 8px;font-size:9px}
-      .vehicle-overview-card{display:grid;grid-template-columns:300px 1fr;gap:18px;min-height:230px;margin:12px 0 28px;padding:18px;border:1px solid rgba(103,184,255,.11);border-radius:24px;background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(57,180,240,.035))}
-      .vehicle-overview-visual{border-radius:18px;overflow:hidden;background:#101820;display:grid;place-items:center;min-height:190px}.vehicle-overview-visual ha-icon{--mdc-icon-size:90px;color:#67b8ff}.vehicle-overview-visual img{width:100%;height:100%;object-fit:cover}
-      .vehicle-overview-main{display:flex;flex-direction:column;justify-content:center}.vehicle-overview-head span{font-size:8px;letter-spacing:.17em;color:#8da6bd;font-weight:900}.vehicle-overview-head strong{display:block;font-size:28px;margin-top:6px}.vehicle-overview-head small{display:block;margin-top:5px;color:var(--secondary-text-color)}
-      .vehicle-overview-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:18px}.vehicle-overview-stats>div{padding:12px;border:1px solid rgba(255,255,255,.06);border-radius:14px;background:rgba(255,255,255,.02)}.vehicle-overview-stats span{font-size:8px;color:#8da6bd;text-transform:uppercase;letter-spacing:.12em}.vehicle-overview-stats strong{display:block;margin-top:5px;font-size:17px}
+:rgba(255,255,255,.02)}.vehicle-overview-stats span{font-size:8px;color:#8da6bd;text-transform:uppercase;letter-spacing:.12em}.vehicle-overview-stats strong{display:block;margin-top:5px;font-size:17px}
       .dynamic-room-page .scene-title-row .scene-icon,.kitchen-dynamic-page .scene-title-row .scene-icon{display:none!important}
       @media(max-width:650px){
         .topbar-config-btn span{display:none}.topbar-config-btn{width:34px;padding:0;justify-content:center}
@@ -187,7 +13,7 @@
       }
 
 
-      /* v4.1.1 FIXED - safe Community climate polish */
+      /* Community climate polish */
       .kitchen-climate-real{grid-column:1/-1}
       .kitchen-climate-ring strong{font-size:44px;letter-spacing:-.045em}
       .kitchen-climate-status strong{font-size:20px}
@@ -198,7 +24,7 @@
       }
 
 
-      /* v4.1.1 - Dynamic Hallway / Disimpegno */
+      /* Dynamic Hallway / Disimpegno */
       .hallway-dyn-hero{grid-template-columns:minmax(360px,.9fr) minmax(560px,1.25fr)}
       .hallway-hero-showcase{display:grid;grid-template-columns:minmax(360px,1.2fr) minmax(220px,.8fr);gap:18px;align-items:stretch;min-height:250px;padding:20px;border-radius:26px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(71,180,140,.035))}
       .hallway-scene{min-height:210px;position:relative;overflow:hidden;border-radius:18px;background:linear-gradient(180deg,#18212a,#0d1217)}
@@ -232,7 +58,7 @@
       @media(max-width:650px){.hallway-appliance-card{grid-template-columns:86px 1fr}.hallway-appliance-toggle{grid-column:1/-1;justify-content:center}.hallway-appliance-icon{width:76px;height:76px}}
 
 
-      /* v4.1.1 - Overview Climate / Weather parity */
+      /* Overview Climate / Weather parity */
       .overview-room-climate-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:12px 0 28px}
       .overview-room-climate-card{min-height:92px;padding:14px;border-radius:16px;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.018);display:flex;flex-direction:column;justify-content:center}
       .overview-room-climate-card span{font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:#8da6bd;font-weight:900}
@@ -252,7 +78,7 @@
       @media(max-width:650px){.overview-room-climate-grid{grid-template-columns:1fr 1fr}.overview-weather-grid{grid-template-columns:1fr}.overview-weather-card{border-right:0}}
 
 
-      /* v4.1.1 - Physical fan / extractor visual */
+      /* Physical fan / extractor visual */
       .room-fan-card{
         min-height:164px;
         border-radius:20px;
@@ -356,7 +182,7 @@
       }
 
 
-      /* v4.1.1 - Smart auto mapping */
+      /* Smart auto mapping */
       .auto-map-toolbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:12px 0 4px;padding:12px 14px;border:1px solid rgba(103,184,255,.18);border-radius:14px;background:rgba(103,184,255,.035)}
       .auto-map-btn{height:38px;padding:0 14px;border-radius:11px;border:1px solid rgba(103,184,255,.32);background:rgba(103,184,255,.08);color:#67b8ff;font-weight:850;cursor:pointer;display:flex;align-items:center;gap:7px}
       .auto-map-btn ha-icon{--mdc-icon-size:18px}
@@ -365,7 +191,7 @@
       @media(max-width:650px){.auto-map-toolbar{align-items:stretch;flex-direction:column}.auto-map-btn{justify-content:center;width:100%}}
 
 
-      /* v4.1.1 - Dedicated awning / tenda visual */
+      /* Dedicated awning / tenda visual */
       .community-awning-card{display:grid;grid-template-columns:220px minmax(0,1fr) auto;gap:20px;align-items:center;min-height:180px;border:1px solid rgba(255,255,255,.07);border-radius:22px;padding:18px;background:rgba(255,255,255,.015)}
       .community-awning-scene{position:relative;width:220px;height:135px;border-radius:16px;overflow:hidden;background:linear-gradient(180deg,#29485a,#182b36)}
       .community-awning-box{position:absolute;left:18px;right:18px;top:14px;height:18px;background:#89939a;border-radius:6px}
@@ -384,7 +210,7 @@
       @media(max-width:620px){.community-awning-card{grid-template-columns:1fr}.community-awning-scene{width:100%}}
 
 
-      /* v4.1.1 - reusable room modules */
+      /* reusable room modules */
       .room-shared-modules{grid-column:1/-1;margin-top:8px;padding:11px;border:1px solid rgba(103,184,255,.14);border-radius:12px;background:rgba(103,184,255,.025)}
       .room-shared-modules>span{display:block;font-size:8px;letter-spacing:.15em;color:#8da6bd;font-weight:900;margin-bottom:8px}
       .room-shared-modules-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
@@ -392,4 +218,433 @@
       .room-shared-module input{accent-color:#67b8ff}.room-shared-module ha-icon{--mdc-icon-size:17px;color:#67b8ff}.room-shared-module b{font-size:9px}.room-shared-modules small{display:block;margin-top:7px;color:var(--secondary-text-color);font-size:9px}
       .room-modules-stack{display:flex;flex-direction:column;gap:18px}
       .room-module{border:1px solid rgba(255,255,255,.07);border-radius:22px;background:linear-gradient(145deg,rgba(255,255,255,.022),rgba(103,184,255,.018));padding:16px}
-      .room-module-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.room-module-hea
+      .room-module-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.room-module-head>div{display:flex;align-items:center;gap:9px}.room-module-head ha-icon{--mdc-icon-size:21px;color:#67b8ff}.room-module-head strong{font-size:16px}.room-module-head small{font-size:9px;color:var(--secondary-text-color)}
+      .room-module-grid{gap:10px}
+      .room-module-metric{min-height:96px;padding:12px;border:1px solid rgba(255,255,255,.06);border-radius:15px;background:rgba(255,255,255,.018);display:grid;grid-template-columns:44px 1fr;gap:10px;align-items:center}
+      .room-module-icon{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:#142632;color:#67b8ff}.room-module-icon ha-icon{--mdc-icon-size:22px}
+      .room-module-metric span{display:block;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:#8da6bd;font-weight:850}.room-module-metric strong{display:block;font-size:20px;margin-top:5px}.room-module-metric small{display:block;margin-top:3px;color:var(--secondary-text-color);font-size:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .room-alarm-panel{min-height:128px;border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:16px;display:grid;grid-template-columns:62px 1fr auto;gap:14px;align-items:center;background:rgba(255,255,255,.018)}
+      .room-alarm-orb{width:58px;height:58px;border-radius:16px;display:grid;place-items:center;background:rgba(255,180,92,.10);color:#ffb45c}.room-alarm-orb ha-icon{--mdc-icon-size:28px}.room-alarm-panel span{display:block;font-size:8px;letter-spacing:.15em;color:#8da6bd}.room-alarm-panel strong{display:block;font-size:23px;margin-top:5px}.room-alarm-panel small{display:block;color:var(--secondary-text-color);margin-top:3px}.room-alarm-panel button{height:42px;padding:0 13px;border-radius:12px;border:1px solid rgba(103,184,255,.28);background:rgba(103,184,255,.05);color:#67b8ff;font-weight:800}
+      @media(max-width:900px){.room-shared-modules-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:650px){.room-shared-modules-grid{grid-template-columns:1fr}.room-alarm-panel{grid-template-columns:54px 1fr}.room-alarm-panel button{grid-column:1/-1}}
+
+
+      /* persistent shared-module selector state */
+      .room-shared-module.active{
+        border-color:rgba(103,184,255,.36);
+        background:rgba(103,184,255,.09);
+      }
+      .room-shared-module.active ha-icon{color:#67b8ff}
+
+
+      /* Solar room module uses the exact Overview advanced renderer */
+      .room-shared-solar-advanced{
+        width:100%;
+        margin-top:6px;
+      }
+      .room-shared-solar-advanced .section-title{
+        margin-top:0;
+      }
+      .room-shared-solar-advanced .solar-showcase.community-advanced-energy{
+        margin-bottom:8px;
+      }
+
+
+      /* Weather module / Overview visual parity */
+      .room-shared-weather-overview{
+        width:100%;
+        margin-top:8px;
+      }
+      .room-shared-weather-overview .section-title{
+        margin-top:0;
+      }
+
+      .overview-weather-grid{
+        position:relative;
+        overflow:hidden;
+        display:grid!important;
+        grid-template-columns:repeat(5,minmax(0,1fr))!important;
+        gap:0!important;
+        padding:0!important;
+        border:1px solid rgba(103,184,255,.14)!important;
+        border-radius:24px!important;
+        background:
+          radial-gradient(circle at 8% 20%,rgba(52,174,255,.09),transparent 26%),
+          linear-gradient(145deg,rgba(255,255,255,.025),rgba(71,138,195,.025))!important;
+        margin-bottom:28px!important;
+      }
+
+      .overview-weather-card{
+        min-height:126px!important;
+        padding:18px 16px!important;
+        border:0!important;
+        border-right:1px solid rgba(255,255,255,.065)!important;
+        border-radius:0!important;
+        background:transparent!important;
+        display:grid!important;
+        grid-template-columns:54px minmax(0,1fr)!important;
+        gap:12px!important;
+        align-items:center!important;
+      }
+      .overview-weather-card:last-child{
+        border-right:0!important;
+      }
+
+      .overview-weather-icon{
+        width:50px!important;
+        height:50px!important;
+        border-radius:16px!important;
+        display:grid!important;
+        place-items:center!important;
+        background:linear-gradient(145deg,#173041,#10212c)!important;
+        color:#63c9ff!important;
+        border:1px solid rgba(99,201,255,.18)!important;
+        box-shadow:0 8px 24px rgba(0,0,0,.12)!important;
+      }
+      .overview-weather-icon ha-icon{
+        --mdc-icon-size:27px!important;
+      }
+
+      .overview-weather-card span{
+        display:block!important;
+        font-size:8px!important;
+        letter-spacing:.17em!important;
+        text-transform:uppercase!important;
+        color:#8da6bd!important;
+        font-weight:900!important;
+      }
+      .overview-weather-card strong{
+        display:block!important;
+        margin-top:6px!important;
+        font-size:22px!important;
+        line-height:1.05!important;
+        letter-spacing:-.03em!important;
+      }
+      .overview-weather-card small{
+        display:block!important;
+        margin-top:5px!important;
+        color:var(--secondary-text-color)!important;
+        font-size:9px!important;
+        line-height:1.35!important;
+      }
+
+      .app-shell.theme-light .overview-weather-grid{
+        background:
+          radial-gradient(circle at 8% 20%,rgba(52,174,255,.08),transparent 28%),
+          linear-gradient(145deg,#fff,#f5f9fc)!important;
+        border-color:rgba(15,23,42,.10)!important;
+      }
+      .app-shell.theme-light .overview-weather-card{
+        border-right-color:rgba(15,23,42,.07)!important;
+      }
+      .app-shell.theme-light .overview-weather-icon{
+        background:linear-gradient(145deg,#eef7fb,#e3f0f6)!important;
+        color:#1689c7!important;
+        border-color:rgba(22,137,199,.16)!important;
+      }
+
+      @media(max-width:1100px){
+        .overview-weather-grid{
+          grid-template-columns:repeat(2,minmax(0,1fr))!important;
+        }
+        .overview-weather-card{
+          border-bottom:1px solid rgba(255,255,255,.06)!important;
+        }
+      }
+      @media(max-width:650px){
+        .overview-weather-grid{
+          grid-template-columns:1fr!important;
+        }
+        .overview-weather-card{
+          border-right:0!important;
+        }
+      }
+
+
+      /* EV + Wallbox room module parity */
+      .community-daze-console{
+        display:grid;
+        grid-template-columns:465px minmax(0,1fr);
+        gap:16px;
+        align-items:stretch;
+        margin-bottom:12px;
+      }
+      .community-daze-visual{
+        min-height:282px;
+        position:relative;
+        overflow:hidden;
+        border-radius:22px;
+        border:1px solid rgba(103,184,255,.15);
+        background:linear-gradient(180deg,#10232e,#0b1820);
+      }
+      .community-daze-car{
+        position:absolute;
+        left:28px;
+        bottom:72px;
+        width:210px;
+        height:100px;
+      }
+      .community-daze-car-body{
+        position:absolute;
+        left:0;right:0;bottom:20px;height:52px;
+        border-radius:40px 55px 18px 18px;
+        background:linear-gradient(180deg,#aab4bc,#7f8b95);
+      }
+      .community-daze-car-glass{
+        position:absolute;
+        left:60px;top:0;width:92px;height:48px;
+        border-radius:38px 38px 8px 8px;
+        background:#29404f;
+      }
+      .community-daze-wheel{
+        position:absolute;
+        bottom:0;width:31px;height:31px;border-radius:50%;
+        background:#12181c;border:6px solid #58646c;
+      }
+      .community-daze-wheel.left{left:32px}
+      .community-daze-wheel.right{right:32px}
+      .community-daze-wallbox{
+        position:absolute;
+        right:28px;bottom:52px;
+        width:72px;height:148px;border-radius:30px 30px 18px 18px;
+        background:linear-gradient(180deg,#e8ebed,#9da6ad);
+        box-shadow:0 12px 25px rgba(0,0,0,.25);
+      }
+      .community-daze-screen{
+        position:absolute;left:19px;top:19px;width:34px;height:52px;
+        border-radius:6px;background:#111b21;
+      }
+      .community-daze-led{
+        position:absolute;left:28px;top:81px;width:16px;height:16px;border-radius:50%;
+        background:#48555f;
+      }
+      .community-daze-led.active{
+        background:#55e6ad;
+        box-shadow:0 0 14px rgba(85,230,173,.6);
+      }
+      .community-daze-cable{
+        position:absolute;left:52px;top:104px;width:84px;height:75px;
+        border:6px solid #20272c;border-left:0;border-top:0;border-radius:0 0 70px 0;
+      }
+      .community-daze-status{
+        position:absolute;left:26px;bottom:20px;
+        font-size:14px;font-weight:850;color:#9aabba;
+      }
+      .community-daze-status span{
+        display:inline-block;width:10px;height:10px;border-radius:50%;
+        background:#5b6872;margin-right:8px;
+      }
+      .community-daze-status.active{color:#55e6ad}
+      .community-daze-status.active span{background:#55e6ad}
+
+      .community-daze-data{
+        display:grid;
+        grid-template-columns:repeat(3,minmax(0,1fr));
+        gap:12px;
+      }
+      .community-daze-data-card{
+        min-height:128px;
+        border:1px solid rgba(255,255,255,.07);
+        border-radius:18px;
+        padding:15px;
+        background:rgba(255,255,255,.016);
+      }
+      .community-daze-data-card.primary{
+        border-color:rgba(103,184,255,.25);
+        background:rgba(103,184,255,.035);
+      }
+      .community-daze-data-card span{
+        display:block;font-size:8px;letter-spacing:.15em;color:#8da6bd;
+      }
+      .community-daze-data-card strong{
+        display:block;font-size:27px;margin-top:11px;letter-spacing:-.04em;
+      }
+      .community-daze-data-card small{
+        display:block;color:var(--secondary-text-color);margin-top:7px;
+      }
+      .community-daze-diagnostics{
+        display:grid;
+        grid-template-columns:repeat(3,minmax(0,1fr));
+        gap:12px;
+        margin:12px 0 28px;
+      }
+
+      .app-shell.theme-light .community-daze-visual,
+      .app-shell.theme-light .community-daze-data-card{
+        background:linear-gradient(180deg,#fff,#f5f9fd);
+        border-color:rgba(15,23,42,.09);
+      }
+      .app-shell.theme-light .community-daze-visual{
+        background:linear-gradient(180deg,#edf4f8,#dce7ee);
+      }
+      .app-shell.theme-light .community-daze-data-card span{
+        color:#587292;
+      }
+
+      @media(max-width:1050px){
+        .community-daze-console{grid-template-columns:1fr}
+        .community-daze-data{grid-template-columns:repeat(3,minmax(0,1fr))}
+      }
+      @media(max-width:700px){
+        .community-daze-data,
+        .community-daze-diagnostics{grid-template-columns:1fr}
+        .community-daze-visual{min-height:240px}
+        .community-daze-car{transform:scale(.82);transform-origin:left bottom}
+        .community-daze-wallbox{transform:scale(.82);transform-origin:right bottom}
+      }
+
+
+      /* EV vehicle card inside rooms using EV + Wallbox */
+      .room-vehicle-card{
+        display:grid;
+        grid-template-columns:280px minmax(0,1fr);
+        gap:18px;
+        align-items:center;
+        margin:12px 0 28px;
+        padding:18px;
+        border:1px solid rgba(103,184,255,.14);
+        border-radius:22px;
+        background:linear-gradient(145deg,rgba(255,255,255,.02),rgba(103,184,255,.02));
+      }
+      .room-vehicle-visual{
+        height:175px;
+        border-radius:18px;
+        display:grid;
+        place-items:center;
+        background:linear-gradient(180deg,#10222d,#0d1820);
+        color:#67b8ff;
+      }
+      .room-vehicle-visual ha-icon{--mdc-icon-size:82px}
+      .room-vehicle-head span{
+        display:block;
+        font-size:8px;
+        letter-spacing:.16em;
+        color:#8da6bd;
+        font-weight:900;
+      }
+      .room-vehicle-head strong{
+        display:block;
+        font-size:28px;
+        margin-top:7px;
+      }
+      .room-vehicle-head small{
+        display:block;
+        margin-top:4px;
+        color:var(--secondary-text-color);
+      }
+      .room-vehicle-stats{
+        display:grid;
+        grid-template-columns:repeat(3,minmax(0,1fr));
+        gap:10px;
+        margin-top:16px;
+      }
+      .room-vehicle-stats>div{
+        min-height:72px;
+        padding:11px;
+        border:1px solid rgba(255,255,255,.06);
+        border-radius:13px;
+        background:rgba(255,255,255,.018);
+      }
+      .room-vehicle-stats span{
+        display:block;
+        font-size:8px;
+        letter-spacing:.13em;
+        color:#8da6bd;
+      }
+      .room-vehicle-stats strong{
+        display:block;
+        font-size:18px;
+        margin-top:6px;
+      }
+      .app-shell.theme-light .room-vehicle-card,
+      .app-shell.theme-light .room-vehicle-stats>div{
+        background:#fff;
+        border-color:rgba(15,23,42,.08);
+      }
+      .app-shell.theme-light .room-vehicle-visual{
+        background:linear-gradient(180deg,#eef5fa,#dce8ef);
+      }
+      @media(max-width:850px){
+        .room-vehicle-card{grid-template-columns:1fr}
+        .room-vehicle-visual{height:145px}
+      }
+      @media(max-width:650px){
+        .room-vehicle-stats{grid-template-columns:1fr}
+      }
+
+
+
+      /* tester improvements */
+      .nav-bar{max-width:1480px;margin:auto;display:grid;grid-template-columns:auto auto minmax(0,1fr) auto auto;align-items:stretch;padding:0 18px;gap:6px}
+      .nav-bar .nav-scroller{min-width:0;margin:0;padding:0;overflow-x:auto}
+      .nav-fixed,.nav-arrow{border:0;background:transparent;color:var(--secondary-text-color);min-height:44px;display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;font-weight:760;white-space:nowrap}
+      .nav-fixed{position:relative;padding:10px 8px 12px}
+      .nav-fixed ha-icon{--mdc-icon-size:18px}
+      .nav-fixed.active{color:var(--casa-accent);font-weight:900}
+      .nav-fixed.active:after{content:"";position:absolute;left:6px;right:6px;bottom:0;height:3px;border-radius:3px;background:var(--casa-accent)}
+      .nav-arrow{width:30px;justify-content:center;border-radius:9px}
+      .nav-arrow:hover{background:var(--secondary-background-color);color:var(--primary-text-color)}
+      .nav-arrow ha-icon{--mdc-icon-size:19px}
+      @media(max-width:720px){.nav-info-fixed span,.nav-home-fixed span{display:none}.nav-bar{padding:0 8px;gap:2px}.nav-arrow{width:28px}}
+
+      .device-room-filter{display:flex;align-items:center;gap:10px;margin:0 0 14px;padding:11px 13px;border:1px solid var(--divider-color);border-radius:14px;background:var(--card-background-color)}
+      .device-room-filter>ha-icon{color:var(--primary-color);--mdc-icon-size:20px}
+      .device-room-filter label{display:flex;align-items:center;gap:10px;min-width:0}
+      .device-room-filter label span{font-size:9px;font-weight:850;letter-spacing:.11em;color:var(--secondary-text-color)}
+      .device-room-filter select{height:36px;min-width:220px;border:1px solid var(--divider-color);border-radius:9px;background:var(--secondary-background-color);color:var(--primary-text-color);padding:0 9px}
+
+      .background-config-panel{margin-top:13px;padding:14px;border:1px solid var(--divider-color);border-radius:15px;background:var(--card-background-color);display:grid;grid-template-columns:minmax(220px,1fr) minmax(180px,.45fr) minmax(280px,1fr);gap:12px;align-items:end}
+      .background-config-panel>div strong{display:block}.background-config-panel>div span{display:block;margin-top:4px;font-size:10px;color:var(--secondary-text-color)}
+      .background-config-panel label span,.room-background-fields label span{display:block;font-size:8px;font-weight:850;letter-spacing:.1em;color:var(--secondary-text-color);margin-bottom:5px}
+      .background-config-panel input,.background-config-panel select,.room-background-fields input,.room-background-fields select{width:100%;height:38px;border:1px solid var(--divider-color);border-radius:9px;background:var(--secondary-background-color);color:var(--primary-text-color);padding:0 9px}
+      .room-background-fields{display:grid;grid-template-columns:130px minmax(180px,1fr);gap:8px;margin-top:8px}
+      @media(max-width:760px){.background-config-panel{grid-template-columns:1fr}.room-background-fields{grid-template-columns:1fr}}
+
+      #content.custom-room-background{max-width:none;width:100%;padding-left:max(22px,calc((100vw - 1480px)/2 + 22px));padding-right:max(22px,calc((100vw - 1480px)/2 + 22px));border-radius:0}
+      .app-shell.custom-dashboard-background{background-attachment:fixed!important;background-size:cover!important}
+      .app-shell.custom-dashboard-background .topbar{background:color-mix(in srgb,var(--primary-background-color) 88%,transparent)}
+
+      .light-visual-card.on .light-visual-toggle,.light-visual-card.on .light-fixture{color:#ffd35a}
+      .light-visual-card.on .light-visual-toggle ha-icon{color:#ffd35a}
+      .light-fixture.bulb{position:relative;width:110px;height:105px;margin:auto}
+      .bulb-wire{position:absolute;left:50%;top:0;width:2px;height:25px;background:#91a0ad}
+      .bulb-glass{position:absolute;left:50%;top:24px;transform:translateX(-50%);width:52px;height:54px;border-radius:50% 50% 44% 44%;background:#8293a2}
+      .bulb-base{position:absolute;left:50%;top:70px;transform:translateX(-50%);width:29px;height:24px;border-radius:4px;background:#60717f}
+      .bulb-glow{position:absolute;left:50%;top:28px;transform:translateX(-50%);width:42px;height:42px;border-radius:50%;background:transparent}
+      .light-visual-card.on .bulb-glass{background:#ffe083}
+      .light-visual-card.on .bulb-glow{background:#ffd45a;filter:blur(18px);opacity:.75}
+
+      .community-awning-card>.custom-object-photo,.kitchen-blind-card>.custom-object-photo{width:190px;height:135px;border-radius:16px;margin:14px}
+      .universal-device-card.blinds>.custom-object-photo{width:132px;height:118px;border-radius:16px}
+
+      .vehicle-showcase{border-color:color-mix(in srgb,var(--primary-color) 28%,var(--divider-color));box-shadow:0 14px 38px color-mix(in srgb,var(--primary-color) 7%,transparent)}
+      .vehicle-battery-gauge{position:absolute;left:16px;right:16px;bottom:14px;height:24px;border-radius:999px;background:rgba(0,0,0,.48);overflow:hidden;border:1px solid rgba(255,255,255,.12)}
+      .vehicle-battery-gauge i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,#20c997,#5bbcff)}
+      .vehicle-battery-gauge strong{position:relative;z-index:2;height:100%;display:grid;place-items:center;color:#fff;font-size:11px}
+      .vehicle-overview-visual{position:relative}
+
+      .robot-room-card{grid-column:span 6;min-height:150px;border:1px solid var(--divider-color);border-radius:18px;background:var(--card-background-color);display:grid;grid-template-columns:125px 1fr auto;gap:15px;align-items:center;padding:14px}
+      .robot-room-visual{height:112px;border-radius:15px;background:color-mix(in srgb,var(--primary-color) 10%,var(--secondary-background-color));display:grid;place-items:center;color:var(--primary-color);position:relative}
+      .robot-room-visual ha-icon{--mdc-icon-size:58px}.robot-room-card.active .robot-room-visual ha-icon{animation:robotPulse 1.4s ease-in-out infinite}
+      @keyframes robotPulse{50%{transform:scale(1.08)}}
+      .robot-room-copy span,.robot-overview-copy span{display:block;font-size:8px;letter-spacing:.14em;color:var(--secondary-text-color);font-weight:850}.robot-room-copy strong{display:block;font-size:20px;margin-top:5px}.robot-room-copy small{display:block;margin-top:4px;color:var(--secondary-text-color)}
+      .robot-room-actions{display:flex;gap:7px}.robot-room-actions button{width:38px;height:38px;border:1px solid var(--divider-color);border-radius:10px;background:var(--secondary-background-color);color:var(--primary-color);cursor:pointer}
+      .robot-overview-card{display:grid;grid-template-columns:150px minmax(180px,.65fr) 1fr;gap:18px;align-items:center;padding:18px;border:1px solid var(--divider-color);border-radius:22px;background:var(--card-background-color)}
+      .robot-overview-visual{height:130px;border-radius:17px;background:color-mix(in srgb,var(--primary-color) 10%,var(--secondary-background-color));display:grid;place-items:center;color:var(--primary-color)}
+      .robot-overview-visual ha-icon{--mdc-icon-size:72px}.robot-overview-copy strong{display:block;font-size:24px;margin-top:5px}.robot-overview-copy small{display:block;color:var(--secondary-text-color);margin-top:4px}
+      .robot-overview-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.robot-overview-stats>div{padding:12px;border:1px solid var(--divider-color);border-radius:12px}.robot-overview-stats span{display:block;font-size:8px;letter-spacing:.12em;color:var(--secondary-text-color)}.robot-overview-stats strong{display:block;margin-top:5px;font-size:16px}
+      @media(max-width:760px){.robot-room-card{grid-column:span 12;grid-template-columns:90px 1fr}.robot-room-actions{grid-column:1/-1}.robot-overview-card{grid-template-columns:1fr}.robot-overview-stats{grid-template-columns:1fr}}
+
+
+
+      /* Entity sizing controls */
+      .room-entity-size-field>span{display:block;font-size:8px;font-weight:850;letter-spacing:.1em;color:var(--secondary-text-color);margin-bottom:5px}
+      .room-entity-size-field select{width:100%;height:38px;border:1px solid var(--divider-color);border-radius:9px;background:var(--secondary-background-color);color:var(--primary-text-color);padding:0 9px}
+
+      .entity-size-compact{grid-column:span 3!important}
+      .entity-size-normal{grid-column:span 4!important}
+      .entity-size-wide{grid-column:span 8!important}
+      .entity-size-full{grid-column:1/-1!important}
+
+      @media(max-width:720px){
+        .entity-size-compact,.entity-size-normal{grid-column:span 6!important}
+        .entity-size-wide,.entity-size-full{grid-column:1/-1!i

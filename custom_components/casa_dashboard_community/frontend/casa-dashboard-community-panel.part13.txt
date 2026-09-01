@@ -1,4 +1,5 @@
-esc(r.icon||this._roomIcon(r.type))}" placeholder="mdi:icona">
+"checked":""}><span>Mostra sottotitolo</span></label>
+          <input data-room-subtitle="${r.id}" value="${this._esc(r.subtitle||"")}" placeholder="Sottotitolo opzionale">
         </div>
         <div class="room-image-field"><span>FOTO STANZA</span><div class="photo-config-line"><input data-room-image="${r.id}" value="${this._esc(r.image||"")}" placeholder="/local/... oppure carica foto"><label class="photo-upload-btn native-photo-picker"><ha-icon icon="mdi:image-plus"></ha-icon><span>Carica</span><input type="file" data-room-photo-file="${r.id}" accept="image/*,.jpg,.jpeg,.png,.webp,.heic,.heif"></label>${r.image?`<button class="photo-clear-btn" type="button" data-clear-room-image="${r.id}" title="Rimuovi foto"><ha-icon icon="mdi:image-remove-outline"></ha-icon></button>`:""}</div>${r.image?`<div class="photo-preview room-photo-preview"><img src="${this._esc(r.image)}" alt=""></div>`:""}
           <div class="room-background-fields">
@@ -199,7 +200,10 @@ esc(r.icon||this._roomIcon(r.type))}" placeholder="mdi:icona">
       if(bgB) this._overviewDraft.dashboard_background_gradient_b=bgB.value||"#183040";
       if(bgAngle) this._overviewDraft.dashboard_background_gradient_angle=Number(bgAngle.value||135);
     };
-    [bgColor,bgA,bgB,bgAngle].filter(Boolean).forEach(input=>input.addEventListener("change",syncBgDraft));
+    [bgColor,bgA,bgB,bgAngle].filter(Boolean).forEach(input=>{
+      input.addEventListener("input",syncBgDraft);
+      input.addEventListener("change",syncBgDraft);
+    });
 
     layer.querySelectorAll("[data-overview-key]").forEach(input=>{
         if((input.type==="radio" || input.type==="checkbox") && !input.checked) return;
@@ -272,7 +276,12 @@ esc(r.icon||this._roomIcon(r.type))}" placeholder="mdi:icona">
     });
     layer.querySelectorAll("[data-room-entity-icon-room]").forEach(input=>{
       const roomId=input.dataset.roomEntityIconRoom, entity=input.dataset.roomEntityIconEntity;
-      input.addEventListener("change",()=>this._setRoomEntityIcon(roomId,entity,input.value));
+      input.addEventListener("change",()=>{
+        this._setRoomEntityIcon(roomId,entity,input.value);
+        const room=this._roomsDraft.find(r=>r.id===roomId);
+        const preview=input.closest(".icon-select-preview")?.querySelector("ha-icon");
+        if(preview) preview.setAttribute("icon",input.value || this._v1OriginalIcon(entity,room?.type||"",this._roomEntityDisplay(entity,room)));
+      });
     });
     layer.querySelectorAll("[data-room-entity-size-room]").forEach(input=>{
       const roomId=input.dataset.roomEntitySizeRoom, entity=input.dataset.roomEntitySizeEntity;
@@ -425,6 +434,29 @@ esc(r.icon||this._roomIcon(r.type))}" placeholder="mdi:icona">
         }
         return;
       }
+      const sortType=ev.target.closest?.("[data-room-sort-type]");
+      if(sortType){
+        const room=this._roomsDraft.find(r=>r.id===sortType.dataset.roomSortType);
+        if(room){
+          room.entity_order=[...(room.entities||[])].sort((a,b)=>{
+            const pa=this._roomEntityTypePriority(a),pb=this._roomEntityTypePriority(b);
+            return pa!==pb?pa-pb:this._roomEntityDisplay(a,room).localeCompare(this._roomEntityDisplay(b,room),this._language==="en"?"en":"it");
+          });
+          this._renderConfigLayer();
+        }
+        return;
+      }
+      const moveUp=ev.target.closest?.("[data-room-entity-up]"),moveDown=ev.target.closest?.("[data-room-entity-down]");
+      if(moveUp||moveDown){
+        const btn=moveUp||moveDown,roomId=moveUp?btn.dataset.roomEntityUp:btn.dataset.roomEntityDown,entity=btn.dataset.entity;
+        const room=this._roomsDraft.find(r=>r.id===roomId);
+        if(room){
+          const arr=this._orderedRoomEntities(room),i=arr.indexOf(entity),j=i+(moveUp?-1:1);
+          if(i>=0&&j>=0&&j<arr.length)[arr[i],arr[j]]=[arr[j],arr[i]];
+          room.entity_order=arr; this._renderConfigLayer();
+        }
+        return;
+      }
       const rem=ev.target.closest?.("[data-room-entity-remove]");
       if(rem){
         ev.preventDefault();
@@ -446,11 +478,40 @@ esc(r.icon||this._roomIcon(r.type))}" placeholder="mdi:icona">
       const t=layer?.querySelector(`[data-room-type="${r.id}"]`); if(t) r.type=t.value;
       const ic=layer?.querySelector(`[data-room-icon="${r.id}"]`); if(ic) r.icon=ic.value.trim()||this._roomIcon(r.type);
       const im=layer?.querySelector(`[data-room-image="${r.id}"]`); if(im) r.image=im.value.trim();
+      const ts=layer?.querySelector(`[data-room-title-size="${r.id}"]`); if(ts) r.title_size=ts.value||"normal";
+      const ss=layer?.querySelector(`[data-room-show-subtitle="${r.id}"]`); if(ss) r.show_subtitle=!!ss.checked;
+      const sub=layer?.querySelector(`[data-room-subtitle="${r.id}"]`); if(sub) r.subtitle=sub.value.trim();
+
+      const bgMode=layer?.querySelector(`[data-room-background-mode="${r.id}"]`);
+      const bgColor=layer?.querySelector(`[data-room-background-color="${r.id}"]`);
+      const bgA=layer?.querySelector(`[data-room-background-gradient-a="${r.id}"]`);
+      const bgB=layer?.querySelector(`[data-room-background-gradient-b="${r.id}"]`);
+      const bgAngle=layer?.querySelector(`[data-room-background-gradient-angle="${r.id}"]`);
+
+      if(bgMode) r.background_mode=bgMode.value||"auto";
+      if(bgColor) r.background_color=bgColor.value||"#101820";
+      if(bgA) r.background_gradient_a=bgA.value||"#101820";
+      if(bgB) r.background_gradient_b=bgB.value||"#183040";
+      if(bgAngle) r.background_gradient_angle=Math.max(0,Math.min(360,Number(bgAngle.value||135)));
     }
     layer?.querySelectorAll("[data-overview-key]").forEach(input=>{
-      if((input.type==="radio" || input.type==="checkbox") && !input.checked) return;
+      if(input.type==="checkbox"){this._overviewDraft[input.dataset.overviewKey]=input.checked?"1":"0";return;}
+      if(input.type==="radio" && !input.checked) return;
       this._overviewDraft[input.dataset.overviewKey]=String(input.value||"").trim();
     });
+
+    // Background controls use dedicated data attributes and therefore must
+    // be copied explicitly before saving.
+    const bgColor=layer?.querySelector("[data-bg-color]");
+    const bgA=layer?.querySelector("[data-bg-gradient-a]");
+    const bgB=layer?.querySelector("[data-bg-gradient-b]");
+    const bgAngle=layer?.querySelector("[data-bg-gradient-angle]");
+    if(bgColor) this._overviewDraft.dashboard_background_color=String(bgColor.value||"#101820");
+    if(bgA) this._overviewDraft.dashboard_background_gradient_a=String(bgA.value||"#101820");
+    if(bgB) this._overviewDraft.dashboard_background_gradient_b=String(bgB.value||"#183040");
+    if(bgAngle) this._overviewDraft.dashboard_background_gradient_angle=String(
+      Math.max(0,Math.min(360,Number(bgAngle.value||135)))
+    );
     layer?.querySelectorAll("[data-room-entity-image-room]").forEach(input=>{
       this._setRoomEntityImage(input.dataset.roomEntityImageRoom,input.dataset.roomEntityImageEntity,input.value);
     });
@@ -495,7 +556,12 @@ esc(r.icon||this._roomIcon(r.type))}" placeholder="mdi:icona">
             modules:Array.isArray(room?.modules)?[...room.modules]:[],
             entity_labels:(room?.entity_labels && typeof room.entity_labels==="object")?{...room.entity_labels}:{},
             entity_images:(room?.entity_images && typeof room.entity_images==="object")?{...room.entity_images}:{},
-            entity_icons:(room?.entity_icons && typeof room.entity_icons==="object")?{...room.entity_icons}:{}
+            entity_icons:(room?.entity_icons && typeof room.entity_icons==="object")?{...room.entity_icons}:{},
+            entity_sizes:(room?.entity_sizes && typeof room.entity_sizes==="object")?{...room.entity_sizes}:{},
+            entity_order:Array.isArray(room?.entity_order)?[...room.entity_order]:[],
+            title_size:room?.title_size||"normal",
+            show_subtitle:room?.show_subtitle!==false,
+            subtitle:room?.subtitle||""
           }))
         : this._roomsDraft.map(room=>({
             ...room,
@@ -503,7 +569,12 @@ esc(r.icon||this._roomIcon(r.type))}" placeholder="mdi:icona">
             modules:[...(room.modules||[])],
             entity_labels:{...(room.entity_labels||{})},
             entity_images:{...(room.entity_images||{})},
-            entity_icons:{...(room.entity_icons||{})}
+            entity_icons:{...(room.entity_icons||{})},
+            entity_sizes:{...(room.entity_sizes||{})},
+            entity_order:[...(room.entity_order||[])],
+            title_size:room.title_size||"normal",
+            show_subtitle:room.show_subtitle!==false,
+            subtitle:room.subtitle||""
           }));
       this._entityMap=result?.entities || {...this._configDraft};
       this._entityLabels=result?.labels || {...this._configLabelDraft};
@@ -513,46 +584,4 @@ esc(r.icon||this._roomIcon(r.type))}" placeholder="mdi:icona">
       this._renderConfigLayer();
       this._renderPage(false);
     } catch(err) {
-      saveButtons.forEach(save=>{ save.disabled=false; save.innerHTML='<ha-icon icon="mdi:alert-circle-outline"></ha-icon> Riprova'; });
-      alert(`Impossibile salvare la configurazione: ${err?.message || err}`);
-    }
-  }
-
-  _state(id, fallback="—") {
-    const pending=this._optimistic.get(id);
-    if(pending && Date.now()-pending.at < 3500) return pending.state;
-    const s=this._s(id)?.state;
-    return (!s || ["unknown","unavailable","none",""].includes(s)) ? fallback : s;
-  }
-  _on(id) { return this._state(id,"off") === "on"; }
-  _num(id, fallback=null) { const v=parseFloat(this._state(id,"")); return Number.isFinite(v)?v:fallback; }
-  _attr(id, key, fallback=null) { const v=this._s(id)?.attributes?.[key]; return v ?? fallback; }
-  _fmt(id, digits=1, unit=null) {
-    const n=this._num(id,null); if(n===null) return "—";
-    const u=unit ?? this._attr(id,"unit_of_measurement","");
-    return `${n.toFixed(digits)}${u ? ` ${u}` : ""}`;
-  }
-  _fmtLuxCompact(id, digits=1){
-    const n=this._num(id,null); if(n===null) return "—";
-    if(Math.abs(n) >= 1000) return `${(n/1000).toFixed(digits)} klx`;
-    return `${n.toFixed(0)} lx`;
-  }
-  _fmtLuxExact(id){
-    const n=this._num(id,null); if(n===null) return "—";
-    return `${new Intl.NumberFormat('it-IT',{maximumFractionDigits:0}).format(n)} lx`;
-  }
-  _luxLabel(id){
-    const n=this._num(id,null); if(n===null) return "—";
-    const outdoor=id==="sensor.weather_solar_lux";
-    if(outdoor) return n>=40000?"Luce forte":n>=20000?"Luce buona":"Luce bassa";
-    return n>=500?"Luce forte":n>=100?"Luce buona":"Luce bassa";
-  }
-  _luxTone(id){
-    const n=this._num(id,null); if(n===null) return "state-off";
-    const outdoor=id==="sensor.weather_solar_lux";
-    if(outdoor) return n>=40000?"state-good":n>=20000?"state-active":"state-off";
-    return n>=500?"state-good":n>=100?"state-active":"state-off";
-  }
-  _radLabel(id){
-    const n=this._num(id,null); if(n===null) return "—";
-    return n>=350?"Radiazione 
+      saveButtons.forEach(save=>{ save.disabled=false; save.innerHTML='<ha-icon icon="mdi:alert-circle-outline"></ha-icon> 
