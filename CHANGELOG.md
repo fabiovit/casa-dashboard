@@ -1,5 +1,30 @@
 # Changelog
 
+## 4.3.1 - 2026-09-23
+
+- Migliorata e stabilizzata la geometria responsive delle card su desktop e smartphone.
+- Rifinite le sezioni per tipologia nelle stanze, con intestazioni più leggibili e coerenti.
+- Smart Lock allineata al contenitore standard delle altre entità; migliorata la resa su desktop e smartphone.
+- Aggiunta nel configuratore una nota sulle dimensioni Compatta e Normale per dispositivi con molte informazioni o comandi.
+- Corretto lo stato visivo delle icone luce personalizzate: le icone si illuminano quando `light.*` è `on` anche con dimensioni manuali.
+- Migliorata la sezione Fotovoltaico: layout compatto desktop, SOC batteria e contenimento della batteria su smartphone.
+- Casa Dashboard Community viene registrata anche tra le Plance di Home Assistant, così può essere selezionata come dashboard predefinita del dispositivo/app.
+- Mantenute le correzioni a robot, traduzioni, ordinamento manuale, anteprime/icona dispositivo e leggibilità delle card.
+- Pulizia finale del pacchetto e rimozione di file e riferimenti interni di test.
+
+## 4.2.8 - 2026-09-02
+
+- Restored custom Overview and room photos on smartphones while keeping headers compact.
+- Made Overview Compact / Normal / Large section sizes visibly distinct.
+- Fixed robot Overview photo/title geometry and size scaling.
+- Reduced photovoltaic icons and typography on desktop and smartphone.
+- Fixed photovoltaic battery clipping on smartphones.
+- Reworked smartphone universal-device and climate card layout to keep parameters and controls aligned.
+- Simplified cover state wording to Aperta / Chiusa / In apertura / In chiusura.
+- Standardized rounded corners for sensor and photo cards.
+- Reworked room entity manual ordering: up/down now swaps immediately with the adjacent device without rebuilding the configurator.
+- General frontend cleanup; no additional responsive override layer added.
+
 ## 4.2.7 - 2026-09-01
 
 - Upgraded `?kiosk=1` to use Home Assistant native kiosk mode.
@@ -10,7 +35,7 @@
 
 ## 4.2.6 - 2026-09-01
 
-### Release Candidate - cleanup and consolidated responsive layer
+### Cleanup and consolidated responsive layer
 
 - Consolidated the accumulated late responsive overrides into one authoritative layer.
 - Fixed mobile chapter/title grid collapse.
@@ -22,7 +47,7 @@
 
 ## 4.2.5 - 2026-09-01
 
-### SAFE TEST — real smartphone responsive pass
+### Real smartphone responsive pass
 
 - Fixed chapter grid after hiding its decorative line.
 - Rebuilt mobile header geometry instead of only reducing font size.
@@ -33,7 +58,7 @@
 
 ## 4.2.4 - 2026-09-01
 
-### SAFE TEST — structural renderer fixes
+### Structural renderer fixes
 
 - Rebuilt from v4.2.2 instead of layering over v4.2.3.
 - Fixed smart-lock renderer without creating duplicate cards.
@@ -48,7 +73,7 @@
 
 ## 4.2.2 - 2026-09-01
 
-### SAFE TEST
+### Stabilization pass
 
 - Reintroduced remaining tester requests on the stable v4.2.1 runtime.
 - Added configurable Overview visibility and sizing.
@@ -793,7 +818,7 @@ Based on community feedback from Mario Pagano:
 
 ## 1.1.0 - 2026-08-17
 
-- Portato nella Community il redesign premium/app-like della dashboard personale v4.2.9, mantenendo entità e versioning separati.
+- Portato nella Community il redesign premium/app-like della dashboard personale v4.3.1, mantenendo entità e versioning separati.
 - Nuova Panoramica con hero/scena di casa e gerarchia visiva aggiornata.
 - Migliorati avvisi porta d'ingresso, confronto comfort Cucina e composizione Camera.
 - Aggiunte etichette umane per lux e radiazione solare, con formato compatto `klx`.

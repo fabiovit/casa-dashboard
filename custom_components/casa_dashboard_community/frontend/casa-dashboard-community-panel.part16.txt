@@ -1,4 +1,108 @@
-KW(value,abs=false){
+ visible=items.filter(it=>String(it.value??"").trim() && String(it.value).trim()!=="—");
+    if(!visible.length) return "";
+    return `<div class="data-node compare-card span-${span}"><div class="data-node-top"><div class="data-label">${title}</div><ha-icon icon="${icon}"></ha-icon></div><div class="compare-grid">${visible.map(it=>`<div class="compare-cell"><div class="compare-label">${it.label}</div><div class="compare-value">${it.value}</div></div>`).join("")}</div>${foot&&foot.trim()!=="—"?`<div class="data-foot compare-foot">${foot}</div>`:""}</div>`;
+  }
+
+  _configuredEntitiesForOverview(){
+    const roomEntities=(this._effectiveRooms()||[]).flatMap(r=>Array.isArray(r.entities)?r.entities:[]);
+    const mapped=[...ENTITY_KEYS].map(k=>String(this._entityMap?.[k]||"").trim()).filter(Boolean);
+    return [...new Set([...roomEntities,...mapped])].filter(e=>this._hass?.states?.[e]);
+  }
+  _logicalKeysForEntity(entity){
+    return [...ENTITY_KEYS].filter(k=>String(this._entityMap?.[k]||"").trim()===entity);
+  }
+  _overviewLabelForEntity(entity){
+    const keys=this._logicalKeysForEntity(entity);
+    const keyWithLabel=keys.find(k=>String(this._entityLabels?.[k]||"").trim());
+    if(keyWithLabel) return this._overviewDisplayName(keyWithLabel,entity);
+    const friendly=String(this._hass?.states?.[entity]?.attributes?.friendly_name||"").trim();
+    if(friendly) return friendly;
+    return keys.length?this._configLabel(keys[0]):entity;
+  }
+
+  _overviewMetric(entity, kind="generic"){
+    const obj=this._hass?.states?.[entity];
+    if(!obj) return {value:"—",unit:"",sub:""};
+    const raw=this._state(entity,"—");
+    const unit=String(obj.attributes?.unit_of_measurement||"").trim();
+    const dc=String(obj.attributes?.device_class||"").toLowerCase();
+    const n=parseFloat(raw);
+    const finite=Number.isFinite(n);
+
+    if(kind==="power" || dc==="power" || /(^|\s)(w|kw)$/i.test(unit)){
+      if(!finite) return {value:raw,unit,sub:""};
+      const lower=unit.toLowerCase();
+      const kw=lower==="w" ? n/1000 : lower==="kw" ? n : (Math.abs(n)>=100 ? n/1000 : n);
+      return {value:new Intl.NumberFormat(this._language==="en"?"en-GB":"it-IT",{minimumFractionDigits:2,maximumFractionDigits:2}).format(kw),unit:"kW",sub:""};
+    }
+    if(dc==="energy" || /kwh|wh/i.test(unit)){
+      if(!finite) return {value:raw,unit,sub:""};
+      let value=n, outUnit=unit||"kWh";
+      if(unit.toLowerCase()==="wh"){ value=n/1000; outUnit="kWh"; }
+      return {value:new Intl.NumberFormat(this._language==="en"?"en-GB":"it-IT",{maximumFractionDigits:2}).format(value),unit:outUnit,sub:""};
+    }
+    if(dc==="battery" || unit==="%"){
+      return {value:finite?new Intl.NumberFormat(this._language==="en"?"en-GB":"it-IT",{maximumFractionDigits:0}).format(n):raw,unit:unit||"%",sub:""};
+    }
+    if(dc==="temperature" || /°c|°f/i.test(unit)){
+      return {value:finite?new Intl.NumberFormat(this._language==="en"?"en-GB":"it-IT",{minimumFractionDigits:1,maximumFractionDigits:1}).format(n):raw,unit,sub:""};
+    }
+    if(entity.startsWith("binary_sensor.")){
+      const on=raw==="on";
+      return {value:on?(this._language==="en"?"Active":"Attivo"):(this._language==="en"?"Inactive":"Inattivo"),unit:"",sub:""};
+    }
+    if(finite){
+      return {value:new Intl.NumberFormat(this._language==="en"?"en-GB":"it-IT",{maximumFractionDigits:2}).format(n),unit,sub:""};
+    }
+    return {value:raw,unit,sub:""};
+  }
+
+  _overviewMetricCard(entity, tone="generic", icon="mdi:chart-line", kind="generic"){
+    const friendly=this._overviewLabelForEntity(entity);
+    const metric=this._overviewMetric(entity,kind);
+    return `<div class="overview-key-card ${tone}">
+      <div class="overview-key-icon"><ha-icon icon="${icon}"></ha-icon></div>
+      <div class="overview-key-copy">
+        <span>${this._esc(friendly)}</span>
+        <div class="overview-key-value"><strong>${this._esc(metric.value)}</strong>${metric.unit?`<b>${this._esc(metric.unit)}</b>`:""}</div>
+      </div>
+    </div>`;
+  }
+
+  _overviewText(key, fallback){
+    const value=String(this._overviewConfig?.[key]||"").trim();
+    return value || fallback;
+  }
+  _overviewIdentity(){
+    const vehicle=this._overviewText("vehicle_name", this._language==="en"?"EV":"Auto elettrica");
+    const wallbox=this._overviewText("wallbox_name", "Wallbox");
+    return {vehicle,wallbox};
+  }
+  _roomImageUrl(room){
+    const raw=String(room?.image||"").trim();
+    if(!raw) return "";
+    if(raw.startsWith("/local/") || raw.startsWith("http://") || raw.startsWith("https://") || raw.startsWith("data:")) return raw;
+    if(raw.startsWith("/")) return raw;
+    return `/local/${raw.replace(/^\/+/, "")}`;
+  }
+
+  _energyPowerKW(logicalKey){
+    const entity=this._eid(logicalKey);
+    const obj=entity?this._hass?.states?.[entity]:null;
+    if(!obj) return null;
+    const raw=parseFloat(obj.state);
+    if(!Number.isFinite(raw)) return null;
+    const unit=String(obj.attributes?.unit_of_measurement||"").trim().toLowerCase();
+    if(unit==="w") return raw/1000;
+    if(unit==="mw") return raw*1000;
+    return raw;
+  }
+  _energyNumber(logicalKey){
+    const entity=this._eid(logicalKey);
+    const n=entity?parseFloat(this._hass?.states?.[entity]?.state):NaN;
+    return Number.isFinite(n)?n:null;
+  }
+  _energyFmtKW(value,abs=false){
     if(value===null || !Number.isFinite(value)) return "—";
     const n=abs?Math.abs(value):value;
     return `${new Intl.NumberFormat(this._language==="en"?"en-GB":"it-IT",{minimumFractionDigits:2,maximumFractionDigits:2}).format(n)} kW`;
@@ -425,7 +529,7 @@ KW(value,abs=false){
     const overviewSubtitle=String(this._overviewText("overview_subtitle","Solo ciò che conta davvero, in un colpo d'occhio"));
     const showOverviewSubtitle=String(this._overviewConfig?.overview_show_subtitle??"1")!=="0";
     const overviewTitleSize=["compact","normal","large"].includes(String(this._overviewConfig?.overview_title_size||"normal"))?String(this._overviewConfig?.overview_title_size||"normal"):"normal";
-    const hero=`<section class="scene-hero community-personal-overview compact overview-title-${overviewTitleSize}">
+    const hero=`<section class="scene-hero community-personal-overview compact overview-title-${overviewTitleSize} ${this._overviewText("overview_image","")?"has-overview-photo":""}">
       <div class="scene-copy">
         <div class="scene-kicker">CASA · LIVE</div>
         <div class="scene-title-row"><h1>${this._esc(this._overviewText("overview_title","Panoramica"))}</h1><div class="scene-icon"><ha-icon icon="mdi:home-analytics"></ha-icon></div></div>
@@ -529,31 +633,4 @@ KW(value,abs=false){
     const outsideTemp=this._configured("sensor.weather_outdoor_temperature")?this._fmt("sensor.weather_outdoor_temperature",1,"°C"):"—";
 
     const spotStats=[];
-    if(alarmConfigured || openingsConfigured) spotStats.push(`<div class="spot-stat"><span class="k">Sicurezza</span><strong>${alarmConfigured?(alarm==='triggered'?'Allarme':alarm==='disarmed'?'Disinserito':'Protetta'):(open?'Da controllare':'Nessuna apertura')}</strong><small>${openingsConfigured?(open?`${open} aperture aperte`:'Nessuna apertura critica'):'Allarme configurato'}</small></div>`);
-    if(comfortConfigured) spotStats.push(`<div class="spot-stat"><span class="k">Comfort</span><strong>${comfortTemp!=="—"?comfortTemp:bedroomTemp}</strong><small>${comfortTemp!=="—"&&bedroomTemp!=="—"?`Cucina · Camera ${bedroomTemp}`:comfortTemp!=="—"?'Cucina':'Camera'}</small></div>`);
-    if(weatherConfigured) spotStats.push(`<div class="spot-stat"><span class="k">Esterno</span><strong>${outsideTemp}</strong><small>${this._configured("binary_sensor.weather_rain")?(rain?'Pioggia in corso':'Meteo tranquillo'):'Meteo configurato'}</small></div>`);
-    if(garageConfigured) spotStats.push(`<div class="spot-stat"><span class="k">Garage</span><strong>${this._configured("binary_sensor.garage_door_contact")?(garage?'Aperto':'Chiuso'):(ev?'EV in carica':'Wallbox')}</strong><small>${mobilityConfigured?(ev?'EV in carica':'Wallbox pronta'):'Accesso garage'}</small></div>`);
-
-    const mainSpotlight=spotStats.length?`<section class="card spotlight span-8">
-      <div class="spotlight-kicker">HOUSE STATUS</div>
-      <div class="spotlight-title">${this._esc(all.title)}</div>
-      <div class="spotlight-copy">${this._esc(all.text)} · La casa viene raccontata per scenari, non per elenchi di entità.</div>
-      <div class="spotlight-stats">${spotStats.join("")}</div>
-    </section>`:"";
-
-    const atmosphereVisible=lightsConfigured || openingsConfigured || climateConfigured || weatherConfigured;
-    const atmosphere=atmosphereVisible?`<section class="card mini-panel atmosphere span-4">
-      <div class="panel-eyebrow">ATMOSFERA</div>
-      <div class="panel-title">Comfort istantaneo</div>
-      <div class="panel-big">${climateConfigured?(clima?`${clima} clima attivi`:'Comfort passivo'):'Casa monitorata'}</div>
-      <div class="panel-sub">${[outsideTemp!=="—"?`Fuori ${outsideTemp}`:"",comfortTemp!=="—"?`Cucina ${comfortTemp}`:"",bedroomTemp!=="—"?`Camera ${bedroomTemp}`:""].filter(Boolean).join(" · ")}</div>
-      <div class="mini-tags">${lightsConfigured?`<span class="mini-tag ${lights?'active':''}">💡 ${lights} luci</span>`:""}${this._configured("binary_sensor.weather_rain")?`<span class="mini-tag ${rain?'warn':''}">🌦️ ${rain?'Pioggia':'Asciutto'}</span>`:""}${openingsConfigured?`<span class="mini-tag ${open?'warn':''}">🚪 ${open?`${open} aperte`:'Tutto chiuso'}</span>`:""}</div>
-    </section>`:"";
-
-    const energyVisible=garageConfigured || mobilityConfigured || treadmillConfigured;
-    const energy=energyVisible?`<section class="card mini-panel energy-panel span-4">
-      <div class="panel-eyebrow">ENERGIA & MOBILITÀ</div>
-      <div class="panel-title">Garage + EV + Wallbox</div>
-      <div class="panel-big">${mobilityConfigured?(ev?this._fmtPowerAuto("sensor.wallbox_charging_power",2):'Pronta'):(garage?'Garage aperto':'Garage')}</div>
-      <div class="panel-sub">${mobilityConfigured?`${ev?'Ricarica in corso':'Nessuna ricarica attiva'}${this._configured("sensor.wallbox_evse_status")?` · EVSE ${this._state("sensor.wallbox_evse_status","—")}`:""}`:'Accesso garage configurato'}</div>
-      <div class="mini-tags">${this._configured("binary_sensor.garage_door_contact")?`<span class="mini-tag ${garage?'warn':''}">🚗 ${garage?'Basculante aperto':'Garage chiuso'}</span>`:""}${treadmillConfigured?`<span class="mini-tag ${this._on(
+    if(alarmConfigured || openingsConfigured) spotStats.push(`<div class="spot-

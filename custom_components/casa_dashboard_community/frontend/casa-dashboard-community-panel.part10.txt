@@ -1,4 +1,279 @@
-rowave","Microonde"],["mdi:stove","Forno"],["mdi:coffee-maker-outline","Macchina caffè"],["mdi:range-hood","Cappa"],
+ .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-node-chip{
+          margin-top:7px!important;padding:5px 8px!important;font-size:9px!important;
+        }
+      }
+
+      /* Climate desktop/tablet: reserve a stable actions column and never overlap text. */
+      @media(min-width:761px){
+        .universal-device-card.thermostat{
+          grid-template-columns:128px minmax(170px,1fr) 112px!important;
+          gap:14px!important;align-items:center!important;overflow:hidden!important
+        }
+        .universal-device-card.thermostat>.universal-device-copy{min-width:0!important;overflow:hidden!important}
+        .universal-device-card.thermostat>.universal-device-copy strong,
+        .universal-device-card.thermostat>.universal-device-copy small{overflow-wrap:anywhere!important}
+        .universal-device-card.thermostat>.universal-device-actions{
+          display:grid!important;grid-template-columns:1fr 1fr!important;gap:7px!important;width:112px!important;min-width:112px!important
+        }
+        .universal-device-card.thermostat>.universal-device-actions .universal-device-action{min-width:0!important;width:100%!important}
+        .universal-device-card.thermostat>.universal-device-actions .universal-device-action:last-child{grid-column:1/-1!important}
+      }
+      }
+
+
+      /* ===== FV DESKTOP COMPACT FIX5 =====
+         Late cascade override: keep the proven advanced-energy renderer and
+         compress only the original desktop compact layout. Mobile is untouched. */
+      @media (min-width:761px){
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .solar-showcase.community-advanced-energy{
+          gap:8px!important;
+          margin:6px 0 12px!important;
+          align-items:stretch!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-prod-card,
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-battery-hero{
+          min-height:118px!important;
+          height:118px!important;
+          max-height:118px!important;
+          box-sizing:border-box!important;
+          padding:10px 14px!important;
+          overflow:hidden!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-prod-card{
+          justify-content:space-between!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-prod-top{
+          min-height:0!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-sun{
+          width:34px!important;height:34px!important;border-radius:11px!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-sun ha-icon{
+          --mdc-icon-size:21px!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-prod-copy strong{
+          font-size:31px!important;line-height:.92!important;margin-top:3px!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-prod-copy small{
+          font-size:9px!important;margin-top:4px!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-pv-bars{
+          display:none!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-battery-hero{
+          grid-template-columns:78px minmax(0,1fr)!important;
+          gap:12px!important;
+          align-items:center!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-battery-visual{
+          width:78px!important;min-width:78px!important;height:94px!important;min-height:94px!important;
+          display:grid!important;place-items:center!important;padding:0!important;overflow:visible!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-battery-shell{
+          width:52px!important;min-width:52px!important;height:84px!important;min-height:84px!important;
+          border-width:4px!important;border-radius:15px!important;margin:4px auto 0!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-battery-shell:before{
+          top:-8px!important;width:22px!important;height:7px!important;border-radius:4px 4px 1px 1px!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-battery-fill{
+          left:6px!important;right:6px!important;bottom:6px!important;border-radius:8px!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-battery-soc>div{
+          padding:4px 5px!important;border-radius:8px!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-battery-soc span{
+          font-size:7px!important;letter-spacing:.08em!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-battery-soc strong{
+          font-size:18px!important;line-height:1!important;margin-top:1px!important;white-space:nowrap!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-battery-copy{
+          min-width:0!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-battery-copy .eyebrow{
+          font-size:8px!important;letter-spacing:.15em!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-battery-copy .power{
+          font-size:34px!important;line-height:.92!important;margin-top:3px!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-battery-copy .desc{
+          font-size:10px!important;line-height:1.15!important;margin-top:4px!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-energy-pills{
+          gap:5px!important;margin-top:6px!important;flex-wrap:nowrap!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-energy-pill{
+          padding:5px 8px!important;white-space:nowrap!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-energy-pill span{
+          font-size:7px!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-energy-pill strong{
+          font-size:10px!important;margin-left:4px!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-flow-card{
+          min-height:0!important;height:auto!important;padding:9px 14px 10px!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-flow-grid{
+          gap:8px!important;align-items:center!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-node-orb{
+          width:32px!important;height:32px!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-node-orb ha-icon{
+          --mdc-icon-size:18px!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-node strong{
+          font-size:18px!important;margin-top:5px!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-node small{
+          font-size:8px!important;margin-top:2px!important;line-height:1.2!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-node-chip{
+          margin-top:4px!important;padding:3px 6px!important;font-size:8px!important;
+        }
+      }
+
+    `;
+  }
+
+  _s(id) { const eid=this._eid(id); return eid ? this._hass?.states?.[eid] : null; }
+  async _loadEntityConfig(force=false) {
+    if((this._entityConfigLoaded && !force) || this._entityConfigLoading) return;
+    this._entityConfigLoading=true;
+    try {
+      let entities=null;
+      let labels=null;
+      let overview=null;
+      if(this._hass?.callWS){
+        try {
+          const result=await this._hass.callWS({type:"casa_dashboard_community/config/get"});
+          if(result?.entities && typeof result.entities==="object") entities=result.entities;
+          if(result?.labels && typeof result.labels==="object") labels=result.labels;
+          if(result?.overview && typeof result.overview==="object") overview=result.overview;
+          if(Array.isArray(result?.rooms)) this._rooms=result.rooms.map(room=>({
+            ...room,
+            entities:Array.isArray(room?.entities)?[...room.entities]:[],
+            modules:Array.isArray(room?.modules)?[...room.modules]:[],
+            entity_labels:(room?.entity_labels && typeof room.entity_labels==="object")?{...room.entity_labels}:{},
+            entity_images:(room?.entity_images && typeof room.entity_images==="object")?{...room.entity_images}:{},
+            entity_icons:(room?.entity_icons && typeof room.entity_icons==="object")?{...room.entity_icons}:{},
+            entity_sizes:(room?.entity_sizes && typeof room.entity_sizes==="object")?{...room.entity_sizes}:{},
+            entity_order:Array.isArray(room?.entity_order)?[...room.entity_order]:[],
+            title_size:room?.title_size||"normal",
+            show_subtitle:room?.show_subtitle!==false,
+            subtitle:room?.subtitle||""
+          }));
+        } catch(_wsErr) { /* fallback below */ }
+      }
+      if(!entities){
+        const res=await fetch(`${ENTITY_CONFIG_URL}?v=${Date.now()}`, {cache:"no-store"});
+        if(res.ok){
+          const json=await res.json();
+          if(json?.entities && typeof json.entities==="object") entities=json.entities;
+          if(json?.labels && typeof json.labels==="object") labels=json.labels;
+          if(json?.overview && typeof json.overview==="object") overview=json.overview;
+          if(Array.isArray(json?.rooms)) this._rooms=json.rooms.map(room=>({
+            ...room,
+            entities:Array.isArray(room?.entities)?[...room.entities]:[],
+            modules:Array.isArray(room?.modules)?[...room.modules]:[],
+            entity_labels:(room?.entity_labels && typeof room.entity_labels==="object")?{...room.entity_labels}:{},
+            entity_images:(room?.entity_images && typeof room.entity_images==="object")?{...room.entity_images}:{},
+            entity_icons:(room?.entity_icons && typeof room.entity_icons==="object")?{...room.entity_icons}:{},
+            entity_sizes:(room?.entity_sizes && typeof room.entity_sizes==="object")?{...room.entity_sizes}:{},
+            entity_order:Array.isArray(room?.entity_order)?[...room.entity_order]:[],
+            title_size:room?.title_size||"normal",
+            show_subtitle:room?.show_subtitle!==false,
+            subtitle:room?.subtitle||""
+          }));
+        }
+      }
+      this._entityMap=entities || {};
+      this._entityLabels=labels || {};
+      this._overviewConfig=overview || {};
+    } catch(_err) {
+      this._entityMap={};
+      this._entityLabels={};
+      this._overviewConfig={};
+    } finally {
+      this._entityConfigLoaded=true;
+      this._entityConfigLoading=false;
+      this._renderPage(false);
+    }
+  }
+  _eid(id) {
+    if(!ENTITY_KEYS.has(id)) return id;
+    const mapped=this._entityMap?.[id];
+    return typeof mapped==="string" && mapped.trim() ? mapped.trim() : null;
+  }
+  _configured(id) { const eid=this._eid(id); return !!eid && !!this._hass?.states?.[eid]; }
+  _overviewDisplayName(logicalKey, entityId=null) {
+    const custom=String(this._entityLabels?.[logicalKey]||"").trim();
+    if(custom) return custom;
+    const eid=entityId || this._eid(logicalKey);
+    const friendly=eid ? String(this._hass?.states?.[eid]?.attributes?.friendly_name||"").trim() : "";
+    if(friendly) return friendly;
+    return this._configLabel(logicalKey);
+  }
+  _configuredCount() { return [...ENTITY_KEYS].filter(id=>this._eid(id)).length; }
+  _configNotice() {
+    const configured=this._configuredCount();
+    const total=ENTITY_KEYS.size;
+    const title=configured===0?"Configura le entità":"Entità configurate";
+    const text=configured===0
+      ? `Sono disponibili ${total} associazioni opzionali. Configura solo le funzioni che utilizzi nel tuo Home Assistant.`
+      : `${configured} di ${total} associazioni disponibili configurate. Non è necessario compilarle tutte: configura solo quelle che utilizzi.`;
+    const tone=configured===0?"warn":"info";
+    const icon=configured===0?"mdi:cog-alert-outline":"mdi:check-circle-outline";
+    return `<div class="alert ${tone} config-alert"><ha-icon icon="${icon}"></ha-icon><div><strong>${title}</strong><span>${text}</span></div><button class="config-open-btn" data-action="entity-config" type="button"><ha-icon icon="mdi:tune-variant"></ha-icon> Configura</button></div>`;
+  }
+
+  _configLabel(key) {
+    const labels={
+      "sensor.vehicle_battery_level":"Batteria auto",
+      "sensor.vehicle_range":"Autonomia auto",
+      "sensor.vehicle_charge_remaining_minutes":"Tempo ricarica restante",
+      "sensor.vehicle_odometer":"Chilometraggio auto",
+      "sensor.vehicle_charging_power":"Potenza ricarica auto",
+      "sensor.vehicle_session_energy":"Energia sessione auto"
+    };
+    if(labels[key]) return labels[key];
+    const pretty=key.split(".")[1]?.replaceAll("_"," ") || key;
+    return pretty.replace(/\b\w/g,c=>c.toUpperCase());
+  }
+
+  _roomEntitySuggestions(query="", selected=[]){
+    const q=String(query||"").trim().toLocaleLowerCase("it");
+    const chosen=new Set(selected||[]);
+    return Object.entries(this._hass?.states||{})
+      .filter(([id])=>!chosen.has(id))
+      .map(([id,obj])=>({id,name:String(obj?.attributes?.friendly_name||id)}))
+      .filter(x=>!q || x.id.toLocaleLowerCase("it").includes(q) || x.name.toLocaleLowerCase("it").includes(q))
+      .sort((a,b)=>{
+        const an=a.name.toLocaleLowerCase("it"), bn=b.name.toLocaleLowerCase("it");
+        const ae=an===q?0:an.startsWith(q)?1:an.includes(q)?2:3;
+        const be=bn===q?0:bn.startsWith(q)?1:bn.includes(q)?2:3;
+        return ae-be || an.localeCompare(bn,"it");
+      }).slice(0,12);
+  }
+
+
+  _entityIconChoices(){
+    return [
+      ["","Automatico"],
+      ["mdi:ceiling-light","Plafoniera"],["mdi:dome-light","Plafoniera tonda"],["mdi:ceiling-light-multiple","Plafoniera multipla"],
+      ["mdi:lightbulb-outline","Lampadina"],["mdi:lightbulb-on-outline","Lampadina accesa"],["mdi:lightbulb-spot","Faretto"],
+      ["mdi:lamp","Lampada"],["mdi:floor-lamp","Lampada da terra"],["mdi:desk-lamp","Lampada da tavolo"],["mdi:wall-sconce-outline","Applique"],
+      ["mdi:led-strip-variant","Striscia LED"],["mdi:string-lights","Catena luminosa"],
+      ["mdi:door","Porta"],["mdi:door-open","Porta aperta"],["mdi:window-closed-variant","Finestra"],["mdi:gate","Cancello"],["mdi:garage-variant","Garage"],
+      ["mdi:blinds-horizontal","Tapparella"],["mdi:awning-outline","Tenda da sole"],
+      ["mdi:motion-sensor","Movimento"],["mdi:account-eye-outline","Presenza"],["mdi:vibrate","Vibrazione"],
+      ["mdi:thermometer","Temperatura"],["mdi:water-percent","Umidità"],["mdi:white-balance-sunny","Luminosità"],
+      ["mdi:air-conditioner","Climatizzatore"],["mdi:radiator","Riscaldamento"],["mdi:water-boiler","Acqua calda"],
+      ["mdi:fan","Ventola"],["mdi:television","TV"],["mdi:speaker","Speaker"],["mdi:cast","Media player"],
+      ["mdi:fridge-outline","Frigorifero"],["mdi:dishwasher","Lavastoviglie"],["mdi:washing-machine","Lavatrice"],["mdi:tumble-dryer","Asciugatrice"],
+      ["mdi:microwave","Microonde"],["mdi:stove","Forno"],["mdi:coffee-maker-outline","Macchina caffè"],["mdi:range-hood","Cappa"],
       ["mdi:pot-steam-outline","Robot cucina"],["mdi:robot-vacuum","Robot aspirapolvere"],["mdi:robot-vacuum-variant","Robot lavapavimenti"],
       ["mdi:air-fryer","Airfryer"],["mdi:power-plug-outline","Presa"],["mdi:cctv","Videocamera"],
       ["mdi:lock-outline","Serratura"],["mdi:shield-home-outline","Allarme"],["mdi:car-electric","Auto elettrica"],["mdi:ev-station","Wallbox"],
@@ -444,7 +719,7 @@ rowave","Microonde"],["mdi:stove","Forno"],["mdi:coffee-maker-outline","Macchina
     return `<div class="room-entity-picker" data-room-picker="${room.id}">
       <div class="room-entity-sortbar"><span>Ordine visualizzazione</span><button type="button" data-room-sort-type="${room.id}"><ha-icon icon="mdi:sort-variant"></ha-icon> Per tipologia</button></div>
       <div class="room-entity-chips">
-        ${ordered.map(e=>`<div class="room-entity-chip-wrap">
+        ${ordered.map(e=>`<div class="room-entity-chip-wrap" data-room-entity-item="${this._esc(e)}">
           <span class="room-entity-chip" title="${this._esc(e)}">
             <span>${this._esc(this._roomEntityDisplay(e,room))}</span>
             <small>${this._esc(e)}</small>
@@ -468,6 +743,7 @@ rowave","Microonde"],["mdi:stove","Forno"],["mdi:coffee-maker-outline","Macchina
             <select data-room-entity-size-room="${room.id}" data-room-entity-size-entity="${this._esc(e)}">
               ${[["auto","Automatico"],["compact","Compatta"],["normal","Normale"],["wide","Larga"],["full","Intera"]].map(([value,label])=>`<option value="${value}" ${this._roomEntitySize(e,room)===value?"selected":""}>${label}</option>`).join("")}
             </select>
+            <small class="room-entity-size-hint">Le dimensioni Compatta e Normale possono non essere adatte a dispositivi con più informazioni o comandi.</small>
           </label>
           <div class="room-entity-photo">
             <span>Foto oggetto</span>
@@ -635,142 +911,4 @@ rowave","Microonde"],["mdi:stove","Forno"],["mdi:coffee-maker-outline","Macchina
     let side=Math.min(maxSide,Math.max(naturalW,naturalH));
     let quality=.82;
     let best="";
-    for(let attempt=0;attempt<9;attempt++){
-      const scale=Math.min(1,side/Math.max(naturalW,naturalH));
-      const width=Math.max(1,Math.round(naturalW*scale));
-      const height=Math.max(1,Math.round(naturalH*scale));
-      const canvas=document.createElement("canvas");
-      canvas.width=width; canvas.height=height;
-      const ctx=canvas.getContext("2d");
-      if(!ctx) throw new Error("Il browser non può elaborare la foto.");
-      ctx.fillStyle="#ffffff";
-      ctx.fillRect(0,0,width,height);
-      ctx.drawImage(drawSource,0,0,width,height);
-      const encoded=canvas.toDataURL("image/jpeg",quality);
-      best=encoded;
-      if(this._dataUrlBytes(encoded)<=targetBytes){ img.close?.(); return encoded; }
-      if(quality>.58) quality-=.08;
-      else side=Math.max(minSide,Math.round(side*.84));
-    }
-    if(best && this._dataUrlBytes(best)<=targetBytes*1.15) return best;
-    throw new Error(`Non riesco a comprimere la foto sotto ${Math.round(targetBytes/1000)} KB. Prova una foto più piccola.`);
-  }
-  async _verifyDashboardImageUrl(url){
-    if(!url || !String(url).startsWith("/local/")) return false;
-    try{
-      const joiner=url.includes("?")?"&":"?";
-      const response=await fetch(`${url}${joiner}cdc=${Date.now()}`,{method:"GET",cache:"no-store"});
-      return !!response?.ok;
-    }catch(_err){
-      return false;
-    }
-  }
-  async _uploadDashboardImage(file,onInlineReady=null){
-    // First create a small inline image and expose it immediately to the UI.
-    // This guarantees an instant preview even if backend file upload is slow/unavailable.
-    const inline=await this._compressImageForUpload(file,{maxSide:820,targetBytes:260000,minSide:480});
-    if(!inline || this._dataUrlBytes(inline)>300000){
-      throw new Error("La foto compressa è ancora troppo grande. Prova una foto più piccola.");
-    }
-    if(typeof onInlineReady==="function") onInlineReady(inline);
-
-    // Then try to store a slightly larger copy as a normal /local file.
-    // If anything goes wrong or takes too long, keep the already-working inline image.
-    try{
-      const image=await this._compressImageForUpload(file,{maxSide:1200,targetBytes:650000,minSide:640});
-      const uploadPromise=this._hass.callWS({type:"casa_dashboard_community/config/upload_image",image});
-      const timeoutPromise=new Promise((_,reject)=>setTimeout(()=>reject(new Error("Timeout upload foto")),7000));
-      const result=await Promise.race([uploadPromise,timeoutPromise]);
-      if(result?.url){
-        const verified=await Promise.race([
-          this._verifyDashboardImageUrl(result.url),
-          new Promise(resolve=>setTimeout(()=>resolve(false),3500))
-        ]);
-        if(verified) return {url:result.url,mode:"file",inline};
-      }
-    }catch(err){
-      console.warn("[Casa Dashboard Community] backend image upload unavailable; inline image kept",err);
-    }
-    return {url:inline,mode:"inline",inline};
-  }
-
-  _legacyRoomForConfigKey(key){
-    const full=String(key||"").toLowerCase();
-    const name=full.split(".")[1]||"";
-    if(name.includes("bathroom") || name.includes("shower")) return "bagno";
-    if(name.includes("bedroom") || name.includes("robot_vacuum")) return "camera";
-    if(name.includes("kitchen")) return "cucina";
-    if(name.includes("hallway")) return "disimpegno";
-    if(name.includes("entry_") || full==="alarm_control_panel.home_alarm") return "ingresso";
-    if(name.includes("stairs") || name==="main_gate") return "scale";
-    if(name==="pedestrian_gate") return "esterno";
-    if(name.includes("balcony") || name.includes("weather_") || name.includes("solar_") || name.includes("utility_room") || name.includes("blinds_")) return "balcone";
-    if(name.includes("garage_") || name.includes("wallbox") || name.includes("ev_") || name.includes("grid_current")) return "garage";
-    const group=String(this._configGroup?.(key)||"").toLocaleLowerCase("it");
-    const byGroup={"bagno":"bagno","camera":"camera","cucina":"cucina","disimpegno":"disimpegno","ingresso":"ingresso","scale":"scale","balcone":"balcone","garage":"garage","meteo":"balcone","energia solare":"balcone","wallbox & ev":"garage"};
-    return byGroup[group]||"";
-  }
-  _mergeConfiguredEntitiesIntoRooms(rooms){
-    const out=(Array.isArray(rooms)?rooms:[]).map(r=>({...r,entities:[...(r.entities||[])],entity_labels:{...(r.entity_labels||{})},entity_images:{...(r.entity_images||{})},entity_icons:{...(r.entity_icons||{})},entity_sizes:{...(r.entity_sizes||{})}}));
-    const defaults=new Map(this._defaultRooms().map(r=>[r.id,r]));
-    const configured=[...ENTITY_KEYS].map(key=>{
-      const entity=String(this._configDraft?.[key] ?? this._entityMap?.[key] ?? "").trim();
-      return {key,entity,room:this._legacyRoomForConfigKey(key)};
-    }).filter(x=>x.entity && x.room);
-
-    for(const item of configured){
-      const meta=defaults.get(item.room);
-      let room=out.find(r=>r.id===item.room)
-        || out.find(r=>r.type===item.room)
-        || out.find(r=>String(r.name||"").toLocaleLowerCase("it")===String(meta?.name||"").toLocaleLowerCase("it"));
-      if(!room && meta){ room={...meta,entities:[],entity_labels:{},entity_images:{}}; out.push(room); }
-      if(room){
-        room.entities=Array.isArray(room.entities)?room.entities:[];
-        if(!room.entities.includes(item.entity)) room.entities.push(item.entity);
-      }
-    }
-    return out;
-  }
-  _syncConfiguredKeyToRoom(key,oldEntity,newEntity){
-    // Legacy 173 mappings are used only to bootstrap the room list once.
-    // After rooms have been saved, room membership is controlled exclusively
-    // from the Rooms manager and must never be recreated automatically.
-    if(Array.isArray(this._rooms) && this._rooms.length) return;
-    const roomId=this._legacyRoomForConfigKey(key);
-    if(!roomId) return;
-    const defaults=new Map(this._defaultRooms().map(r=>[r.id,r]));
-    let room=this._roomsDraft.find(r=>r.id===roomId) || this._roomsDraft.find(r=>r.type===roomId);
-    if(!room && newEntity){
-      const meta=defaults.get(roomId);
-      if(meta){ room={...meta,entities:[],entity_labels:{},entity_images:{}}; this._roomsDraft.push(room); }
-    }
-    if(!room) return;
-    room.entities=Array.isArray(room.entities)?room.entities:[];
-    if(oldEntity && oldEntity!==newEntity){
-      const stillUsed=[...ENTITY_KEYS].some(k=>
-        k!==key &&
-        this._legacyRoomForConfigKey(k)===roomId &&
-        String(this._configDraft[k]||"").trim()===oldEntity
-      );
-      if(!stillUsed) room.entities=room.entities.filter(e=>e!==oldEntity);
-    }
-    if(newEntity && !room.entities.includes(newEntity)) room.entities.push(newEntity);
-  }
-
-  _defaultRooms(){
-    return [
-      {id:"esterno",name:"Esterno",type:"esterno",icon:"mdi:tree-outline",image:""},
-      {id:"scale",name:"Scale",type:"scale",icon:"mdi:stairs"},
-      {id:"ingresso",name:"Ingresso",type:"ingresso",icon:"mdi:door"},
-      {id:"cucina",name:"Cucina",type:"cucina",icon:"mdi:chef-hat"},
-      {id:"disimpegno",name:"Disimpegno",type:"disimpegno",icon:"mdi:walk"},
-      {id:"bagno",name:"Bagno",type:"bagno",icon:"mdi:shower"},
-      {id:"camera",name:"Camera",type:"camera",icon:"mdi:bed-king-outline"},
-      {id:"balcone",name:"Balcone",type:"balcone",icon:"mdi:balcony"},
-      {id:"garage",name:"Garage",type:"garage",icon:"mdi:garage-variant"}
-    ];
-  }
-  _roomTypes(){
-    return [
-      ["generico","Ambiente generico","mdi:home-outline"],["soggiorno","Soggiorno","mdi:sofa-outline"],
-      ["cucina","Cucina","mdi:chef-hat"],["camera","Camera","mdi:bed-king-out
+    for(le

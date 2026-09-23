@@ -1,64 +1,4 @@
-important}
-      .app-shell.theme-light .gate-v2-leaf{background:#8f999f!important;border-color:#7e8b92!important}
-      .app-shell.theme-light .gate-v2-leaf i{background:#6f7c83!important}
-      .app-shell.theme-light .gate-v2-handle{background:#6d6252!important}
-
-      /* BALCONE */
-      .balcony-scene-v2{
-        position:relative!important;
-        overflow:hidden!important;
-        min-height:250px!important;
-        border-radius:18px!important;
-        background:linear-gradient(180deg,#17303d 0%,#122631 66%,#182220 66%,#111817 100%)!important;
-      }
-      .balcony-v2-sky{position:absolute;inset:0 0 35% 0;background:linear-gradient(180deg,rgba(47,90,113,.28),rgba(18,43,54,.06))}
-      .balcony-v2-sun{position:absolute;right:28px;top:22px;width:38px;height:38px;border-radius:50%;background:#ffd05f;box-shadow:0 0 22px rgba(255,208,95,.18)}
-      .balcony-v2-wall{position:absolute;left:36px;right:36px;top:48px;height:116px;background:#4c565d;border-left:5px solid #68757d;border-right:5px solid #68757d}
-      .balcony-v2-window{position:absolute;top:25px;width:72px;height:70px;border:5px solid #73848e;background:#274654}
-      .balcony-v2-window.left{left:24px}.balcony-v2-window.right{right:24px}
-      .balcony-v2-window::after{content:"";position:absolute;left:50%;top:0;bottom:0;width:3px;background:#7e909a}
-      .balcony-v2-awning{position:absolute;top:44px;width:112px;max-height:72px;min-height:14px;background:repeating-linear-gradient(90deg,#3f89b8 0 14px,#67b3db 14px 28px);transform-origin:top;clip-path:polygon(0 0,100% 0,93% 100%,7% 100%)}
-      .balcony-v2-awning.left{left:46px}.balcony-v2-awning.right{right:46px}
-      .balcony-v2-railing{position:absolute;left:24px;right:24px;bottom:42px;height:66px;border-top:5px solid #7d898f;border-bottom:5px solid #7d898f;display:flex;justify-content:space-around}
-      .balcony-v2-railing i{display:block!important;width:4px!important;background:#707b81!important}
-      .balcony-v2-floor{position:absolute;left:0;right:0;bottom:0;height:44px;background:linear-gradient(180deg,#2b3331,#1b2220)}
-      .balcony-v2-pot{position:absolute;bottom:44px;width:28px;height:32px;background:#6b7774;clip-path:polygon(12% 0,88% 0,76% 100%,24% 100%)}
-      .balcony-v2-pot.left{left:42px}.balcony-v2-pot.right{right:42px}
-
-      .app-shell.theme-light .balcony-scene-v2{
-        background:linear-gradient(180deg,#f5f9fc 0%,#eaf2f7 66%,#e4ebe4 66%,#d9e1da 100%)!important;
-      }
-      .app-shell.theme-light .balcony-v2-sky{background:linear-gradient(180deg,rgba(190,219,237,.34),rgba(235,244,248,.08))!important}
-      .app-shell.theme-light .balcony-v2-wall{background:#d7e0e5!important;border-color:#9caab3!important}
-      .app-shell.theme-light .balcony-v2-window{background:#b9e2f7!important;border-color:#98a8b1!important}
-      .app-shell.theme-light .balcony-v2-window::after{background:#9aaab3!important}
-      .app-shell.theme-light .balcony-v2-awning{background:repeating-linear-gradient(90deg,#6fa7c8 0 14px,#9bc7df 14px 28px)!important}
-      .app-shell.theme-light .balcony-v2-railing{border-color:#9aa6ad!important}
-      .app-shell.theme-light .balcony-v2-railing i{background:#98a5ac!important}
-      .app-shell.theme-light .balcony-v2-floor{background:linear-gradient(180deg,#dde5df,#cfd8d1)!important}
-      .app-shell.theme-light .balcony-v2-pot{background:#9aa7a2!important}
-
-      .gate-visual-v2::before,.gate-visual-v2::after,
-      .balcony-scene-v2::before,.balcony-scene-v2::after{
-        content:none!important;
-        display:none!important;
-      }
-
-      @media(max-width:620px){
-        .gate-visual-v2,.balcony-scene-v2{min-height:210px!important}
-        .gate-v2-leaf{left:72px;right:72px}
-        .balcony-v2-wall{left:24px;right:24px}
-      }
-
-
-/* ===== v4.3.54 Scale visuali ===== */
-      .scale-hero{grid-template-columns:minmax(360px,.95fr) minmax(520px,1.3fr)!important}
-      .stairs-hero-card{display:grid;grid-template-columns:minmax(330px,1.2fr) minmax(220px,.8fr);gap:18px;align-items:center;min-height:260px;padding:20px;border-radius:26px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(74,152,255,.05))}
-      .stairs-visual{position:relative;height:220px;overflow:hidden;border-radius:20px;background:linear-gradient(180deg,#161c22,#0f1318);box-shadow:inset 0 0 0 1px rgba(255,255,255,.035)}
-      .stairs-wall{position:absolute;inset:0;background:linear-gradient(120deg,rgba(255,255,255,.025),transparent 55%)}
-      .stairs-flight{position:absolute;left:34px;bottom:28px;width:215px;height:145px;display:flex;flex-direction:column-reverse;align-items:flex-start;gap:0}
-      .stairs-flight span{display:block;height:22px;border-top:2px solid #59636f;border-left:2px solid #59636f;background:linear-gradient(90deg,#2b333c,#1d242b);box-shadow:0 -5px 10px rgba(0,0,0,.16)}
-      .stairs-flight span:nth-child(1){width:210px}.stairs-flight span:nth-child(2){width:180px}.stairs-flight span:nth-child(3){width:150px}.stairs-flight span:nth-child(4){width:120px}.stairs-flight span:nth-child(5){width:90px}.stairs-flight span:nth-child(6){width:60px}
+child(1){width:210px}.stairs-flight span:nth-child(2){width:180px}.stairs-flight span:nth-child(3){width:150px}.stairs-flight span:nth-child(4){width:120px}.stairs-flight span:nth-child(5){width:90px}.stairs-flight span:nth-child(6){width:60px}
       .stairs-rail{position:absolute;left:72px;bottom:145px;width:185px;height:4px;background:#8793a0;transform:rotate(-28deg);transform-origin:left center;border-radius:4px;box-shadow:0 0 10px rgba(140,190,255,.12)}
       .stairs-door{position:absolute;right:38px;bottom:28px;width:92px;height:160px;border:5px solid #414952;border-radius:5px 5px 2px 2px;background:linear-gradient(180deg,#252c34,#171c22);box-shadow:0 10px 24px rgba(0,0,0,.25)}
       .stairs-door.active{box-shadow:0 0 0 2px rgba(255,181,90,.18),0 0 25px rgba(255,181,90,.18)}
@@ -218,4 +158,41 @@ important}
       /* v2.0.0 - Casa V2 room heroes aligned with personal Casa 4.3.54 */
       .ui-v2 .original-room-hero{grid-template-columns:minmax(360px,.95fr) minmax(560px,1.35fr)!important;min-height:350px!important}
       .original-room-hero-card{display:grid;grid-template-columns:minmax(340px,1.2fr) minmax(230px,.8fr);gap:18px;align-items:center;min-height:260px;padding:20px;border-radius:26px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(72,151,255,.045))}
-      .original-room-visual{min-width:0}.original-room-side{display:flex;flex-direction:column;gap:14px;padding:6px}.original-room-meta span{display:block;font-size:9px;letter-spacing:.2em;font-weigh
+      .original-room-visual{min-width:0}.original-room-side{display:flex;flex-direction:column;gap:14px;padding:6px}.original-room-meta span{display:block;font-size:9px;letter-spacing:.2em;font-weight:850;color:#8da6bd}.original-room-meta strong{display:block;font-size:30px;letter-spacing:-.04em;margin-top:7px}.original-room-meta small{display:block;color:var(--secondary-text-color);margin-top:4px}.original-room-divider{height:1px;background:linear-gradient(90deg,rgba(84,180,255,.85),transparent)}
+      .community-original-scene{height:220px!important;border-radius:20px!important;overflow:hidden!important}
+      .living-scene,.office-scene,.laundry-scene,.hobby-scene,.generic-home-scene{position:relative;height:220px;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#17242d,#0d141a)}
+      .living-wall,.office-wall,.laundry-wall,.hobby-wall,.generic-room-wall{position:absolute;inset:0;background:linear-gradient(180deg,#27343d,#151c22)}
+      .living-tv{position:absolute;left:34px;top:36px;width:120px;height:66px;border:5px solid #566774;background:#102735}.living-sofa{position:absolute;left:50%;bottom:32px;width:180px;height:72px;transform:translateX(-50%);border-radius:20px 20px 10px 10px;background:#46545e}.living-sofa i{position:absolute;top:8px;width:72px;height:42px;border-radius:12px;background:#5a6973}.living-sofa i:first-child{left:12px}.living-sofa i:last-child{right:12px}.living-lamp{position:absolute;right:32px;top:30px;width:4px;height:110px;background:#7d8c96}.living-lamp:after{content:"";position:absolute;left:-20px;top:-2px;width:44px;height:24px;border-radius:50%;background:#d2b265}.living-rug{position:absolute;left:25%;right:25%;bottom:10px;height:18px;border-radius:50%;background:#263944}
+      .office-desk{position:absolute;left:32px;right:32px;bottom:42px;height:16px;background:#64727d}.office-monitor{position:absolute;left:50%;bottom:62px;width:116px;height:70px;transform:translateX(-50%);border:6px solid #596a76;background:#173246}.office-chair{position:absolute;left:50%;bottom:8px;width:64px;height:55px;transform:translateX(-50%);border-radius:16px 16px 8px 8px;background:#3f4c55}.office-lamp{position:absolute;right:28px;bottom:58px;width:5px;height:92px;background:#7b8993}
+      .laundry-machine{position:absolute;left:45px;bottom:28px;width:112px;height:142px;border-radius:10px;background:#d0d5d9}.laundry-door{position:absolute;left:21px;top:45px;width:68px;height:68px;border-radius:50%;background:#172b38;border:9px solid #7d8c95}.laundry-shelf{position:absolute;right:34px;top:38px;width:130px;height:12px;background:#63717a;box-shadow:0 48px 0 #63717a}.laundry-basket{position:absolute;right:58px;bottom:26px;width:78px;height:70px;background:#465762;clip-path:polygon(8% 0,92% 0,100% 100%,0 100%)}
+      .hobby-table{position:absolute;left:46px;right:46px;bottom:38px;height:18px;background:#755f48}.hobby-cabinet{position:absolute;right:34px;top:32px;width:92px;height:108px;background:#4b5359}.hobby-lamp{position:absolute;left:50%;top:0;width:4px;height:72px;background:#7b8993}.hobby-lamp:after{content:"";position:absolute;left:-25px;bottom:-8px;width:54px;height:28px;border-radius:50%;background:#d4ae62}
+      .generic-window{position:absolute;left:34px;top:30px;width:120px;height:90px;border:6px solid #63737e;background:#1d4054}.generic-table{position:absolute;left:48px;right:48px;bottom:38px;height:16px;background:#687781}.generic-lamp{position:absolute;right:40px;top:22px;width:5px;height:95px;background:#7c8b95}
+      .stairs-hero-scene{position:relative;height:220px;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#17232b,#0c1217)}.stairs-wall{position:absolute;inset:0;background:linear-gradient(135deg,#222e36,#131a20);clip-path:polygon(0 0,100% 0,100% 100%,38% 100%)}.stairs-flight{position:absolute;left:8%;bottom:10%;width:62%;height:66%;display:flex;flex-direction:column-reverse;gap:4px;transform:skewY(-18deg)}.stairs-flight i{height:13px;background:linear-gradient(90deg,#53636f,#29353e);border-top:1px solid #738592}.stairs-rail{position:absolute;left:19%;top:12%;width:5px;height:68%;background:#7f929e;transform:rotate(27deg);transform-origin:bottom}.stairs-door{position:absolute;right:9%;bottom:8%;width:68px;height:118px;border:5px solid #5f707d;background:#222c34}
+      @media(max-width:980px){.ui-v2 .original-room-hero{grid-template-columns:1fr!important}.original-room-hero-card{grid-template-columns:1fr}.original-room-side{display:grid;grid-template-columns:repeat(3,1fr)}}@media(max-width:620px){.original-room-hero-card{padding:14px}.original-room-side{grid-template-columns:1fr}.community-original-scene{height:185px!important}}
+
+      /* v2.0.0 - restore and emphasize original Casa V1 iconography */
+      .ui-v1 .command-symbol ha-icon{--mdc-icon-size:18px!important}
+      .ui-v1 .command-symbol{color:#8ba5bd}
+      .ui-v1 .command-strip.state-on .command-symbol,.ui-v1 .command-symbol.active{color:#55e6ad}
+      .ui-v1 .scene-mark ha-icon{--mdc-icon-size:24px}
+
+      /* v2.0.0 - original iconography in Casa V2 */
+      .ui-v2 .light-visual-toggle ha-icon,
+      .ui-v2 .universal-device-action ha-icon,
+      .ui-v2 .generic-sensor:not(.community-configured-device-icon) ha-icon{--mdc-icon-size:22px}
+      .ui-v2 .scene-icon ha-icon{--mdc-icon-size:25px}
+
+      /* v2.0.0 - per-room custom display names */
+      .room-entity-chip-wrap{display:flex;flex-direction:column;gap:5px;min-width:185px;max-width:100%}
+      .room-entity-alias{display:grid;grid-template-columns:auto minmax(0,1fr);gap:7px;align-items:center;padding:0 2px}
+      .room-entity-alias>span{font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:var(--secondary-text-color);font-weight:800}
+      .room-entity-alias input{min-width:0!important;padding:6px 8px!important;font-size:10px!important;border-radius:8px!important}
+      .room-entity-chips{align-items:flex-start}
+
+      /* v2.0.0 - dedicated Air Fryer visual */
+      .uv-airfryer{width:132px;height:132px;display:grid;place-items:center;position:relative}
+      .uv-airfryer-body{position:relative;width:88px;height:112px;border-radius:22px 22px 18px 18px;background:linear-gradient(155deg,#56636c,#222b31 55%,#151b20);border:2px solid #667781;box-shadow:0 18px 28px rgba(0,0,0,.28)}
+      .uv-airfryer-top{position:absolute;left:14px;right:14px;top:9px;height:20px;border-radius:10px;background:#1a2227;display:flex;align-items:center;justify-content:center;gap:9px}
+      .uv-airfryer-top i{width:7px;height:7px;border-radius:50%;border:1px solid #7e919d}
+      .uv-airfryer-display{position:absolute;left:23px;right:23px;top:34px;height:20px;border-radius:6px;background:#0d171d;display:grid;place-items:center;color:#7994a4;font-size:7px;letter-spacing:.12em}
+      .uv-airfryer.active .uv-airfryer-display{color:#57e7ae;box-shadow:0 

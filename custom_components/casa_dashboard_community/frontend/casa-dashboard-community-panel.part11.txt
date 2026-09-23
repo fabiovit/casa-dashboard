@@ -1,4 +1,142 @@
-line"],
+t attempt=0;attempt<9;attempt++){
+      const scale=Math.min(1,side/Math.max(naturalW,naturalH));
+      const width=Math.max(1,Math.round(naturalW*scale));
+      const height=Math.max(1,Math.round(naturalH*scale));
+      const canvas=document.createElement("canvas");
+      canvas.width=width; canvas.height=height;
+      const ctx=canvas.getContext("2d");
+      if(!ctx) throw new Error("Il browser non può elaborare la foto.");
+      ctx.fillStyle="#ffffff";
+      ctx.fillRect(0,0,width,height);
+      ctx.drawImage(drawSource,0,0,width,height);
+      const encoded=canvas.toDataURL("image/jpeg",quality);
+      best=encoded;
+      if(this._dataUrlBytes(encoded)<=targetBytes){ img.close?.(); return encoded; }
+      if(quality>.58) quality-=.08;
+      else side=Math.max(minSide,Math.round(side*.84));
+    }
+    if(best && this._dataUrlBytes(best)<=targetBytes*1.15) return best;
+    throw new Error(`Non riesco a comprimere la foto sotto ${Math.round(targetBytes/1000)} KB. Prova una foto più piccola.`);
+  }
+  async _verifyDashboardImageUrl(url){
+    if(!url || !String(url).startsWith("/local/")) return false;
+    try{
+      const joiner=url.includes("?")?"&":"?";
+      const response=await fetch(`${url}${joiner}cdc=${Date.now()}`,{method:"GET",cache:"no-store"});
+      return !!response?.ok;
+    }catch(_err){
+      return false;
+    }
+  }
+  async _uploadDashboardImage(file,onInlineReady=null){
+    // First create a small inline image and expose it immediately to the UI.
+    // This guarantees an instant preview even if backend file upload is slow/unavailable.
+    const inline=await this._compressImageForUpload(file,{maxSide:820,targetBytes:260000,minSide:480});
+    if(!inline || this._dataUrlBytes(inline)>300000){
+      throw new Error("La foto compressa è ancora troppo grande. Prova una foto più piccola.");
+    }
+    if(typeof onInlineReady==="function") onInlineReady(inline);
+
+    // Then try to store a slightly larger copy as a normal /local file.
+    // If anything goes wrong or takes too long, keep the already-working inline image.
+    try{
+      const image=await this._compressImageForUpload(file,{maxSide:1200,targetBytes:650000,minSide:640});
+      const uploadPromise=this._hass.callWS({type:"casa_dashboard_community/config/upload_image",image});
+      const timeoutPromise=new Promise((_,reject)=>setTimeout(()=>reject(new Error("Timeout upload foto")),7000));
+      const result=await Promise.race([uploadPromise,timeoutPromise]);
+      if(result?.url){
+        const verified=await Promise.race([
+          this._verifyDashboardImageUrl(result.url),
+          new Promise(resolve=>setTimeout(()=>resolve(false),3500))
+        ]);
+        if(verified) return {url:result.url,mode:"file",inline};
+      }
+    }catch(err){
+      console.warn("[Casa Dashboard Community] backend image upload unavailable; inline image kept",err);
+    }
+    return {url:inline,mode:"inline",inline};
+  }
+
+  _legacyRoomForConfigKey(key){
+    const full=String(key||"").toLowerCase();
+    const name=full.split(".")[1]||"";
+    if(name.includes("bathroom") || name.includes("shower")) return "bagno";
+    if(name.includes("bedroom") || name.includes("robot_vacuum")) return "camera";
+    if(name.includes("kitchen")) return "cucina";
+    if(name.includes("hallway")) return "disimpegno";
+    if(name.includes("entry_") || full==="alarm_control_panel.home_alarm") return "ingresso";
+    if(name.includes("stairs") || name==="main_gate") return "scale";
+    if(name==="pedestrian_gate") return "esterno";
+    if(name.includes("balcony") || name.includes("weather_") || name.includes("solar_") || name.includes("utility_room") || name.includes("blinds_")) return "balcone";
+    if(name.includes("garage_") || name.includes("wallbox") || name.includes("ev_") || name.includes("grid_current")) return "garage";
+    const group=String(this._configGroup?.(key)||"").toLocaleLowerCase("it");
+    const byGroup={"bagno":"bagno","camera":"camera","cucina":"cucina","disimpegno":"disimpegno","ingresso":"ingresso","scale":"scale","balcone":"balcone","garage":"garage","meteo":"balcone","energia solare":"balcone","wallbox & ev":"garage"};
+    return byGroup[group]||"";
+  }
+  _mergeConfiguredEntitiesIntoRooms(rooms){
+    const out=(Array.isArray(rooms)?rooms:[]).map(r=>({...r,entities:[...(r.entities||[])],entity_labels:{...(r.entity_labels||{})},entity_images:{...(r.entity_images||{})},entity_icons:{...(r.entity_icons||{})},entity_sizes:{...(r.entity_sizes||{})}}));
+    const defaults=new Map(this._defaultRooms().map(r=>[r.id,r]));
+    const configured=[...ENTITY_KEYS].map(key=>{
+      const entity=String(this._configDraft?.[key] ?? this._entityMap?.[key] ?? "").trim();
+      return {key,entity,room:this._legacyRoomForConfigKey(key)};
+    }).filter(x=>x.entity && x.room);
+
+    for(const item of configured){
+      const meta=defaults.get(item.room);
+      let room=out.find(r=>r.id===item.room)
+        || out.find(r=>r.type===item.room)
+        || out.find(r=>String(r.name||"").toLocaleLowerCase("it")===String(meta?.name||"").toLocaleLowerCase("it"));
+      if(!room && meta){ room={...meta,entities:[],entity_labels:{},entity_images:{}}; out.push(room); }
+      if(room){
+        room.entities=Array.isArray(room.entities)?room.entities:[];
+        if(!room.entities.includes(item.entity)) room.entities.push(item.entity);
+      }
+    }
+    return out;
+  }
+  _syncConfiguredKeyToRoom(key,oldEntity,newEntity){
+    // Legacy 173 mappings are used only to bootstrap the room list once.
+    // After rooms have been saved, room membership is controlled exclusively
+    // from the Rooms manager and must never be recreated automatically.
+    if(Array.isArray(this._rooms) && this._rooms.length) return;
+    const roomId=this._legacyRoomForConfigKey(key);
+    if(!roomId) return;
+    const defaults=new Map(this._defaultRooms().map(r=>[r.id,r]));
+    let room=this._roomsDraft.find(r=>r.id===roomId) || this._roomsDraft.find(r=>r.type===roomId);
+    if(!room && newEntity){
+      const meta=defaults.get(roomId);
+      if(meta){ room={...meta,entities:[],entity_labels:{},entity_images:{}}; this._roomsDraft.push(room); }
+    }
+    if(!room) return;
+    room.entities=Array.isArray(room.entities)?room.entities:[];
+    if(oldEntity && oldEntity!==newEntity){
+      const stillUsed=[...ENTITY_KEYS].some(k=>
+        k!==key &&
+        this._legacyRoomForConfigKey(k)===roomId &&
+        String(this._configDraft[k]||"").trim()===oldEntity
+      );
+      if(!stillUsed) room.entities=room.entities.filter(e=>e!==oldEntity);
+    }
+    if(newEntity && !room.entities.includes(newEntity)) room.entities.push(newEntity);
+  }
+
+  _defaultRooms(){
+    return [
+      {id:"esterno",name:"Esterno",type:"esterno",icon:"mdi:tree-outline",image:""},
+      {id:"scale",name:"Scale",type:"scale",icon:"mdi:stairs"},
+      {id:"ingresso",name:"Ingresso",type:"ingresso",icon:"mdi:door"},
+      {id:"cucina",name:"Cucina",type:"cucina",icon:"mdi:chef-hat"},
+      {id:"disimpegno",name:"Disimpegno",type:"disimpegno",icon:"mdi:walk"},
+      {id:"bagno",name:"Bagno",type:"bagno",icon:"mdi:shower"},
+      {id:"camera",name:"Camera",type:"camera",icon:"mdi:bed-king-outline"},
+      {id:"balcone",name:"Balcone",type:"balcone",icon:"mdi:balcony"},
+      {id:"garage",name:"Garage",type:"garage",icon:"mdi:garage-variant"}
+    ];
+  }
+  _roomTypes(){
+    return [
+      ["generico","Ambiente generico","mdi:home-outline"],["soggiorno","Soggiorno","mdi:sofa-outline"],
+      ["cucina","Cucina","mdi:chef-hat"],["camera","Camera","mdi:bed-king-outline"],
       ["bagno","Bagno","mdi:shower"],["studio","Studio","mdi:desk"],
       ["lavanderia","Lavanderia","mdi:washing-machine"],["taverna","Taverna / Sala hobby","mdi:glass-mug-variant"],
       ["disimpegno","Corridoio / Disimpegno","mdi:walk"],["ingresso","Ingresso","mdi:door"],
@@ -502,123 +640,4 @@ line"],
     const sensorPriority=e=>{
       const dc=String(this._attr(e,"device_class","")).toLowerCase();
       const hay=`${e} ${display(e)}`.toLowerCase();
-      if(dc==="door"||dc==="garage_door"||/porta|door/.test(hay)) return 10;
-      if(dc==="window"||/finestra|window/.test(hay)) return 20;
-      if(dc==="vibration") return 40;
-      if(["motion","occupancy","presence"].includes(dc)) return 50;
-      return 100;
-    };
-    const sorted=[...new Set(sensorEntities)].sort((a,b)=>sensorPriority(a)-sensorPriority(b));
-    const sensorCards=sorted.map(e=>{
-      const dc=String(this._attr(e,"device_class","")).toLowerCase();
-      const name=display(e);
-      if(["door","window","opening","garage_door"].includes(dc)){
-        const kind=dc==="window"?"window":dc==="garage_door"?"garage":"door";
-        return this._openingVisual(e,name,kind,3,room.name);
-      }
-      if(dc==="vibration") return this._activityVisual(e,name,"vibration",3,room.name);
-      if(["motion","occupancy","presence"].includes(dc)) return this._activityVisual(e,name,dc==="motion"?"motion":"occupancy",3,room.name);
-      return this._metric(this._v1OriginalIcon(e,room.type,name),name,this._state(e),this._attr(e,"unit_of_measurement",""),3,e);
-    }).join("");
-
-    return `<div class="page kitchen-dynamic-page">
-      ${hero}
-
-      ${lightsCards?this._section("Luci"):""}
-      <div class="grid">${lightsCards}</div>
-
-      ${roomClimate?this._section("Comfort e Clima","Pannello climatizzatore reale"):""}
-      <div class="grid">${roomClimate?this._dynamicKitchenClimatePanel(
-        roomClimate,
-        temp||climateTemp||null,
-        hum||null
-      ):""}</div>
-
-      ${blindCards?this._section("Tenda"):""}
-      <div class="grid">${blindCards}</div>
-
-      ${applianceCards?this._section("Elettrodomestici"):""}
-      <div class="grid">${applianceCards}</div>
-
-      ${heatCards.length?this._section("Riscaldamento e ACS"):""}
-      <div class="grid">${heatCards.join("")}</div>
-
-      ${environment?this._section("Ambiente"):""}
-      <div class="grid">${environment}</div>
-
-      ${sensorCards?this._section("Sensori"):""}
-      <div class="grid">${sensorCards}</div>
-    </div>`;
-  }
-
-
-  _hallwayApplianceKind(entity,label=""){
-    const hay=`${entity} ${label}`.toLowerCase();
-    if(/asciugatrice|dryer|tumble/.test(hay)) return ["dryer","mdi:tumble-dryer","Asciugatrice"];
-    if(/lavatrice|washing.*machine|washer/.test(hay)) return ["washer","mdi:washing-machine","Lavatrice"];
-    if(/lavastov|dishwasher/.test(hay)) return ["dishwasher","mdi:dishwasher","Lavastoviglie"];
-    if(/frigo|frigorif|refriger|freezer/.test(hay)) return ["fridge","mdi:fridge-outline","Frigorifero"];
-    if(/deumid|dehumid/.test(hay)) return ["dehumidifier","mdi:air-humidifier-off","Deumidificatore"];
-    if(/purific|air.?purifier/.test(hay)) return ["purifier","mdi:air-purifier","Purificatore"];
-    if(/aspirapolver|vacuum/.test(hay)) return ["vacuum","mdi:robot-vacuum","Aspirapolvere"];
-    if(/presa|plug|socket/.test(hay)) return ["plug","mdi:power-socket-eu","Presa"];
-    if(/sirena|siren/.test(hay)) return ["siren","mdi:alarm-light-outline","Sirena"];
-    return ["generic","mdi:power-plug-outline","Dispositivo"];
-  }
-
-  _hallwayApplianceVisual(entity,title,span=6){
-    const [kind,icon,sub]=this._hallwayApplianceKind(entity,title);
-    const on=this._on(entity);
-    return `<div class="hallway-appliance-card ${kind} ${on?'on':'off'} span-${span}${entity?this._entitySizeClass(entity):""}">
-      <div class="hallway-appliance-visual">
-        <div class="hallway-appliance-icon ${kind} ${on?'on':'off'}">
-          <ha-icon icon="${icon}"></ha-icon>
-        </div>
-      </div>
-      <div class="hallway-appliance-copy clickable" data-more="${entity}">
-        <span>${this._esc(title)}</span>
-        <strong>${on?"Acceso":"Spento"}</strong>
-        <small>${this._esc(sub)}</small>
-      </div>
-      <button class="hallway-appliance-toggle ${on?'active':''}" data-toggle="${entity}" type="button">
-        <ha-icon icon="${on?'mdi:power':'mdi:power-standby'}"></ha-icon>
-        <span>${this._language==="en"?(on?'ON':'OFF'):(on?'ACCESO':'SPENTO')}</span>
-      </button>
-    </div>`;
-  }
-
-  _dynamicHallway(room){
-    const ids=Array.isArray(room.entities)?room.entities.filter(e=>this._s(e)):[];
-    const byDomain=d=>ids.filter(e=>e.startsWith(`${d}.`));
-    const display=e=>this._roomEntityCustomLabel(e,room)||this._hass?.states?.[e]?.attributes?.friendly_name||e;
-
-    const lights=byDomain("light");
-    const switches=[...byDomain("switch"),...byDomain("fan"),...byDomain("humidifier"),...byDomain("input_boolean")];
-    const sensors=byDomain("sensor");
-    const binaries=byDomain("binary_sensor");
-
-    const motion=binaries.find(e=>{
-      const dc=String(this._attr(e,"device_class","")).toLowerCase();
-      return ["motion","occupancy","presence"].includes(dc);
-    })||null;
-    const occupancy=binaries.find(e=>{
-      const dc=String(this._attr(e,"device_class","")).toLowerCase();
-      return ["occupancy","presence"].includes(dc) && e!==motion;
-    })||null;
-
-    const motionOn=motion?this._on(motion):false;
-    const occupied=occupancy?this._on(occupancy):motionOn;
-    const lightOn=lights.filter(e=>this._on(e)).length;
-    const deviceOn=switches.filter(e=>this._on(e)).length;
-    const activeCount=lightOn+deviceOn+(motionOn?1:0);
-
-    const hero=`<section class="scene-hero hallway-dyn-hero">
-      <div class="scene-copy">
-        <div class="scene-kicker">CASA · LIVE</div>
-        <div class="scene-title-row"><h1>${this._esc(room.name||"Disimpegno")}</h1></div>
-        <div class="scene-sub">Passaggio e presenza</div>
-        <div class="scene-status ${activeCount?'warn':'good'}"><span></span>${motionOn?"Passaggio rilevato":activeCount?`${activeCount} stati attivi`:"Passaggio libero"}</div>
-      </div>
-      <div class="hallway-hero-showcase">
-        <div class="hallway-scene ${motionOn?'active':''}">
-     
+      if(dc==="door"||dc=

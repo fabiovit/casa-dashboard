@@ -5,6 +5,8 @@ import json
 from pathlib import Path
 
 from homeassistant.components import frontend, panel_custom
+from homeassistant.components.lovelace import dashboard as lovelace_dashboard
+from homeassistant.components.lovelace.const import ConfigNotFound, LOVELACE_DATA
 from homeassistant.components.http import StaticPathConfig
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
@@ -13,7 +15,7 @@ from homeassistant.helpers import config_validation as cv
 from .const import DOMAIN, PANEL_ICON, PANEL_PATH, PANEL_TITLE, STATIC_URL
 from .websocket_api import async_register_websocket_commands
 
-VERSION = "4.2.7"
+VERSION = "4.3.1"
 ENTITY_CONFIG_FILENAME = "casa-dashboard-community-entities.json"
 
 CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
@@ -69,6 +71,56 @@ def _ensure_entity_config(hass: HomeAssistant) -> None:
         temp.replace(target)
 
 
+async def _ensure_lovelace_dashboard_registration(hass: HomeAssistant) -> None:
+    """Expose the custom panel in Home Assistant's Dashboards registry.
+
+    Home Assistant's default-dashboard picker is backed by the Lovelace
+    dashboards registry.  We keep Casa Dashboard Community as a custom panel
+    (so its UI remains unchanged), while maintaining a storage-dashboard
+    metadata entry at the same URL.  The Lovelace panel registered for that
+    metadata is replaced by our custom panel below.
+    """
+    lovelace_data = hass.data.get(LOVELACE_DATA)
+    if lovelace_data is None:
+        return
+
+    # Already known to Lovelace (normal path after the first restart).
+    if PANEL_PATH in lovelace_data.dashboards:
+        return
+
+    dashboards = lovelace_dashboard.DashboardsCollection(hass)
+    await dashboards.async_load()
+
+    existing = next(
+        (item for item in dashboards.async_items() if item.get("url_path") == PANEL_PATH),
+        None,
+    )
+    if existing is None:
+        # The custom panel may already have been registered by an older setup.
+        # Temporarily remove it because Lovelace validates URL uniqueness.
+        if hass.data.get("frontend_panels", {}).get(PANEL_PATH):
+            frontend.async_remove_panel(hass, PANEL_PATH)
+        existing = await dashboards.async_create_item(
+            {
+                "url_path": PANEL_PATH,
+                "title": PANEL_TITLE,
+                "icon": PANEL_ICON,
+                "show_in_sidebar": True,
+                "require_admin": False,
+            }
+        )
+
+    # Mirror the side effect normally performed by Lovelace's own collection
+    # listener, so the entry is immediately visible in Settings > Dashboards
+    # and in the per-user default-dashboard picker without waiting for reboot.
+    store = lovelace_dashboard.LovelaceStorage(hass, existing)
+    try:
+        await store.async_load(False)
+    except ConfigNotFound:
+        await store.async_save({"views": []})
+    lovelace_data.dashboards[PANEL_PATH] = store
+
+
 async def async_setup(hass: HomeAssistant, config: dict) -> bool:
     data = hass.data.setdefault(DOMAIN, {})
     if not data.get("websocket_registered"):
@@ -87,6 +139,10 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         data["websocket_registered"] = True
 
     await hass.async_add_executor_job(_ensure_entity_config, hass)
+
+    # Register Casa Dashboard Community as a real dashboard metadata entry so
+    # Home Assistant can offer it in Settings > Dashboards and as default.
+    await _ensure_lovelace_dashboard_registration(hass)
 
     if not data.get("static_registered"):
         frontend_dir = Path(__file__).parent / "frontend"

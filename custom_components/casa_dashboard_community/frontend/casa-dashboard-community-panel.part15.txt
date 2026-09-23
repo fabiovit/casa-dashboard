@@ -1,4 +1,120 @@
-V1</strong></div><p>Grafica originale di Casa Dashboard Community v4.2.7.</p></button>
+de()) nodes.push(walker.currentNode);
+    for(const n of nodes){ const v=n.nodeValue; if(v&&v.trim()){ const t=this._tr(v); if(t!==v)n.nodeValue=t; } }
+    root.querySelectorAll?.('[placeholder],[title],[aria-label]').forEach(el=>{ for(const a of ['placeholder','title','aria-label']) if(el.hasAttribute(a)) el.setAttribute(a,this._tr(el.getAttribute(a))); });
+  }
+  _setLanguage(lang){
+    if(!["it","en"].includes(lang)) return;
+    this._language=lang;
+    try{ localStorage.setItem("casa_dashboard_community_language",lang); }catch(e){}
+    const configWasOpen=this._configDialogOpen;
+    this._renderShell();
+    this._renderPage(true);
+    if(configWasOpen) this._renderConfigLayer();
+    this._applyLanguage();
+    requestAnimationFrame(()=>this._applyLanguage());
+  }
+
+
+  _safeColor(value,fallback="#101820"){
+    const v=String(value||"").trim();
+    return /^#[0-9a-f]{6}$/i.test(v)?v:fallback;
+  }
+  _safeBackgroundCss(mode,opts={}){
+    const m=String(mode||"auto").toLowerCase();
+    if(m==="image"){
+      const src=String(opts.image||"").trim();
+      if(!src || !(src.startsWith("/local/") || /^https?:\/\//i.test(src) || src.startsWith("data:image/"))) return "";
+      return `url("${src.replace(/["\\]/g,"")}") center / cover fixed no-repeat`;
+    }
+    if(m==="gradient"){
+      const a=this._safeColor(opts.gradientA,"#101820");
+      const b=this._safeColor(opts.gradientB,"#183040");
+      const angle=Math.max(0,Math.min(360,Number(opts.angle||135)));
+      return `linear-gradient(${angle}deg,${a},${b})`;
+    }
+    if(m==="color") return this._safeColor(opts.color,"#101820");
+    return "";
+  }
+  _applyCustomBackground(room=null){
+    const shell=this.shadowRoot?.querySelector(".app-shell");
+    const host=this.shadowRoot?.querySelector("#content");
+    if(!shell || !host) return;
+
+    const gm=this._overviewText("dashboard_background_mode","auto");
+    const globalBg=this._safeBackgroundCss(gm,{
+      image:this._overviewText("dashboard_background_image",""),
+      color:this._overviewText("dashboard_background_color","#101820"),
+      gradientA:this._overviewText("dashboard_background_gradient_a","#101820"),
+      gradientB:this._overviewText("dashboard_background_gradient_b","#183040"),
+      angle:Number(this._overviewText("dashboard_background_gradient_angle","135"))
+    });
+
+    const rm=room?.background_mode||"auto";
+    const roomBg=this._safeBackgroundCss(rm,{
+      image:room?.image||"",
+      color:room?.background_color||"#101820",
+      gradientA:room?.background_gradient_a||"#101820",
+      gradientB:room?.background_gradient_b||"#183040",
+      angle:Number(room?.background_gradient_angle||135)
+    });
+
+    const mode=roomBg?rm:gm;
+    const activeBg=roomBg||globalBg;
+    shell.style.background=activeBg||"";
+    shell.style.backgroundAttachment=activeBg && mode==="image" ? "fixed" : "";
+    shell.style.backgroundSize=activeBg && mode==="image" ? "cover" : "";
+    shell.classList.toggle("custom-dashboard-background",!!activeBg);
+    shell.classList.toggle("custom-readable-background",!!activeBg);
+    shell.classList.toggle("custom-photo-background",!!activeBg && mode==="image");
+    host.style.background="transparent";
+    host.style.backgroundAttachment="";
+    host.classList.toggle("custom-room-background",!!roomBg);
+  }
+
+  _renderPage(forceNav=false) {
+    if(!this._hass || !this.shadowRoot) return;
+    const kiosk=this._isKioskMode();
+    this._setHaKioskMode(kiosk);
+    this.classList.toggle("kiosk-mode",kiosk);
+    this._renderNav(forceNav); this._renderHeader(); this._applyThemeMode();
+    const shell=this.shadowRoot.querySelector(".app-shell"); if(shell){ shell.classList.toggle("ui-v1",this._uiTheme==="v1"); shell.classList.toggle("ui-v2",this._uiTheme==="v2"); shell.dataset.page=this._active; }
+    const host=this.shadowRoot.querySelector("#content"); if(!host) return;
+    const dynamicRoom=this._roomById(this._active);
+    this._applyCustomBackground(dynamicRoom);
+    const fixedRenderer={panoramica:()=>this._overview(),info:()=>this._info()}[this._active];
+    // The Rooms manager is the single source of truth for BOTH Casa V1 and Casa V2.
+    // Themes only change presentation; room content/entities are identical.
+    const renderer=dynamicRoom
+      ? (()=>String(dynamicRoom.type||"").toLowerCase()==="cucina"
+          ? this._dynamicKitchen(dynamicRoom)
+          : String(dynamicRoom.type||"").toLowerCase()==="disimpegno"
+            ? this._dynamicHallway(dynamicRoom)
+            : this._dynamicRoom(dynamicRoom))
+      : fixedRenderer;
+    host.innerHTML=renderer ? renderer() : `<div class="empty">Pagina non disponibile</div>`;
+    this._cleanEmptySections(host);
+    this._lastStateFingerprint=this._stateFingerprint();
+    this._applyLanguage();
+  }
+
+  _setUiTheme(theme){
+    if(!["v1","v2"].includes(theme)) return;
+    this._uiTheme=theme;
+    try { localStorage.setItem("casa_dashboard_community_style",theme); } catch(e) {}
+    const shell=this.shadowRoot?.querySelector(".app-shell");
+    if(shell){ shell.classList.toggle("ui-v1",theme==="v1"); shell.classList.toggle("ui-v2",theme==="v2"); }
+    this._renderPage(false);
+  }
+
+  _info(){
+    const selected=this._uiTheme;
+    return `<div class="page">${this._hero("Informazioni","Dettagli e personalizzazione di Casa Dashboard Community.",{level:"good",text:"Dashboard pronta"},[
+      {label:"Versione",value:"4.3.1",small:"Casa Dashboard Community"},
+      {label:"Piattaforma",value:"Home Assistant",small:"Custom integration"}
+    ])}<div class="info-card"><div class="info-icon"><ha-icon icon="mdi:home-heart"></ha-icon></div><h2>Casa Dashboard Community</h2>
+    <p>Dashboard app-like, adattiva e configurabile per Home Assistant.</p>
+    <div class="style-picker">
+      <button class="style-option ${selected==="v1"?"active":""}" data-ui-theme="v1" type="button">${selected==="v1"?'<span class="selected">In uso</span>':""}<div class="style-head"><ha-icon icon="mdi:home-variant-outline"></ha-icon><strong>Casa V1</strong></div><p>Grafica originale di Casa Dashboard Community v4.3.1.</p></button>
       <button class="style-option ${selected==="v2"?"active":""}" data-ui-theme="v2" type="button">${selected==="v2"?'<span class="selected">In uso</span>':""}<div class="style-head"><ha-icon icon="mdi:vector-square"></ha-icon><strong>Casa V2</strong></div><p>Nuova grafica derivata da Casa Dashboard v4.3.54, con visual dedicati per luci, sensori, clima, dispositivi e aperture.</p></button>
     </div>
     <div class="style-note">La scelta viene salvata sul browser/dispositivo e non modifica entità o automazioni.</div>
@@ -9,26 +125,30 @@ V1</strong></div><p>Grafica originale di Casa Dashboard Community v4.2.7.</p></b
 
   _lightVisual(entity,title,icon="mdi:lightbulb",sub="",span=4){
     const on=this._on(entity);
-    const isLed=/led|retroillumin/i.test(`${entity} ${title} ${icon}`);
-    const isBulb=/lightbulb|lampadina|bulb/i.test(`${title} ${icon}`);
-    const isLamp=/lampada|lamp\b|floor-lamp|desk-lamp|wall-sconce|outdoor-lamp/i.test(`${title} ${icon}`);
+    const configuredIcon=this._activeRoomEntityIcon(entity);
+    const displayIcon=configuredIcon||icon;
+    const isLed=/led|retroillumin/i.test(`${entity} ${title} ${displayIcon}`);
+    const isBulb=/lightbulb|lampadina|bulb/i.test(`${title} ${displayIcon}`);
+    const isLamp=/lampada|lamp\b|floor-lamp|desk-lamp|wall-sconce|outdoor-lamp/i.test(`${title} ${displayIcon}`);
     const scene=isLed?"led":isBulb?"bulb":isLamp?"lamp":"ceiling";
     const customPhoto=this._customObjectVisual(entity,"light");
     return `<div class="light-visual-card ${scene} ${on?'on':'off'} span-${span}${entity?this._entitySizeClass(entity):""} ${customPhoto?'has-custom-photo':''}">
-      ${customPhoto || `<div class="light-fixture ${scene}">
-        ${scene==="led"?
-          `<div class="led-strip">${Array.from({length:8},()=>'<i></i>').join("")}</div>`:
-          scene==="bulb"?
-          `<div class="bulb-wire"></div><div class="bulb-glass"></div><div class="bulb-base"></div><div class="bulb-glow"></div>`:
-          scene==="lamp"?
-          `<div class="lamp-shade"></div><div class="lamp-stem"></div><div class="lamp-base"></div>`:
-          `<div class="ceiling-wire"></div><div class="ceiling-cap"></div><div class="ceiling-glow"></div>`
-        }
-      </div>`}
+      ${customPhoto || (configuredIcon
+        ? `<div class="light-fixture configured-icon"><div class="generic-sensor community-configured-device-icon"><ha-icon icon="${configuredIcon}"></ha-icon></div></div>`
+        : `<div class="light-fixture ${scene}">
+          ${scene==="led"?
+            `<div class="led-strip">${Array.from({length:8},()=>'<i></i>').join("")}</div>`:
+            scene==="bulb"?
+            `<div class="bulb-wire"></div><div class="bulb-glass"></div><div class="bulb-base"></div><div class="bulb-glow"></div>`:
+            scene==="lamp"?
+            `<div class="lamp-shade"></div><div class="lamp-stem"></div><div class="lamp-base"></div>`:
+            `<div class="ceiling-wire"></div><div class="ceiling-cap"></div><div class="ceiling-glow"></div>`
+          }
+        </div>`)}
       <div class="light-visual-copy clickable" data-more="${entity}">
         <span>${this._esc(title)}</span><strong>${on?"Accesa":"Spenta"}</strong><small>${this._esc(sub || (isLed?"Illuminazione LED":"Illuminazione"))}</small>
       </div>
-      <button class="light-visual-toggle ${on?'active':''}" data-toggle="${entity}" type="button"><ha-icon icon="${icon}"></ha-icon><span>${this._language==="en"?(on?'ON':'OFF'):(on?'ACCESO':'SPENTO')}</span></button>
+      <button class="light-visual-toggle ${on?'active':''}" data-toggle="${entity}" type="button"><ha-icon icon="${displayIcon}"></ha-icon><span>${this._language==="en"?(on?'ON':'OFF'):(on?'ACCESO':'SPENTO')}</span></button>
     </div>`;
   }
 
@@ -199,6 +319,14 @@ V1</strong></div><p>Grafica originale di Casa Dashboard Community v4.2.7.</p></b
 
     if(options.status) status=options.status;
     if(options.icon) icon=options.icon;
+    // N2: a configurator icon is a device visual choice, not only an action-button icon.
+    // Keep photos as the highest-priority visual, otherwise replace the built-in scene
+    // with the selected icon so preview and rendered card stay consistent.
+    const configuredDeviceIcon=this._activeRoomEntityIcon(entity);
+    if(configuredDeviceIcon){
+      icon=configuredDeviceIcon;
+      visual=`<div class="generic-sensor community-configured-device-icon"><ha-icon icon="${configuredDeviceIcon}"></ha-icon></div>`;
+    }
     const visualActive=options.visualActive===false?false:active;
     let actionAttr="",actionText=options.actionText||"",actionClass=visualActive?"active":"";
     if(options.kind==="service"){
@@ -288,7 +416,7 @@ V1</strong></div><p>Grafica originale di Casa Dashboard Community v4.2.7.</p></b
     const visibleMetrics=metrics.filter(m=>m.show!==false && String(m.value??"").trim() && String(m.value).trim()!=="—");
     if(this._uiTheme==="v2" && sceneKey){
       const side=visibleMetrics.slice(0,3);
-      return `<section class="scene-hero scene-${level} original-room-hero v2-room-${sceneKey} room-title-${roomTitleSize}">
+      return `<section class="scene-hero scene-${level} original-room-hero v2-room-${sceneKey} room-title-${roomTitleSize} ${this._roomImageUrl(roomConfig)?"has-room-photo":""}">
         <div class="scene-copy">
           <div class="scene-kicker">CASA · LIVE</div>
           <div class="scene-title-row"><h1>${title}</h1></div>
@@ -348,7 +476,8 @@ V1</strong></div><p>Grafica originale di Casa Dashboard Community v4.2.7.</p></b
     const configured=this._configured(entity); if(!configured) return "";
     const customPhoto=this._customObjectVisual(entity,"device");
     const open=this._coverOpen(entity,inverted),pos=this._attr(entity,"current_position",null);
-    const stateText=inverted?(open?"Aperta":"Chiusa"):(open?"Giù / aperta":"Su / chiusa");
+    const rawCoverState=String(this._state(entity,open?"open":"closed")||"").toLowerCase();
+    const stateText=rawCoverState==="opening"?"In apertura":rawCoverState==="closing"?"In chiusura":open?"Aperta":"Chiusa";
     if(this._uiTheme==="v2"){
       return `<div class="universal-device-card blinds ${open?'active':'inactive'} span-${span}${entity?this._entitySizeClass(entity):""} ${customPhoto?"has-custom-photo":""}">
         ${customPhoto || `<div class="universal-device-scene"><div class="blind-visual ${open?'open':''}"><div class="blind-box"></div><div class="blind-slats">${Array.from({length:7},()=>'<i></i>').join("")}</div><div class="blind-cord"></div></div></div>`}
@@ -361,108 +490,4 @@ V1</strong></div><p>Grafica originale di Casa Dashboard Community v4.2.7.</p></b
   _alert(level,icon,title,text) { return `<div class="signal ${level}"><div class="signal-icon"><ha-icon icon="${icon}"></ha-icon></div><div><strong>${title}</strong><span>${text}</span></div></div>`; }
   _logic(title,text,level=""){ return `<div class="logic-ribbon ${level}"><span>${title}</span><strong>${text}</strong></div>`; }
   _compareCard(title, items, foot="", span=6, icon="mdi:chart-line") {
-    const visible=items.filter(it=>String(it.value??"").trim() && String(it.value).trim()!=="—");
-    if(!visible.length) return "";
-    return `<div class="data-node compare-card span-${span}"><div class="data-node-top"><div class="data-label">${title}</div><ha-icon icon="${icon}"></ha-icon></div><div class="compare-grid">${visible.map(it=>`<div class="compare-cell"><div class="compare-label">${it.label}</div><div class="compare-value">${it.value}</div></div>`).join("")}</div>${foot&&foot.trim()!=="—"?`<div class="data-foot compare-foot">${foot}</div>`:""}</div>`;
-  }
-
-  _configuredEntitiesForOverview(){
-    const roomEntities=(this._effectiveRooms()||[]).flatMap(r=>Array.isArray(r.entities)?r.entities:[]);
-    const mapped=[...ENTITY_KEYS].map(k=>String(this._entityMap?.[k]||"").trim()).filter(Boolean);
-    return [...new Set([...roomEntities,...mapped])].filter(e=>this._hass?.states?.[e]);
-  }
-  _logicalKeysForEntity(entity){
-    return [...ENTITY_KEYS].filter(k=>String(this._entityMap?.[k]||"").trim()===entity);
-  }
-  _overviewLabelForEntity(entity){
-    const keys=this._logicalKeysForEntity(entity);
-    const keyWithLabel=keys.find(k=>String(this._entityLabels?.[k]||"").trim());
-    if(keyWithLabel) return this._overviewDisplayName(keyWithLabel,entity);
-    const friendly=String(this._hass?.states?.[entity]?.attributes?.friendly_name||"").trim();
-    if(friendly) return friendly;
-    return keys.length?this._configLabel(keys[0]):entity;
-  }
-
-  _overviewMetric(entity, kind="generic"){
-    const obj=this._hass?.states?.[entity];
-    if(!obj) return {value:"—",unit:"",sub:""};
-    const raw=this._state(entity,"—");
-    const unit=String(obj.attributes?.unit_of_measurement||"").trim();
-    const dc=String(obj.attributes?.device_class||"").toLowerCase();
-    const n=parseFloat(raw);
-    const finite=Number.isFinite(n);
-
-    if(kind==="power" || dc==="power" || /(^|\s)(w|kw)$/i.test(unit)){
-      if(!finite) return {value:raw,unit,sub:""};
-      const lower=unit.toLowerCase();
-      const kw=lower==="w" ? n/1000 : lower==="kw" ? n : (Math.abs(n)>=100 ? n/1000 : n);
-      return {value:new Intl.NumberFormat(this._language==="en"?"en-GB":"it-IT",{minimumFractionDigits:2,maximumFractionDigits:2}).format(kw),unit:"kW",sub:""};
-    }
-    if(dc==="energy" || /kwh|wh/i.test(unit)){
-      if(!finite) return {value:raw,unit,sub:""};
-      let value=n, outUnit=unit||"kWh";
-      if(unit.toLowerCase()==="wh"){ value=n/1000; outUnit="kWh"; }
-      return {value:new Intl.NumberFormat(this._language==="en"?"en-GB":"it-IT",{maximumFractionDigits:2}).format(value),unit:outUnit,sub:""};
-    }
-    if(dc==="battery" || unit==="%"){
-      return {value:finite?new Intl.NumberFormat(this._language==="en"?"en-GB":"it-IT",{maximumFractionDigits:0}).format(n):raw,unit:unit||"%",sub:""};
-    }
-    if(dc==="temperature" || /°c|°f/i.test(unit)){
-      return {value:finite?new Intl.NumberFormat(this._language==="en"?"en-GB":"it-IT",{minimumFractionDigits:1,maximumFractionDigits:1}).format(n):raw,unit,sub:""};
-    }
-    if(entity.startsWith("binary_sensor.")){
-      const on=raw==="on";
-      return {value:on?(this._language==="en"?"Active":"Attivo"):(this._language==="en"?"Inactive":"Inattivo"),unit:"",sub:""};
-    }
-    if(finite){
-      return {value:new Intl.NumberFormat(this._language==="en"?"en-GB":"it-IT",{maximumFractionDigits:2}).format(n),unit,sub:""};
-    }
-    return {value:raw,unit,sub:""};
-  }
-
-  _overviewMetricCard(entity, tone="generic", icon="mdi:chart-line", kind="generic"){
-    const friendly=this._overviewLabelForEntity(entity);
-    const metric=this._overviewMetric(entity,kind);
-    return `<div class="overview-key-card ${tone}">
-      <div class="overview-key-icon"><ha-icon icon="${icon}"></ha-icon></div>
-      <div class="overview-key-copy">
-        <span>${this._esc(friendly)}</span>
-        <div class="overview-key-value"><strong>${this._esc(metric.value)}</strong>${metric.unit?`<b>${this._esc(metric.unit)}</b>`:""}</div>
-      </div>
-    </div>`;
-  }
-
-  _overviewText(key, fallback){
-    const value=String(this._overviewConfig?.[key]||"").trim();
-    return value || fallback;
-  }
-  _overviewIdentity(){
-    const vehicle=this._overviewText("vehicle_name", this._language==="en"?"EV":"Auto elettrica");
-    const wallbox=this._overviewText("wallbox_name", "Wallbox");
-    return {vehicle,wallbox};
-  }
-  _roomImageUrl(room){
-    const raw=String(room?.image||"").trim();
-    if(!raw) return "";
-    if(raw.startsWith("/local/") || raw.startsWith("http://") || raw.startsWith("https://") || raw.startsWith("data:")) return raw;
-    if(raw.startsWith("/")) return raw;
-    return `/local/${raw.replace(/^\/+/, "")}`;
-  }
-
-  _energyPowerKW(logicalKey){
-    const entity=this._eid(logicalKey);
-    const obj=entity?this._hass?.states?.[entity]:null;
-    if(!obj) return null;
-    const raw=parseFloat(obj.state);
-    if(!Number.isFinite(raw)) return null;
-    const unit=String(obj.attributes?.unit_of_measurement||"").trim().toLowerCase();
-    if(unit==="w") return raw/1000;
-    if(unit==="mw") return raw*1000;
-    return raw;
-  }
-  _energyNumber(logicalKey){
-    const entity=this._eid(logicalKey);
-    const n=entity?parseFloat(this._hass?.states?.[entity]?.state):NaN;
-    return Number.isFinite(n)?n:null;
-  }
-  _energyFmt
+    const

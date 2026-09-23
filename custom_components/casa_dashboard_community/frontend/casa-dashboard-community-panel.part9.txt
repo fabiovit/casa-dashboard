@@ -1,94 +1,4 @@
-se,.room-solar-showcase,.overview-solar-advanced{gap:10px!important}
-        .solar-production-card,.solar-battery-card,.battery-showcase,.energy-battery-card{
-          min-height:0!important;
-          padding:14px!important;
-        }
-        .solar-production-card strong,.solar-main-value,.solar-production-live strong{
-          font-size:clamp(30px,10vw,46px)!important;
-          line-height:1!important;
-        }
-        .battery-visual{
-          transform:scale(.72)!important;
-          transform-origin:center!important;
-          margin:-22px auto!important;
-        }
-        .battery-power,.solar-battery-card .battery-power{
-          font-size:clamp(30px,10vw,46px)!important;
-        }
-        .energy-flow-row,.solar-flow-row,.solar-nodes{
-          grid-template-columns:repeat(2,minmax(0,1fr))!important;
-          gap:8px!important;
-          padding:10px!important;
-        }
-        .energy-flow-node,.solar-flow-node,.solar-node{
-          min-height:96px!important;
-          padding:9px 6px!important;
-        }
-        .energy-flow-node strong,.solar-node strong{font-size:21px!important}
-      }
-
-      @media(max-width:480px){
-        .entity-size-compact,.entity-size-normal,.entity-size-wide,.entity-size-full{grid-column:1/-1!important}
-      }
-
-
-
-      /* Core UI refinements */
-      .background-choice-fields{display:grid;grid-template-columns:repeat(4,minmax(90px,1fr));gap:8px;align-items:end}
-      .background-choice-fields input[type="color"],.room-background-fields input[type="color"]{width:100%;height:38px;padding:3px;border:1px solid var(--divider-color);border-radius:9px;background:var(--secondary-background-color)}
-      .room-background-fields{grid-template-columns:140px 110px 110px 110px 100px}
-      .app-shell.custom-photo-background #content{position:relative;isolation:isolate}
-      .app-shell.custom-photo-background #content::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:rgba(6,10,14,.42);backdrop-filter:blur(1.5px)}
-      .app-shell.theme-light.custom-photo-background #content::before{background:rgba(255,255,255,.38)}
-      .app-shell.custom-photo-background .card,
-      .app-shell.custom-photo-background .metric-card,
-      .app-shell.custom-photo-background .universal-device-card,
-      .app-shell.custom-photo-background .community-awning-card,
-      .app-shell.custom-photo-background .kitchen-blind-card,
-      .app-shell.custom-photo-background .light-visual-card,
-      .app-shell.custom-photo-background .robot-room-card,
-      .app-shell.custom-photo-background .robot-overview-card,
-      .app-shell.custom-photo-background .vehicle-overview-card,
-      .app-shell.custom-photo-background .solar-production-card,
-      .app-shell.custom-photo-background .solar-battery-card,
-      .app-shell.custom-photo-background .energy-flow-row,
-      .app-shell.custom-photo-background .weather-strip,
-      .app-shell.custom-photo-background .hero-card{
-        background:color-mix(in srgb,var(--card-background-color) 92%,transparent)!important;
-        backdrop-filter:blur(10px)
-      }
-      .robot-room-card.mower .robot-room-visual{color:#62c679;background:color-mix(in srgb,#62c679 10%,var(--secondary-background-color))}
-      @media(max-width:760px){.background-choice-fields,.room-background-fields{grid-template-columns:1fr 1fr}}
-
-
-
-      /* Legacy responsive base */
-      .room-title-compact h1{font-size:clamp(32px,5vw,54px)!important}.room-title-large h1{font-size:clamp(54px,7vw,82px)!important}
-      .overview-title-compact h1{font-size:clamp(28px,5vw,50px)!important}.overview-title-large h1{font-size:clamp(52px,7vw,80px)!important}
-      .overview-layout-config{margin:14px 0;padding:14px;border:1px solid var(--divider-color);border-radius:16px;background:var(--card-background-color)}
-      .config-subsection-title strong{display:block}.config-subsection-title span{display:block;margin-top:3px;font-size:10px;color:var(--secondary-text-color)}
-      .overview-section-config-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
-      .overview-section-config-row{display:grid;grid-template-columns:1fr auto 120px;gap:8px;align-items:center;padding:9px;border:1px solid var(--divider-color);border-radius:10px}
-      .active-category-config{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;padding-top:10px;border-top:1px solid var(--divider-color)}.active-category-config strong{width:100%}
-      .icon-select-preview{display:grid;grid-template-columns:38px 1fr;gap:7px;align-items:center}.icon-select-preview>ha-icon{width:36px;height:36px;border:1px solid var(--divider-color);border-radius:9px;padding:7px;color:var(--primary-color)}
-      .room-entity-order-actions{display:flex;align-items:center;gap:5px}.room-entity-order-actions>span{font-size:8px;text-transform:uppercase;color:var(--secondary-text-color);margin-right:auto}.room-entity-order-actions button,.room-entity-sortbar button{border:1px solid var(--divider-color);border-radius:8px;background:var(--secondary-background-color);color:var(--primary-text-color);height:32px}
-      .room-entity-sortbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding:7px 9px;background:var(--secondary-background-color);border-radius:10px}
-      .overview-active-chip.group{border:1px solid var(--divider-color);cursor:pointer}.overview-active-chip.group strong{margin-left:5px;padding:2px 7px;border-radius:999px;background:var(--secondary-background-color)}
-      .active-group-modal{position:fixed;inset:0;z-index:1005;display:grid;place-items:center;padding:18px}.active-group-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(4px)}.active-group-dialog{position:relative;width:min(560px,96vw);max-height:78vh;overflow:auto;background:var(--card-background-color);border:1px solid var(--divider-color);border-radius:20px;box-shadow:0 24px 80px rgba(0,0,0,.4)}
-      .active-group-head{display:flex;justify-content:space-between;align-items:center;padding:15px 16px;border-bottom:1px solid var(--divider-color)}.active-group-head span{display:block;font-size:8px;letter-spacing:.13em;color:var(--secondary-text-color)}.active-group-head strong{font-size:20px}.active-group-head button{width:36px;height:36px;border:0;border-radius:10px;background:var(--secondary-background-color)}
-      .active-group-list{padding:10px}.active-group-row{display:grid;grid-template-columns:1fr auto;gap:8px;padding:7px 0;border-bottom:1px solid var(--divider-color)}.active-group-entity{border:0;background:transparent;text-align:left;color:var(--primary-text-color);padding:7px}.active-group-entity span{display:block;font-weight:800}.active-group-entity small{display:block;color:var(--secondary-text-color);margin-top:3px}.active-group-toggle{width:42px;border:1px solid var(--divider-color);border-radius:10px;background:var(--secondary-background-color);color:var(--primary-color)}
-      .opening-card.has-custom-photo .custom-object-photo,.activity-card.has-custom-photo .custom-object-photo,.robot-room-card .custom-object-photo{width:120px;height:112px;margin:10px;border-radius:14px;overflow:hidden}.opening-card.has-custom-photo .custom-object-photo img,.activity-card.has-custom-photo .custom-object-photo img,.robot-room-card .custom-object-photo img,.robot-overview-visual.has-photo img{width:100%;height:100%;object-fit:cover;display:block}
-      .robot-overview-card.compact{min-height:0}.overview-size-compact .chapter{margin-top:18px!important}.overview-size-compact .overview-key-grid,.overview-size-compact .overview-room-climate-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}.overview-size-compact .robot-overview-card,.overview-size-compact .vehicle-overview-card{min-height:0!important;padding:12px!important}
-      :host(.kiosk-mode) .menu-btn,:host(.kiosk-mode) .topbar-config-btn,:host(.kiosk-mode) .info-config-box,:host(.kiosk-mode) .language-switch,:host(.kiosk-mode) .topbar-tools{display:none!important}
-      @media(max-width:720px){
-        .topbar{min-height:62px!important}.brand-copy .subtitle{display:none!important}.brand-copy .title{font-size:19px!important}.brand-version{font-size:9px!important}
-        .community-personal-overview{padding:14px!important}.community-personal-overview h1{font-size:clamp(30px,11vw,48px)!important;line-height:.96!important}.community-personal-overview .scene-sub{font-size:11px!important;margin-top:7px!important}.personal-overview-hero-card{min-height:128px!important}
-        .chapter{margin:18px 0 8px!important;padding:7px 9px!important;border:1px solid color-mix(in srgb,var(--divider-color) 85%,transparent);border-radius:12px;background:color-mix(in srgb,var(--card-background-color) 90%,transparent)}.chapter-line{display:none!important}.chapter-title{font-size:10px!important}.chapter-sub{font-size:9px!important}
-        .overview-section-config-grid{grid-template-columns:1fr}.overview-section-config-row{grid-template-columns:1fr auto 110px}
-        .overview-size-compact .overview-key-grid,.overview-size-compact .overview-room-climate-grid,.overview-key-grid,.overview-room-climate-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
-        .overview-size-compact .solar-production-card,.overview-size-compact .solar-battery-card,.overview-size-compact .energy-flow-row{min-height:0!important;padding:10px!important}
-        .overview-size-compact .vehicle-overview-card{grid-template-columns:95px 1fr!important;gap:10px!important}.overview-size-compact .vehicle-overview-stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}
-        .overview-size-compact .robot-overview-card{grid-template-columns:82px 1fr!important;gap:10px!important}.overview-size-compact .robot-overview-stats{grid-column:1/-1;grid-template-columns:repeat(3,minmax(0,1fr))!important}
+82px 1fr!important;gap:10px!important}.overview-size-compact .robot-overview-stats{grid-column:1/-1;grid-template-columns:repeat(3,minmax(0,1fr))!important}
         .vehicle-overview-card{padding:12px!important}.vehicle-overview-visual{min-height:110px!important}.vehicle-overview-head strong{font-size:22px!important}.robot-overview-card{padding:12px!important}.robot-overview-visual{height:100px!important}.robot-overview-copy strong{font-size:20px!important}
         .room-title-large h1,.room-title-normal h1,.room-title-compact h1{font-size:clamp(34px,11vw,52px)!important}
       }
@@ -98,7 +8,7 @@ se,.room-solar-showcase,.overview-solar-advanced{gap:10px!important}
       
 
       /* ==========================================================
-         FINAL RESPONSIVE LAYER - Community 4.2.7
+         FINAL RESPONSIVE LAYER - Community 4.2.9
          One authoritative phone/tablet override block.
          ========================================================== */
 
@@ -167,7 +77,12 @@ se,.room-solar-showcase,.overview-solar-advanced{gap:10px!important}
       /* Common visual-media bounds. */
       .opening-card,.activity-card,.environment-card,.sensor-visual-card,
       .robot-room-card,.robot-overview-card,.universal-device-card{
-        min-width:0!important;max-width:100%!important;box-sizing:border-box!important;overflow:hidden!important
+        min-width:0!important;max-width:100%!important;box-sizing:border-box!important;overflow:hidden!important;
+        border-radius:20px!important
+      }
+      .opening-card>.custom-object-photo,.activity-card>.custom-object-photo,
+      .environment-card>.custom-object-photo,.sensor-visual-card>.custom-object-photo{
+        border-radius:15px!important;overflow:hidden!important
       }
       .custom-object-photo img,.robot-overview-visual img,.security-lock-photo img{
         width:100%!important;height:100%!important;object-fit:cover!important;display:block!important
@@ -183,13 +98,13 @@ se,.room-solar-showcase,.overview-solar-advanced{gap:10px!important}
 
       /* Desktop/tablet solar is already smaller than the original oversized renderer. */
       .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-sun{
-        width:54px!important;height:54px!important;border-radius:16px!important
+        width:46px!important;height:46px!important;border-radius:14px!important
       }
-      .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-sun ha-icon{--mdc-icon-size:30px!important}
+      .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-sun ha-icon{--mdc-icon-size:25px!important}
       .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-node-orb{
-        width:54px!important;height:54px!important
+        width:46px!important;height:46px!important
       }
-      .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-node-orb ha-icon{--mdc-icon-size:30px!important}
+      .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-node-orb ha-icon{--mdc-icon-size:25px!important}
 
       @media(max-width:900px){
         /* Tablet: avoid desktop assumptions while retaining two-column cards where useful. */
@@ -209,6 +124,22 @@ se,.room-solar-showcase,.overview-solar-advanced{gap:10px!important}
         }
         .ui-v2 .community-personal-overview .personal-overview-hero-card,
         .ui-v2 .original-room-hero .original-room-hero-card{display:none!important}
+        .ui-v2 .community-personal-overview.has-overview-photo .personal-overview-hero-card,
+        .ui-v2 .original-room-hero.has-room-photo .original-room-hero-card{
+          display:block!important;width:100%!important;min-width:0!important;min-height:0!important;
+          margin:10px 0 0!important;padding:0!important;border:0!important;background:transparent!important
+        }
+        .ui-v2 .community-personal-overview.has-overview-photo .personal-overview-house,
+        .ui-v2 .original-room-hero.has-room-photo .original-room-visual{
+          width:100%!important;height:118px!important;min-height:118px!important;max-height:118px!important;
+          border-radius:14px!important;overflow:hidden!important
+        }
+        .ui-v2 .community-personal-overview.has-overview-photo .overview-house-photo,
+        .ui-v2 .original-room-hero.has-room-photo .custom-room-photo,
+        .ui-v2 .original-room-hero.has-room-photo .custom-room-photo img{
+          width:100%!important;height:100%!important;max-height:none!important;object-fit:cover!important;display:block!important
+        }
+        .ui-v2 .original-room-hero.has-room-photo .original-room-side{display:none!important}
         .ui-v2 .community-personal-overview .scene-copy,
         .ui-v2 .original-room-hero .scene-copy{width:100%!important;min-width:0!important;padding:0!important;margin:0!important}
         .ui-v2 .community-personal-overview .scene-kicker,
@@ -258,6 +189,13 @@ se,.room-solar-showcase,.overview-solar-advanced{gap:10px!important}
           border-width:0 0 1px 0!important;background:transparent!important
         }
 
+        .overview-config-section.overview-size-compact{padding:8px!important}
+        .overview-config-section.overview-size-normal{padding:12px!important}
+        .overview-config-section.overview-size-large{padding:16px!important}
+        .overview-config-section.overview-size-compact>.chapter{margin-top:6px!important}
+        .overview-config-section.overview-size-large>.chapter .chapter-title{font-size:12px!important}
+        .overview-config-section.overview-size-large>.chapter .chapter-sub{font-size:10px!important}
+
         /* ---------- ACTIVE STATES ---------- */
         .overview-config-section[data-overview-section="active"]{
           display:block!important;width:100%!important;box-sizing:border-box!important;padding:10px!important
@@ -291,7 +229,12 @@ se,.room-solar-showcase,.overview-solar-advanced{gap:10px!important}
         .smart-lock-card{
           display:grid!important;grid-template-columns:84px minmax(0,1fr)!important;
           width:100%!important;min-height:108px!important;gap:10px!important;
-          padding:10px!important;border-radius:16px!important;overflow:hidden!important;box-sizing:border-box!important
+          padding:10px!important;border-radius:16px!important;overflow:hidden!important;box-sizing:border-box!important;
+          background:#17191d!important;border:1px solid rgba(255,255,255,.10)!important;
+          backdrop-filter:none!important;-webkit-backdrop-filter:none!important;opacity:1!important
+        }
+        .app-shell.theme-light .smart-lock-card{
+          background:#fff!important;border-color:rgba(15,23,42,.12)!important
         }
         .smart-lock-card .security-lock-photo{width:76px!important;height:86px!important;border-radius:11px!important}
         .smart-lock-card .security-card-copy{width:100%!important;min-width:0!important}
@@ -299,7 +242,18 @@ se,.room-solar-showcase,.overview-solar-advanced{gap:10px!important}
           font-size:21px!important;line-height:1.05!important;overflow-wrap:normal!important;word-break:normal!important
         }
         .smart-lock-card .security-actions{display:flex!important;flex-wrap:wrap!important;gap:6px!important;margin-top:8px!important}
-        .smart-lock-card .security-btn{width:auto!important;min-width:92px!important;height:32px!important;padding:0 10px!important}
+        /* Smartphone: lock controls must remain opaque/readable over room photos. */
+        .smart-lock-card .security-btn{
+          width:auto!important;min-width:92px!important;height:32px!important;padding:0 10px!important;
+          background:color-mix(in srgb,var(--card-background-color) 96%,var(--primary-color) 4%)!important;
+          border:1px solid color-mix(in srgb,var(--primary-text-color) 18%,transparent)!important;
+          color:var(--primary-text-color)!important;opacity:1!important;box-shadow:0 2px 8px rgba(0,0,0,.10)!important
+        }
+        .smart-lock-card .security-btn.primary{
+          background:color-mix(in srgb,var(--card-background-color) 88%,var(--primary-color) 12%)!important;
+          border-color:color-mix(in srgb,var(--primary-color) 48%,var(--divider-color))!important;
+          color:var(--primary-color)!important;opacity:1!important
+        }
 
         /* Photos: same bounded geometry for sensors, Alexa/media, robot and mower. */
         .opening-card.has-custom-photo,.activity-card.has-custom-photo,
@@ -318,8 +272,29 @@ se,.room-solar-showcase,.overview-solar-advanced{gap:10px!important}
           width:74px!important;max-width:74px!important;min-width:74px!important;height:82px!important;
           margin:0!important;border-radius:11px!important;overflow:hidden!important
         }
-        .robot-room-actions{display:flex!important;flex-direction:column!important;gap:5px!important;align-self:center!important}
+        .robot-room-actions{display:flex!important;flex-direction:row!important;gap:6px!important;align-self:center!important;grid-column:1/-1!important;justify-content:flex-end!important}
         .robot-room-actions button{width:34px!important;height:34px!important;flex:0 0 34px!important}
+
+        .universal-device-card,.universal-device-card.has-custom-photo{
+          display:grid!important;grid-template-columns:76px minmax(0,1fr)!important;
+          grid-template-rows:auto auto!important;gap:8px 10px!important;align-items:center!important;
+          padding:10px!important;min-height:0!important;width:100%!important;overflow:hidden!important
+        }
+        .universal-device-card>.universal-device-scene,
+        .universal-device-card.has-custom-photo>.custom-object-photo{
+          grid-column:1!important;grid-row:1!important;width:76px!important;min-width:76px!important;
+          height:76px!important;min-height:76px!important;margin:0!important;border-radius:12px!important;overflow:hidden!important
+        }
+        .universal-device-card>.universal-device-copy{grid-column:2!important;grid-row:1!important;min-width:0!important}
+        .universal-device-card>.universal-device-copy strong{font-size:20px!important;line-height:1.08!important;overflow-wrap:anywhere!important}
+        .universal-device-card>.universal-device-copy small{font-size:10px!important;line-height:1.3!important;overflow-wrap:anywhere!important}
+        .universal-device-card>.universal-device-action,
+        .universal-device-card>.universal-device-actions{
+          grid-column:1/-1!important;grid-row:2!important;width:100%!important;max-width:100%!important;
+          margin:0!important;justify-self:stretch!important;box-sizing:border-box!important
+        }
+        .universal-device-card>.universal-device-actions{display:flex!important;gap:6px!important;flex-wrap:wrap!important}
+        .universal-device-card>.universal-device-actions .universal-device-action{flex:1 1 auto!important;min-width:0!important}
 
         /* ---------- SOLAR: one compact column on phone ---------- */
         .overview-config-section[data-overview-section="solar"]{
@@ -344,10 +319,10 @@ se,.room-solar-showcase,.overview-solar-advanced{gap:10px!important}
           grid-column:2!important;grid-row:1!important;align-self:center!important;min-width:0!important
         }
         .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-prod-copy strong{
-          font-size:27px!important;line-height:1!important;margin-top:4px!important
+          font-size:22px!important;line-height:1!important;margin-top:3px!important
         }
         .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-sun{
-          width:42px!important;height:42px!important;border-radius:12px!important
+          width:34px!important;height:34px!important;border-radius:10px!important
         }
         .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-sun ha-icon{--mdc-icon-size:23px!important}
         .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-pv-bars{
@@ -361,15 +336,19 @@ se,.room-solar-showcase,.overview-solar-advanced{gap:10px!important}
           gap:9px!important;min-height:0!important;padding:11px!important;align-items:center!important
         }
         .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-battery-visual{
-          width:58px!important;min-width:58px!important;height:86px!important;min-height:86px!important;
-          display:grid!important;place-items:center!important;overflow:hidden!important
+          width:58px!important;min-width:58px!important;height:96px!important;min-height:96px!important;
+          display:grid!important;place-items:center!important;overflow:visible!important
         }
         .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-battery-shell{
-          transform:scale(.34)!important;transform-origin:center!important;margin:-62px!important
+          width:46px!important;height:82px!important;min-width:46px!important;min-height:82px!important;
+          transform:none!important;margin:0!important;overflow:hidden!important
+        }
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-battery-shell:after{
+          width:16px!important;height:4px!important;top:-5px!important
         }
         .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-battery-copy{min-width:0!important}
         .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-battery-copy .power{
-          font-size:25px!important;line-height:1!important
+          font-size:21px!important;line-height:1!important
         }
         .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-energy-pills{
           grid-column:1/-1!important;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
@@ -385,161 +364,258 @@ se,.room-solar-showcase,.overview-solar-advanced{gap:10px!important}
           min-width:0!important;min-height:0!important;padding:7px 4px!important
         }
         .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-node-orb{
-          width:36px!important;height:36px!important
+          width:30px!important;height:30px!important
         }
-        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-node-orb ha-icon{--mdc-icon-size:20px!important}
-        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-node strong{font-size:16px!important}
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-node-orb ha-icon{--mdc-icon-size:17px!important}
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-node strong{font-size:14px!important}
 
         /* Overview robot/mower image stays inside the panel. */
         .robot-overview-card{
-          display:grid!important;grid-template-columns:82px minmax(0,1fr)!important;
-          width:100%!important;max-width:100%!important;gap:9px!important;
-          padding:10px!important;overflow:hidden!important;box-sizing:border-box!important
+          display:grid!important;grid-template-columns:74px minmax(0,1fr)!important;
+          width:100%!important;max-width:100%!important;gap:10px!important;align-items:center!important;
+          padding:10px!important;overflow:hidden!important;box-sizing:border-box!important;border-radius:16px!important
         }
+        .overview-size-compact .robot-overview-card{grid-template-columns:62px minmax(0,1fr)!important;padding:8px!important;gap:8px!important}
+        .overview-size-large .robot-overview-card{grid-template-columns:92px minmax(0,1fr)!important;padding:14px!important;gap:12px!important}
         .robot-overview-visual.has-photo{
-          width:74px!important;max-width:74px!important;min-width:74px!important;height:82px!important;
+          width:74px!important;max-width:74px!important;min-width:74px!important;height:74px!important;
           border-radius:11px!important;overflow:hidden!important
         }
-        .robot-overview-copy{min-width:0!important}
+        .overview-size-compact .robot-overview-visual.has-photo{width:62px!important;min-width:62px!important;max-width:62px!important;height:62px!important}
+        .overview-size-large .robot-overview-visual.has-photo{width:92px!important;min-width:92px!important;max-width:92px!important;height:92px!important}
+        .robot-overview-copy{min-width:0!important;align-self:center!important}
+        .robot-overview-copy strong{display:block!important;line-height:1.08!important;overflow-wrap:anywhere!important}
         .robot-overview-stats{grid-column:1/-1!important;width:100%!important;min-width:0!important}
+
+
+      /* ===== Community 4.2.9 targeted fixes ===== */
+      /* Keep device cards readable on color/gradient backgrounds too, not only photos. */
+      @media(max-width:760px){
+        .app-shell.custom-readable-background .control,
+        .app-shell.custom-readable-background .metric,
+        .app-shell.custom-readable-background .universal-device-card,
+        .app-shell.custom-readable-background .community-awning-card,
+        .app-shell.custom-readable-background .kitchen-blind-card,
+        .app-shell.custom-readable-background .light-visual-card,
+        .app-shell.custom-readable-background .robot-room-card,
+        .app-shell.custom-readable-background .opening-card,
+        .app-shell.custom-readable-background .activity-card,
+        .app-shell.custom-readable-background .environment-card,
+        .app-shell.custom-readable-background .sensor-visual-card,
+        .app-shell.custom-readable-background .command-strip{
+          background:color-mix(in srgb,var(--card-background-color) 94%,transparent)!important;
+          border-color:color-mix(in srgb,var(--divider-color) 90%,transparent)!important;
+          backdrop-filter:blur(8px)!important;
+          -webkit-backdrop-filter:blur(8px)!important;
+        }
+
+        /* Solar: smaller overall scale and battery cap fully inside the card. */
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-battery-hero{
+          grid-template-columns:54px minmax(0,1fr)!important;padding:9px!important;gap:8px!important
+        }
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-battery-visual{
+          width:54px!important;min-width:54px!important;height:90px!important;min-height:90px!important;
+          overflow:visible!important;padding-top:6px!important;box-sizing:border-box!important
+        }
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-battery-shell{
+          width:40px!important;height:72px!important;min-width:40px!important;min-height:72px!important;
+          border-width:4px!important;border-radius:14px!important;overflow:visible!important;box-sizing:border-box!important
+        }
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-battery-shell:before{
+          top:-8px!important;width:18px!important;height:6px!important;border-radius:4px 4px 1px 1px!important
+        }
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-battery-fill{
+          left:6px!important;right:6px!important;bottom:6px!important;border-radius:8px!important;max-height:calc(100% - 12px)!important
+        }
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-battery-soc>div{
+          padding:4px 5px!important;border-radius:8px!important
+        }
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-battery-soc span{font-size:7px!important;letter-spacing:.08em!important}
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-battery-soc strong{font-size:17px!important;margin-top:1px!important}
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-prod-copy span,
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-pv-bars span,
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-node-label,
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-energy-pill span{font-size:8px!important;letter-spacing:.10em!important}
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-pv-meta strong{font-size:14px!important;margin-top:3px!important}
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-pv-meta small{font-size:9px!important}
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-node small{font-size:9px!important}
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-node-chip{font-size:9px!important;padding:5px 7px!important}
       }
 
-    `;
-  }
 
-  _s(id) { const eid=this._eid(id); return eid ? this._hass?.states?.[eid] : null; }
-  async _loadEntityConfig(force=false) {
-    if((this._entityConfigLoaded && !force) || this._entityConfigLoading) return;
-    this._entityConfigLoading=true;
-    try {
-      let entities=null;
-      let labels=null;
-      let overview=null;
-      if(this._hass?.callWS){
-        try {
-          const result=await this._hass.callWS({type:"casa_dashboard_community/config/get"});
-          if(result?.entities && typeof result.entities==="object") entities=result.entities;
-          if(result?.labels && typeof result.labels==="object") labels=result.labels;
-          if(result?.overview && typeof result.overview==="object") overview=result.overview;
-          if(Array.isArray(result?.rooms)) this._rooms=result.rooms.map(room=>({
-            ...room,
-            entities:Array.isArray(room?.entities)?[...room.entities]:[],
-            modules:Array.isArray(room?.modules)?[...room.modules]:[],
-            entity_labels:(room?.entity_labels && typeof room.entity_labels==="object")?{...room.entity_labels}:{},
-            entity_images:(room?.entity_images && typeof room.entity_images==="object")?{...room.entity_images}:{},
-            entity_icons:(room?.entity_icons && typeof room.entity_icons==="object")?{...room.entity_icons}:{},
-            entity_sizes:(room?.entity_sizes && typeof room.entity_sizes==="object")?{...room.entity_sizes}:{},
-            entity_order:Array.isArray(room?.entity_order)?[...room.entity_order]:[],
-            title_size:room?.title_size||"normal",
-            show_subtitle:room?.show_subtitle!==false,
-            subtitle:room?.subtitle||""
-          }));
-        } catch(_wsErr) { /* fallback below */ }
-      }
-      if(!entities){
-        const res=await fetch(`${ENTITY_CONFIG_URL}?v=${Date.now()}`, {cache:"no-store"});
-        if(res.ok){
-          const json=await res.json();
-          if(json?.entities && typeof json.entities==="object") entities=json.entities;
-          if(json?.labels && typeof json.labels==="object") labels=json.labels;
-          if(json?.overview && typeof json.overview==="object") overview=json.overview;
-          if(Array.isArray(json?.rooms)) this._rooms=json.rooms.map(room=>({
-            ...room,
-            entities:Array.isArray(room?.entities)?[...room.entities]:[],
-            modules:Array.isArray(room?.modules)?[...room.modules]:[],
-            entity_labels:(room?.entity_labels && typeof room.entity_labels==="object")?{...room.entity_labels}:{},
-            entity_images:(room?.entity_images && typeof room.entity_images==="object")?{...room.entity_images}:{},
-            entity_icons:(room?.entity_icons && typeof room.entity_icons==="object")?{...room.entity_icons}:{},
-            entity_sizes:(room?.entity_sizes && typeof room.entity_sizes==="object")?{...room.entity_sizes}:{},
-            entity_order:Array.isArray(room?.entity_order)?[...room.entity_order]:[],
-            title_size:room?.title_size||"normal",
-            show_subtitle:room?.show_subtitle!==false,
-            subtitle:room?.subtitle||""
-          }));
+      /* ===== FV RESPONSIVE FIX2 - real rendered structure ===== */
+      /* Smartphone: keep the battery artwork fully inside its own card and rebalance copy. */
+      @media(max-width:760px){
+        .overview-config-section[data-overview-section="solar"] .solar-showcase.community-advanced-energy{
+          grid-template-columns:minmax(0,1fr)!important;
+          gap:10px!important;
+          overflow:visible!important;
+        }
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-battery-hero{
+          display:grid!important;
+          grid-template-columns:72px minmax(0,1fr)!important;
+          align-items:center!important;
+          gap:12px!important;
+          padding:14px 13px!important;
+          min-height:150px!important;
+          overflow:hidden!important;
+        }
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-battery-visual{
+          width:64px!important;min-width:64px!important;height:108px!important;min-height:108px!important;
+          display:grid!important;place-items:center!important;
+          padding-top:7px!important;box-sizing:border-box!important;overflow:hidden!important;
+        }
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-battery-shell{
+          width:48px!important;min-width:48px!important;height:90px!important;min-height:90px!important;
+          border-width:4px!important;border-radius:15px!important;margin:5px auto 0!important;
+          overflow:hidden!important;box-sizing:border-box!important;
+        }
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-battery-shell:before{
+          top:-8px!important;width:22px!important;height:7px!important;border-radius:4px 4px 1px 1px!important;
+        }
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-battery-fill{
+          left:7px!important;right:7px!important;bottom:7px!important;border-radius:9px!important;
+          max-height:calc(100% - 14px)!important;
+        }
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-battery-soc>div{
+          max-width:calc(100% - 8px)!important;box-sizing:border-box!important;
+          padding:4px 3px!important;border-radius:8px!important;overflow:hidden!important;
+        }
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-battery-soc strong{
+          font-size:17px!important;line-height:1!important;margin-top:1px!important;white-space:nowrap!important;
+        }
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-battery-copy{
+          min-width:0!important;text-align:left!important;
+        }
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-battery-copy .power{
+          font-size:34px!important;line-height:.95!important;margin-top:6px!important;
+        }
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-battery-copy .desc{
+          font-size:13px!important;line-height:1.25!important;margin-top:7px!important;
+        }
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-energy-pills{
+          display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+          gap:6px!important;margin-top:10px!important;
+        }
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-energy-pill{
+          min-width:0!important;padding:8px 7px!important;text-align:center!important;
+        }
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-energy-pill strong{
+          display:block!important;margin:3px 0 0!important;font-size:12px!important;overflow-wrap:anywhere!important;
         }
       }
-      this._entityMap=entities || {};
-      this._entityLabels=labels || {};
-      this._overviewConfig=overview || {};
-    } catch(_err) {
-      this._entityMap={};
-      this._entityLabels={};
-      this._overviewConfig={};
-    } finally {
-      this._entityConfigLoaded=true;
-      this._entityConfigLoading=false;
-      this._renderPage(false);
-    }
-  }
-  _eid(id) {
-    if(!ENTITY_KEYS.has(id)) return id;
-    const mapped=this._entityMap?.[id];
-    return typeof mapped==="string" && mapped.trim() ? mapped.trim() : null;
-  }
-  _configured(id) { const eid=this._eid(id); return !!eid && !!this._hass?.states?.[eid]; }
-  _overviewDisplayName(logicalKey, entityId=null) {
-    const custom=String(this._entityLabels?.[logicalKey]||"").trim();
-    if(custom) return custom;
-    const eid=entityId || this._eid(logicalKey);
-    const friendly=eid ? String(this._hass?.states?.[eid]?.attributes?.friendly_name||"").trim() : "";
-    if(friendly) return friendly;
-    return this._configLabel(logicalKey);
-  }
-  _configuredCount() { return [...ENTITY_KEYS].filter(id=>this._eid(id)).length; }
-  _configNotice() {
-    const configured=this._configuredCount();
-    const total=ENTITY_KEYS.size;
-    const title=configured===0?"Configura le entità":"Entità configurate";
-    const text=configured===0
-      ? `Sono disponibili ${total} associazioni opzionali. Configura solo le funzioni che utilizzi nel tuo Home Assistant.`
-      : `${configured} di ${total} associazioni disponibili configurate. Non è necessario compilarle tutte: configura solo quelle che utilizzi.`;
-    const tone=configured===0?"warn":"info";
-    const icon=configured===0?"mdi:cog-alert-outline":"mdi:check-circle-outline";
-    return `<div class="alert ${tone} config-alert"><ha-icon icon="${icon}"></ha-icon><div><strong>${title}</strong><span>${text}</span></div><button class="config-open-btn" data-action="entity-config" type="button"><ha-icon icon="mdi:tune-variant"></ha-icon> Configura</button></div>`;
-  }
 
-  _configLabel(key) {
-    const labels={
-      "sensor.vehicle_battery_level":"Batteria auto",
-      "sensor.vehicle_range":"Autonomia auto",
-      "sensor.vehicle_charge_remaining_minutes":"Tempo ricarica restante",
-      "sensor.vehicle_odometer":"Chilometraggio auto",
-      "sensor.vehicle_charging_power":"Potenza ricarica auto",
-      "sensor.vehicle_session_energy":"Energia sessione auto"
-    };
-    if(labels[key]) return labels[key];
-    const pretty=key.split(".")[1]?.replaceAll("_"," ") || key;
-    return pretty.replace(/\b\w/g,c=>c.toUpperCase());
-  }
+      /* Desktop/tablet COMPACT: target the actual advanced-energy markup used in Panoramica. */
+      @media(min-width:761px){
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .solar-showcase.community-advanced-energy{
+          grid-template-columns:repeat(12,minmax(0,1fr))!important;
+          gap:10px!important;margin:6px 0 14px!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-prod-card{
+          grid-column:span 5!important;min-height:170px!important;height:auto!important;
+          padding:16px 18px!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-battery-hero{
+          grid-column:span 7!important;grid-template-columns:120px minmax(0,1fr)!important;
+          gap:16px!important;min-height:170px!important;height:auto!important;padding:16px 18px!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-battery-visual{
+          width:120px!important;height:140px!important;display:grid!important;place-items:center!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-battery-shell{
+          width:76px!important;height:126px!important;border-width:5px!important;border-radius:21px!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-battery-shell:before{
+          top:-13px!important;width:34px!important;height:11px!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-battery-soc strong{
+          font-size:30px!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-battery-copy .power{
+          font-size:43px!important;margin-top:6px!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-battery-copy .desc{
+          margin-top:6px!important;font-size:12px!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-energy-pills{
+          margin-top:10px!important;gap:6px!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-energy-pill{
+          padding:7px 10px!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-prod-copy strong{
+          font-size:38px!important;margin-top:6px!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-sun{
+          width:48px!important;height:48px!important;border-radius:15px!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-sun ha-icon{
+          --mdc-icon-size:29px!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-pv-bars{
+          gap:8px!important;margin-top:8px!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-pv-line{
+          grid-template-columns:120px minmax(0,1fr)!important;gap:10px!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-flow-card{
+          grid-column:1/-1!important;min-height:0!important;padding:13px 16px 14px!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-flow-grid{
+          gap:10px!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-node{
+          padding-top:0!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-node-orb{
+          width:48px!important;height:48px!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-node-orb ha-icon{
+          --mdc-icon-size:24px!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-node strong{
+          font-size:22px!important;margin-top:8px!important;
+        }
+        .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-node small{
+          margin-top:4px!important;font-size:9px!important;
+        }
 
-  _roomEntitySuggestions(query="", selected=[]){
-    const q=String(query||"").trim().toLocaleLowerCase("it");
-    const chosen=new Set(selected||[]);
-    return Object.entries(this._hass?.states||{})
-      .filter(([id])=>!chosen.has(id))
-      .map(([id,obj])=>({id,name:String(obj?.attributes?.friendly_name||id)}))
-      .filter(x=>!q || x.id.toLocaleLowerCase("it").includes(q) || x.name.toLocaleLowerCase("it").includes(q))
-      .sort((a,b)=>{
-        const an=a.name.toLocaleLowerCase("it"), bn=b.name.toLocaleLowerCase("it");
-        const ae=an===q?0:an.startsWith(q)?1:an.includes(q)?2:3;
-        const be=bn===q?0:bn.startsWith(q)?1:bn.includes(q)?2:3;
-        return ae-be || an.localeCompare(bn,"it");
-      }).slice(0,12);
-  }
+      /* FIX19 · Smart Lock: stesso contenitore standard degli altri dispositivi */
+      @media(min-width:621px){
+        .community-security-grid.entity-aware>.universal-device-card.smart-lock-card{
+          min-height:180px!important;
+          height:auto!important;
+          max-height:none!important;
+          padding:14px!important;
+          grid-template-columns:132px minmax(0,1fr)!important;
+          gap:14px!important;
+          align-items:center!important;
+          box-sizing:border-box!important;
+          overflow:hidden!important;
+        }
+        .community-security-grid.entity-aware>.universal-device-card.smart-lock-card .security-lock-photo{
+          width:132px!important;
+          height:118px!important;
+          min-height:0!important;
+          border-radius:16px!important;
+        }
+        .community-security-grid.entity-aware>.universal-device-card.smart-lock-card .security-card-copy{
+          min-width:0!important;
+          align-self:center!important;
+        }
+        .community-security-grid.entity-aware>.universal-device-card.smart-lock-card .security-actions{
+          margin-top:10px!important;
+          gap:7px!important;
+          flex-wrap:wrap!important;
+        }
+      }
 
-
-  _entityIconChoices(){
-    return [
-      ["","Automatico"],
-      ["mdi:ceiling-light","Plafoniera"],["mdi:dome-light","Plafoniera tonda"],["mdi:ceiling-light-multiple","Plafoniera multipla"],
-      ["mdi:lightbulb-outline","Lampadina"],["mdi:lightbulb-on-outline","Lampadina accesa"],["mdi:lightbulb-spot","Faretto"],
-      ["mdi:lamp","Lampada"],["mdi:floor-lamp","Lampada da terra"],["mdi:desk-lamp","Lampada da tavolo"],["mdi:wall-sconce-outline","Applique"],
-      ["mdi:led-strip-variant","Striscia LED"],["mdi:string-lights","Catena luminosa"],
-      ["mdi:door","Porta"],["mdi:door-open","Porta aperta"],["mdi:window-closed-variant","Finestra"],["mdi:gate","Cancello"],["mdi:garage-variant","Garage"],
-      ["mdi:blinds-horizontal","Tapparella"],["mdi:awning-outline","Tenda da sole"],
-      ["mdi:motion-sensor","Movimento"],["mdi:account-eye-outline","Presenza"],["mdi:vibrate","Vibrazione"],
-      ["mdi:thermometer","Temperatura"],["mdi:water-percent","Umidità"],["mdi:white-balance-sunny","Luminosità"],
-      ["mdi:air-conditioner","Climatizzatore"],["mdi:radiator","Riscaldamento"],["mdi:water-boiler","Acqua calda"],
-      ["mdi:fan","Ventola"],["mdi:television","TV"],["mdi:speaker","Speaker"],["mdi:cast","Media player"],
-      ["mdi:fridge-outline","Frigorifero"],["mdi:dishwasher","Lavastoviglie"],["mdi:washing-machine","Lavatrice"],["mdi:tumble-dryer","Asciugatrice"],
-      ["mdi:mic
+      /* Nota informativa generale sul dimensionamento entità */
+      .room-entity-size-hint{
+        display:block;
+        margin-top:6px;
+        font-size:11px;
+        line-height:1.35;
+        opacity:.68;
+        font-weight:500;
+      }

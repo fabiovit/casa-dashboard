@@ -1,41 +1,4 @@
-t:850;color:#8da6bd}.original-room-meta strong{display:block;font-size:30px;letter-spacing:-.04em;margin-top:7px}.original-room-meta small{display:block;color:var(--secondary-text-color);margin-top:4px}.original-room-divider{height:1px;background:linear-gradient(90deg,rgba(84,180,255,.85),transparent)}
-      .community-original-scene{height:220px!important;border-radius:20px!important;overflow:hidden!important}
-      .living-scene,.office-scene,.laundry-scene,.hobby-scene,.generic-home-scene{position:relative;height:220px;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#17242d,#0d141a)}
-      .living-wall,.office-wall,.laundry-wall,.hobby-wall,.generic-room-wall{position:absolute;inset:0;background:linear-gradient(180deg,#27343d,#151c22)}
-      .living-tv{position:absolute;left:34px;top:36px;width:120px;height:66px;border:5px solid #566774;background:#102735}.living-sofa{position:absolute;left:50%;bottom:32px;width:180px;height:72px;transform:translateX(-50%);border-radius:20px 20px 10px 10px;background:#46545e}.living-sofa i{position:absolute;top:8px;width:72px;height:42px;border-radius:12px;background:#5a6973}.living-sofa i:first-child{left:12px}.living-sofa i:last-child{right:12px}.living-lamp{position:absolute;right:32px;top:30px;width:4px;height:110px;background:#7d8c96}.living-lamp:after{content:"";position:absolute;left:-20px;top:-2px;width:44px;height:24px;border-radius:50%;background:#d2b265}.living-rug{position:absolute;left:25%;right:25%;bottom:10px;height:18px;border-radius:50%;background:#263944}
-      .office-desk{position:absolute;left:32px;right:32px;bottom:42px;height:16px;background:#64727d}.office-monitor{position:absolute;left:50%;bottom:62px;width:116px;height:70px;transform:translateX(-50%);border:6px solid #596a76;background:#173246}.office-chair{position:absolute;left:50%;bottom:8px;width:64px;height:55px;transform:translateX(-50%);border-radius:16px 16px 8px 8px;background:#3f4c55}.office-lamp{position:absolute;right:28px;bottom:58px;width:5px;height:92px;background:#7b8993}
-      .laundry-machine{position:absolute;left:45px;bottom:28px;width:112px;height:142px;border-radius:10px;background:#d0d5d9}.laundry-door{position:absolute;left:21px;top:45px;width:68px;height:68px;border-radius:50%;background:#172b38;border:9px solid #7d8c95}.laundry-shelf{position:absolute;right:34px;top:38px;width:130px;height:12px;background:#63717a;box-shadow:0 48px 0 #63717a}.laundry-basket{position:absolute;right:58px;bottom:26px;width:78px;height:70px;background:#465762;clip-path:polygon(8% 0,92% 0,100% 100%,0 100%)}
-      .hobby-table{position:absolute;left:46px;right:46px;bottom:38px;height:18px;background:#755f48}.hobby-cabinet{position:absolute;right:34px;top:32px;width:92px;height:108px;background:#4b5359}.hobby-lamp{position:absolute;left:50%;top:0;width:4px;height:72px;background:#7b8993}.hobby-lamp:after{content:"";position:absolute;left:-25px;bottom:-8px;width:54px;height:28px;border-radius:50%;background:#d4ae62}
-      .generic-window{position:absolute;left:34px;top:30px;width:120px;height:90px;border:6px solid #63737e;background:#1d4054}.generic-table{position:absolute;left:48px;right:48px;bottom:38px;height:16px;background:#687781}.generic-lamp{position:absolute;right:40px;top:22px;width:5px;height:95px;background:#7c8b95}
-      .stairs-hero-scene{position:relative;height:220px;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#17232b,#0c1217)}.stairs-wall{position:absolute;inset:0;background:linear-gradient(135deg,#222e36,#131a20);clip-path:polygon(0 0,100% 0,100% 100%,38% 100%)}.stairs-flight{position:absolute;left:8%;bottom:10%;width:62%;height:66%;display:flex;flex-direction:column-reverse;gap:4px;transform:skewY(-18deg)}.stairs-flight i{height:13px;background:linear-gradient(90deg,#53636f,#29353e);border-top:1px solid #738592}.stairs-rail{position:absolute;left:19%;top:12%;width:5px;height:68%;background:#7f929e;transform:rotate(27deg);transform-origin:bottom}.stairs-door{position:absolute;right:9%;bottom:8%;width:68px;height:118px;border:5px solid #5f707d;background:#222c34}
-      @media(max-width:980px){.ui-v2 .original-room-hero{grid-template-columns:1fr!important}.original-room-hero-card{grid-template-columns:1fr}.original-room-side{display:grid;grid-template-columns:repeat(3,1fr)}}@media(max-width:620px){.original-room-hero-card{padding:14px}.original-room-side{grid-template-columns:1fr}.community-original-scene{height:185px!important}}
-
-      /* v2.0.0 - restore and emphasize original Casa V1 iconography */
-      .ui-v1 .command-symbol ha-icon{--mdc-icon-size:23px!important}
-      .ui-v1 .command-symbol{color:#8ba5bd}
-      .ui-v1 .command-strip.state-on .command-symbol,.ui-v1 .command-symbol.active{color:#55e6ad}
-      .ui-v1 .scene-mark ha-icon{--mdc-icon-size:24px}
-
-      /* v2.0.0 - original iconography in Casa V2 */
-      .ui-v2 .light-visual-toggle ha-icon,
-      .ui-v2 .universal-device-action ha-icon,
-      .ui-v2 .generic-sensor ha-icon{--mdc-icon-size:22px}
-      .ui-v2 .scene-icon ha-icon{--mdc-icon-size:25px}
-
-      /* v2.0.0 - per-room custom display names */
-      .room-entity-chip-wrap{display:flex;flex-direction:column;gap:5px;min-width:185px;max-width:100%}
-      .room-entity-alias{display:grid;grid-template-columns:auto minmax(0,1fr);gap:7px;align-items:center;padding:0 2px}
-      .room-entity-alias>span{font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:var(--secondary-text-color);font-weight:800}
-      .room-entity-alias input{min-width:0!important;padding:6px 8px!important;font-size:10px!important;border-radius:8px!important}
-      .room-entity-chips{align-items:flex-start}
-
-      /* v2.0.0 - dedicated Air Fryer visual */
-      .uv-airfryer{width:132px;height:132px;display:grid;place-items:center;position:relative}
-      .uv-airfryer-body{position:relative;width:88px;height:112px;border-radius:22px 22px 18px 18px;background:linear-gradient(155deg,#56636c,#222b31 55%,#151b20);border:2px solid #667781;box-shadow:0 18px 28px rgba(0,0,0,.28)}
-      .uv-airfryer-top{position:absolute;left:14px;right:14px;top:9px;height:20px;border-radius:10px;background:#1a2227;display:flex;align-items:center;justify-content:center;gap:9px}
-      .uv-airfryer-top i{width:7px;height:7px;border-radius:50%;border:1px solid #7e919d}
-      .uv-airfryer-display{position:absolute;left:23px;right:23px;top:34px;height:20px;border-radius:6px;background:#0d171d;display:grid;place-items:center;color:#7994a4;font-size:7px;letter-spacing:.12em}
-      .uv-airfryer.active .uv-airfryer-display{color:#57e7ae;box-shadow:0 0 15px rgba(87,231,174,.16) inset}
+0 15px rgba(87,231,174,.16) inset}
       .uv-airfryer-basket{position:absolute;left:13px;right:13px;bottom:17px;height:42px;border-radius:7px 7px 13px 13px;background:#202a30;border:1px solid #596973}
       .uv-airfryer-window{position:absolute;left:10px;right:10px;top:8px;height:20px;border-radius:5px;background:linear-gradient(180deg,#182832,#0c151a)}
       .uv-airfryer-handle{position:absolute;left:50%;bottom:-17px;width:36px;height:20px;transform:translateX(-50%);border-radius:0 0 9px 9px;background:#333f46}
@@ -402,4 +365,52 @@ t:850;color:#8da6bd}.original-room-meta strong{display:block;font-size:30px;lett
       .room-add-primary ha-icon,.room-add-footer .room-add ha-icon{--mdc-icon-size:18px}
       .room-add-footer{display:flex;justify-content:center;padding:16px 0 2px}
       .room-add-footer .room-add{display:inline-flex;align-items:center;gap:7px;cursor:pointer;padding:10px 15px}
-  
+      @media(max-width:650px){
+        .config-page-intro-actions{display:grid;grid-template-columns:auto 1fr}
+        .config-page-intro-actions .room-add-primary{grid-column:1/-1;width:100%;justify-content:center;margin:4px 0 0}
+      }
+
+      /* Security & Access */
+      .community-security-alert{margin:18px 0 4px}
+      .community-security-grid{display:grid;grid-template-columns:minmax(360px,.8fr) minmax(520px,1.2fr);gap:18px;margin-bottom:28px}
+      .community-security-card{min-height:260px;border:1px solid rgba(255,255,255,.08);border-radius:26px;background:radial-gradient(circle at 100% 100%,rgba(84,211,174,.08),transparent 38%),linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.012));display:grid;overflow:hidden}
+      .door-security{grid-template-columns:180px 1fr;gap:18px;align-items:center;padding:24px}
+      .security-door-visual{position:relative;height:210px;border-radius:18px;background:#111820;display:grid;place-items:center}
+      .security-door-frame{width:88px;height:150px;border:6px solid #53616d;background:#202c36;padding:7px}
+      .security-door-leaf{position:relative;width:100%;height:100%;border:1px solid #657583;background:linear-gradient(180deg,#263845,#1a252d)}
+      .security-door-leaf:before,.security-door-leaf:after{content:"";position:absolute;left:15px;right:15px;height:1px;background:#687886}
+      .security-door-leaf:before{top:42px}.security-door-leaf:after{bottom:42px}
+      .security-door-leaf i{position:absolute;right:8px;top:50%;width:7px;height:7px;border-radius:50%;background:#dce5ec}
+      .security-badge{position:absolute;bottom:12px;padding:5px 9px;border-radius:999px;font-size:8px;font-weight:900;letter-spacing:.08em}
+      .security-badge.good{color:#55e6ad;background:rgba(85,230,173,.12)}.security-badge.warn{color:#ffb45c;background:rgba(255,180,92,.12)}
+      .security-card-copy>span,.alarm-title-row span,.alarm-keypad>span{font-size:9px;letter-spacing:.16em;color:#8da6bd;font-weight:900}
+      .security-card-copy>strong{display:block;font-size:27px;margin-top:8px;letter-spacing:-.04em}.security-card-copy>small,.alarm-title-row small{display:block;color:var(--secondary-text-color);font-size:10px;margin-top:5px}
+      .security-actions{display:flex;gap:8px;margin-top:22px}
+      .security-btn{min-height:42px;padding:0 14px;border-radius:12px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--primary-text-color);font-weight:800;cursor:pointer}
+      .security-btn.primary{border-color:rgba(80,205,255,.42);color:#64d2ff;background:rgba(80,205,255,.07)}
+      .alarm-security{grid-template-columns:minmax(0,1fr) 210px;gap:20px;padding:24px}.alarm-security.triggered{box-shadow:inset 0 0 0 1px rgba(255,95,103,.35)}
+      .alarm-card-main{display:flex;flex-direction:column;justify-content:center}
+      .alarm-title-row{display:flex;align-items:center;gap:13px}.alarm-title-row strong{display:block;font-size:28px;margin-top:5px}
+      .alarm-shield{width:54px;height:54px;border-radius:16px;display:grid;place-items:center;background:rgba(255,180,92,.13);border:1px solid rgba(255,180,92,.28);color:#ffb45c}.alarm-shield ha-icon{--mdc-icon-size:28px}
+      .alarm-quick-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:24px}
+      .alarm-quick-actions button{height:42px;border-radius:12px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.035);color:var(--primary-text-color);font-size:9px;font-weight:900;cursor:pointer}
+      .alarm-quick-actions button.active{border-color:rgba(255,180,92,.45);background:rgba(255,180,92,.13);color:#ffb45c}
+      .alarm-keypad{border-radius:18px;background:#101419;border:1px solid rgba(255,255,255,.07);padding:15px;text-align:center}
+      .alarm-keypad>strong{display:block;font-size:17px;margin:6px 0 13px}
+      .keypad-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+      .keypad-grid i{height:34px;border-radius:9px;border:1px solid rgba(255,255,255,.08);background:#171c22;display:grid;place-items:center;font-style:normal;font-size:10px;color:#9db1c2}
+      .keypad-grid ha-icon{--mdc-icon-size:16px;color:#ffb45c}
+      .app-shell.theme-light .community-security-card{background:linear-gradient(145deg,#fff,#f4f8fb);border-color:rgba(15,23,42,.09)}
+      .app-shell.theme-light .security-door-visual,.app-shell.theme-light .alarm-keypad{background:#edf3f7}
+      @media(max-width:1000px){.community-security-grid{grid-template-columns:1fr}.alarm-security{grid-template-columns:1fr 190px}}
+      @media(max-width:650px){.door-security,.alarm-security{grid-template-columns:1fr}.security-door-visual{height:180px}.alarm-keypad{display:none}.alarm-quick-actions{grid-template-columns:1fr}}
+
+      .activity-card{width:100%;min-height:150px;border:1px solid rgba(255,255,255,.07);border-radius:var(--r-md);background:linear-gradient(180deg,rgba(255,255,255,.025),rgba(255,255,255,.012));padding:14px;display:grid;grid-template-columns:130px 1fr 42px;align-items:center;gap:16px;color:inherit;text-align:left;cursor:pointer;contain:layout paint}
+      .activity-visual{height:112px;border-radius:15px;position:relative;overflow:hidden;background:linear-gradient(180deg,#172631,#101820);border:1px solid rgba(255,255,255,.06)}
+      .activity-copy span{display:block;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#8da6bd}.activity-copy strong{display:block;font-size:26px;margin-top:7px}.activity-copy small{display:block;color:var(--secondary-text-color);margin-top:4px}
+      .activity-state{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.04)}.activity-state.good{color:#55e6ad}.activity-state.warn{color:#ffb45c}
+      .motion-person{position:absolute;left:45%;top:20px;width:46px;height:78px}.motion-person .head{position:absolute;left:17px;top:0;width:17px;height:17px;border-radius:50%;background:#768899}.motion-person .body{position:absolute;left:21px;top:17px;width:8px;height:34px;border-radius:5px;background:#768899;transform:rotate(12deg)}.motion-person .arm,.motion-person .leg{position:absolute;width:7px;height:34px;border-radius:5px;background:#768899;transform-origin:top center}.motion-person .arm.a{left:20px;top:25px;transform:rotate(55deg)}.motion-person .arm.b{left:24px;top:27px;transform:rotate(-47deg)}.motion-person .leg.a{left:23px;top:48px;transform:rotate(37deg)}.motion-person .leg.b{left:25px;top:48px;transform:rotate(-35deg)}.activity-card.active .motion-person *{background:#ffb45c}.motion-waves{position:absolute;right:15px;top:31px}.motion-waves i{display:block;width:16px;height:16px;border:2px solid #617384;border-left:0;border-bottom:0;border-radius:0 16px 0 0;margin:4px}.activity-card.active .motion-waves i{border-color:#ffb45c}
+      .occupancy-room{position:absolute;inset:14px;border:2px solid #536675;border-radius:10px}.occupancy-floor{position:absolute;left:10px;right:10px;bottom:12px;height:2px;background:#536675}.occupancy-person{position:absolute;bottom:14px;width:24px;height:48px}.occupancy-person:before{content:"";position:absolute;left:6px;top:0;width:13px;height:13px;border-radius:50%;background:#758797}.occupancy-person:after{content:"";position:absolute;left:9px;top:14px;width:7px;height:29px;border-radius:5px;background:#758797}.occupancy-person.one{left:26px}.occupancy-person.two{right:26px}.activity-card.active .occupancy-person:before,.activity-card.active .occupancy-person:after{background:#55e6ad}
+      .vibration-object{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:62px;height:72px;border:4px solid #657684;border-radius:7px}.vibration-window{position:absolute;inset:8px;border:2px solid #7b8c98;background:rgba(103,184,255,.12)}.vibration-lines{position:absolute;top:33px}.vibration-lines.left{left:19px}.vibration-lines.right{right:19px}.vibration-lines i{display:block;width:17px;height:3px;background:#657684;margin:9px 0;border-radius:4px}.activity-card.active .vibration-lines i,.activity-card.active .vibration-object{border-color:#ffb45c}
+      .house-thermostat{display:grid;grid-template-columns:190px 1fr;gap:20px;align-items:center;min-height:210px;padding:18px;border:1px solid rgba(255,255,255,.07);border-radius:22px;background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(255,127,74,.035))}
+      .house-thermo-ring{width:170px;hei

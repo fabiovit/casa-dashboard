@@ -1,153 +1,4 @@
-rong{display:block;margin-top:5px;font-size:17px}
-      .dynamic-room-page .scene-title-row .scene-icon,.kitchen-dynamic-page .scene-title-row .scene-icon{display:none!important}
-      @media(max-width:650px){
-        .topbar-config-btn span{display:none}.topbar-config-btn{width:34px;padding:0;justify-content:center}
-        .overview-photo-config-grid{grid-template-columns:1fr}
-        .original-room-hero,.kitchen-dyn-hero{min-width:0!important;overflow:hidden}
-        .scene-copy,.scene-title-row{min-width:0}
-        .scene-title-row h1{font-size:clamp(40px,12vw,58px)!important;line-height:.94!important;letter-spacing:-.055em!important;max-width:100%;overflow-wrap:anywhere;word-break:normal}
-        .original-room-hero-card{grid-template-columns:1fr!important;min-width:0!important;padding:14px!important}
-        .original-room-visual,.custom-room-photo{width:100%!important;min-width:0!important;max-width:100%!important}
-        .custom-room-photo{height:210px!important}.custom-room-photo img{width:100%!important;height:100%!important;object-fit:cover!important;object-position:center!important}
-        .vehicle-overview-card{grid-template-columns:1fr}.vehicle-overview-stats{grid-template-columns:1fr 1fr}
-      }
-
-
-      /* Community climate polish */
-      .kitchen-climate-real{grid-column:1/-1}
-      .kitchen-climate-ring strong{font-size:44px;letter-spacing:-.045em}
-      .kitchen-climate-status strong{font-size:20px}
-      @media(max-width:760px){
-        .kitchen-climate-real{grid-template-columns:1fr}
-        .kitchen-climate-ring{width:210px;height:210px}
-        .kitchen-climate-stats{grid-template-columns:1fr}
-      }
-
-
-      /* Dynamic Hallway / Disimpegno */
-      .hallway-dyn-hero{grid-template-columns:minmax(360px,.9fr) minmax(560px,1.25fr)}
-      .hallway-hero-showcase{display:grid;grid-template-columns:minmax(360px,1.2fr) minmax(220px,.8fr);gap:18px;align-items:stretch;min-height:250px;padding:20px;border-radius:26px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(71,180,140,.035))}
-      .hallway-scene{min-height:210px;position:relative;overflow:hidden;border-radius:18px;background:linear-gradient(180deg,#18212a,#0d1217)}
-      .hallway-frame{position:absolute;top:22px;width:70px;height:118px;border:5px solid #53616d}
-      .hallway-frame.left{left:58px}.hallway-frame.right{right:58px}
-      .hallway-cone{position:absolute;bottom:0;width:0;height:0;border-left:64px solid transparent;border-right:64px solid transparent;border-bottom:145px solid rgba(92,107,120,.14)}
-      .hallway-cone.left{left:92px}.hallway-cone.right{right:92px}
-      .hallway-person{position:absolute;left:50%;top:50%;transform:translate(-50%,-44%);color:#8294a3}
-      .hallway-person ha-icon{--mdc-icon-size:82px}
-      .hallway-person.active{color:#67b8ff;filter:drop-shadow(0 0 15px rgba(103,184,255,.25))}
-      .hallway-hero-meta{display:flex;flex-direction:column;justify-content:center;gap:12px}
-      .hallway-hero-meta span{font-size:9px;letter-spacing:.17em;color:#8da6bd;font-weight:900}
-      .hallway-hero-meta strong{display:block;font-size:28px;margin-top:5px}
-      .hallway-hero-meta small{display:block;color:var(--secondary-text-color);margin-top:4px}
-      .hallway-meta-divider{height:1px;background:linear-gradient(90deg,rgba(103,184,255,.75),transparent)}
-      .hallway-appliance-card{min-height:150px;border-radius:20px;border:1px solid rgba(255,255,255,.07);background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(103,184,255,.018));display:grid;grid-template-columns:112px minmax(0,1fr) auto;gap:18px;align-items:center;padding:14px 16px}
-      .hallway-appliance-visual{display:grid;place-items:center}
-      .hallway-appliance-icon{width:86px;height:86px;border-radius:18px;display:grid;place-items:center;background:#132633;border:1px solid rgba(103,184,255,.24);color:#67b8ff}
-      .hallway-appliance-icon ha-icon{--mdc-icon-size:46px}
-      .hallway-appliance-icon.off{color:#8294a3;background:#14222c;border-color:rgba(130,148,163,.18)}
-      .hallway-appliance-icon.dryer ha-icon,.hallway-appliance-icon.washer ha-icon{--mdc-icon-size:52px}
-      .hallway-appliance-copy span{display:block;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:#8da6bd;font-weight:850}
-      .hallway-appliance-copy strong{display:block;font-size:24px;margin-top:6px}
-      .hallway-appliance-copy small{display:block;color:var(--secondary-text-color);margin-top:4px}
-      .hallway-appliance-toggle{height:44px;padding:0 14px;border-radius:13px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.025);color:#8294a3;font-weight:850;display:flex;align-items:center;gap:6px;cursor:pointer}
-      .hallway-appliance-toggle.active{border-color:rgba(85,230,173,.35);background:rgba(85,230,173,.07);color:#55e6ad}
-      .hallway-appliance-toggle ha-icon{--mdc-icon-size:18px}
-      .app-shell.theme-light .hallway-hero-showcase,.app-shell.theme-light .hallway-appliance-card{background:linear-gradient(145deg,#fff,#f4f8fb);border-color:rgba(15,23,42,.09)}
-      .app-shell.theme-light .hallway-scene{background:linear-gradient(180deg,#eef3f7,#dce5ec)}
-      @media(max-width:900px){.hallway-dyn-hero{grid-template-columns:1fr}.hallway-hero-showcase{grid-template-columns:1fr}}
-      @media(max-width:650px){.hallway-appliance-card{grid-template-columns:86px 1fr}.hallway-appliance-toggle{grid-column:1/-1;justify-content:center}.hallway-appliance-icon{width:76px;height:76px}}
-
-
-      /* Overview Climate / Weather parity */
-      .overview-room-climate-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:12px 0 28px}
-      .overview-room-climate-card{min-height:92px;padding:14px;border-radius:16px;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.018);display:flex;flex-direction:column;justify-content:center}
-      .overview-room-climate-card span{font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:#8da6bd;font-weight:900}
-      .overview-room-climate-card strong{font-size:25px;margin-top:5px;letter-spacing:-.035em}
-      .overview-room-climate-card small{font-size:10px;color:var(--secondary-text-color);margin-top:3px}
-      .overview-room-climate-card.external{border-color:rgba(103,184,255,.25)}
-      .overview-weather-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;margin:12px 0 28px;border:1px solid rgba(255,255,255,.07);border-radius:22px;overflow:hidden;background:rgba(255,255,255,.014)}
-      .overview-weather-card{min-height:105px;padding:16px;display:grid;grid-template-columns:54px 1fr;gap:10px;align-items:center;border-right:1px solid rgba(255,255,255,.06)}
-      .overview-weather-card:last-child{border-right:0}
-      .overview-weather-icon{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:#182633;color:#67b8ff}
-      .overview-weather-icon ha-icon{--mdc-icon-size:25px}
-      .overview-weather-card span{display:block;font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:#8da6bd;font-weight:900}
-      .overview-weather-card strong{display:block;font-size:24px;margin-top:5px}
-      .overview-weather-card small{display:block;font-size:9px;color:var(--secondary-text-color);margin-top:3px}
-      .app-shell.theme-light .overview-room-climate-card,.app-shell.theme-light .overview-weather-grid{background:#fff;border-color:rgba(15,23,42,.08)}
-      @media(max-width:1100px){.overview-room-climate-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.overview-weather-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.overview-weather-card{border-bottom:1px solid rgba(255,255,255,.06)}}
-      @media(max-width:650px){.overview-room-climate-grid{grid-template-columns:1fr 1fr}.overview-weather-grid{grid-template-columns:1fr}.overview-weather-card{border-right:0}}
-
-
-      /* Physical fan / extractor visual */
-      .room-fan-card{
-        min-height:164px;
-        border-radius:20px;
-        border:1px solid rgba(255,255,255,.07);
-        background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(103,184,255,.018));
-        display:grid;
-        grid-template-columns:126px minmax(0,1fr) auto;
-        gap:18px;
-        align-items:center;
-        padding:14px 16px;
-      }
-      .room-fan-scene{
-        width:126px;
-        height:126px;
-        border-radius:17px;
-        position:relative;
-        display:grid;
-        place-items:center;
-        overflow:hidden;
-        background:linear-gradient(180deg,#172936,#101d25);
-        border:1px solid rgba(103,184,255,.18);
-      }
-      .room-fan-rotor{
-        position:relative;
-        width:96px;
-        height:96px;
-        display:grid;
-        place-items:center;
-      }
-      .room-fan-hub{
-        position:absolute;
-        width:25px;
-        height:25px;
-        border-radius:50%;
-        background:#8795a1;
-        z-index:3;
-      }
-      .room-fan-blade{
-        position:absolute;
-        width:18px;
-        height:48px;
-        border-radius:80% 20% 80% 20%;
-        background:#647580;
-        transform-origin:50% 100%;
-      }
-      .room-fan-blade.b1{transform:translateY(-25px) rotate(0deg)}
-      .room-fan-blade.b2{transform:translateX(25px) rotate(90deg)}
-      .room-fan-blade.b3{transform:translateY(25px) rotate(180deg)}
-      .room-fan-blade.b4{transform:translateX(-25px) rotate(270deg)}
-      .room-fan-card.on .room-fan-blade{background:#55e6ad}
-      .room-fan-card.on .room-fan-hub{background:#55e6ad;box-shadow:0 0 20px rgba(85,230,173,.25)}
-      .room-fan-card.on .room-fan-rotor{animation:roomFanSpin 2.2s linear infinite}
-      @keyframes roomFanSpin{to{transform:rotate(360deg)}}
-
-      .room-fan-copy span{
-        display:block;
-        font-size:9px;
-        letter-spacing:.15em;
-        text-transform:uppercase;
-        color:#8da6bd;
-        font-weight:850;
-      }
-      .room-fan-copy strong{display:block;font-size:25px;margin-top:7px}
-      .room-fan-copy small{display:block;color:var(--secondary-text-color);margin-top:4px}
-
-      .room-fan-toggle{
-        min-width:70px;
-        height:48px;
-        padding:0 12px;
+;
         border-radius:14px;
         border:1px solid rgba(255,255,255,.08);
         background:rgba(255,255,255,.025);
@@ -605,6 +456,9 @@ rong{display:block;margin-top:5px;font-size:17px}
 
       .light-visual-card.on .light-visual-toggle,.light-visual-card.on .light-fixture{color:#ffd35a}
       .light-visual-card.on .light-visual-toggle ha-icon{color:#ffd35a}
+      /* Configured light icons inherit the ON visual state in every card size. */
+      .light-visual-card.on .light-fixture.configured-icon .community-configured-device-icon,
+      .light-visual-card.on .light-fixture.configured-icon .community-configured-device-icon ha-icon{color:#ffd35a!important}
       .light-fixture.bulb{position:relative;width:110px;height:105px;margin:auto}
       .bulb-wire{position:absolute;left:50%;top:0;width:2px;height:25px;background:#91a0ad}
       .bulb-glass{position:absolute;left:50%;top:24px;transform:translateX(-50%);width:52px;height:54px;border-radius:50% 50% 44% 44%;background:#8293a2}
@@ -651,4 +505,112 @@ rong{display:block;margin-top:5px;font-size:17px}
 
         /* Solar / battery: much denser on phones */
         .overview-solar-grid,.solar-hero-grid{grid-template-columns:1fr!important;gap:10px!important}
-        .solar-showca
+        .solar-showcase,.room-solar-showcase,.overview-solar-advanced{gap:10px!important}
+        .solar-production-card,.solar-battery-card,.battery-showcase,.energy-battery-card{
+          min-height:0!important;
+          padding:14px!important;
+        }
+        .solar-production-card strong,.solar-main-value,.solar-production-live strong{
+          font-size:clamp(30px,10vw,46px)!important;
+          line-height:1!important;
+        }
+        .battery-visual{
+          transform:scale(.72)!important;
+          transform-origin:center!important;
+          margin:-22px auto!important;
+        }
+        .battery-power,.solar-battery-card .battery-power{
+          font-size:clamp(30px,10vw,46px)!important;
+        }
+        .energy-flow-row,.solar-flow-row,.solar-nodes{
+          grid-template-columns:repeat(2,minmax(0,1fr))!important;
+          gap:8px!important;
+          padding:10px!important;
+        }
+        .energy-flow-node,.solar-flow-node,.solar-node{
+          min-height:96px!important;
+          padding:9px 6px!important;
+        }
+        .energy-flow-node strong,.solar-node strong{font-size:21px!important}
+      }
+
+      @media(max-width:480px){
+        .entity-size-compact,.entity-size-normal,.entity-size-wide,.entity-size-full{grid-column:1/-1!important}
+      }
+
+
+
+      /* Core UI refinements */
+      .background-choice-fields{display:grid;grid-template-columns:repeat(4,minmax(90px,1fr));gap:8px;align-items:end}
+      .background-choice-fields input[type="color"],.room-background-fields input[type="color"]{width:100%;height:38px;padding:3px;border:1px solid var(--divider-color);border-radius:9px;background:var(--secondary-background-color)}
+      .room-background-fields{grid-template-columns:140px 110px 110px 110px 100px}
+      .app-shell.custom-photo-background #content{position:relative;isolation:isolate}
+      .app-shell.custom-photo-background #content::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:rgba(6,10,14,.42);backdrop-filter:blur(1.5px)}
+      .app-shell.theme-light.custom-photo-background #content::before{background:rgba(255,255,255,.38)}
+      .app-shell.custom-photo-background .card,
+      .app-shell.custom-photo-background .metric-card,
+      .app-shell.custom-photo-background .universal-device-card,
+      .app-shell.custom-photo-background .community-awning-card,
+      .app-shell.custom-photo-background .kitchen-blind-card,
+      .app-shell.custom-photo-background .light-visual-card,
+      .app-shell.custom-photo-background .robot-room-card,
+      .app-shell.custom-photo-background .robot-overview-card,
+      .app-shell.custom-photo-background .vehicle-overview-card,
+      .app-shell.custom-photo-background .solar-production-card,
+      .app-shell.custom-photo-background .solar-battery-card,
+      .app-shell.custom-photo-background .energy-flow-row,
+      .app-shell.custom-photo-background .weather-strip,
+      .app-shell.custom-photo-background .hero-card{
+        background:color-mix(in srgb,var(--card-background-color) 92%,transparent)!important;
+        backdrop-filter:blur(10px)
+      }
+      .robot-room-card.mower .robot-room-visual{color:#62c679;background:color-mix(in srgb,#62c679 10%,var(--secondary-background-color))}
+      @media(max-width:760px){.background-choice-fields,.room-background-fields{grid-template-columns:1fr 1fr}}
+
+
+
+      /* Legacy responsive base */
+      .room-title-compact h1{font-size:clamp(32px,5vw,54px)!important}.room-title-large h1{font-size:clamp(54px,7vw,82px)!important}
+      .overview-title-compact h1{font-size:clamp(28px,5vw,50px)!important}.overview-title-large h1{font-size:clamp(52px,7vw,80px)!important}
+      .overview-layout-config{margin:14px 0;padding:14px;border:1px solid var(--divider-color);border-radius:16px;background:var(--card-background-color)}
+      .config-subsection-title strong{display:block}.config-subsection-title span{display:block;margin-top:3px;font-size:10px;color:var(--secondary-text-color)}
+      .overview-section-config-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
+      .overview-section-config-row{display:grid;grid-template-columns:1fr auto 120px;gap:8px;align-items:center;padding:9px;border:1px solid var(--divider-color);border-radius:10px}
+      .active-category-config{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;padding-top:10px;border-top:1px solid var(--divider-color)}.active-category-config strong{width:100%}
+      .icon-select-preview{display:grid;grid-template-columns:38px 1fr;gap:7px;align-items:center}.icon-select-preview>ha-icon{width:36px;height:36px;border:1px solid var(--divider-color);border-radius:9px;padding:7px;color:var(--primary-color)}
+      .community-configured-device-icon{width:100%;height:100%;display:grid;place-items:center}.community-configured-device-icon ha-icon{--mdc-icon-size:44px;color:var(--primary-color)}
+      /* N2 SAFE ICON V3: configurator readability only; icon sizing stays scoped to configured device visuals. */
+      .config-dialog-tabs select,.config-dialog-tabs option,.config-dialog-tabs input,.config-dialog-tabs button{font-size:14px}
+      .config-dialog-tabs label>span,.config-dialog-tabs .room-entity-order-actions>span,.config-dialog-tabs .device-room-card-head>span,.config-dialog-tabs .device-room-filter label span,.config-dialog-tabs .background-config-panel label span,.config-dialog-tabs .room-background-fields label span,.config-dialog-tabs .room-entity-photo>span{font-size:11px;line-height:1.35}
+      .config-dialog-tabs .config-page-intro span,.config-dialog-tabs .config-page-note,.config-dialog-tabs .config-subsection-title span{font-size:12px;line-height:1.5}
+      .config-dialog-tabs .device-room-card-head strong,.config-dialog-tabs .overview-config-head strong{font-size:16px}
+      .config-dialog-tabs .icon-select-preview{grid-template-columns:48px 1fr;gap:9px}
+      .config-dialog-tabs .icon-select-preview>ha-icon{width:46px;height:46px;padding:8px;box-sizing:border-box;--mdc-icon-size:27px}
+      @media(max-width:650px){.community-configured-device-icon ha-icon{--mdc-icon-size:42px}.config-dialog-tabs select,.config-dialog-tabs option,.config-dialog-tabs input,.config-dialog-tabs button{font-size:15px}.config-dialog-tabs label>span{font-size:12px}}
+      .room-entity-order-actions{display:flex;align-items:center;gap:5px}.room-entity-order-actions>span{font-size:8px;text-transform:uppercase;color:var(--secondary-text-color);margin-right:auto}.room-entity-order-actions button,.room-entity-sortbar button{border:1px solid var(--divider-color);border-radius:8px;background:var(--secondary-background-color);color:var(--primary-text-color);height:32px}
+      .room-entity-sortbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding:7px 9px;background:var(--secondary-background-color);border-radius:10px}
+      .overview-active-chip.group{border:1px solid var(--divider-color);cursor:pointer}.overview-active-chip.group strong{margin-left:5px;padding:2px 7px;border-radius:999px;background:var(--secondary-background-color)}
+      .active-group-modal{position:fixed;inset:0;z-index:1005;display:grid;place-items:center;padding:18px}.active-group-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(4px)}.active-group-dialog{position:relative;width:min(560px,96vw);max-height:78vh;overflow:auto;background:var(--card-background-color);border:1px solid var(--divider-color);border-radius:20px;box-shadow:0 24px 80px rgba(0,0,0,.4)}
+      .active-group-head{display:flex;justify-content:space-between;align-items:center;padding:15px 16px;border-bottom:1px solid var(--divider-color)}.active-group-head span{display:block;font-size:8px;letter-spacing:.13em;color:var(--secondary-text-color)}.active-group-head strong{font-size:20px}.active-group-head button{width:36px;height:36px;border:0;border-radius:10px;background:var(--secondary-background-color)}
+      .active-group-list{padding:10px}.active-group-row{display:grid;grid-template-columns:1fr auto;gap:8px;padding:7px 0;border-bottom:1px solid var(--divider-color)}.active-group-entity{border:0;background:transparent;text-align:left;color:var(--primary-text-color);padding:7px}.active-group-entity span{display:block;font-weight:800}.active-group-entity small{display:block;color:var(--secondary-text-color);margin-top:3px}.active-group-toggle{width:42px;border:1px solid var(--divider-color);border-radius:10px;background:var(--secondary-background-color);color:var(--primary-color)}
+      .opening-card.has-custom-photo .custom-object-photo,.activity-card.has-custom-photo .custom-object-photo,.robot-room-card .custom-object-photo{width:120px;height:112px;margin:10px;border-radius:14px;overflow:hidden}.opening-card.has-custom-photo .custom-object-photo img,.activity-card.has-custom-photo .custom-object-photo img,.robot-room-card .custom-object-photo img,.robot-overview-visual.has-photo img{width:100%;height:100%;object-fit:cover;display:block}
+      .robot-overview-card.compact{min-height:0}
+      .overview-config-section.overview-size-compact{font-size:.90em}
+      .overview-config-section.overview-size-normal{font-size:1em}
+      .overview-config-section.overview-size-large{font-size:1.08em}
+      .overview-size-compact .chapter{margin-top:14px!important}
+      .overview-size-large .chapter{margin-top:26px!important}
+      .overview-size-compact .overview-key-grid,.overview-size-compact .overview-room-climate-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:9px!important}
+      .overview-size-large .overview-key-grid,.overview-size-large .overview-room-climate-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:18px!important}
+      .overview-size-compact .robot-overview-card,.overview-size-compact .vehicle-overview-card{min-height:0!important;padding:10px!important}
+      .overview-size-large .robot-overview-card,.overview-size-large .vehicle-overview-card{padding:20px!important;gap:18px!important}
+      :host(.kiosk-mode) .menu-btn,:host(.kiosk-mode) .topbar-config-btn,:host(.kiosk-mode) .info-config-box,:host(.kiosk-mode) .language-switch,:host(.kiosk-mode) .topbar-tools{display:none!important}
+      @media(max-width:720px){
+        .topbar{min-height:62px!important}.brand-copy .subtitle{display:none!important}.brand-copy .title{font-size:19px!important}.brand-version{font-size:9px!important}
+        .community-personal-overview{padding:14px!important}.community-personal-overview h1{font-size:clamp(30px,11vw,48px)!important;line-height:.96!important}.community-personal-overview .scene-sub{font-size:11px!important;margin-top:7px!important}.personal-overview-hero-card{min-height:128px!important}
+        .chapter{margin:18px 0 8px!important;padding:7px 9px!important;border:1px solid color-mix(in srgb,var(--divider-color) 85%,transparent);border-radius:12px;background:color-mix(in srgb,var(--card-background-color) 90%,transparent)}.chapter-line{display:none!important}.chapter-title{font-size:10px!important}.chapter-sub{font-size:9px!important}
+        .overview-section-config-grid{grid-template-columns:1fr}.overview-section-config-row{grid-template-columns:1fr auto 110px}
+        .overview-size-compact .overview-key-grid,.overview-size-compact .overview-room-climate-grid,.overview-key-grid,.overview-room-climate-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+        .overview-size-compact .solar-production-card,.overview-size-compact .solar-battery-card,.overview-size-compact .energy-flow-row{min-height:0!important;padding:10px!important}
+        .overview-size-compact .vehicle-overview-card{grid-template-columns:95px 1fr!important;gap:10px!important}.overview-size-compact .vehicle-overview-stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+        .overview-size-compact .robot-overview-card{grid-template-columns:

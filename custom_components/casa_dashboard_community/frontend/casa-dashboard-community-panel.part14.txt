@@ -1,6 +1,139 @@
-,
+om.entities=(room.entities||[]).filter(e=>e!==rem.dataset.entity);
+          if(room.entity_labels)delete room.entity_labels[rem.dataset.entity];
+          if(room.entity_images)delete room.entity_images[rem.dataset.entity];
+          this._renderConfigLayer();
+        }
+      }
+    });
+  }
+
+  async _saveConfigDialog() {
+    const layer=this.shadowRoot.querySelector("#configLayer");
+    for(const r of this._roomsDraft){
+      const n=layer?.querySelector(`[data-room-name="${r.id}"]`); if(n) r.name=n.value.trim()||"Stanza";
+      const t=layer?.querySelector(`[data-room-type="${r.id}"]`); if(t) r.type=t.value;
+      const ic=layer?.querySelector(`[data-room-icon="${r.id}"]`); if(ic) r.icon=ic.value.trim()||this._roomIcon(r.type);
+      const im=layer?.querySelector(`[data-room-image="${r.id}"]`); if(im) r.image=im.value.trim();
+      const ts=layer?.querySelector(`[data-room-title-size="${r.id}"]`); if(ts) r.title_size=ts.value||"normal";
+      const ss=layer?.querySelector(`[data-room-show-subtitle="${r.id}"]`); if(ss) r.show_subtitle=!!ss.checked;
+      const sub=layer?.querySelector(`[data-room-subtitle="${r.id}"]`); if(sub) r.subtitle=sub.value.trim();
+
+      const bgMode=layer?.querySelector(`[data-room-background-mode="${r.id}"]`);
+      const bgColor=layer?.querySelector(`[data-room-background-color="${r.id}"]`);
+      const bgA=layer?.querySelector(`[data-room-background-gradient-a="${r.id}"]`);
+      const bgB=layer?.querySelector(`[data-room-background-gradient-b="${r.id}"]`);
+      const bgAngle=layer?.querySelector(`[data-room-background-gradient-angle="${r.id}"]`);
+
+      if(bgMode) r.background_mode=bgMode.value||"auto";
+      if(bgColor) r.background_color=bgColor.value||"#101820";
+      if(bgA) r.background_gradient_a=bgA.value||"#101820";
+      if(bgB) r.background_gradient_b=bgB.value||"#183040";
+      if(bgAngle) r.background_gradient_angle=Math.max(0,Math.min(360,Number(bgAngle.value||135)));
+    }
+    layer?.querySelectorAll("[data-overview-key]").forEach(input=>{
+      if(input.type==="checkbox"){this._overviewDraft[input.dataset.overviewKey]=input.checked?"1":"0";return;}
+      if(input.type==="radio" && !input.checked) return;
+      this._overviewDraft[input.dataset.overviewKey]=String(input.value||"").trim();
+    });
+
+    // Background controls use dedicated data attributes and therefore must
+    // be copied explicitly before saving.
+    const bgColor=layer?.querySelector("[data-bg-color]");
+    const bgA=layer?.querySelector("[data-bg-gradient-a]");
+    const bgB=layer?.querySelector("[data-bg-gradient-b]");
+    const bgAngle=layer?.querySelector("[data-bg-gradient-angle]");
+    if(bgColor) this._overviewDraft.dashboard_background_color=String(bgColor.value||"#101820");
+    if(bgA) this._overviewDraft.dashboard_background_gradient_a=String(bgA.value||"#101820");
+    if(bgB) this._overviewDraft.dashboard_background_gradient_b=String(bgB.value||"#183040");
+    if(bgAngle) this._overviewDraft.dashboard_background_gradient_angle=String(
+      Math.max(0,Math.min(360,Number(bgAngle.value||135)))
+    );
+    layer?.querySelectorAll("[data-room-entity-image-room]").forEach(input=>{
+      this._setRoomEntityImage(input.dataset.roomEntityImageRoom,input.dataset.roomEntityImageEntity,input.value);
+    });
+    layer?.querySelectorAll("[data-room-entity-icon-room]").forEach(input=>{
+      this._setRoomEntityIcon(
+        input.dataset.roomEntityIconRoom,
+        input.dataset.roomEntityIconEntity,
+        input.value
+      );
+    });
+    layer?.querySelectorAll("[data-room-entity-size-room]").forEach(input=>{
+      this._setRoomEntitySize(
+        input.dataset.roomEntitySizeRoom,
+        input.dataset.roomEntitySizeEntity,
+        input.value
+      );
+    });
+    layer?.querySelectorAll("[data-room-module-room]").forEach(input=>{
+      this._setRoomModule(input.dataset.roomModuleRoom,input.dataset.roomModuleId,input.checked);
+    });
+    layer?.querySelectorAll("[data-config-key]").forEach(input=>{
+      const key=input.dataset.configKey;
+      const oldEntity=String(this._configDraft[key]||"").trim();
+      const resolved=this._entityIdFromFriendlyName(input.value);
+      this._configDraft[key]=resolved;
+      this._syncConfiguredKeyToRoom(key,oldEntity,resolved);
+    });
+    layer?.querySelectorAll("[data-config-label]").forEach(input=>{
+      this._configLabelDraft[input.dataset.configLabel]=input.value.trim();
+    });
+    const saveButtons=[...(layer?.querySelectorAll('[data-action="config-save"]')||[])];
+    saveButtons.forEach(save=>{ save.disabled=true; save.innerHTML='<ha-icon icon="mdi:loading" class="spin"></ha-icon> Salvataggio…'; });
+    try {
+      const saveRequest=this._hass.callWS({type:"casa_dashboard_community/config/save",entities:this._configDraft,rooms:this._roomsDraft,labels:this._configLabelDraft,overview:this._overviewDraft});
+      const slowTimer=setTimeout(()=>saveButtons.forEach(save=>{ if(save.disabled) save.innerHTML='<ha-icon icon="mdi:loading" class="spin"></ha-icon> Salvataggio ancora in corso…'; }),1800);
+      const result=await saveRequest;
+      clearTimeout(slowTimer);
+      this._rooms=Array.isArray(result?.rooms)
+        ? result.rooms.map(room=>({
+            ...room,
+            entities:Array.isArray(room?.entities)?[...room.entities]:[],
+            modules:Array.isArray(room?.modules)?[...room.modules]:[],
+            entity_labels:(room?.entity_labels && typeof room.entity_labels==="object")?{...room.entity_labels}:{},
+            entity_images:(room?.entity_images && typeof room.entity_images==="object")?{...room.entity_images}:{},
+            entity_icons:(room?.entity_icons && typeof room.entity_icons==="object")?{...room.entity_icons}:{},
+            entity_sizes:(room?.entity_sizes && typeof room.entity_sizes==="object")?{...room.entity_sizes}:{},
+            entity_order:Array.isArray(room?.entity_order)?[...room.entity_order]:[],
+            title_size:room?.title_size||"normal",
+            show_subtitle:room?.show_subtitle!==false,
+            subtitle:room?.subtitle||""
+          }))
+        : this._roomsDraft.map(room=>({
+            ...room,
+            entities:[...(room.entities||[])],
+            modules:[...(room.modules||[])],
+            entity_labels:{...(room.entity_labels||{})},
+            entity_images:{...(room.entity_images||{})},
+            entity_icons:{...(room.entity_icons||{})},
+            entity_sizes:{...(room.entity_sizes||{})},
+            entity_order:[...(room.entity_order||[])],
+            title_size:room.title_size||"normal",
+            show_subtitle:room.show_subtitle!==false,
+            subtitle:room.subtitle||""
+          }));
+      this._entityMap=result?.entities || {...this._configDraft};
+      this._entityLabels=result?.labels || {...this._configLabelDraft};
+      this._overviewConfig=result?.overview || {...this._overviewDraft};
+      this._entityConfigLoaded=true;
+      this._configDialogOpen=false;
+      this._renderConfigLayer();
+      this._renderPage(false);
+    } catch(err) {
+      saveButtons.forEach(save=>{ save.disabled=false; save.innerHTML='<ha-icon icon="mdi:alert-circle-outline"></ha-icon> Riprova'; });
+      alert(`Impossibile salvare la configurazione: ${err?.message || err}`);
+    }
+  }
+
+
+  _localizedState(entity,raw=null){
+    const state=String(raw ?? this._state(entity,"—")).trim();
+    const low=state.toLowerCase();
+    const it={
+      off:"Spento",on:"Acceso",idle:"In attesa",standby:"In attesa",
       docked:"Alla base",cleaning:"In pulizia",returning:"Ritorno alla base",
       paused:"In pausa",mowing:"Falciatura",starting:"Avvio",error:"Errore",
+      "rain delayed":"Ritardo pioggia",rain_delayed:"Ritardo pioggia",rain_delay:"Ritardo pioggia",
       unavailable:"Non disponibile",unknown:"Sconosciuto",
       open:"Aperto",closed:"Chiuso",opening:"Apertura",closing:"Chiusura",
       locked:"Bloccata",unlocked:"Sbloccata",locking:"Blocco in corso",
@@ -84,7 +217,10 @@
     const binaries=byDomain("binary_sensor");
     return {
       lights:byDomain("light").filter(e=>this._on(e)),
-      openings:binaries.filter(e=>["door","window","garage_door","opening"].includes(String(this._attr(e,"device_class","")).toLowerCase())&&this._on(e)),
+      openings:[
+        ...binaries.filter(e=>["door","window","garage_door","opening"].includes(String(this._attr(e,"device_class","")).toLowerCase())&&this._on(e)),
+        ...byDomain("lock").filter(e=>String(this._state(e,"locked")).toLowerCase()==="unlocked")
+      ],
       covers:byDomain("cover").filter(e=>{
         const s=String(this._state(e,"closed")).toLowerCase();
         const pos=Number(this._attr(e,"current_position",0));
@@ -419,7 +555,7 @@
       "Pagina non disponibile":"Page unavailable","Dashboard pronta":"Dashboard ready","Versione":"Version","Piattaforma":"Platform",
       "Dettagli e personalizzazione di Casa Dashboard Community.":"Casa Dashboard Community details and customization.",
       "Dashboard app-like, adattiva e configurabile per Home Assistant.":"An app-like, adaptive and configurable dashboard for Home Assistant.",
-      "In uso":"Active","Grafica originale di Casa Dashboard Community v4.2.7.":"Original Casa Dashboard Community interface.",
+      "In uso":"Active","Grafica originale di Casa Dashboard Community v4.3.1.":"Original Casa Dashboard Community interface.",
       "Nuova grafica derivata da Casa Dashboard v4.3.54, con visual dedicati per luci, sensori, clima, dispositivi e aperture.":"New dynamic interface with dedicated visuals for lights, sensors, climate, devices and openings.",
       "La scelta viene salvata sul browser/dispositivo e non modifica entità o automazioni.":"Your choice is saved on this browser/device and does not change entities or automations.",
       "SUPPORTA IL PROGETTO":"SUPPORT THE PROJECT","Casa Dashboard Community è gratuita":"Casa Dashboard Community is free","Se ti piace, puoi supportarne lo sviluppo.":"If you like it, you can support its development.",
@@ -453,119 +589,4 @@
     root.querySelectorAll?.('[data-language]').forEach(b=>b.classList.toggle('active',b.dataset.language===this._language));
     if(this._language!=="en") return;
     const showText=globalThis.NodeFilter?.SHOW_TEXT ?? 4;
-    const walker=document.createTreeWalker(root,showText); const nodes=[]; while(walker.nextNode()) nodes.push(walker.currentNode);
-    for(const n of nodes){ const v=n.nodeValue; if(v&&v.trim()){ const t=this._tr(v); if(t!==v)n.nodeValue=t; } }
-    root.querySelectorAll?.('[placeholder],[title],[aria-label]').forEach(el=>{ for(const a of ['placeholder','title','aria-label']) if(el.hasAttribute(a)) el.setAttribute(a,this._tr(el.getAttribute(a))); });
-  }
-  _setLanguage(lang){
-    if(!["it","en"].includes(lang)) return;
-    this._language=lang;
-    try{ localStorage.setItem("casa_dashboard_community_language",lang); }catch(e){}
-    const configWasOpen=this._configDialogOpen;
-    this._renderShell();
-    this._renderPage(true);
-    if(configWasOpen) this._renderConfigLayer();
-    this._applyLanguage();
-    requestAnimationFrame(()=>this._applyLanguage());
-  }
-
-
-  _safeColor(value,fallback="#101820"){
-    const v=String(value||"").trim();
-    return /^#[0-9a-f]{6}$/i.test(v)?v:fallback;
-  }
-  _safeBackgroundCss(mode,opts={}){
-    const m=String(mode||"auto").toLowerCase();
-    if(m==="image"){
-      const src=String(opts.image||"").trim();
-      if(!src || !(src.startsWith("/local/") || /^https?:\/\//i.test(src) || src.startsWith("data:image/"))) return "";
-      return `url("${src.replace(/["\\]/g,"")}") center / cover fixed no-repeat`;
-    }
-    if(m==="gradient"){
-      const a=this._safeColor(opts.gradientA,"#101820");
-      const b=this._safeColor(opts.gradientB,"#183040");
-      const angle=Math.max(0,Math.min(360,Number(opts.angle||135)));
-      return `linear-gradient(${angle}deg,${a},${b})`;
-    }
-    if(m==="color") return this._safeColor(opts.color,"#101820");
-    return "";
-  }
-  _applyCustomBackground(room=null){
-    const shell=this.shadowRoot?.querySelector(".app-shell");
-    const host=this.shadowRoot?.querySelector("#content");
-    if(!shell || !host) return;
-
-    const gm=this._overviewText("dashboard_background_mode","auto");
-    const globalBg=this._safeBackgroundCss(gm,{
-      image:this._overviewText("dashboard_background_image",""),
-      color:this._overviewText("dashboard_background_color","#101820"),
-      gradientA:this._overviewText("dashboard_background_gradient_a","#101820"),
-      gradientB:this._overviewText("dashboard_background_gradient_b","#183040"),
-      angle:Number(this._overviewText("dashboard_background_gradient_angle","135"))
-    });
-
-    const rm=room?.background_mode||"auto";
-    const roomBg=this._safeBackgroundCss(rm,{
-      image:room?.image||"",
-      color:room?.background_color||"#101820",
-      gradientA:room?.background_gradient_a||"#101820",
-      gradientB:room?.background_gradient_b||"#183040",
-      angle:Number(room?.background_gradient_angle||135)
-    });
-
-    const mode=roomBg?rm:gm;
-    const activeBg=roomBg||globalBg;
-    shell.style.background=activeBg||"";
-    shell.style.backgroundAttachment=activeBg && mode==="image" ? "fixed" : "";
-    shell.style.backgroundSize=activeBg && mode==="image" ? "cover" : "";
-    shell.classList.toggle("custom-dashboard-background",!!activeBg);
-    shell.classList.toggle("custom-photo-background",!!activeBg && mode==="image");
-    host.style.background="transparent";
-    host.style.backgroundAttachment="";
-    host.classList.toggle("custom-room-background",!!roomBg);
-  }
-
-  _renderPage(forceNav=false) {
-    if(!this._hass || !this.shadowRoot) return;
-    const kiosk=this._isKioskMode();
-    this._setHaKioskMode(kiosk);
-    this.classList.toggle("kiosk-mode",kiosk);
-    this._renderNav(forceNav); this._renderHeader(); this._applyThemeMode();
-    const shell=this.shadowRoot.querySelector(".app-shell"); if(shell){ shell.classList.toggle("ui-v1",this._uiTheme==="v1"); shell.classList.toggle("ui-v2",this._uiTheme==="v2"); shell.dataset.page=this._active; }
-    const host=this.shadowRoot.querySelector("#content"); if(!host) return;
-    const dynamicRoom=this._roomById(this._active);
-    this._applyCustomBackground(dynamicRoom);
-    const fixedRenderer={panoramica:()=>this._overview(),info:()=>this._info()}[this._active];
-    // The Rooms manager is the single source of truth for BOTH Casa V1 and Casa V2.
-    // Themes only change presentation; room content/entities are identical.
-    const renderer=dynamicRoom
-      ? (()=>String(dynamicRoom.type||"").toLowerCase()==="cucina"
-          ? this._dynamicKitchen(dynamicRoom)
-          : String(dynamicRoom.type||"").toLowerCase()==="disimpegno"
-            ? this._dynamicHallway(dynamicRoom)
-            : this._dynamicRoom(dynamicRoom))
-      : fixedRenderer;
-    host.innerHTML=renderer ? renderer() : `<div class="empty">Pagina non disponibile</div>`;
-    this._cleanEmptySections(host);
-    this._lastStateFingerprint=this._stateFingerprint();
-    this._applyLanguage();
-  }
-
-  _setUiTheme(theme){
-    if(!["v1","v2"].includes(theme)) return;
-    this._uiTheme=theme;
-    try { localStorage.setItem("casa_dashboard_community_style",theme); } catch(e) {}
-    const shell=this.shadowRoot?.querySelector(".app-shell");
-    if(shell){ shell.classList.toggle("ui-v1",theme==="v1"); shell.classList.toggle("ui-v2",theme==="v2"); }
-    this._renderPage(false);
-  }
-
-  _info(){
-    const selected=this._uiTheme;
-    return `<div class="page">${this._hero("Informazioni","Dettagli e personalizzazione di Casa Dashboard Community.",{level:"good",text:"Dashboard pronta"},[
-      {label:"Versione",value:"4.2.7",small:"Casa Dashboard Community"},
-      {label:"Piattaforma",value:"Home Assistant",small:"Custom integration"}
-    ])}<div class="info-card"><div class="info-icon"><ha-icon icon="mdi:home-heart"></ha-icon></div><h2>Casa Dashboard Community</h2>
-    <p>Dashboard app-like, adattiva e configurabile per Home Assistant.</p>
-    <div class="style-picker">
-      <button class="style-option ${selected==="v1"?"active":""}" data-ui-theme="v1" type="button">${selected==="v1"?'<span class="selected">In uso</span>':""}<div class="style-head"><ha-icon icon="mdi:home-variant-outline"></ha-icon><strong>Casa 
+    const walker=document.createTreeWalker(root,showText); const nodes=[]; while(walker.nextNo
