@@ -188,12 +188,13 @@ Le funzioni non configurate vengono nascoste automaticamente.
 
 Un ringraziamento speciale a **Mario Pagano** per la disponibilità, i numerosi test effettuati su desktop e smartphone e per i feedback e suggerimenti che hanno contribuito al perfezionamento di Casa Dashboard Community v4.4.0.
 
+
 ## ☕ Supporto
 
 Se il progetto ti piace: **[Offrimi un caffè su Ko-fi](https://ko-fi.com/fabvittori)**.
 
 
-## 📱 Dashboard predefinita / Default dashboard
+## 📱 Dashboard predefinita
 
 Casa Dashboard Community include `examples/casa-dashboard-community-dashboard.yaml`, una plancia Lovelace bridge che richiama il pannello Community. Dopo averla aggiunta in **Impostazioni → Dashboard**, Home Assistant permette di impostarla come dashboard predefinita per tutti gli utenti o dal profilo del singolo utente. Nell'app Companion sarà quindi la dashboard aperta all'avvio.
 
