@@ -1,5 +1,18 @@
 # Changelog
 
+## 4.4.0
+- Added Home Assistant Dashboards registration and default-dashboard support.
+- Fixed active-state styling for custom light icons across all card sizes.
+- Refined Smart Lock layout and sizing behavior.
+- Improved photovoltaic layout on desktop and mobile.
+- Improved PV battery/SOC rendering, including mobile `100%` containment.
+- Improved responsive behavior, readability, headers, icons and previews.
+- Added sizing guidance for cards with many controls.
+- General release cleanup.
+
+Realizzato da Fabio Vittori
+
+
 ## 4.3.1 - 2026-09-23
 
 - Migliorata e stabilizzata la geometria responsive delle card su desktop e smartphone.

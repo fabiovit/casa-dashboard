@@ -428,10 +428,10 @@
           left:6px!important;right:6px!important;bottom:6px!important;border-radius:8px!important;max-height:calc(100% - 12px)!important
         }
         .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-battery-soc>div{
-          padding:4px 5px!important;border-radius:8px!important
+          padding:3px 4px!important;border-radius:7px!important;max-width:calc(100% - 10px)!important;box-sizing:border-box!important
         }
-        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-battery-soc span{font-size:7px!important;letter-spacing:.08em!important}
-        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-battery-soc strong{font-size:17px!important;margin-top:1px!important}
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-battery-soc span{font-size:6px!important;letter-spacing:.06em!important}
+        .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-battery-soc strong{font-size:14px!important;line-height:1!important;margin-top:1px!important;white-space:nowrap!important}
         .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-prod-copy span,
         .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-pv-bars span,
         .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-node-label,
@@ -478,11 +478,11 @@
           max-height:calc(100% - 14px)!important;
         }
         .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-battery-soc>div{
-          max-width:calc(100% - 8px)!important;box-sizing:border-box!important;
-          padding:4px 3px!important;border-radius:8px!important;overflow:hidden!important;
+          max-width:calc(100% - 12px)!important;box-sizing:border-box!important;
+          padding:3px 2px!important;border-radius:7px!important;overflow:hidden!important;
         }
         .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-battery-soc strong{
-          font-size:17px!important;line-height:1!important;margin-top:1px!important;white-space:nowrap!important;
+          font-size:10px!important;line-height:1!important;margin-top:1px!important;white-space:nowrap!important;letter-spacing:-.08em!important;
         }
         .overview-config-section[data-overview-section="solar"] .community-advanced-energy .solar-battery-copy{
           min-width:0!important;text-align:left!important;

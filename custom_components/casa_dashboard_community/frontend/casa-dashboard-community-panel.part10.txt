@@ -80,13 +80,13 @@
           left:6px!important;right:6px!important;bottom:6px!important;border-radius:8px!important;
         }
         .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-battery-soc>div{
-          padding:4px 5px!important;border-radius:8px!important;
+          padding:3px 4px!important;border-radius:7px!important;max-width:calc(100% - 10px)!important;box-sizing:border-box!important;
         }
         .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-battery-soc span{
-          font-size:7px!important;letter-spacing:.08em!important;
+          font-size:6px!important;letter-spacing:.06em!important;
         }
         .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-battery-soc strong{
-          font-size:18px!important;line-height:1!important;margin-top:1px!important;white-space:nowrap!important;
+          font-size:14px!important;line-height:1!important;margin-top:1px!important;white-space:nowrap!important;
         }
         .overview-config-section.overview-size-compact[data-overview-section="solar"] .community-advanced-energy .solar-battery-copy{
           min-width:0!important;
