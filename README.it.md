@@ -2,7 +2,7 @@
 
 [🇬🇧 English](README.md) | 🇮🇹 **Italiano**
 
-[![Release](https://img.shields.io/badge/release-v4.1.2-blue)](https://github.com/fabiovit/casa-dashboard/releases)
+[![Release](https://img.shields.io/badge/release-v4.4.0-blue)](https://github.com/fabiovit/casa-dashboard/releases)
 [![HACS](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz/)
 [![Validate](https://img.shields.io/github/actions/workflow/status/fabiovit/casa-dashboard/hacs.yml?branch=main&label=Validate)](https://github.com/fabiovit/casa-dashboard/actions/workflows/hacs.yml)
 [![Hassfest](https://img.shields.io/github/actions/workflow/status/fabiovit/casa-dashboard/hassfest.yml?branch=main&label=Hassfest)](https://github.com/fabiovit/casa-dashboard/actions/workflows/hassfest.yml)
@@ -12,7 +12,7 @@
 
 Casa Dashboard Community è una dashboard app-like completa per **Home Assistant**, pensata per adattarsi ad abitazioni diverse senza dipendere dalle classiche card Lovelace.
 
-La **v4.1.2** è una release di consolidamento: il progetto è stato ripulito, il versioning è ora coerente tra backend e frontend e tutte le funzioni mature introdotte nella serie 2.x restano disponibili in un pacchetto più ordinato.
+La **v4.4.0** consolida gli ultimi miglioramenti di integrazione con Home Assistant, grafica e responsive, inclusi la registrazione tra le Plance, il comportamento della Smart Lock, la resa di fotovoltaico e SOC batteria e ulteriori ottimizzazioni su smartphone.
 
 **Realizzato da Fabio Vittori** · [☕ Offrimi un caffè](https://ko-fi.com/fabvittori)
 
@@ -183,6 +183,10 @@ Copia `custom_components/casa_dashboard_community` in `/config/custom_components
 Casa Dashboard Community è un template avanzato. Dispositivi, sensori, automazioni, fotovoltaico, EV e Wallbox sono opzionali.
 
 Le funzioni non configurate vengono nascoste automaticamente.
+
+## 🙏 Ringraziamenti
+
+Un ringraziamento speciale a **Mario Pagano** per la disponibilità, i numerosi test effettuati su desktop e smartphone e per i feedback e suggerimenti che hanno contribuito al perfezionamento di Casa Dashboard Community v4.4.0.
 
 ## ☕ Supporto
 
