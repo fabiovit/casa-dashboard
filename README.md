@@ -2,7 +2,7 @@
 
 🇬🇧 **English** | [🇮🇹 Italiano](README.it.md)
 
-[![Release](https://img.shields.io/badge/release-v4.1.2-blue)](https://github.com/fabiovit/casa-dashboard/releases)
+[![Release](https://img.shields.io/badge/release-v4.4.0-blue)](https://github.com/fabiovit/casa-dashboard/releases)
 [![HACS](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz/)
 [![Validate](https://img.shields.io/github/actions/workflow/status/fabiovit/casa-dashboard/hacs.yml?branch=main&label=Validate)](https://github.com/fabiovit/casa-dashboard/actions/workflows/hacs.yml)
 [![Hassfest](https://img.shields.io/github/actions/workflow/status/fabiovit/casa-dashboard/hassfest.yml?branch=main&label=Hassfest)](https://github.com/fabiovit/casa-dashboard/actions/workflows/hassfest.yml)
@@ -12,7 +12,7 @@
 
 Casa Dashboard Community is a complete app-like dashboard for **Home Assistant**, designed to adapt to different homes without relying on traditional Lovelace cards.
 
-**v4.1.2** is a consolidation release: the project has been cleaned up, versioning is now consistent across backend and frontend, and the mature features introduced in the 2.x generation are retained in a cleaner package.
+**v4.4.0** consolidates the latest Home Assistant integration, visual and responsive improvements, including dashboard registration, refined Smart Lock behavior, improved photovoltaic and battery SOC rendering, and further mobile optimizations.
 
 **Created by Fabio Vittori** · [☕ Buy me a coffee](https://ko-fi.com/fabvittori)
 
@@ -183,6 +183,10 @@ Copy `custom_components/casa_dashboard_community` into `/config/custom_component
 Casa Dashboard Community is an advanced template. Devices, sensors, automations, solar, EV and Wallbox are optional.
 
 Functions that are not configured are hidden automatically.
+
+## 🙏 Acknowledgements
+
+Special thanks to **Mario Pagano** for his availability, extensive desktop and mobile testing, feedback and suggestions that helped refine Casa Dashboard Community v4.4.0.
 
 ## ☕ Support
 
