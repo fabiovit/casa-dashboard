@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.4.1
+- Fixed water-leak binary sensor status (Dry/Wet; Asciutto/Bagnato) in room cards and humidity visual renderer.
+- Preserved numeric humidity readings and handled unknown/unavailable states.
+- Special thanks to Mario Pagano for testing and verification.
+
+
 ## 4.4.0
 - Added Home Assistant Dashboards registration and default-dashboard support.
 - Fixed active-state styling for custom light icons across all card sizes.
@@ -9,6 +15,7 @@
 - Improved responsive behavior, readability, headers, icons and previews.
 - Added sizing guidance for cards with many controls.
 - General release cleanup.
+- Special thanks to **Mario Pagano** for extensive desktop/mobile testing, feedback and suggestions.
 
 Realizzato da Fabio Vittori
 

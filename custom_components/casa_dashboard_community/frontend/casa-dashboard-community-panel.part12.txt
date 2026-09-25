@@ -14,6 +14,14 @@
       }
       if(dc==="vibration") return this._activityVisual(e,name,"vibration",3,room.name);
       if(["motion","occupancy","presence"].includes(dc)) return this._activityVisual(e,name,dc==="motion"?"motion":"occupancy",3,room.name);
+      if(dc==="moisture" || /perdita[ _-]*acqua|water[ _-]*leak|leak[ _-]*sensor/i.test(`${e} ${name}`)){
+        const raw=this._state(e,"unknown");
+        const norm=String(raw||"").trim().toLowerCase();
+        const wet=["on","wet","bagnato","moist","detected","leak","leaking","1","true"].includes(norm);
+        const dry=["off","dry","asciutto","clear","normal","not_detected","not detected","0","false"].includes(norm);
+        const value=wet?(this._language==="en"?"Wet":"Bagnato"):dry?(this._language==="en"?"Dry":"Asciutto"):norm==="unavailable"?(this._language==="en"?"Unavailable":"Non disponibile"):(this._language==="en"?"Unknown":"Sconosciuto");
+        return this._metric("mdi:water-alert",name,value,"",3,e,wet?"state-bad":dry?"state-good":"");
+      }
       return this._metric(this._v1OriginalIcon(e,room.type,name),name,this._state(e),this._attr(e,"unit_of_measurement",""),3,e);
     }).join("");
 
@@ -159,6 +167,14 @@
         if(["door","window","opening","garage_door"].includes(dc)){
           const kind=dc==="window"?"window":dc==="garage_door"?"garage":"door";
           return this._openingVisual(e,name,kind,4,room.name);
+        }
+        if(dc==="moisture" || /perdita[ _-]*acqua|water[ _-]*leak|leak[ _-]*sensor/i.test(`${e} ${name}`)){
+          const raw=this._state(e,"unknown");
+          const norm=String(raw||"").trim().toLowerCase();
+        const wet=["on","wet","bagnato","moist","detected","leak","leaking","1","true"].includes(norm);
+        const dry=["off","dry","asciutto","clear","normal","not_detected","not detected","0","false"].includes(norm);
+        const value=wet?(this._language==="en"?"Wet":"Bagnato"):dry?(this._language==="en"?"Dry":"Asciutto"):norm==="unavailable"?(this._language==="en"?"Unavailable":"Non disponibile"):(this._language==="en"?"Unknown":"Sconosciuto");
+          return this._metric("mdi:water-alert",name,value,"",4,e,wet?"state-bad":dry?"state-good":"");
         }
         return this._metric(this._v1OriginalIcon(e,room.type,name),name,this._on(e)?"Attivo":"Inattivo","",4,e);
       })
@@ -595,6 +611,14 @@
       if(dc==="temperature") return this._environmentVisual(e,name,"temperature",4,room.name);
       if(dc==="humidity") return this._environmentVisual(e,name,"humidity",4,room.name);
       if(dc==="illuminance" || /lux/i.test(String(unit))) return this._environmentVisual(e,name,"lux",4,room.name);
+      if(dc==="moisture" || /perdita[ _-]*acqua|water[ _-]*leak|leak[ _-]*sensor/i.test(`${e} ${name}`)){
+        const raw=this._state(e,"unknown");
+        const norm=String(raw||"").trim().toLowerCase();
+        const wet=["on","wet","bagnato","moist","detected","leak","leaking","1","true"].includes(norm);
+        const dry=["off","dry","asciutto","clear","normal","not_detected","not detected","0","false"].includes(norm);
+        const value=wet?(this._language==="en"?"Wet":"Bagnato"):dry?(this._language==="en"?"Dry":"Asciutto"):norm==="unavailable"?(this._language==="en"?"Unavailable":"Non disponibile"):(this._language==="en"?"Unknown":"Sconosciuto");
+        return this._metric("mdi:water-alert",name,value,"",4,e,wet?"state-bad":dry?"state-good":"");
+      }
       const icon=this._activeRoomEntityIcon(e)||this._v1OriginalIcon(e,room.type,name);
       const raw=this._state(e,"—");
       const semantic=(dc==="door"||dc==="window"||dc==="opening")

@@ -48,6 +48,14 @@
       return {value:finite?new Intl.NumberFormat(this._language==="en"?"en-GB":"it-IT",{minimumFractionDigits:1,maximumFractionDigits:1}).format(n):raw,unit,sub:""};
     }
     if(entity.startsWith("binary_sensor.")){
+      const leakName=`${entity} ${this._hass?.states?.[entity]?.attributes?.friendly_name||""}`;
+      if(dc==="moisture" || /perdita[ _-]*acqua|water[ _-]*leak|leak[ _-]*sensor/i.test(leakName)){
+        const norm=String(raw||"").trim().toLowerCase();
+        const wet=["on","wet","bagnato","moist","detected","leak","leaking","1","true"].includes(norm);
+        const dry=["off","dry","asciutto","clear","normal","not_detected","not detected","0","false"].includes(norm);
+        const value=wet?(this._language==="en"?"Wet":"Bagnato"):dry?(this._language==="en"?"Dry":"Asciutto"):norm==="unavailable"?(this._language==="en"?"Unavailable":"Non disponibile"):(this._language==="en"?"Unknown":"Sconosciuto");
+        return {value,unit:"",sub:""};
+      }
       const on=raw==="on";
       return {value:on?(this._language==="en"?"Active":"Attivo"):(this._language==="en"?"Inactive":"Inattivo"),unit:"",sub:""};
     }

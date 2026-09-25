@@ -2,7 +2,7 @@
 
 🇬🇧 **English** | [🇮🇹 Italiano](README.it.md)
 
-[![Release](https://img.shields.io/badge/release-v4.4.0-blue)](https://github.com/fabiovit/casa-dashboard/releases)
+[![Release](https://img.shields.io/badge/release-v4.4.1-blue)](https://github.com/fabiovit/casa-dashboard/releases)
 [![HACS](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz/)
 [![Validate](https://img.shields.io/github/actions/workflow/status/fabiovit/casa-dashboard/hacs.yml?branch=main&label=Validate)](https://github.com/fabiovit/casa-dashboard/actions/workflows/hacs.yml)
 [![Hassfest](https://img.shields.io/github/actions/workflow/status/fabiovit/casa-dashboard/hassfest.yml?branch=main&label=Hassfest)](https://github.com/fabiovit/casa-dashboard/actions/workflows/hassfest.yml)
@@ -12,7 +12,7 @@
 
 Casa Dashboard Community is a complete app-like dashboard for **Home Assistant**, designed to adapt to different homes without relying on traditional Lovelace cards.
 
-**v4.4.0** consolidates the latest Home Assistant integration, visual and responsive improvements, including dashboard registration, refined Smart Lock behavior, improved photovoltaic and battery SOC rendering, and further mobile optimizations.
+**v4.4.1** fixes water-leak sensor state rendering (Dry/Wet) while preserving normal numeric humidity readings.
 
 **Created by Fabio Vittori** · [☕ Buy me a coffee](https://ko-fi.com/fabvittori)
 
@@ -184,21 +184,16 @@ Casa Dashboard Community is an advanced template. Devices, sensors, automations,
 
 Functions that are not configured are hidden automatically.
 
-## 🙏 Acknowledgements
-
-Special thanks to **Mario Pagano** for his availability, extensive desktop and mobile testing, feedback and suggestions that helped refine Casa Dashboard Community v4.4.0.
-
-
 ## ☕ Support
 
 If you enjoy the project: **[Buy me a coffee on Ko-fi](https://ko-fi.com/fabvittori)**.
 
 
-## 📱 Default dashboard
+## 📱 Dashboard predefinita / Default dashboard
 
-Casa Dashboard Community includes `examples/casa-dashboard-community-dashboard.yaml`, a Lovelace bridge dashboard that opens the Community panel. After adding it in **Settings → Dashboards**, Home Assistant lets you select it as the default dashboard for all users or from an individual user's profile. In the Companion app, it can therefore be the dashboard shown at startup.
+Casa Dashboard Community include `examples/casa-dashboard-community-dashboard.yaml`, una plancia Lovelace bridge che richiama il pannello Community. Dopo averla aggiunta in **Impostazioni → Dashboard**, Home Assistant permette di impostarla come dashboard predefinita per tutti gli utenti o dal profilo del singolo utente. Nell'app Companion sarà quindi la dashboard aperta all'avvio.
 
-> Home Assistant does not expose an official service that allows a custom integration to automatically change a user's default dashboard: the final selection must be made in Home Assistant settings.
+> Home Assistant non espone un servizio ufficiale che consenta a una custom integration di cambiare automaticamente la dashboard predefinita dell'utente: la scelta finale va effettuata nelle impostazioni di Home Assistant.
 
 
 ## 📱 Tablet / kiosk mode
@@ -213,3 +208,7 @@ Replace `homeassistant.local:8123` with your Home Assistant address. `?kiosk=1` 
 
 The default Home Assistant dashboard is selected from Home Assistant settings/profile.
 
+
+## 🙏 Acknowledgements
+
+Special thanks to **Mario Pagano** for desktop and mobile testing and verification.

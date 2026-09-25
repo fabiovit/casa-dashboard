@@ -17,6 +17,11 @@ Casa Dashboard Community v4.4.0 consolida il ciclo di miglioramenti testato su d
 ### ⚠️ Dopo l'aggiornamento
 È consigliato un riavvio completo di Home Assistant per assicurare la corretta registrazione della dashboard tra le Plance.
 
+
+### 🙏 Ringraziamenti
+
+Un ringraziamento speciale a **Mario Pagano** per la disponibilità, i test approfonditi su desktop e smartphone, i feedback e i suggerimenti che hanno contribuito al perfezionamento di questa release.
+
 ---
 
 ## 🇬🇧 English
@@ -35,6 +40,11 @@ Casa Dashboard Community v4.4.0 consolidates the improvements tested across desk
 
 ### ⚠️ After updating
 A full Home Assistant restart is recommended to ensure the dashboard is correctly registered among Home Assistant Dashboards.
+
+
+### 🙏 Acknowledgements
+
+Special thanks to **Mario Pagano** for his availability, extensive desktop and mobile testing, feedback and suggestions that helped refine this release.
 
 ---
 

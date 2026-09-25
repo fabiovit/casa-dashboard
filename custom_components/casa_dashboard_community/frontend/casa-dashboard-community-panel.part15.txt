@@ -109,7 +109,7 @@ de()) nodes.push(walker.currentNode);
   _info(){
     const selected=this._uiTheme;
     return `<div class="page">${this._hero("Informazioni","Dettagli e personalizzazione di Casa Dashboard Community.",{level:"good",text:"Dashboard pronta"},[
-      {label:"Versione",value:"4.4.0",small:"Casa Dashboard Community"},
+      {label:"Versione",value:"4.4.1",small:"Casa Dashboard Community"},
       {label:"Piattaforma",value:"Home Assistant",small:"Custom integration"}
     ])}<div class="info-card"><div class="info-icon"><ha-icon icon="mdi:home-heart"></ha-icon></div><h2>Casa Dashboard Community</h2>
     <p>Dashboard app-like, adattiva e configurabile per Home Assistant.</p>
@@ -250,14 +250,25 @@ de()) nodes.push(walker.currentNode);
 
   _environmentVisual(entity,label,type="temperature",span=3,subtitle=""){
     const raw=this._state(entity,"unknown"); const n=Number(raw), valid=Number.isFinite(n);
+    const dc=String(this._attr(entity,"device_class","")||"").toLowerCase();
+    const leakHay=`${entity} ${label} ${this._hass?.states?.[entity]?.attributes?.friendly_name||""}`.toLowerCase();
+    const isLeak=dc==="moisture" || /perdita[ _-]*acqua|water[ _-]*leak|leak[ _-]*sensor/.test(leakHay);
     let value="—", icon="mdi:gauge", scene=type, tone="normal";
-    if(type==="temperature"){ value=valid?`${n.toFixed(1)} °C`:"—"; icon="mdi:thermometer"; tone=valid?(n>=28?"hot":n<=18?"cold":"normal"):"normal"; }
+    if(isLeak){
+      const norm=String(raw||"").trim().toLowerCase();
+      const wet=["on","wet","bagnato","moist","detected","leak","leaking","1","true"].includes(norm);
+      const dry=["off","dry","asciutto","clear","normal","not_detected","not detected","0","false"].includes(norm);
+      value=wet?(this._language==="en"?"Wet":"Bagnato"):dry?(this._language==="en"?"Dry":"Asciutto"):norm==="unavailable"?(this._language==="en"?"Unavailable":"Non disponibile"):(this._language==="en"?"Unknown":"Sconosciuto");
+      icon=wet?"mdi:water-alert":"mdi:water-check";
+      scene="humidity"; tone=wet?"humid":dry?"dry":"normal";
+    }
+    else if(type==="temperature"){ value=valid?`${n.toFixed(1)} °C`:"—"; icon="mdi:thermometer"; tone=valid?(n>=28?"hot":n<=18?"cold":"normal"):"normal"; }
     else if(type==="humidity"){ value=valid?`${Math.round(n)} %`:"—"; icon="mdi:water-percent"; tone=valid?(n>=65?"humid":n<=35?"dry":"normal"):"normal"; }
     else if(type==="lux"){ value=this._fmtLuxExact(entity); icon="mdi:white-balance-sunny"; const l=valid?n:0; tone=l>=20000?"bright":l>=3500?"good":"low"; }
     const customPhoto=this._customObjectVisual(entity,"environment");
     return `<button class="environment-card ${scene} ${tone} span-${span}${entity?this._entitySizeClass(entity):""} ${customPhoto?'has-custom-photo':''}" data-more="${entity}">
       ${customPhoto || `<div class="environment-visual ${scene}">
-        ${scene==="temperature"?`<div class="thermometer"><div class="thermo-tube"><i style="height:${valid?Math.max(12,Math.min(90,(n+5)/45*100)):30}%"></i></div><div class="thermo-bulb"></div></div>`:scene==="humidity"?`<div class="humidity-drop"><div class="humidity-fill" style="height:${valid?Math.max(8,Math.min(100,n)):35}%"></div></div>`:`<div class="sun-meter"><div class="sun-core"></div>${Array.from({length:8},(_,i)=>`<i class="r${i+1}"></i>`).join("")}</div>`}
+        ${scene==="temperature"?`<div class="thermometer"><div class="thermo-tube"><i style="height:${valid?Math.max(12,Math.min(90,(n+5)/45*100)):30}%"></i></div><div class="thermo-bulb"></div></div>`:scene==="humidity"?`<div class="humidity-drop"><div class="humidity-fill" style="height:${isLeak?(tone==="humid"?100:tone==="dry"?18:35):(valid?Math.max(8,Math.min(100,n)):35)}%"></div></div>`:`<div class="sun-meter"><div class="sun-core"></div>${Array.from({length:8},(_,i)=>`<i class="r${i+1}"></i>`).join("")}</div>`}
       </div>`}
       <div class="environment-copy"><span>${this._esc(label)}</span><strong>${this._esc(value)}</strong><small>${this._esc(subtitle)}</small></div><div class="environment-state"><ha-icon icon="${icon}"></ha-icon></div>
     </button>`;
