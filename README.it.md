@@ -8,11 +8,18 @@
 [![Hassfest](https://img.shields.io/github/actions/workflow/status/fabiovit/casa-dashboard/hassfest.yml?branch=main&label=Hassfest)](https://github.com/fabiovit/casa-dashboard/actions/workflows/hassfest.yml)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-[![Add to HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=fabiovit&repository=casa-dashboard&category=integration)
+[![Open in Home Assistant Marketplace](https://my.home-assistant.io/badges/marketplace_repository.svg)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=fabiovit&repository=casa-dashboard&category=integration)
 
 Casa Dashboard Community è una dashboard app-like completa per **Home Assistant**, pensata per adattarsi ad abitazioni diverse senza dipendere dalle classiche card Lovelace.
 
 La **v4.4.1** corregge la visualizzazione dei sensori perdita acqua (Asciutto/Bagnato), preservando i normali valori numerici di umidità.
+
+### 📦 Home Assistant Marketplace (2026.11+)
+
+Casa Dashboard Community viene distribuita come **integrazione personalizzata** tramite il Marketplace integrato di Home Assistant. Apri **Impostazioni → Marketplace → Aggiungi da link**, inserisci `fabiovit/casa-dashboard` e installa l'integrazione. Dopo l'installazione, riavvia Home Assistant se richiesto.
+
+Per le versioni di Home Assistant precedenti alla 2026.11, lo stesso repository rimane compatibile con HACS. Le installazioni HACS esistenti vengono migrate automaticamente al Marketplace dopo l'aggiornamento di Home Assistant: **non disinstallare e reinstallare** la dashboard. Il repository continua a utilizzare `hacs.json` e il workflow di validazione HACS perché il Marketplace mantiene questo formato di pubblicazione.
+
 
 **Realizzato da Fabio Vittori** · [☕ Offrimi un caffè](https://ko-fi.com/fabvittori)
 
