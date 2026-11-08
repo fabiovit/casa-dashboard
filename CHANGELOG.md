@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.4.2
+- Updated Home Assistant Marketplace installation guidance and repository badges in English and Italian.
+- Preserved compatibility with existing HACS installations and the established integration structure.
+- Synchronized integration, manifest, and frontend version identifiers to 4.4.2.
+- No changes to dashboard functionality.
+
+
 ## 4.4.1
 - Fixed water-leak binary sensor status (Dry/Wet; Asciutto/Bagnato) in room cards and humidity visual renderer.
 - Preserved numeric humidity readings and handled unknown/unavailable states.
