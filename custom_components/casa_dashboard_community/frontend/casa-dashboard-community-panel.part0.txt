@@ -392,7 +392,7 @@ class CasaDashboardPanel extends HTMLElement {
           </div>
         </header>
         <main id="content"><div class="loading">Caricamento Casa Dashboard…</div></main>
-        <footer><span>Casa Dashboard Community · v4.4.1 · Realizzato da Fabio Vittori</span><a class="coffee-link" href="https://ko-fi.com/fabvittori" target="_blank" rel="noopener noreferrer">☕ Offrimi un caffè</a></footer>
+        <footer><span>Casa Dashboard Community · v4.4.2 · Realizzato da Fabio Vittori</span><a class="coffee-link" href="https://ko-fi.com/fabvittori" target="_blank" rel="noopener noreferrer">☕ Offrimi un caffè</a></footer>
       </div>
     `;
     this.shadowRoot.addEventListener("click", (ev) => this._handleClick(ev));
